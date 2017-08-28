@@ -1,12 +1,16 @@
 <resources>
     <!--App-->
-    <string name="app_name">Bird&amp;Truck</string>
+    <string name="app_name">Bid&amp;Track</string>
+    <string name="app_email">bigtruck@email.com.br</string>
 
     <!--Menu / Drawer-->
+    <string name="app_menu_title">Motorista</string>
     <string name="action_settings">Configurações</string>
     <string name="menu_drw_home">Início</string>
 
     <!--Titles-->
+    <string name="app_title_main">Main Fragment</string>
+    <string name="app_title_home">Home Fragment</string>
     <!--SubTitles-->
     <!--Toast-->
     <!--Dialog-->

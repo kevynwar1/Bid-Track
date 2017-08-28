@@ -33,11 +33,14 @@ public class MyProgressBar {
 
     public void onFinish() throws Exception {
         setMActive(false);
-        mFrameLayout.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.GONE);
-        mProgressBar = null;
-        mFrameLayout.removeAllViews();
-        mFrameLayout = null;
+        if (mFrameLayout != null) {
+            mFrameLayout.setVisibility(View.GONE);
+            if (mProgressBar != null)
+                mProgressBar.setVisibility(View.GONE);
+            mProgressBar = null;
+            mFrameLayout.removeAllViews();
+            mFrameLayout = null;
+        }
     }
 
     public boolean isMActive() {

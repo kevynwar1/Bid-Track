@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.rgames.guilherme.bidtruck.view.home.HomeFragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -17,7 +19,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        init();
+        try {
+            init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (savedInstanceState == null)
+            getSupportFragmentManager().beginTransaction().add(R.id.content_main, HomeFragment.newInstance()).commit();
     }
 
     @Override
@@ -51,7 +59,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                return true;
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, HomeFragment.newInstance()).commit();
             default:
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
@@ -59,9 +67,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void init() {
+    private void init() throws Exception{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setSubtitle(getString(R.string.app_title_main));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

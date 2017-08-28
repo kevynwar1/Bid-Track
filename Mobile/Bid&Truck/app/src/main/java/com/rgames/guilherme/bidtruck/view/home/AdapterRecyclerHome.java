@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.rgames.guilherme.bidtruck.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHome.MyViewHolder> {
@@ -14,7 +15,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
     private List<Object> mList;
 
     public AdapterRecyclerHome(List<Object> list) {
-        mList = list;
+        mList = (list != null) ? list : new ArrayList<>();
     }
 
     @Override
