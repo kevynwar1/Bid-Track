@@ -16,6 +16,7 @@ public class DetalhesEstudoActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private Entrega mEntrega;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class DetalhesEstudoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalhes_estudo);
         try {
             if (getIntent().getExtras() != null)
-                getIntent().getExtras().getParcelable(Entrega.PARCEL);
+                mEntrega = getIntent().getExtras().getParcelable(Entrega.PARCEL);
             else {
                 onBackPressed();
                 throw new NullPointerException("Entrega nula.");
@@ -47,7 +48,7 @@ public class DetalhesEstudoActivity extends AppCompatActivity {
 
     private void initViewPager() {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new AdapterViewPager(getSupportFragmentManager(), this));
+        mViewPager.setAdapter(new AdapterViewPager(getSupportFragmentManager(), this, mEntrega));
         mTabLayout = (TabLayout) findViewById(R.id.tablayout);
         mTabLayout.post(new Runnable() {
             @Override
