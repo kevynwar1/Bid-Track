@@ -10,7 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.rgames.guilherme.bidtruck.view.home.HomeFragment;
+import com.rgames.guilherme.bidtruck.view.entrega.EntregaFragment;
+import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
+import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
+import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         if (savedInstanceState == null)
-            getSupportFragmentManager().beginTransaction().add(R.id.content_main, HomeFragment.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.content_main, EntregaFragment.newInstance()).commit();
     }
 
     @Override
@@ -57,20 +60,33 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        onCloseDrawer();
         switch (item.getItemId()) {
-            case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, HomeFragment.newInstance()).commit();
+            case R.id.nav_entrega:
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, EntregaFragment.newInstance()).commit();
+                return true;
+            case R.id.nav_sync:
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();
+                return true;
+            case R.id.nav_ocorr:
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, OcorrenciaFragment.newInstance()).commit();
+                return true;
+            case R.id.nav_msg:
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MensagensFragment.newInstance()).commit();
+                return true;
             default:
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
                 return true;
         }
+    }
+
+    private void onCloseDrawer(){
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     private void init() throws Exception{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setSubtitle(getString(R.string.app_title_main));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

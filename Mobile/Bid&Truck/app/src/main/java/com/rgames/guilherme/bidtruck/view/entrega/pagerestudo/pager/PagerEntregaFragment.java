@@ -1,54 +1,57 @@
-package com.rgames.guilherme.bidtruck.view.home;
-
+package com.rgames.guilherme.bidtruck.view.entrega.pagerestudo.pager;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
+import com.rgames.guilherme.bidtruck.view.entrega.pagerestudo.adapter.AdapterRecyclerEntregas;
 
-public class HomeFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
+public class PagerEntregaFragment extends Fragment {
     private View mView;
     private MyProgressBar myProgressBar;
+    private List<Entrega> mListEntregas;
 
-    public HomeFragment() {
+    public PagerEntregaFragment() {
+
     }
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public static PagerEntregaFragment newInstance() {
+        return new PagerEntregaFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(
-                        getActivity().getResources().getString(R.string.app_title_home));
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         initList();
+        Log.i("teste", "iniciando rec");
+        mListEntregas = new ArrayList<>();
+        mListEntregas.add(new Entrega(0, "Entrega 1"));
+        mListEntregas.add(new Entrega(1, "Entrega 2"));
+        mListEntregas.add(new Entrega(2, "Entrega 3"));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return mView = inflater.inflate(R.layout.fragment_home, container, false);
+        return mView = inflater.inflate(R.layout.fragment_pager_entrega, container, false);
     }
 
     @Override
@@ -96,7 +99,7 @@ public class HomeFragment extends Fragment {
             r.setLayoutManager(new LinearLayoutManager(getActivity()));
         else
             throw new NullPointerException("Context nulo");
-        r.setAdapter(new AdapterRecyclerHome(null));
+        r.setAdapter(new AdapterRecyclerEntregas(mListEntregas, getActivity()));
     }
 
     private void initProgressBar() throws ClassCastException, NullPointerException {
@@ -110,4 +113,3 @@ public class HomeFragment extends Fragment {
         }
     }
 }
-
