@@ -63,14 +63,16 @@ public class DestinoPagerkFragment extends Fragment {
                     final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                     alertDialog.setTitle(getString(R.string.app_name));
                     alertDialog.setMessage("Deseja confirmar a entrega?");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancelar"
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE
+                            , getString(R.string.app_dlg_cancel)
                             , new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
                                 }
                             });
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Confirmar"
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
+                            , getString(R.string.app_dlg_confirm)
                             , new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

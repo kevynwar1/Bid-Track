@@ -20,6 +20,8 @@
     <string name="app_subtitle_entregas">Entregas</string>
     <!--Toast-->
     <!--Dialog-->
+    <string name="app_dlg_confirm">Confirmar</string>
+    <string name="app_dlg_cancel">Confirmar</string>
     <!--Button-->
     <!--Forms-->
 
