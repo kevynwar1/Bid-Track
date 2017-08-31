@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_entrega"
+            android:icon="@drawable/ic_local_shipping_black_18dp"
+            android:title="@string/menu_drw_entrega" />
+
+        <item
+            android:id="@+id/nav_sync"
+            android:icon="@drawable/ic_cached_black_18dp"
+            android:title="@string/menu_drw_sync" />
+
+        <item
+            android:id="@+id/nav_ocorr"
+            android:icon="@drawable/ic_import_contacts_black_18dp"
+            android:title="@string/menu_drw_ocorr" />
+
+        <item
+            android:id="@+id/nav_msg"
+            android:icon="@drawable/ic_email_black_18dp"
+            android:title="@string/menu_drw_msg" />
+    </group>
+</menu>
