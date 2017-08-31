@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.rgames.guilherme.bidtruck.view.entrega.EntregaFragment;
+import com.rgames.guilherme.bidtruck.view.delivery.EntregaFragment;
 import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
 import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;

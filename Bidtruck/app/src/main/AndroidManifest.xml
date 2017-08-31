@@ -20,9 +20,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.entrega.pagerdetalhes.pager.DetalhesEstudoActivity"
+            android:name=".view.delivery.pagerdetalhes.pager.DetalhesEstudoActivity"
             android:label="@string/title_activity_detalhes_estudo"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

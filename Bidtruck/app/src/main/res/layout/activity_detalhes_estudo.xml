@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.rgames.guilherme.bidtruck.view.entrega.pagerdetalhes.pager.DetalhesEstudoActivity">
+    tools:context="com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.pager.DetalhesEstudoActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

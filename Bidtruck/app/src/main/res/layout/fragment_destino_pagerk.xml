@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rgames.guilherme.bidtruck.view.entrega.pagerdetalhes.pager.DestinoPagerkFragment">
+    tools:context="com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.pager.DestinoPagerkFragment">
 
     <LinearLayout
         android:layout_marginTop="20dp"
