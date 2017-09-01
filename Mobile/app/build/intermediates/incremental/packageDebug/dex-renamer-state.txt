@@ -1,7 +1,0 @@
-#Wed Aug 30 17:43:47 BRT 2017
-base.0=C\:\\Users\\kevyn\\Desktop\\Bidtruck\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_2533af3d6fb5a7efc56101a29ede07966c07da48
-renamed.1=classes2.dex
-renamed.0=classes.dex
-file.1=C\:\\Users\\kevyn\\Desktop\\Bidtruck\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_c2aed06211131ad3f5bdd34418276d812488c835\\classes.dex
-base.1=C\:\\Users\\kevyn\\Desktop\\Bidtruck\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_c2aed06211131ad3f5bdd34418276d812488c835
-file.0=C\:\\Users\\kevyn\\Desktop\\Bidtruck\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_2533af3d6fb5a7efc56101a29ede07966c07da48\\classes.dex
