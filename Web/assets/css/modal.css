@@ -1,5 +1,5 @@
 .modal {
-    padding-top: 10%;
+    padding-top: 2%;
     z-index: 99999;
     display: none;
     position: fixed;
@@ -10,26 +10,29 @@
     overflow: auto;
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.7);
+    transition: all 0.5s linear;
 }
 
 .modal-content {
-    border-radius: 0px !important;
-    background-color: #FEFEFE;
+    border: none !important;
+    box-shadow: none !important;
+    background: none !important;
     margin: auto;
     padding: 20px;
     width: 35%;
+    transition: all 0.5s linear;
 }
-.modal-content h2 { font-family: 'museo300'; font-size: 35px; }
+.modal-content h2 { font-family: 'museo300'; font-size: 32px; }
 
 .close {
-    color: #AAA;
+    color: #CCC !important;
     float: right;
     font-size: 28px;
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: #FFF !important;
     text-decoration: none;
     cursor: pointer;
     transition: 0.5s;
