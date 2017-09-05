@@ -22,7 +22,7 @@
     <!--Toast-->
     <!--Dialog-->
     <string name="app_dlg_confirm">Confirmar</string>
-    <string name="app_dlg_cancel">Confirmar</string>
+    <string name="app_dlg_cancel">Cancelar</string>
     <!--Button-->
     <!--Forms-->
 

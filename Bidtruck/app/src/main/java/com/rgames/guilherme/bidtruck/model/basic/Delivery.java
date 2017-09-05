@@ -15,7 +15,7 @@ public class Delivery implements Parcelable {
     //    private int sequence_delivery;
 //    private int NSF;
     private String titulo;
-    private Romaneio romaneio;
+//    private Romaneio romaneio;
     private Addressee addressee;
     private StatusDelivery statusDelivery;
     private float weight;
@@ -25,10 +25,10 @@ public class Delivery implements Parcelable {
     public Delivery() {
     }
 
-    public Delivery(int id, String titulo, Romaneio romaneio, Addressee addressee, StatusDelivery statusDelivery, float weight, Bitmap image, boolean situation) {
+    public Delivery(int id, String titulo, Addressee addressee, StatusDelivery statusDelivery, float weight, Bitmap image, boolean situation) {
         this.id = id;
         this.titulo = titulo;
-        this.romaneio = romaneio;
+//        this.romaneio = romaneio;
         this.addressee = addressee;
         this.statusDelivery = statusDelivery;
         this.weight = weight;
@@ -39,7 +39,7 @@ public class Delivery implements Parcelable {
     protected Delivery(Parcel in) {
         id = in.readInt();
         titulo = in.readString();
-        romaneio = in.readParcelable(Romaneio.class.getClassLoader());
+//        romaneio = in.readParcelable(Romaneio.class.getClassLoader());
         addressee = in.readParcelable(Addressee.class.getClassLoader());
         statusDelivery = in.readParcelable(StatusDelivery.class.getClassLoader());
         weight = in.readFloat();
@@ -50,7 +50,7 @@ public class Delivery implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(titulo);
-        dest.writeParcelable(romaneio, flags);
+//        dest.writeParcelable(romaneio, flags);
         dest.writeParcelable(addressee, flags);
         dest.writeParcelable(statusDelivery, flags);
         dest.writeFloat(weight);
@@ -89,14 +89,14 @@ public class Delivery implements Parcelable {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
-    public Romaneio getRomaneio() {
-        return romaneio;
-    }
-
-    public void setRomaneio(Romaneio romaneio) {
-        this.romaneio = romaneio;
-    }
+//
+//    public Romaneio getRomaneio() {
+//        return romaneio;
+//    }
+//
+//    public void setRomaneio(Romaneio romaneio) {
+//        this.romaneio = romaneio;
+//    }
 
     public Addressee getAddressee() {
         return addressee;

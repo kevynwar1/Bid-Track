@@ -16,7 +16,7 @@ public class Romaneio implements Parcelable {
     //    private Driver driver;
     private List<Delivery> deliveryList;
     //    private StatusRomaneio statusRomaneio;
-    //    private Company company;
+    //    private Enterprise company;
     //    private Vehicle vehicle;
     //    private Calendar date_create;
     //    private Calendar date_finalization;

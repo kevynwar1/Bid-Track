@@ -14,17 +14,24 @@ public class InitBasic {
     }
 
     public void addListDelivery(String titulo) {
+        Addressee addressee = new Addressee(1, new ArrayList<Delivery>(), new Enterprise("Empresa joselico")
+                , "Frete Joselico LRRTDSA", "Frete Joselico", 't', "000000000", "email@email", "1111-2222", "Joselito", "54896-585", "BA"
+                , "Augusta de Amorin", "Maranguape", "Rua Atras da Escola 101", "1001", "001Ml", 1, 2, false);
         mListDeliveries.add(new Delivery(
                 1, titulo
-                , new Romaneio(0, new ArrayList<Delivery>(), 's', false)
-                , new Addressee(0)
+//                , null
+                , addressee
                 , new StatusDelivery(0, new ArrayList<Delivery>(), new Occurrence(0, new ArrayList<StatusDelivery>(), new TypeOccurrence(0, "", 's'), "", 's'), null)
                 , 0f, null, false));
     }
 
     public void addListRomaneios(String titulo) {
-        addListDelivery(titulo);
-        mListRomaneios.add(new Romaneio(5246, mListDeliveries, 's', false));
+        try {
+            addListDelivery(titulo);
+            mListRomaneios.add(new Romaneio(5246, mListDeliveries, 's', false));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Delivery> getListDelivery() {

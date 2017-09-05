@@ -85,7 +85,7 @@ public class DeliveryFragment extends Fragment {
     }
 
     private void initList() {
-        new AsyncTask<Void, Void, List<Delivery>>() {
+        new AsyncTask<Void, Void, Romaneio>() {
             @Override
             protected void onPreExecute() {
                 try {
@@ -96,14 +96,14 @@ public class DeliveryFragment extends Fragment {
             }
 
             @Override
-            protected List<Delivery> doInBackground(Void... voids) {
-                return mRomaneio.getDeliveryList();
+            protected Romaneio doInBackground(Void... voids) {
+                return mRomaneio;
             }
 
             @Override
-            protected void onPostExecute(List<Delivery> list) {
+            protected void onPostExecute(Romaneio romaneio) {
                 try {
-                    initRecyclerView(list);
+                    initRecyclerView(romaneio);
                     finishProgressBar();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -112,13 +112,13 @@ public class DeliveryFragment extends Fragment {
         }.execute();
     }
 
-    private void initRecyclerView(List<Delivery> list) throws Exception {
+    private void initRecyclerView(Romaneio romaneio) throws Exception {
         RecyclerView r = mView.findViewById(R.id.recyclerview);
         if (getActivity() != null)
             r.setLayoutManager(new LinearLayoutManager(getActivity()));
         else
             throw new NullPointerException("Context nulo");
-        r.setAdapter(new AdapterRecyclerDelivery(list, getActivity()));
+        r.setAdapter(new AdapterRecyclerDelivery(romaneio, getActivity()));
     }
 
     private void initProgressBar() throws ClassCastException, NullPointerException {
