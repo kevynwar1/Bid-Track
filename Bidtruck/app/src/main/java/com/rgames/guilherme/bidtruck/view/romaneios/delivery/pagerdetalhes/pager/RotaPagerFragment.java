@@ -1,4 +1,4 @@
-package com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.pager;
+package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

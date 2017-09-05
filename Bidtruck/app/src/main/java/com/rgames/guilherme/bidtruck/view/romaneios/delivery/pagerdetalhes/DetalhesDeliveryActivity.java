@@ -1,4 +1,4 @@
-package com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.pager;
+package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,9 +9,8 @@ import android.view.MenuItem;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Delivery;
-import com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.adapter.AdapterViewPager;
 
-public class DetalhesEstudoActivity extends AppCompatActivity {
+public class DetalhesDeliveryActivity extends AppCompatActivity {
 
 
     private ViewPager mViewPager;
@@ -66,5 +65,6 @@ public class DetalhesEstudoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.app_title_estudo_detalhes));
     }
 }

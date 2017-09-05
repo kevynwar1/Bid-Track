@@ -9,6 +9,7 @@
     <string name="action_settings">Configurações</string>
     <string name="menu_drw_home">Início</string>
     <string name="menu_drw_entrega">Entregas</string>
+    <string name="menu_drw_romaneio">Romaneios</string>
     <string name="menu_drw_sync">Sincronização</string>
     <string name="menu_drw_ocorr">Ocorrências</string>
     <string name="menu_drw_msg">Mensagens</string>
@@ -16,7 +17,7 @@
     <!--Titles / SubTitles-->
     <string name="app_title_main">Main Fragment</string>
     <string name="app_title_home">Home Fragment</string>
-    <string name="app_title_estudo_detalhes">Detalhes</string>
+    <string name="app_title_estudo_detalhes">Detalhes da Entrega</string>
     <string name="app_subtitle_entregas">Entregas</string>
     <!--Toast-->
     <!--Dialog-->
@@ -33,6 +34,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_detalhes_estudo">DetalhesEstudoActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_delivery">DeliveryActivity</string>
 
 
 </resources>

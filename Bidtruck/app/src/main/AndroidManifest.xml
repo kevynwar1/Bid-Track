@@ -25,19 +25,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.delivery.pagerdetalhes.pager.DetalhesEstudoActivity"
+            android:name=".view.romaneios.delivery.pagerdetalhes.DetalhesDeliveryActivity"
             android:label="@string/title_activity_detalhes_estudo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/FullScreen">
-
-        </activity>
+            android:theme="@style/FullScreen"></activity>
+        <activity
+            android:name=".view.romaneios.delivery.DeliveryActivity"
+            android:label="@string/title_activity_delivery"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

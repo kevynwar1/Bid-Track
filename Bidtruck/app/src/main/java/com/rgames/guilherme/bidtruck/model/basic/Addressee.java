@@ -9,6 +9,9 @@ import android.os.Parcelable;
 public class Addressee implements Parcelable {
 
     private int id;
+    private Delivery delivery;
+    private Company company;
+
 
     public Addressee(){}
     public Addressee(int id) {

@@ -7,12 +7,14 @@ import android.util.Log;
 
 /**
  * Classe da entrega.
- * */
+ */
 public class Delivery implements Parcelable {
 
+    public static final String PARCEL = "parcel_delivery";
     private int id;
+    //    private int sequence_delivery;
+//    private int NSF;
     private String titulo;
-    public static final String PARCEL = "parcel";
     private Romaneio romaneio;
     private Addressee addressee;
     private StatusDelivery statusDelivery;

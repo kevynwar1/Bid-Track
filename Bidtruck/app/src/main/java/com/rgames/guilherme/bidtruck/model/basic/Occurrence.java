@@ -13,6 +13,7 @@ public class Occurrence implements Parcelable {
     private String description;
     private char situation;
 
+
     public Occurrence(int id, List<StatusDelivery> statusDeliveryList, TypeOccurrence typeOccurrence, String description, char situation) {
         this.id = id;
         this.statusDeliveryList = statusDeliveryList;
@@ -52,7 +53,7 @@ public class Occurrence implements Parcelable {
         parcel.writeList(statusDeliveryList);
         parcel.writeParcelable(typeOccurrence, i);
         parcel.writeString(description);
-        parcel.writeCharArray(new char[]{situation});
+//        parcel.writeCharArray(new char[]{situation});
     }
 
     public int getId() {

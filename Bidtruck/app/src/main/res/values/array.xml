@@ -7,7 +7,7 @@
     </string-array>
 
     <string-array name="app_tablayout_entrega_detalhes">
-        <item>Destino</item>
+        <item>Detalhes</item>
         <item>Rota</item>
     </string-array>
 </resources>

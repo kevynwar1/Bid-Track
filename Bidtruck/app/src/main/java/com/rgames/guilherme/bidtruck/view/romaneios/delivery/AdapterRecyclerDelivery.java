@@ -1,4 +1,4 @@
-package com.rgames.guilherme.bidtruck.view.delivery.pagerestudo.adapter;
+package com.rgames.guilherme.bidtruck.view.romaneios.delivery;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,17 +12,17 @@ import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Delivery;
-import com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.pager.DetalhesEstudoActivity;
+import com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.DetalhesDeliveryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterRecyclerEntregas extends RecyclerView.Adapter<AdapterRecyclerEntregas.MyViewHolder> {
+public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecyclerDelivery.MyViewHolder> {
 
     private List<Delivery> mList;
     private Context mContext;
 
-    public AdapterRecyclerEntregas(List<Delivery> list, Context context) {
+    public AdapterRecyclerDelivery(List<Delivery> list, Context context) {
         mList = (list != null) ? list : new ArrayList<Delivery>();
         if (context != null) mContext = context;
         else throw new NullPointerException("Contexto nulo");
@@ -41,7 +41,7 @@ public class AdapterRecyclerEntregas extends RecyclerView.Adapter<AdapterRecycle
                 @Override
                 public void onClick(View view) {
                     try {
-                        Intent intent = new Intent(mContext, DetalhesEstudoActivity.class);
+                        Intent intent = new Intent(mContext, DetalhesDeliveryActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable(Delivery.PARCEL, mList.get(holder.getAdapterPosition()));
                         mContext.startActivity(intent.putExtras(bundle));

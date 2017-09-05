@@ -1,17 +1,26 @@
 package com.rgames.guilherme.bidtruck.model.basic;
 
+import android.icu.util.Calendar;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Romaneio implements Parcelable {
 
+    public static final String PARCEL = "parcel_romaneiro";
     private int id;
-    //transportadora
-    //motorista
+    //    private ShippingCompany shippingCompany;
+    //    private Driver driver;
     private List<Delivery> deliveryList;
+    //    private StatusRomaneio statusRomaneio;
+    //    private Company company;
+    //    private Vehicle vehicle;
+    //    private Calendar date_create;
+    //    private Calendar date_finalization;
+    //    private boolean offer_travel;
     private char finalized;
     private boolean situation;
 
@@ -21,13 +30,14 @@ public class Romaneio implements Parcelable {
     public Romaneio(int id, List<Delivery> deliveryList, char finalized, boolean situation) {
         this.id = id;
         this.deliveryList = deliveryList;
-        this.finalized = finalized;
         this.situation = situation;
+        this.finalized = finalized;
     }
 
     protected Romaneio(Parcel in) {
         id = in.readInt();
-        in.readList(getDeliveryList(), null);
+        setDeliveryList(new ArrayList<Delivery>());
+        in.readList(getDeliveryList(), Delivery.class.getClassLoader());
         //finalized
         situation = in.readByte() > 0;
     }

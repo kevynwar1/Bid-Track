@@ -1,11 +1,12 @@
-package com.rgames.guilherme.bidtruck.view.delivery.pagerestudo.pager;
+package com.rgames.guilherme.bidtruck.view.romaneios.delivery;
+
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,45 +17,56 @@ import com.rgames.guilherme.bidtruck.model.basic.Addressee;
 import com.rgames.guilherme.bidtruck.model.basic.Delivery;
 import com.rgames.guilherme.bidtruck.model.basic.InitBasic;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
-import com.rgames.guilherme.bidtruck.model.basic.Occurrence;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.model.basic.StatusDelivery;
-import com.rgames.guilherme.bidtruck.model.basic.TypeOccurrence;
-import com.rgames.guilherme.bidtruck.view.delivery.pagerestudo.adapter.AdapterRecyclerEntregas;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PagerEntregaFragment extends Fragment {
+public class DeliveryFragment extends Fragment {
+
     private View mView;
     private MyProgressBar myProgressBar;
-    private List<Delivery> mListDeliveries;
-    private InitBasic mInitBasic;
+    private Romaneio mRomaneio;
 
-    public PagerEntregaFragment() {
-
+    public DeliveryFragment() {
     }
 
-    public static PagerEntregaFragment newInstance() {
-        return new PagerEntregaFragment();
+    public static DeliveryFragment newInstance(Romaneio romaneio) {
+        DeliveryFragment fragment = new DeliveryFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Romaneio.PARCEL, romaneio);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            if (getArguments() != null)
+                mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
+            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
+                        getActivity().getResources().getString(R.string.menu_drw_entrega));
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        initList();
-        initDeliveries();
+        try {
+            initList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return mView = inflater.inflate(R.layout.fragment_pager_entrega, container, false);
+        return mView = inflater.inflate(R.layout.fragment_delivery, container, false);
     }
 
     @Override
@@ -67,27 +79,31 @@ public class PagerEntregaFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
     private void initList() {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, List<Delivery>>() {
             @Override
             protected void onPreExecute() {
                 try {
                     initProgressBar();
                 } catch (Exception e) {
-                    //sem tratamento, so na maciota por enquanto.
                     e.printStackTrace();
                 }
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
-                return null;
+            protected List<Delivery> doInBackground(Void... voids) {
+                return mRomaneio.getDeliveryList();
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
+            protected void onPostExecute(List<Delivery> list) {
                 try {
-                    initRecyclerView();
+                    initRecyclerView(list);
                     finishProgressBar();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -96,20 +112,13 @@ public class PagerEntregaFragment extends Fragment {
         }.execute();
     }
 
-    private void initRecyclerView() throws Exception {
+    private void initRecyclerView(List<Delivery> list) throws Exception {
         RecyclerView r = mView.findViewById(R.id.recyclerview);
         if (getActivity() != null)
             r.setLayoutManager(new LinearLayoutManager(getActivity()));
         else
             throw new NullPointerException("Context nulo");
-        r.setAdapter(new AdapterRecyclerEntregas(mListDeliveries, getActivity()));
-    }
-
-    private void initDeliveries() {
-        mInitBasic = new InitBasic();
-        mInitBasic.addListDelivery("Nova entrega");
-        mInitBasic.addListDelivery("Entrega 2");
-        mListDeliveries = mInitBasic.getListDelivery();
+        r.setAdapter(new AdapterRecyclerDelivery(list, getActivity()));
     }
 
     private void initProgressBar() throws ClassCastException, NullPointerException {
@@ -123,3 +132,4 @@ public class PagerEntregaFragment extends Fragment {
         }
     }
 }
+

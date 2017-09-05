@@ -1,4 +1,4 @@
-package com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.adapter;
+package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Delivery;
-import com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.pager.DestinoPagerkFragment;
-import com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.pager.RotaPagerFragment;
+import com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager.DetalhesPagerFragment;
+import com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager.RotaPagerFragment;
 
 public class AdapterViewPager extends FragmentStatePagerAdapter {
     private String[] mTitles;
@@ -25,11 +25,11 @@ public class AdapterViewPager extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return DestinoPagerkFragment.newInstance(mDelivery);
+                return DetalhesPagerFragment.newInstance(mDelivery);
             case 1:
                 return RotaPagerFragment.newInstance(mDelivery);
             default:
-                return DestinoPagerkFragment.newInstance(mDelivery);
+                return DetalhesPagerFragment.newInstance(mDelivery);
         }
     }
 

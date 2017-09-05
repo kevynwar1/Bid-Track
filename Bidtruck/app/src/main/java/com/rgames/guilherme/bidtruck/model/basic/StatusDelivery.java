@@ -5,13 +5,14 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StatusDelivery implements Parcelable {
 
     private int id;
-    private List<Delivery> deliveryList;
     private Occurrence occurrence;
+    private List<Delivery> deliveryList;
     private Calendar date;
 
     public StatusDelivery() {
@@ -20,17 +21,19 @@ public class StatusDelivery implements Parcelable {
     public StatusDelivery(int id, List<Delivery> deliveryList, Occurrence occurrence, Calendar date) {
         this.id = id;
         this.occurrence = occurrence;
-        this.date = date;
         this.deliveryList = deliveryList;
+        this.date = date;
     }
 
     protected StatusDelivery(Parcel in) {
         id = in.readInt();
         occurrence = in.readParcelable(Occurrence.class.getClassLoader());
+        //ta bugando, reolver dps error: Unmarshalling unknown type code 115 at offset 820
+//        setDeliveryList(new ArrayList<Delivery>());
+//        in.readList(getDeliveryList(), Delivery.class.getClassLoader());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             date = (Calendar) in.readSerializable();
         }
-        in.readList(getDeliveryList(), null);
     }
 
     public static final Creator<StatusDelivery> CREATOR = new Creator<StatusDelivery>() {
@@ -54,12 +57,12 @@ public class StatusDelivery implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeParcelable(occurrence, i);
-        //Requer a api na versao 24
-        //usar o getMilles tbm requer a 24.
+//        parcel.writeList(deliveryList);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //Requer a api na versao 24
+            //usar o getMilles tbm requer a 24
             parcel.writeSerializable(date);
         }
-        parcel.writeList(deliveryList);
     }
 
     public int getId() {

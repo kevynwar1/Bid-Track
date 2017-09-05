@@ -10,7 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.rgames.guilherme.bidtruck.view.delivery.EntregaFragment;
+import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
+import com.rgames.guilherme.bidtruck.view.romaneios.delivery.DeliveryFragment;
 import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
 import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         if (savedInstanceState == null)
-            getSupportFragmentManager().beginTransaction().add(R.id.content_main, EntregaFragment.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.content_main, RomaneioFragment.newInstance()).commit();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         onCloseDrawer();
         switch (item.getItemId()) {
             case R.id.nav_entrega:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, EntregaFragment.newInstance()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, RomaneioFragment.newInstance()).commit();
                 return true;
             case R.id.nav_sync:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.rgames.guilherme.bidtruck.view.delivery.pagerdetalhes.pager.DetalhesEstudoActivity"
+    tools:context=".view.romaneios.delivery.pagerdetalhes.DetalhesDeliveryActivity"
     tools:showIn="@layout/activity_detalhes_estudo">
 
     <include layout="@layout/tablayout" />
