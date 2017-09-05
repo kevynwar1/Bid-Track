@@ -2,28 +2,39 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Romaneio_basic extends CI_Model {
-	public $cod_romaneio;
+	public $codigo;
+	public $status_romaneio;
+	public $estabelecimento;
 	public $veiculo;
 	public $transportadora;
 	public $motorista;
-	public $finalizado;
-	public $oferta_viagem;
-	public $integrado;
-	public $situacao;
+	public $data_criacao;
+	public $data_finalizacao;
+	public $ofertar_viagem;
 
 	function __construct() {
 		parent::__construct();
+		$this->load->model('basic/StatusRomaneio_basic');
+		$this->load->model('basic/Estabelecimento_basic');
 		$this->load->model('basic/Veiculo_basic');
 		$this->load->model('basic/Transportadora_basic');
 		$this->load->model('basic/Motorista_basic');
 
+		$this->status_romaneio = new StatusRomaneio_basic();
+		$this->estabelecimento = new Estabelecimento_basic();
 		$this->veiculo = new Veiculo_basic();
 		$this->transportadora = new Transportadora_basic();
 		$this->motorista = new Motorista_basic();
 	}
 
-	public function getCodRomaneio() { return $this->cod_romaneio; }
-	public function setCodRomaneio($cod_romaneio) { $this->cod_romaneio = $cod_romaneio; }
+	public function getCodigo() { return $this->codigo; }
+	public function setCodigo($codigo) { $this->codigo = $codigo; }
+
+	public function getStatusRomaneio() { return $this->status_romaneio; }
+	public function setStatusRomaneio($status_romaneio) { $this->status_romaneio = $status_romaneio; }
+
+	public function getEstabelecimento() { return $this->estabelecimento; }
+	public function setEstabelecimento($estabelecimento) { $this->estabelecimento = $estabelecimento; }
 
 	public function getVeiculo() { return $this->veiculo; }
 	public function setVeiculo($veiculo) { $this->veiculo = $veiculo; }
@@ -34,16 +45,13 @@ class Romaneio_basic extends CI_Model {
 	public function getMotorista() { return $this->motorista; }
 	public function setMotorista($motorista) { $this->motorista = $motorista; }
 
-	public function getFinalizado() { return $this->finalizado; }
-	public function setFinalizado($finalizado) { $this->finalizado = $finalizado; }
+	public function getDataCriacao() { return $this->data_criacao; }
+	public function setDataCriacao($data_criacao) { $this->data_criacao = $data_criacao; }
 
-	public function getOfertarViagem() { return $this->oferta_viagem; }
-	public function setOfertarViagem($oferta_viagem) { $this->oferta_viagem = $oferta_viagem; }
+	public function getDataFinalizacao() { return $this->data_finalizacao; }
+	public function setDataFinalizacao($data_finalizacao) { $this->data_finalizacao = $data_finalizacao; }
 
-	public function getIntegrado() { return $this->integrado; }
-	public function setIntegrado($integrado) { $this->integrado = $integrado; }
-
-	public function getSituacao() { return $this->situacao; }
-	public function setSituacao($situacao) { $this->situacao = $situacao; }
+	public function getOfertarViagem() { return $this->ofertar_viagem; }
+	public function setOfertarViagem($ofertar_viagem) { $this->ofertar_viagem = $ofertar_viagem; }
 }
 ?>

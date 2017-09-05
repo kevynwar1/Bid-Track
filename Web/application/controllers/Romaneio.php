@@ -2,9 +2,37 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Romaneio extends CI_Controller {
+	function __construct() {
+		parent::__construct();
+		$this->load->model('basic/Romaneio_basic');
+		$this->load->model('model/Romaneio_model');
+		date_default_timezone_set('America/Sao_Paulo');
+	}
+
 	public function index() {
 		$data['middle'] = 'romaneio';
 		$this->load->view('pattern/layout', $data);
+	}
+
+	public function cadastrar() {
+		$romaneio = new Romaneio_basic();
+		$romaneio->setCodigo(strip_tags(trim($this->input->post('codigo'))));
+		$romaneio->getStatusRomaneio()->setCodigo(strip_tags(trim($this->input->post('statusromaneio'))));
+		$romaneio->getEstabelecimento()->setCodigo(strip_tags(trim($this->input->post('estabelecimento'))));
+		$romaneio->getVeiculo()->setCodigo(strip_tags(trim($this->input->post('veiculo'))));
+		$romaneio->getTransportadora()->setCodigo(strip_tags(trim($this->input->post('transportadora'))));
+		$romaneio->getMotorista()->setCodigo(strip_tags(trim($this->input->post('motorista'))));
+		$romaneio->setDataCriacao(strip_tags(trim($this->input->post('data_criacao'))));
+		$romaneio->setDataFinalizacao(strip_tags(trim($this->input->post('data_finalizacao'))));
+		$romaneio->setOfertarViagem(strip_tags(trim($this->input->post('ofertar_viagem'))));
+
+		$result = $this->Romaneio_model->cadastrar($romaneio);
+		if($result) {
+			$this->session->set_flashdata('success', 'Romaneio cadastrado com Sucesso.');
+			// Redirecionar
+		} else {
+			$this->session->set_flashdata('error', 'Ocorreu um erro, ao cadastrar o Romaneio.');
+		}
 	}
 
 	public function integracao() {

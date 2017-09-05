@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Veiculo_basic extends CI_Model {
-	public $cod_veiculo;
+	public $codigo;
 	public $empresa;
 	public $motorista;
 	public $tipo_veiculo;
@@ -24,8 +24,8 @@ class Veiculo_basic extends CI_Model {
 		$this->tipo_veiculo = new TipoVeiculo_basic();
 	}
 
-	public function getCodVeiculo() { return $this->cod_veiculo; }
-	public function setCodVeiculo($cod_veiculo) { $this->cod_veiculo = $cod_veiculo; }
+	public function getCodigo() { return $this->codigo; }
+	public function setCodigo($codigo) { $this->codigo = $codigo; }
 
 	public function getEmpresa() { return $this->empresa; }
 	public function setEmpresa($empresa) { $this->empresa = $empresa; }

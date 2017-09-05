@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Destinatario_basic extends CI_Model {
-	public $cod_destinatario;
+	public $codigo;
 	public $empresa;
 	public $razao_social;
 	public $nome_fantasia;
@@ -28,8 +28,8 @@ class Destinatario_basic extends CI_Model {
 		$this->empresa = new Empresa_basic();
 	}
 
-	public function getCodDestinatario() { return $this->cod_destinatario; }
-	public function setCodDestinatario($cod_destinatario) { $this->cod_destinatario = $cod_destinatario; }
+	public function getCodigo() { return $this->codigo; }
+	public function setCodigo($codigo) { $this->codigo = $codigo; }
 
 	public function getEmpresa() { return $this->empresa; }
 	public function setEmpresa($empresa) { $this->empresa = $empresa; }
