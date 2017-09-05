@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Addressee;
 import com.rgames.guilherme.bidtruck.model.basic.Delivery;
+import com.rgames.guilherme.bidtruck.model.basic.InitBasic;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Occurrence;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
@@ -28,6 +29,7 @@ public class PagerEntregaFragment extends Fragment {
     private View mView;
     private MyProgressBar myProgressBar;
     private List<Delivery> mListDeliveries;
+    private InitBasic mInitBasic;
 
     public PagerEntregaFragment() {
 
@@ -46,15 +48,7 @@ public class PagerEntregaFragment extends Fragment {
     public void onResume() {
         super.onResume();
         initList();
-        Log.i("teste", "iniciando rec");
-        mListDeliveries = new ArrayList<>();
-        Delivery delivery = new Delivery(
-                0, "Entrega 1"
-                , new Romaneio(0, 's', false)
-                , new Addressee(0)
-                , new StatusDelivery(0, new Occurrence(0, new TypeOccurrence(0, "", 's'), "", 's'), null)
-                , 0f, null, false);
-        mListDeliveries.add(delivery);
+        initDeliveries();
     }
 
     @Override
@@ -109,6 +103,13 @@ public class PagerEntregaFragment extends Fragment {
         else
             throw new NullPointerException("Context nulo");
         r.setAdapter(new AdapterRecyclerEntregas(mListDeliveries, getActivity()));
+    }
+
+    private void initDeliveries() {
+        mInitBasic = new InitBasic();
+        mInitBasic.addListDelivery("Nova entrega");
+        mInitBasic.addListDelivery("Entrega 2");
+        mListDeliveries = mInitBasic.getListDelivery();
     }
 
     private void initProgressBar() throws ClassCastException, NullPointerException {

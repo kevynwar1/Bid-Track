@@ -5,18 +5,23 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class StatusDelivery implements Parcelable {
 
     private int id;
+    private List<Delivery> deliveryList;
     private Occurrence occurrence;
     private Calendar date;
 
-    public StatusDelivery(){}
+    public StatusDelivery() {
+    }
 
-    public StatusDelivery(int id, Occurrence occurrence, Calendar date) {
+    public StatusDelivery(int id, List<Delivery> deliveryList, Occurrence occurrence, Calendar date) {
         this.id = id;
         this.occurrence = occurrence;
         this.date = date;
+        this.deliveryList = deliveryList;
     }
 
     protected StatusDelivery(Parcel in) {
@@ -25,6 +30,7 @@ public class StatusDelivery implements Parcelable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             date = (Calendar) in.readSerializable();
         }
+        in.readList(getDeliveryList(), null);
     }
 
     public static final Creator<StatusDelivery> CREATOR = new Creator<StatusDelivery>() {
@@ -53,6 +59,7 @@ public class StatusDelivery implements Parcelable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             parcel.writeSerializable(date);
         }
+        parcel.writeList(deliveryList);
     }
 
     public int getId() {
@@ -77,5 +84,13 @@ public class StatusDelivery implements Parcelable {
 
     public void setDate(Calendar date) {
         this.date = date;
+    }
+
+    public List<Delivery> getDeliveryList() {
+        return deliveryList;
+    }
+
+    public void setDeliveryList(List<Delivery> deliveryList) {
+        this.deliveryList = deliveryList;
     }
 }
