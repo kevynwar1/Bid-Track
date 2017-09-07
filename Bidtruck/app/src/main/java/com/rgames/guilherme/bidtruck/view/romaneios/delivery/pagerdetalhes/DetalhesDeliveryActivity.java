@@ -32,16 +32,12 @@ public class DetalhesDeliveryActivity extends AppCompatActivity {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                 int index = getIntent().getExtras().getInt(Delivery.PARCEL);
                 mEntrega = mRomaneio.getDeliveryList().get(index);
+                init();
+                initViewPager();
             } else {
                 onBackPressed();
                 throw new NullPointerException("Delivery nula.");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            init();
-            initViewPager();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -35,6 +35,7 @@
     <string name="title_activity_detalhes_estudo">DetalhesEstudoActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_delivery">DeliveryActivity</string>
+    <string name="title_activity_occurrence">OccurrenceActivity</string>
 
 
 </resources>

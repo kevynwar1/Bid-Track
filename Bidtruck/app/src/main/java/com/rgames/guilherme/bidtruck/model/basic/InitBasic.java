@@ -7,10 +7,12 @@ public class InitBasic {
 
     private List<Delivery> mListDeliveries;
     private List<Romaneio> mListRomaneios;
+    private List<Occurrence> mListOccurrence;
 
     public InitBasic() {
         mListDeliveries = new ArrayList<>();
         mListRomaneios = new ArrayList<>();
+        mListOccurrence = new ArrayList<>();
     }
 
     public void addListDelivery(String titulo) {
@@ -40,5 +42,13 @@ public class InitBasic {
 
     public List<Romaneio> getListRomaneios() {
         return mListRomaneios;
+    }
+
+    public List<Occurrence> getListOccurrence() {
+        mListOccurrence.add(new Occurrence(0, new ArrayList<StatusDelivery>(), new TypeOccurrence(0, "10kg Maconha", 's'), "", 'a'));
+        mListOccurrence.add(new Occurrence(1, new ArrayList<StatusDelivery>(), new TypeOccurrence(0, "Caminhão quebrado", 's'), "", 'a'));
+        mListOccurrence.add(new Occurrence(2, new ArrayList<StatusDelivery>(), new TypeOccurrence(0, "Pneu furado", 's'), "", 'a'));
+        mListOccurrence.add(new Occurrence(3, new ArrayList<StatusDelivery>(), new TypeOccurrence(0, "Lei seca", 's'), "", 'a'));
+        return mListOccurrence;
     }
 }

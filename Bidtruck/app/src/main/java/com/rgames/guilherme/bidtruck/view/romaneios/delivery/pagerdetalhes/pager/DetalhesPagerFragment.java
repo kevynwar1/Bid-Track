@@ -1,6 +1,7 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Delivery;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager.occurrence.OccurrenceActivity;
 
 public class DetalhesPagerFragment extends Fragment {
 
@@ -146,30 +148,35 @@ public class DetalhesPagerFragment extends Fragment {
         mView.findViewById(R.id.btn_occurrence).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-                builderSingle.setTitle("Selecione uma ocorrência.");
+//                AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+//                builderSingle.setTitle("Selecione uma ocorrência.");
+//
+//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice);
+//                arrayAdapter.add("Almoço");
+//                arrayAdapter.add("Caminhão quebrado");
+//                arrayAdapter.add("10kg de maconha");
+//                arrayAdapter.add("Iput4 stop");
+//
+//                builderSingle.setNegativeButton(getString(R.string.app_dlg_cancel), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int pos) {
+//                        ((TextView) mView.findViewById(R.id.txtOcorrencia)).setText(arrayAdapter.getItem(pos));
+//                        dialog.dismiss();
+//                    }
+//                });
+//                builderSingle.show();
 
-                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice);
-                arrayAdapter.add("Almoço");
-                arrayAdapter.add("Caminhão quebrado");
-                arrayAdapter.add("10kg de maconha");
-                arrayAdapter.add("Iput4 stop");
-
-                builderSingle.setNegativeButton(getString(R.string.app_dlg_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int pos) {
-                        ((TextView) mView.findViewById(R.id.txtOcorrencia)).setText(arrayAdapter.getItem(pos));
-                        dialog.dismiss();
-                    }
-                });
-                builderSingle.show();
+                Intent intent = new Intent(getActivity(), OccurrenceActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Delivery.PARCEL, mDelivery);
+                startActivity(intent.putExtras(bundle));
             }
         });
     }
