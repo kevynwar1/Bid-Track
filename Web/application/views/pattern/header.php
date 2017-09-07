@@ -1,12 +1,16 @@
 <?php
+	/*error_reporting(0);
+	ini_set("display_errors", 0);*/
+
 	$page = $this->uri->segment(1);
 	$page_parameter = $this->uri->segment(2);
 ?>
 <!doctype html>
-<html lang="pt-br">
+<html ng-app lang="pt-br">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<script src="<?= base_url(); ?>assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
 
 	<title><?= SYSTEM_NAME; ?></title>
 
@@ -17,9 +21,16 @@
 	<link href="<?= base_url(); ?>assets/css/material-dashboard-dash.css" rel="stylesheet"/>
 	<link href="<?= base_url(); ?>assets/css/demo.css" rel="stylesheet" />
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons|Work+Sans' rel='stylesheet' type='text/css'>
 
 	<style type="text/css">
+		select {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			width: 100%;
+		}
+
 		.btn-pattern {
 			font-size: 12px;
 			text-transform: uppercase;
@@ -29,9 +40,11 @@
 		}
 		.btn-pattern:hover { color: #555; }
 
+		.option { padding: 3px; }
 		.lm15 { margin-top: -15px; }
 		.desc { color: rgb(154, 154, 154); text-transform: uppercase; }
 		.th-desc { cursor: pointer; transition: 0.3s; }
+		.f10 { font-size: 10px; }
 		.f12 { font-size: 12px; }
 		.upper { text-transform: uppercase; }
 		.collapse-menu {
@@ -68,6 +81,9 @@
 						<ul>
 							<li>
 								<a href="<?= base_url().'romaneio' ?>" class="collapse-menu">Listagem</a>
+							</li>
+							<li>
+								<a href="<?= base_url().'romaneio/add' ?>" class="collapse-menu">Cadastrar</a>
 							</li>
 							<li>
 								<a href="<?= base_url().'romaneio/integracao' ?>" class="collapse-menu">Integração</a>
@@ -134,7 +150,10 @@
 	 						</a>
 						</li>
 					</ul>
-					<?php if($page == 'romaneio'): ?>
+					<?php
+						if($page == 'romaneio'):
+							if($page_parameter != 'add' && $page_parameter != 'integracao'):
+					?>
 					<form class="navbar-form navbar-right" role="search">
 						<select id="opcao" style="display: none" class="form-control">
 							<option value="romaneio">Romaneio</option>
@@ -151,7 +170,10 @@
 							<i class="material-icons">search</i><div class="ripple-container"></div>
 						</button>
 					</form>
-					<?php endif; ?>
+					<?php
+							endif;
+						endif;
+					?>
 				</div>
 			</div>
 		</nav>

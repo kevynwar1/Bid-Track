@@ -9,6 +9,23 @@ class Entrega_model extends CI_Model {
 		$this->load->model('basic/Entrega_basic');
 	}
 
+	public function cadastrar($entrega) {
+		$data = array(
+			'cod_romaneio' 		 => $entrega->getRomaneio()->getCodigo(),
+			'cod_destinatario' 	 => $entrega->getDestinatario()->getCodigo(),
+			'cod_status_entrega' => $entrega->getStatusEntrega()->getCodigo(),
+			'peso_carga' 		 => $entrega->getPesoCarga(),
+			'nota_fiscal' 		 => $entrega->getNotaFiscal()
+		);
+
+		$this->db->insert($this->table, $data);
+		if(!$this->db->affected_rows()) {
+			return false;
+		}
+		return true;
+	}
+
+
 	public function listar() {
 		$this->db->select('*')->from($this->table);
 		$query = $this->db->get();

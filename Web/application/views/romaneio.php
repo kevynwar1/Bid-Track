@@ -1,3 +1,13 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	<?php if(!is_null($this->session->flashdata('success'))) { ?>
+		demo.showNotification('bottom', 'right', '<?= $this->session->flashdata('success') ?>');
+	<?php } else if(!is_null($this->session->flashdata('error'))) { ?>
+		demo.showNotification('bottom', 'right', '<?= $this->session->flashdata('error') ?>');
+	<?php } ?>
+});
+</script>
+
 <div class="content">
 	<div class="container-fluid">
 		<div class="row">
@@ -30,7 +40,8 @@
 								<th></th>
 							</thead>
 							<tbody>
-								<tr>
+								<?= v($romaneio); ?>
+								<!-- tr>
 									<td>Dakota Rice</td>
 									<td>
 										<a href="<?= base_url().'romaneio/mapa?endereco=Rua Serinhaém, 90' ?>">
@@ -104,7 +115,7 @@
 											<i class="fa fa-times"></i>
 										</button>
 									</td>
-								</tr>
+								</tr -->
 							</tbody>
 							<tfoot>
 								<tr>
@@ -113,8 +124,8 @@
 									</td>
 									<td colspan="3" align="center"></td>
 									<td colspan="2" align="right">
-										<a href="<?= base_url().'romaneio/integracao' ?>">
-											<button type="submit" class="btn btn-danger btn-fill pull-right f12 upper">Adicionar</button>
+										<a href="<?= base_url().'romaneio/add' ?>">
+											<button type="submit" class="btn btn-danger btn-simple btn-fill pull-right f12 upper">Adicionar</button>
 										</a>
 									</td>
 								</tr>
