@@ -11,7 +11,7 @@ class Romaneio_model extends CI_Model {
 
 	public function cadastrar($romaneio) {
 		$data = array(
-			'codigo' => $romaneio->getCodigo(),
+			'codigo' 				=> $romaneio->getCodigo(),
 			'cod_status_romaneio' 	=> $romaneio->getStatusRomaneio()->getCodigo(),
 			'cod_estabelecimento' 	=> $romaneio->getEstabelecimento()->getCodigo(),
 			'cod_veiculo' 	 		=> $romaneio->getVeiculo()->getCodigo(),
@@ -31,6 +31,7 @@ class Romaneio_model extends CI_Model {
 
 	public function listar() {
 		$this->db->select('*')->from($this->table);
+		$this->db->join('estabelecimento', 'estabelecimento.codigo = '.$this->table.'.cod_estabelecimento');
 		$this->db->join('motorista', 'motorista.codigo = '.$this->table.'.cod_motorista');
 		$this->db->join('transportadora', 'transportadora.codigo = '.$this->table.'.cod_transportadora');
 		$this->db->join('veiculo', 'veiculo.codigo = '.$this->table.'.cod_veiculo');
@@ -42,7 +43,11 @@ class Romaneio_model extends CI_Model {
 			foreach($result as $row) {
 				$romaneio = new Romaneio_basic();
 
-				$romaneio->setCodigo($row->cod_romaneio);
+				$romaneio->setCodigo($row->codigo);
+				$romaneio->getEstabelecimento()->setCodigo($row->cod_estabelecimento);
+				$romaneio->getEstabelecimento()->setLogradouro($row->logradouro);
+				$romaneio->getEstabelecimento()->setNumero($row->numero);
+				$romaneio->getEstabelecimento()->setBairro($row->bairro);
 				$romaneio->getVeiculo()->setCodigo($row->cod_veiculo);
 				$romaneio->getVeiculo()->setPlaca($row->placa);
 				$romaneio->getTransportadora()->setCodigo($row->cod_transportadora);

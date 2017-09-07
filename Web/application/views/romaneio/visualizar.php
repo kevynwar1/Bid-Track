@@ -42,7 +42,7 @@
                             	<div class="row">
 									<div class="col-md-2 lm15">
 										<div class="form-group">
-											<label>ID</label>
+											<label>Cód.</label>
 											<input type="text" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç\s]+$" class="form-control" placeholder="Veículo" value="00159" disabled>
 										</div>
 									</div>
@@ -146,7 +146,6 @@
 	</div>
 </div>
 <div id="map" style="width: 45%;"></div>
-
 
 <script type="text/javascript">
 	function initMap() {

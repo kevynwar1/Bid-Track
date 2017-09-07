@@ -11,6 +11,7 @@ class Romaneio extends CI_Controller {
 
 	public function index() {
 		$data['middle'] = 'romaneio';
+		$data['romaneio'] = $this->Romaneio_model->listar();
 		$this->load->view('pattern/layout', $data);
 	}
 
@@ -22,17 +23,31 @@ class Romaneio extends CI_Controller {
 		$romaneio->getVeiculo()->setCodigo(strip_tags(trim($this->input->post('veiculo'))));
 		$romaneio->getTransportadora()->setCodigo(strip_tags(trim($this->input->post('transportadora'))));
 		$romaneio->getMotorista()->setCodigo(strip_tags(trim($this->input->post('motorista'))));
-		$romaneio->setDataCriacao(strip_tags(trim($this->input->post('data_criacao'))));
-		$romaneio->setDataFinalizacao(strip_tags(trim($this->input->post('data_finalizacao'))));
+		$romaneio->setDataCriacao(date("Y-m-d"));
 		$romaneio->setOfertarViagem(strip_tags(trim($this->input->post('ofertar_viagem'))));
 
 		$result = $this->Romaneio_model->cadastrar($romaneio);
 		if($result) {
-			$this->session->set_flashdata('success', 'Romaneio cadastrado com Sucesso.');
-			// Redirecionar
+			$this->session->set_flashdata('success', 'Romaneio, Cadastrado com Sucesso.');
+			redirect(base_url().'romaneio');
 		} else {
 			$this->session->set_flashdata('error', 'Ocorreu um erro, ao cadastrar o Romaneio.');
+			redirect(base_url().'romaneio');
 		}
+	}
+
+	public function add() {
+		$this->load->model('model/Estabelecimento_model');
+		$this->load->model('model/Motorista_model');
+		$this->load->model('model/Transportadora_model');
+		$this->load->model('model/Veiculo_model');
+
+		$data['estabelecimento'] = $this->Estabelecimento_model->listar();
+		$data['motorista'] = $this->Motorista_model->listar();
+		$data['transportadora'] = $this->Transportadora_model->listar();
+		$data['veiculo'] = $this->Veiculo_model->listar();
+		$data['middle'] = 'romaneio/cadastrar';
+		$this->load->view('pattern/layout', $data);
 	}
 
 	public function integracao() {

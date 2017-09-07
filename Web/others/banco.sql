@@ -136,6 +136,7 @@ CREATE TABLE `veiculo` (
   `cod_empresa` int UNSIGNED NOT NULL,
   `cod_motorista` int UNSIGNED NOT NULL,
   `cod_tipo_veiculo` int UNSIGNED NOT NULL,
+  `modelo` varchar(20) NOT NULL,
   `placa` varchar(8) NOT NULL,
   `chassi` varchar(17) NOT NULL,
   `proprio` CHAR NOT NULL,
@@ -170,7 +171,7 @@ CREATE TABLE `romaneio` (
   `cod_transportadora` int UNSIGNED NOT NULL,
   `cod_motorista` int UNSIGNED NOT NULL,
   `data_criacao` DATE NOT NULL,
-  `data_finalizacao` DATE NOT NULL,
+  `data_finalizacao` DATE,
   `ofertar_viagem` BIT NOT NULL,
   PRIMARY KEY(`codigo`)
 );
