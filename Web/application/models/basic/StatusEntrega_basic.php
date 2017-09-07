@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class StatusEntrega_basic extends CI_Model {
-	public $cod_status;
+	public $codigo;
 	public $ocorrencia;
 	public $data_ocorrencia;
 	public $latitude;
@@ -15,8 +15,8 @@ class StatusEntrega_basic extends CI_Model {
 		$this->ocorrencia = new Ocorrencia_basic();
 	}
 
-	public function getCodStatus() { return $this->cod_status; }
-	public function setCodStatus($cod_status) { $this->cod_status = $cod_status; }
+	public function getCodigo() { return $this->codigo; }
+	public function setCodigo($codigo) { $this->codigo = $codigo; }
 
 	public function getOcorrencia() { return $this->ocorrencia; }
 	public function setOcorrencia($ocorrencia) { $this->ocorrencia = $ocorrencia; }

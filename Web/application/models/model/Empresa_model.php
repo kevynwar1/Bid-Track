@@ -19,7 +19,7 @@ class Empresa_model extends CI_Model {
 			foreach($result as $row) {
 				$empresa = new Empresa_basic();
 
-				$empresa->setCodEmpresa($row->cod_empresa);
+				$empresa->setCodigo($row->codigo);
 				$empresa->setRazaoSocial($row->razao_social);
 				$empresa->setCnpj($row->cnpj);
 				$empresa->setLogradouro($row->logradouro);

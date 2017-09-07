@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Entrega_basic extends CI_Model {
-	public $cod_entrega;
+	public $codigo;
 	public $romaneio;
 	public $destinatario;
 	public $status_entrega;
@@ -23,8 +23,8 @@ class Entrega_basic extends CI_Model {
 		$this->status_entrega = new StatusEntrega_basic();
 	}
 
-	public function getCodEntrega() { return $this->cod_entrega; }
-	public function setCodEntrega($cod_entrega) { $this->cod_entrega = $cod_entrega; }
+	public function getCodigo() { return $this->codigo; }
+	public function setCodigo($codigo) { $this->codigo = $codigo; }
 
 	public function getRomaneio() { return $this->romaneio; }
 	public function setRomaneio($romaneio) { $this->romaneio = $romaneio; }

@@ -13,16 +13,6 @@ class Empresa extends CI_Controller {
 		$empresa = new Empresa_basic();
 		$empresas = new Empresa_basic();
         $empresas = $this->Empresa_model->listar();
-
-        
-        $id = '3';
-		foreach($empresas as $key => $value) {
-			if(isset($value->cod_empresa) && $value->cod_empresa === $id) {
-                $empresa = $value;
-            }
-        }
-
-        p($empresa);
 	}
 
 	public function cadastrar() {

@@ -1,13 +1,13 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Empresa_basic extends CI_Model {
+class Estabelecimento_basic extends CI_Model {
 	public $codigo;
+	public $empresa;
 	public $razao_social;
 	public $cnpj;
 	public $logradouro;
 	public $numero;
-	public $nome_fantasia;
 	public $complemento;
 	public $bairro;
 	public $cidade;
@@ -16,9 +16,19 @@ class Empresa_basic extends CI_Model {
 	public $latitude;
 	public $longitude;
 	public $situacao;
-	
+
+	function __construct() {
+		parent::__construct();
+		$this->load->model('basic/Empresa_basic');
+
+		$this->empresa = new Empresa_basic();
+	}
+
 	public function getCodigo() { return $this->codigo; }
 	public function setCodigo($codigo) { $this->codigo = $codigo; }
+
+	public function getEmpresa() { return $this->empresa; }
+	public function setEmpresa($empresa) { $this->empresa = $empresa; }
 
 	public function getRazaoSocial() { return $this->razao_social; }
 	public function setRazaoSocial($razao_social) { $this->razao_social = $razao_social; }
@@ -31,9 +41,6 @@ class Empresa_basic extends CI_Model {
 
 	public function getNumero() { return $this->numero; }
 	public function setNumero($numero) { $this->numero = $numero; }
-
-	public function getNomeFantasia() { return $this->nome_fantasia; }
-	public function setNomeFantasia($nome_fantasia) { $this->nome_fantasia = $nome_fantasia; }
 
 	public function getComplemento() { return $this->complemento; }
 	public function setComplemento($complemento) { $this->complemento = $complemento; }
@@ -59,3 +66,4 @@ class Empresa_basic extends CI_Model {
 	public function getSituacao() { return $this->situacao; }
 	public function setSituacao($situacao) { $this->situacao = $situacao; }
 }
+?>

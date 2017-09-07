@@ -45,7 +45,7 @@ Para listar capturar um registro específico de uma tabela/entidade.
 * Coloque o endereço url do sistema -> *http://coopera.pe.hu/*
 * Coloque o controller do Web Service -> *ws/* 
 * Coloque qual entidade você quer listar -> *empresa/*
-* Coloque PK -> */id*, o WS saberá qual a PK da entidade selecionada
+* Coloque PK -> *id/*, o WS saberá qual a PK da entidade selecionada
 * Coloque o Id do registro -> *1/*
 ```
 http://coopera.pe.hu/ws/empresa/id/1/
