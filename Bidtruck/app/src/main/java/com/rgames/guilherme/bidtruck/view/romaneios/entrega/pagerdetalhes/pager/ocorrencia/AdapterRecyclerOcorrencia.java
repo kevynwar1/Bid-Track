@@ -1,11 +1,11 @@
-package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager.occurrence;
+package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.rgames.guilherme.bidtruck.model.basic.InitBasic;
-import com.rgames.guilherme.bidtruck.model.basic.Occurrence;
+import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ import java.util.List;
  * Created by Guilherme on 05/09/2017.
  */
 
-public class AdapterRecyclerOccurrence extends RecyclerView.Adapter<AdapterRecyclerOccurrence.MyViewPager> {
+public class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyclerOcorrencia.MyViewPager> {
 
-    private List<Occurrence> mList;
+    private List<Ocorrencia> mList;
 
-    public AdapterRecyclerOccurrence(){
+    public AdapterRecyclerOcorrencia(){
         InitBasic initBasic = new InitBasic();
         mList = initBasic.getListOccurrence();
     }

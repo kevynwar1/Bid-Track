@@ -1,4 +1,4 @@
-package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager;
+package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,29 +8,28 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.model.basic.Delivery;
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager.occurrence.OccurrenceActivity;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia.OcorrenciaActivity;
 
 public class DetalhesPagerFragment extends Fragment {
 
     private Romaneio mRomaneio;
-    private Delivery mDelivery;
+    private Entrega mEntrega;
     private View mView;
 
     public DetalhesPagerFragment() {
     }
 
-    public static DetalhesPagerFragment newInstance(Romaneio romaneio, Delivery delivery) {
+    public static DetalhesPagerFragment newInstance(Romaneio romaneio, Entrega entrega) {
         DetalhesPagerFragment fragment = new DetalhesPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Romaneio.PARCEL, romaneio);
-        bundle.putParcelable(Delivery.PARCEL, delivery);
+        bundle.putParcelable(Entrega.PARCEL, entrega);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -40,8 +39,8 @@ public class DetalhesPagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
-            mDelivery = getArguments().getParcelable(Delivery.PARCEL);
-        } else mDelivery = new Delivery();
+            mEntrega = getArguments().getParcelable(Entrega.PARCEL);
+        } else mEntrega = new Entrega();
     }
 
     @Override
@@ -61,32 +60,32 @@ public class DetalhesPagerFragment extends Fragment {
     }
 
     private void initViews() throws Exception {
-        if (mView != null && mDelivery != null) {
-            //Delivery
-            ((TextView) mView.findViewById(R.id.txtCodEntrega)).setText(String.valueOf(mDelivery.getId()));
-            ((TextView) mView.findViewById(R.id.txtCodRomaneio)).setText(String.valueOf(mRomaneio.getId()));
+        if (mView != null && mEntrega != null) {
+            //Entrega
+            ((TextView) mView.findViewById(R.id.txtCodEntrega)).setText(String.valueOf(mEntrega.getCodigo()));
+            ((TextView) mView.findViewById(R.id.txtCodRomaneio)).setText(String.valueOf(mRomaneio.getCodigo()));
             ((TextView) mView.findViewById(R.id.txtNFS)).setText("0000000-nfs");
             ((TextView) mView.findViewById(R.id.txtSequencia)).setText("2-seq");
             ((TextView) mView.findViewById(R.id.txtInicio)).setText("00/00/0000 00:00-inic");
             ((TextView) mView.findViewById(R.id.txtTermino)).setText("00/00/0000 00:00-fim");
             ((TextView) mView.findViewById(R.id.txtPeso)).setText("500kg-pes");
-            //Addressee
-            if (mDelivery.getAddressee() != null) {
-                ((TextView) mView.findViewById(R.id.txtDestEmpresa)).setText(mDelivery.getAddressee().getEnterprise().getRazao_social());
-                ((TextView) mView.findViewById(R.id.txtDestRazao)).setText(mDelivery.getAddressee().getRazao_social());
-                ((TextView) mView.findViewById(R.id.txtDestFantasia)).setText(mDelivery.getAddressee().getNome_fantasia());
-                ((TextView) mView.findViewById(R.id.txtDestTelefone)).setText(mDelivery.getAddressee().getTelefone());
-                ((TextView) mView.findViewById(R.id.txtDestCEP)).setText(mDelivery.getAddressee().getCEP());
-                ((TextView) mView.findViewById(R.id.txtDestUF)).setText(mDelivery.getAddressee().getUF());
-                ((TextView) mView.findViewById(R.id.txtDestCidade)).setText(mDelivery.getAddressee().getCidade());
-                ((TextView) mView.findViewById(R.id.txtDestBairro)).setText(mDelivery.getAddressee().getBairro());
-                ((TextView) mView.findViewById(R.id.txtDestLogradouro)).setText(mDelivery.getAddressee().getLogradouro());
-                ((TextView) mView.findViewById(R.id.txtDestNumero)).setText(mDelivery.getAddressee().getNumero());
-                ((TextView) mView.findViewById(R.id.txtDestComplemento)).setText(mDelivery.getAddressee().getComplemento());
-            } else throw new NullPointerException("Addressee nulo");
+            //Destinatario
+            if (mEntrega.getDestinatario() != null) {
+                ((TextView) mView.findViewById(R.id.txtDestEmpresa)).setText(mEntrega.getDestinatario().getEmpresa().getRazao_social());
+                ((TextView) mView.findViewById(R.id.txtDestRazao)).setText(mEntrega.getDestinatario().getRazao_social());
+                ((TextView) mView.findViewById(R.id.txtDestFantasia)).setText(mEntrega.getDestinatario().getNome_fantasia());
+                ((TextView) mView.findViewById(R.id.txtDestTelefone)).setText(mEntrega.getDestinatario().getTelefone());
+                ((TextView) mView.findViewById(R.id.txtDestCEP)).setText(mEntrega.getDestinatario().getCEP());
+                ((TextView) mView.findViewById(R.id.txtDestUF)).setText(mEntrega.getDestinatario().getUF());
+                ((TextView) mView.findViewById(R.id.txtDestCidade)).setText(mEntrega.getDestinatario().getCidade());
+                ((TextView) mView.findViewById(R.id.txtDestBairro)).setText(mEntrega.getDestinatario().getBairro());
+                ((TextView) mView.findViewById(R.id.txtDestLogradouro)).setText(mEntrega.getDestinatario().getLogradouro());
+                ((TextView) mView.findViewById(R.id.txtDestNumero)).setText(mEntrega.getDestinatario().getNumero());
+                ((TextView) mView.findViewById(R.id.txtDestComplemento)).setText(mEntrega.getDestinatario().getComplemento());
+            } else throw new NullPointerException("Destinatario nulo");
 
             initButtons();
-        } else throw new NullPointerException("View/Delivery null");
+        } else throw new NullPointerException("View/Entrega null");
     }
 
     private void initButtons() {
@@ -173,9 +172,9 @@ public class DetalhesPagerFragment extends Fragment {
 //                });
 //                builderSingle.show();
 
-                Intent intent = new Intent(getActivity(), OccurrenceActivity.class);
+                Intent intent = new Intent(getActivity(), OcorrenciaActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(Delivery.PARCEL, mDelivery);
+                bundle.putParcelable(Entrega.PARCEL, mEntrega);
                 startActivity(intent.putExtras(bundle));
             }
         });

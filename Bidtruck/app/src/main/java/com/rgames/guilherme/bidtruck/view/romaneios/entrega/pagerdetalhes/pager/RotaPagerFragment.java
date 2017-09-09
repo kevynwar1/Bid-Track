@@ -1,4 +1,4 @@
-package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager;
+package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,21 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.model.basic.Delivery;
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 
 public class RotaPagerFragment extends Fragment {
 
     private final static String ARG_1 = "arg_1";
     private View mView;
-    private Delivery mDelivery;
+    private Entrega mEntrega;
 
     public RotaPagerFragment() {
     }
 
-    public static RotaPagerFragment newInstance(Delivery delivery) {
+    public static RotaPagerFragment newInstance(Entrega entrega) {
         RotaPagerFragment fragment = new RotaPagerFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(ARG_1, delivery);
+        bundle.putParcelable(ARG_1, entrega);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -30,7 +30,7 @@ public class RotaPagerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mDelivery = getArguments().getParcelable(ARG_1);
+            mEntrega = getArguments().getParcelable(ARG_1);
         }
     }
 

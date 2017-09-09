@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Classe do destinátio.
  */
-public class Addressee implements Parcelable {
+public class Destinatario implements Parcelable {
 
     private int id;
-    private List<Delivery> delivery;
-    private Enterprise enterprise;
+    private List<Entrega> entrega;
+    private Empresa empresa;
     private String razao_social;
     private String nome_fantasia;
     private char tipo_pessoa;
@@ -21,8 +21,8 @@ public class Addressee implements Parcelable {
     private String email;
     private String telefone;
     private String contato;
-    private String CEP;
-    private String UF;
+    private String cep;
+    private String uf;
     private String cidade;
     private String bairro;
     private String logradouro;
@@ -32,13 +32,13 @@ public class Addressee implements Parcelable {
     private double longitude;
     private boolean situacao;
 
-    public Addressee() {
+    public Destinatario() {
     }
 
-    public Addressee(int id, List<Delivery> delivery, Enterprise enterprise, String razao_social, String nome_fantasia, char tipo_pessoa, String cpf_cnpj, String email, String telefone, String contato, String CEP, String UF, String cidade, String bairro, String logradouro, String numero, String complemento, double latitude, double longitude, boolean situacao) {
+    public Destinatario(int id, List<Entrega> entrega, Empresa empresa, String razao_social, String nome_fantasia, char tipo_pessoa, String cpf_cnpj, String email, String telefone, String contato, String CEP, String UF, String cidade, String bairro, String logradouro, String numero, String complemento, double latitude, double longitude, boolean situacao) {
         this.id = id;
-        this.delivery = delivery;
-        this.enterprise = enterprise;
+        this.entrega = entrega;
+        this.empresa = empresa;
         this.razao_social = razao_social;
         this.nome_fantasia = nome_fantasia;
         this.tipo_pessoa = tipo_pessoa;
@@ -46,8 +46,8 @@ public class Addressee implements Parcelable {
         this.email = email;
         this.telefone = telefone;
         this.contato = contato;
-        this.CEP = CEP;
-        this.UF = UF;
+        this.cep = CEP;
+        this.uf = UF;
         this.cidade = cidade;
         this.bairro = bairro;
         this.logradouro = logradouro;
@@ -58,11 +58,11 @@ public class Addressee implements Parcelable {
         this.situacao = situacao;
     }
 
-    protected Addressee(Parcel in) {
+    protected Destinatario(Parcel in) {
         id = in.readInt();
-        setDelivery(new ArrayList<Delivery>());
-        in.readList(getDelivery(), Delivery.class.getClassLoader());
-        enterprise = in.readParcelable(Enterprise.class.getClassLoader());
+        setEntrega(new ArrayList<Entrega>());
+        in.readList(getEntrega(), Entrega.class.getClassLoader());
+        empresa = in.readParcelable(Empresa.class.getClassLoader());
         razao_social = in.readString();
         nome_fantasia = in.readString();
 //        tipo_pessoa = in.readCharArray();
@@ -70,8 +70,8 @@ public class Addressee implements Parcelable {
         email = in.readString();
         telefone = in.readString();
         contato = in.readString();
-        CEP = in.readString();
-        UF = in.readString();
+        cep = in.readString();
+        uf = in.readString();
         cidade = in.readString();
         bairro = in.readString();
         logradouro = in.readString();
@@ -82,15 +82,15 @@ public class Addressee implements Parcelable {
         situacao = in.readByte() > 0;
     }
 
-    public static final Creator<Addressee> CREATOR = new Creator<Addressee>() {
+    public static final Creator<Destinatario> CREATOR = new Creator<Destinatario>() {
         @Override
-        public Addressee createFromParcel(Parcel in) {
-            return new Addressee(in);
+        public Destinatario createFromParcel(Parcel in) {
+            return new Destinatario(in);
         }
 
         @Override
-        public Addressee[] newArray(int size) {
-            return new Addressee[size];
+        public Destinatario[] newArray(int size) {
+            return new Destinatario[size];
         }
     };
 
@@ -102,8 +102,8 @@ public class Addressee implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
-        parcel.writeList(delivery);
-        parcel.writeParcelable(enterprise, i);
+        parcel.writeList(entrega);
+        parcel.writeParcelable(empresa, i);
         parcel.writeString(razao_social);
         parcel.writeString(nome_fantasia);
 //        tipo
@@ -111,8 +111,8 @@ public class Addressee implements Parcelable {
         parcel.writeString(email);
         parcel.writeString(telefone);
         parcel.writeString(contato);
-        parcel.writeString(CEP);
-        parcel.writeString(UF);
+        parcel.writeString(cep);
+        parcel.writeString(uf);
         parcel.writeString(cidade);
         parcel.writeString(bairro);
         parcel.writeString(logradouro);
@@ -131,20 +131,20 @@ public class Addressee implements Parcelable {
         this.id = id;
     }
 
-    public List<Delivery> getDelivery() {
-        return delivery;
+    public List<Entrega> getEntrega() {
+        return entrega;
     }
 
-    public void setDelivery(List<Delivery> delivery) {
-        this.delivery = delivery;
+    public void setEntrega(List<Entrega> entrega) {
+        this.entrega = entrega;
     }
 
-    public Enterprise getEnterprise() {
-        return enterprise;
+    public Empresa getEmpresa() {
+        return empresa;
     }
 
-    public void setEnterprise(Enterprise enterprise) {
-        this.enterprise = enterprise;
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 
     public String getRazao_social() {
@@ -204,19 +204,19 @@ public class Addressee implements Parcelable {
     }
 
     public String getCEP() {
-        return CEP;
+        return cep;
     }
 
     public void setCEP(String CEP) {
-        this.CEP = CEP;
+        this.cep = CEP;
     }
 
     public String getUF() {
-        return UF;
+        return uf;
     }
 
     public void setUF(String UF) {
-        this.UF = UF;
+        this.uf = UF;
     }
 
     public String getCidade() {

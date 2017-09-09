@@ -1,4 +1,4 @@
-package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes.pager.occurrence;
+package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.model.basic.Delivery;
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 
-public class OccurrenceActivity extends AppCompatActivity {
+public class OcorrenciaActivity extends AppCompatActivity {
 
-    private Delivery mDelivery;
+    private Entrega mEntrega;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class OccurrenceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_occurrence);
         try {
             if (getIntent().getExtras() != null) {
-                mDelivery = getIntent().getExtras().getParcelable(Delivery.PARCEL);
+                mEntrega = getIntent().getExtras().getParcelable(Entrega.PARCEL);
                 initToolbar();
                 initRecyclerView();
             } else {
@@ -51,6 +51,6 @@ public class OccurrenceActivity extends AppCompatActivity {
     private void initRecyclerView() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new AdapterRecyclerOccurrence());
+        recyclerView.setAdapter(new AdapterRecyclerOcorrencia());
     }
 }

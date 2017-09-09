@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.view.romaneios.delivery.DeliveryActivity;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +34,11 @@ public class AdapterRecyclerRomaneio extends RecyclerView.Adapter<AdapterRecycle
 
     @Override
     public void onBindViewHolder(final AdapterRecyclerRomaneio.MyViewHolder holder, int position) {
-        holder.titulo.setText(String.valueOf(mRomaneioList.get(position).getId()));
+        holder.titulo.setText(String.valueOf(mRomaneioList.get(position).getCodigo()));
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, DeliveryActivity.class);
+                Intent intent = new Intent(mContext, EntregaActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Romaneio.PARCEL, mRomaneioList.get(holder.getAdapterPosition()));
                 mContext.startActivity(intent.putExtras(bundle));

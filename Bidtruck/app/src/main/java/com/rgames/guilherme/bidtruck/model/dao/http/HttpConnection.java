@@ -25,7 +25,7 @@ public class HttpConnection {
         connection.setRequestMethod(metodo.getValue());
         connection.setDoInput(doInput);
         connection.setDoOutput(doOutput);
-        if (doInput)
+        if (doOutput)
             connection.setRequestProperty("Content-Type", "application/json");
         connection.connect();
         return connection;
