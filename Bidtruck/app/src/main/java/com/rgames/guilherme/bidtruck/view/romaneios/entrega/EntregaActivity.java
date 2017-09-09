@@ -1,4 +1,4 @@
-package com.rgames.guilherme.bidtruck.view.romaneios.delivery;
+package com.rgames.guilherme.bidtruck.view.romaneios.entrega;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 
-public class DeliveryActivity extends AppCompatActivity {
+public class EntregaActivity extends AppCompatActivity {
 
     private MyProgressBar myProgressBar;
     private Romaneio mRomaneio;

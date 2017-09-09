@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.InitBasic;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
@@ -28,6 +29,7 @@ public class RomaneioFragment extends Fragment {
 
     private View mView;
     private MyProgressBar myProgressBar;
+    private Facade mFacade;
 
     public RomaneioFragment() {
     }
@@ -53,6 +55,7 @@ public class RomaneioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         try {
+            mFacade = new Facade(getActivity());
             init();
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,6 +74,7 @@ public class RomaneioFragment extends Fragment {
             protected void onPreExecute() {
                 try {
                     initProgressBar();
+                    emptyView(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -78,21 +82,31 @@ public class RomaneioFragment extends Fragment {
 
             @Override
             protected List<Romaneio> doInBackground(Void... voids) {
-                InitBasic initBasic = new InitBasic();
-                initBasic.addListRomaneios("Entrega do romaneio");
-                return initBasic.getListRomaneios();
+                try {
+                    return mFacade.selectRomaneio();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
 
             @Override
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
-                    initRecyclerView(romaneios);
+                    if (romaneios == null)
+                        emptyView(true);
+                    else
+                        initRecyclerView(romaneios);
                     finishProgressBar();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }.execute();
+    }
+
+    private void emptyView(boolean isVisible) {
+        mView.findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
     }
 
     private void initRecyclerView(List<Romaneio> list) throws Exception {

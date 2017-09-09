@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.romaneios.delivery.pagerdetalhes.pager.RotaPagerFragment">
+    tools:context=".view.romaneios.entrega.pagerdetalhes.pager.RotaPagerFragment">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"

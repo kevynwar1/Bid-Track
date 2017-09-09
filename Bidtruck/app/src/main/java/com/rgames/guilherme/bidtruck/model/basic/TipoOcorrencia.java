@@ -3,33 +3,33 @@ package com.rgames.guilherme.bidtruck.model.basic;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class TypeOccurrence implements Parcelable {
+public class TipoOcorrencia implements Parcelable {
 
-    private int id;
+    private int codigo;
     private String description;
     private char situation;
 
-    public TypeOccurrence(int id, String description, char situation) {
-        this.id = id;
+    public TipoOcorrencia(int codigo, String description, char situation) {
+        this.codigo = codigo;
         this.description = description;
         this.situation = situation;
     }
 
-    protected TypeOccurrence(Parcel in) {
-        id = in.readInt();
+    protected TipoOcorrencia(Parcel in) {
+        codigo = in.readInt();
         description = in.readString();
         //situation
     }
 
-    public static final Creator<TypeOccurrence> CREATOR = new Creator<TypeOccurrence>() {
+    public static final Creator<TipoOcorrencia> CREATOR = new Creator<TipoOcorrencia>() {
         @Override
-        public TypeOccurrence createFromParcel(Parcel in) {
-            return new TypeOccurrence(in);
+        public TipoOcorrencia createFromParcel(Parcel in) {
+            return new TipoOcorrencia(in);
         }
 
         @Override
-        public TypeOccurrence[] newArray(int size) {
-            return new TypeOccurrence[size];
+        public TipoOcorrencia[] newArray(int size) {
+            return new TipoOcorrencia[size];
         }
     };
 
@@ -40,17 +40,17 @@ public class TypeOccurrence implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeInt(codigo);
         parcel.writeString(description);
         parcel.writeCharArray(new char[]{situation});
     }
 
-    public int getId() {
-        return id;
+    public int getCodigo() {
+        return codigo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getDescription() {

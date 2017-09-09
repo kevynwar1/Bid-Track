@@ -1,8 +1,13 @@
 package com.rgames.guilherme.bidtruck.facade;
 
-import android.content.Context;
+
+import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+
+import java.util.List;
 
 public interface IFacade {
 
     public String connectionTest();
+
+    public List<Romaneio> selectRomaneio() throws Exception;
 }

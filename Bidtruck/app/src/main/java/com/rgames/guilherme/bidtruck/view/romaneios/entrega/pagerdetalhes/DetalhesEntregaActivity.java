@@ -1,26 +1,22 @@
-package com.rgames.guilherme.bidtruck.view.romaneios.delivery.pagerdetalhes;
+package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.model.basic.Delivery;
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 
-import java.util.List;
-
-public class DetalhesDeliveryActivity extends AppCompatActivity {
+public class DetalhesEntregaActivity extends AppCompatActivity {
 
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    private Delivery mEntrega;
+    private Entrega mEntrega;
     private Romaneio mRomaneio;
 
     @Override
@@ -30,13 +26,13 @@ public class DetalhesDeliveryActivity extends AppCompatActivity {
         try {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
-                int index = getIntent().getExtras().getInt(Delivery.PARCEL);
-                mEntrega = mRomaneio.getDeliveryList().get(index);
+                int index = getIntent().getExtras().getInt(Entrega.PARCEL);
+                mEntrega = mRomaneio.getEntregaList().get(index);
                 init();
                 initViewPager();
             } else {
                 onBackPressed();
-                throw new NullPointerException("Delivery nula.");
+                throw new NullPointerException("Entrega nula.");
             }
         } catch (Exception e) {
             e.printStackTrace();
