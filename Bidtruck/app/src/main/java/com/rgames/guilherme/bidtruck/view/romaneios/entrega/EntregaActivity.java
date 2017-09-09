@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 
 public class EntregaActivity extends AppCompatActivity {
 
@@ -80,6 +81,8 @@ public class EntregaActivity extends AppCompatActivity {
 
             @Override
             protected Romaneio doInBackground(Void... voids) {
+                HttpEntrega httpEntrega = new HttpEntrega(EntregaActivity.this);
+                httpEntrega.select();
                 return mRomaneio;
             }
 
