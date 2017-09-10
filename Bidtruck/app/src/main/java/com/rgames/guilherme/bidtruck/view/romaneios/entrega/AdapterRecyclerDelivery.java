@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         try {
+            Log.i("teste", mList.get(position).getCodigo() + " :Codigo");
             holder.titulo.setText(mList.get(holder.getAdapterPosition()).getTitulo());
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
