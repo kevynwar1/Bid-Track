@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,16 +35,21 @@ public class AdapterRecyclerRomaneio extends RecyclerView.Adapter<AdapterRecycle
 
     @Override
     public void onBindViewHolder(final AdapterRecyclerRomaneio.MyViewHolder holder, int position) {
-        holder.titulo.setText(String.valueOf(mRomaneioList.get(position).getCodigo()));
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, EntregaActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Romaneio.PARCEL, mRomaneioList.get(holder.getAdapterPosition()));
-                mContext.startActivity(intent.putExtras(bundle));
-            }
-        });
+        try {
+            Log.i("teste", "valor: " + mRomaneioList.get(position).getCodigo()+"");
+            holder.titulo.setText(String.valueOf(mRomaneioList.get(position).getCodigo()));
+            holder.cardview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, EntregaActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(Romaneio.PARCEL, mRomaneioList.get(holder.getAdapterPosition()));
+                    mContext.startActivity(intent.putExtras(bundle));
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

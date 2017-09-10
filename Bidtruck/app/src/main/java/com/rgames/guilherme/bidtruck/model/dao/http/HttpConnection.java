@@ -17,8 +17,8 @@ public class HttpConnection {
     private HttpConnection() {
     }
 
-    public static HttpURLConnection newInstance(URLDictionary configUrl, HttpMethods metodo, boolean doOutput, boolean doInput) throws IOException {
-        URL url = new URL(configUrl.getValue());
+    public static HttpURLConnection newInstance(URLDictionary configUrl, HttpMethods metodo, boolean doOutput, boolean doInput, String paramExtras) throws IOException {
+        URL url = new URL(configUrl.getValue() + paramExtras);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setReadTimeout(10000);
         connection.setConnectTimeout(15000);
@@ -34,7 +34,7 @@ public class HttpConnection {
     public static String ConnecetinTest() {
         String ret = null;
         try {
-            HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_MAIN, HttpMethods.GET, true, false);
+            HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_MAIN, HttpMethods.GET, true, false, "");
             ret = String.valueOf(connection.getResponseCode());
             ret = new StringBuilder(connection.getResponseCode()).append(" ").append(connection.getResponseMessage()).toString();
             connection.disconnect();
