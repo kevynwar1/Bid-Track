@@ -8,12 +8,17 @@ import android.os.Parcel;
 
 public class Motorista extends Base {
 
+    public final String PARCEL_MOTORISTA = "parcel_motorista";
     private Empresa empresa;
     private String nome;
     private String cpf;
     private int pontuacao;
     private String tipo_carteira;
     private String validade_carteira;
+
+    public Motorista(int codigo){
+        setCodigo(codigo);
+    }
 
     protected Motorista(Parcel in) {
         super(in);

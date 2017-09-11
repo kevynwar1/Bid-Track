@@ -43,8 +43,7 @@ public class HttpRomaneio extends HttpBase<Romaneio> {
             try {
                 HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ROMANEIO, HttpMethods.GET, true, true, "/id");
                 connection.getOutputStream().write(String.valueOf(id).getBytes());
-                Class<Romaneio> romaneio = super.selectBy(connection, Romaneio.class);
-                romaneioReturn = romaneio.cast(Romaneio.class);
+                romaneioReturn = super.selectBy(connection, Romaneio.class);
                 connection.disconnect();
             } catch (IOException e) {
                 e.printStackTrace();

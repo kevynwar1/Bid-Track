@@ -12,9 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.model.basic.Destinatario;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
-import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.DetalhesEntregaActivity;
 
@@ -39,9 +37,9 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_home, parent, false));
+        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_entregas, parent, false));
 
-        // View v = LayoutInflater.from(mContext).inflate(R.layout.adapter_recycler_home, parent, false);
+        // View v = LayoutInflater.from(mContext).inflate(R.layout.adapter_recycler_entregas, parent, false);
 
        // EntregasViewHolder holder = new EntregasViewHolder(v);
 
