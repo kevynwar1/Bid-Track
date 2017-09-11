@@ -80,7 +80,7 @@ public class EntregaActivity extends AppCompatActivity {
             }
 
             @Override
-            protected Romaneio doInBackground(Void... voids) {
+            protected Romaneio doInBackground(Void... String) {
                 HttpEntrega httpEntrega = new HttpEntrega(EntregaActivity.this);
                 mRomaneio.setEntregaList(httpEntrega.select());
                 return mRomaneio;

@@ -66,9 +66,8 @@
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        android:layout_above="@+id/tvSenha"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="150dp" />
+        android:layout_below="@+id/edtSenha"
+        android:layout_centerHorizontal="true" />
     <TextView
         android:id="@+id/tvSenha"
         android:layout_width="match_parent"

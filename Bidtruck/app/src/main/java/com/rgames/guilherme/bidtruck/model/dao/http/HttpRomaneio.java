@@ -25,7 +25,7 @@ public class HttpRomaneio extends HttpBase<Romaneio> {
         List<Romaneio> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
             try {
-                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ROMANEIO, HttpMethods.GET, false, true, "");
+                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ROMANEIO_DRIVER, HttpMethods.GET, false, true, "");
                 list = super.select(connection, Romaneio.class);
                 connection.disconnect();
             } catch (IOException e) {

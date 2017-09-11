@@ -7,16 +7,102 @@
     android:layout_marginBottom="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginStart="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="15dp"
     android:clickable="true"
-    android:elevation="4dp"
+    android:elevation="20dp"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="4dp"
-    android:id="@+id/cardview">
+    app:cardCornerRadius="10dp"
 
-    <TextView
-        android:id="@+id/titulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+    android:id="@+id/cardview"
+    app:cardBackgroundColor="#512DA8">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/txtSequencia"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/txtRazao"
+            android:layout_alignBottom="@+id/txtRazao"
+            android:layout_alignEnd="@+id/txtBairro"
+            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="15dp" />
+
+
+        <TextView
+            android:id="@+id/txtRazao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+
+
+
+        <View
+            android:id="@+id/view6"
+            android:layout_below="@+id/txtSequencia"
+            android:layout_width="wrap_content"
+            android:layout_height="7dp"
+            android:layout_marginTop="2dp"
+            android:background="#00BCD4"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/txtBairro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtSequencia"
+            android:padding="20dp"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"/>
+
+
+
+
+        <TextView
+            android:id="@+id/txtCidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:layout_marginStart="51dp"
+            android:layout_alignBaseline="@+id/txtBairro"
+            android:layout_alignBottom="@+id/txtBairro"
+            android:layout_toEndOf="@+id/txtBairro" />
+
+        <TextView
+            android:id="@+id/txtUF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="24dp"
+            android:textSize="18dp"
+            android:layout_alignBaseline="@+id/txtCidade"
+            android:layout_alignBottom="@+id/txtCidade"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+
+
 </android.support.v7.widget.CardView>

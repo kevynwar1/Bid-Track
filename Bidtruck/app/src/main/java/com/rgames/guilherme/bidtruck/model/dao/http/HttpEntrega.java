@@ -31,7 +31,7 @@ public class HttpEntrega extends HttpBase<Entrega> {
         List<Entrega> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
             try {
-                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY, HttpMethods.GET, false, true, "");
+                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY_FOR_DRIVER, HttpMethods.GET, false, true, "");
                 list = super.select(connection, Entrega.class);
                 //pode ser redundante, se houver erro tira :3
                 connection.disconnect();
@@ -42,5 +42,44 @@ public class HttpEntrega extends HttpBase<Entrega> {
             }
         }
         return list;
+
+
+
     }
+
+
+
+    /*public List<Entrega> selectById(int id) {
+        List<Entrega> lista = new ArrayList<>();
+         if (lista.isEmpty() ){
+             if (HttpConnection.isConnected(mContext)){
+                 try{
+                     HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY_DRIVER, HttpMethods.GET, true, true, "/id");
+                     connection.getOutputStream().write(String.valueOf(id).getBytes());
+                     Class<Entrega> ent = super.selectBy(connection, Entrega.class);
+                     Entrega nova_entrega = null;
+                     nova_entrega = ent.cast(Entrega.class);
+                     lista.add(nova_entrega);
+                     connection.disconnect();
+                 }catch (IOException e ){
+                     e.printStackTrace();
+                 }catch (JSONException e){
+                     e.printStackTrace();
+                 }
+
+             }
+
+
+         }
+
+
+        return lista;
+    }*/
+
+
+
 }
+
+
+
+

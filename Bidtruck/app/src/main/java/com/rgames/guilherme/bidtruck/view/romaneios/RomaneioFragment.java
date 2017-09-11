@@ -82,6 +82,18 @@ public class RomaneioFragment extends Fragment {
                 }
             }
 
+            /*@Override
+            protected List<Romaneio> doInBackground(Void... voids) {
+                try {
+                    HttpEntrega httpEntrega = new HttpEntrega(getActivity());
+                    httpEntrega.select();
+                    return mFacade.selectRomaneio();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }*/
+
             @Override
             protected List<Romaneio> doInBackground(Void... voids) {
                 try {
@@ -93,6 +105,10 @@ public class RomaneioFragment extends Fragment {
                     return null;
                 }
             }
+
+
+
+
 
             @Override
             protected void onPostExecute(List<Romaneio> romaneios) {
