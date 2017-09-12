@@ -87,12 +87,29 @@ Métodos Mobile
 ```
 http://coopera.pe.hu/ws/romaneio_motorista/1
 ```
+Lista de Romaneio(s) de Motorista específico.
+Parâmetro esperado:
+* Cód. do Motorista
+
 ```
 http://coopera.pe.hu/ws/romaneio_ofertavel/1/1
 ```
+Lista de Romaneio(s) Ofertéveis para os motoristas.
+Parâmetros esperado:
+* Cód. da Empresa
+* Cód. do Motorista
+
+
 ```
 http://coopera.pe.hu/ws/entrega_motorista/1
 ```
+Lista de Entrega(s) de Motorista específico.
+Parâmetro esperado:
+* Cód. do Motorista
+
 ```
 http://coopera.pe.hu/ws/login/mariaj%40gmail.com/5678
 ```
+Parâmetros esperado:
+* E-mail do Usuário *(O @ deve ser convertido para símbolo %40)*
+* Senha do Usuário
