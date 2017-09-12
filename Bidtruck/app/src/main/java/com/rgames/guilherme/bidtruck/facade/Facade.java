@@ -2,7 +2,9 @@ package com.rgames.guilherme.bidtruck.facade;
 
 import android.content.Context;
 
+import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
 import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
+import com.rgames.guilherme.bidtruck.controller.ControllerRomaneio;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
@@ -15,8 +17,8 @@ import java.util.List;
 public class Facade implements IFacade {
 
     private Context mContext;
-    private HttpRomaneio httpRomaneio;
-    private HttpEntrega httpEntrega;
+    private ControllerRomaneio controllerRomaneio;
+    private ControllerEntregas controllerEntregas;
     private ControllerLogin controllerLogin;
 
     public Facade(Context context) {
@@ -31,17 +33,22 @@ public class Facade implements IFacade {
     }
 
     @Override
+    public boolean isConnected(Context context) {
+        return HttpConnection.isConnected(context);
+    }
+
+    @Override
     public List<Romaneio> selectRomaneio() throws Exception {
-        if (httpRomaneio == null)
-            httpRomaneio = new HttpRomaneio(mContext);
-        return httpRomaneio.select();
+        if (controllerRomaneio == null)
+            controllerRomaneio = new ControllerRomaneio(mContext);
+        return controllerRomaneio.select();
     }
 
 
     public List<Entrega> selectEntrega() throws Exception {
-        if (httpEntrega == null)
-            httpEntrega = new HttpEntrega(mContext);
-        return httpEntrega.select();
+        if (controllerEntregas == null)
+            controllerEntregas = new ControllerEntregas(mContext);
+        return controllerEntregas.select();
 
     }
 
@@ -54,13 +61,13 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public Motorista isLogged() throws Exception{
+    public Motorista isLogged() throws Exception {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
         return controllerLogin.isLogged();
     }
 
     @Override
-    public void setLogged(Motorista motorista) throws Exception{
+    public void setLogged(Motorista motorista) throws Exception {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
         controllerLogin.setLogged(motorista);
     }

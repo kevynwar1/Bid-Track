@@ -16,8 +16,12 @@ public class Motorista extends Base {
     private String tipo_carteira;
     private String validade_carteira;
 
-    public Motorista(int codigo){
+    public Motorista(int codigo, int empresa) {
         setCodigo(codigo);
+        if (getEmpresa() != null){
+            setEmpresa(new Empresa());
+            getEmpresa().setCodigo(empresa);
+        }
     }
 
     protected Motorista(Parcel in) {

@@ -38,15 +38,12 @@ public class LoginActivity extends AppCompatActivity {
         try {
             boolean chk = mFacade.isMatenhaConectado();
             ((CheckBox) findViewById(R.id.chkConectado)).setChecked(chk);
-            if (chk) {
-                Motorista motorista = mFacade.isLogged();
-                if (motorista != null && motorista.getCodigo() > 0)
+            Motorista motorista = mFacade.isLogged();
+            if (mFacade.isConnected(LoginActivity.this)) {
+                if (chk && (motorista != null && motorista.getCodigo() > 0))
                     initMainActivity(motorista);
-                else
-                    initViews();
-            } else {
+            } else
                 initViews();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,47 +73,51 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    new AsyncTask<Void, Void, Motorista>() {
-                        String email;
-                        String senha;
+                    if (mFacade.isConnected(LoginActivity.this))
+                        new AsyncTask<Void, Void, Motorista>() {
+                            String email;
+                            String senha;
 
-                        @Override
-                        protected void onPreExecute() {
-                            try {
-                                initProgressBar();
-                                email = String.valueOf(((EditText) findViewById(R.id.edtEmail)).getText());
-                                senha = String.valueOf(((EditText) findViewById(R.id.edtSenha)).getText());
-                                mFacade.setMatenhaConectado(
-                                        ((CheckBox) findViewById(R.id.chkConectado)).isChecked()
-                                );
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        protected Motorista doInBackground(Void... strings) {
-                            try {
-                                return mFacade.login(email, senha);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                return null;
-                            }
-                        }
-
-                        @Override
-                        protected void onPostExecute(Motorista motorista) {
-                            try {
-                                if (motorista == null) {
-                                    Toast.makeText(LoginActivity.this, "Falha de autenticação, email e senha incorretos.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    initMainActivity(motorista);
+                            @Override
+                            protected void onPreExecute() {
+                                try {
+                                    initProgressBar();
+                                    email = String.valueOf(((EditText) findViewById(R.id.edtEmail)).getText());
+                                    senha = String.valueOf(((EditText) findViewById(R.id.edtSenha)).getText());
+                                    mFacade.setMatenhaConectado(
+                                            ((CheckBox) findViewById(R.id.chkConectado)).isChecked()
+                                    );
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
-                        }
-                    }.execute();
+
+                            @Override
+                            protected Motorista doInBackground(Void... strings) {
+                                try {
+                                    return mFacade.login(email, senha);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    return null;
+                                }
+                            }
+
+                            @Override
+                            protected void onPostExecute(Motorista motorista) {
+                                try {
+                                    if (motorista == null) {
+                                        Toast.makeText(LoginActivity.this, "Falha de autenticação, email e senha incorretos.", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        initMainActivity(motorista);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.execute();
+                    else {
+                        Toast.makeText(LoginActivity.this, "Não foi possivel enviar seus dados, por favor verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -36,7 +36,6 @@ public class AdapterRecyclerRomaneio extends RecyclerView.Adapter<AdapterRecycle
     @Override
     public void onBindViewHolder(final AdapterRecyclerRomaneio.MyViewHolder holder, int position) {
         try {
-            Log.i("teste", "valor: " + mRomaneioList.get(position).getCodigo()+"");
             holder.titulo.setText(String.valueOf(mRomaneioList.get(position).getCodigo()));
             holder.cardview.setOnClickListener(new View.OnClickListener() {
                 @Override

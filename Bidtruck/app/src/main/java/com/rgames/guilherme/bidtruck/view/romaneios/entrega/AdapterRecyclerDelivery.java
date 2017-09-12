@@ -41,16 +41,15 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
 
         // View v = LayoutInflater.from(mContext).inflate(R.layout.adapter_recycler_entregas, parent, false);
 
-       // EntregasViewHolder holder = new EntregasViewHolder(v);
+        // EntregasViewHolder holder = new EntregasViewHolder(v);
 
-       // return holder;
+        // return holder;
 
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         try {
-            Log.i("teste", mListEntrega.get(position).getCodigo() + " :Codigo");
 
 
             /*Entrega entrega = mListEntrega.get(position);
@@ -67,7 +66,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             //holder.titulo.setText(mListEntrega.get(holder.getAdapterPosition()).getTitulo());
 
 
-            holder.codigo.setText(Integer.toString(mListEntrega.get(holder.getAdapterPosition()).getCodigo()));
+            holder.codigo.setText(String.valueOf(mListEntrega.get(holder.getAdapterPosition()).getCodigo()));
             holder.razao_social.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getRazao_social());
             holder.bairro.setText((mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getBairro()));
             holder.cidade.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getCidade());
@@ -96,28 +95,19 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
 
     @Override
     public int getItemCount() {
-        return  mListEntrega.size();
+        return mListEntrega.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView codigo;
-        public TextView titulo;
-        public CardView cardView;
-        public  TextView seq_entrega;
-        public  TextView razao_social;
-        public  TextView bairro;
-        public final TextView uf;
+        public TextView codigo, titulo, cardView, seq_entrega, razao_social, bairro, uf, cidade;
         //final TextView cod_romaneio;
-        public  TextView cidade;
-
-
 
         public MyViewHolder(View itemView) {
             super(itemView);
-           // titulo = itemView.findViewById(R.id.titulo);
+            // titulo = itemView.findViewById(R.id.titulo);
             //seq_entrega =  itemView.findViewById(R.id.txtSequencia);
             codigo = itemView.findViewById(R.id.txtSequencia);
-            razao_social =  itemView.findViewById(R.id.txtRazao);
+            razao_social = itemView.findViewById(R.id.txtRazao);
             bairro = itemView.findViewById(R.id.txtBairro);
             cidade = itemView.findViewById(R.id.txtCidade);
             uf = itemView.findViewById(R.id.txtUF);
