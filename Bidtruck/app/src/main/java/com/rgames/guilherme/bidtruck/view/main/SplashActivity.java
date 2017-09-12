@@ -1,11 +1,9 @@
-package com.rgames.guilherme.bidtruck;
+package com.rgames.guilherme.bidtruck.view.main;
 
 import android.content.Intent;
-import android.provider.SyncStateContract;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.daimajia.androidanimations.library.Techniques;
+import com.rgames.guilherme.bidtruck.R;
 import com.viksaa.sssplash.lib.activity.AwesomeSplash;
 import com.viksaa.sssplash.lib.cnst.Flags;
 import com.viksaa.sssplash.lib.model.ConfigSplash;

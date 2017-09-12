@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 

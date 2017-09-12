@@ -16,18 +16,19 @@ import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.DetalhesEntregaActivity;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecyclerDelivery.MyViewHolder> {
 
     private Romaneio mRomaneio;
-    private List<Entrega> mList;
+    private List<Entrega> mListEntrega;
     private Context mContext;
 
     public AdapterRecyclerDelivery(Romaneio romaneio, Context context) {
         if (romaneio != null) {
-            mList = (romaneio.getEntregaList() != null) ? romaneio.getEntregaList() : new ArrayList<Entrega>();
+            mListEntrega = (romaneio.getEntregaList() != null) ? romaneio.getEntregaList() : new ArrayList<Entrega>();
             mRomaneio = romaneio;
         } else throw new NullPointerException("Romaneio nulo");
         if (context != null) mContext = context;
@@ -36,14 +37,41 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_home, parent, false));
+        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_entregas, parent, false));
+
+        // View v = LayoutInflater.from(mContext).inflate(R.layout.adapter_recycler_entregas, parent, false);
+
+        // EntregasViewHolder holder = new EntregasViewHolder(v);
+
+        // return holder;
+
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         try {
-            Log.i("teste", mList.get(position).getCodigo() + " :Codigo");
-            holder.titulo.setText(mList.get(holder.getAdapterPosition()).getTitulo());
+
+
+            /*Entrega entrega = mListEntrega.get(position);
+            Destinatario destiny = new Destinatario();
+
+
+            holder.seq_entrega.setText(entrega.getCodigo());
+            holder.razao_social.setText(destiny.getRazao_social());
+            holder.bairro.setText(destiny.getBairro());
+            holder.cidade.setText(destiny.getCidade());
+            holder.uf.setText(destiny.getUF());*/
+
+
+            //holder.titulo.setText(mListEntrega.get(holder.getAdapterPosition()).getTitulo());
+
+
+            holder.codigo.setText(String.valueOf(mListEntrega.get(holder.getAdapterPosition()).getCodigo()));
+            holder.razao_social.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getRazao_social());
+            holder.bairro.setText((mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getBairro()));
+            holder.cidade.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getCidade());
+            holder.uf.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getUF());
+
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -67,16 +95,22 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return mListEntrega.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView titulo;
-        public CardView cardView;
+        public TextView codigo, titulo, cardView, seq_entrega, razao_social, bairro, uf, cidade;
+        //final TextView cod_romaneio;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            titulo = itemView.findViewById(R.id.titulo);
+            // titulo = itemView.findViewById(R.id.titulo);
+            //seq_entrega =  itemView.findViewById(R.id.txtSequencia);
+            codigo = itemView.findViewById(R.id.txtSequencia);
+            razao_social = itemView.findViewById(R.id.txtRazao);
+            bairro = itemView.findViewById(R.id.txtBairro);
+            cidade = itemView.findViewById(R.id.txtCidade);
+            uf = itemView.findViewById(R.id.txtUF);
             cardView = itemView.findViewById(R.id.cardview);
         }
     }

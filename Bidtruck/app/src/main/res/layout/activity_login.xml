@@ -1,88 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edtEmail"
+    <FrameLayout
+        android:id="@+id/frame_progress"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_person_white_24dp"
-        android:drawablePadding="12dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:maxLines="1"
-        android:padding="8dp"
-        android:textColorHint="#fff"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
-        android:layout_above="@+id/edtSenha"
-        android:layout_alignParentStart="true" />
-
-    <View
-        android:id="@+id/view6"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="300dp"
-        android:background="#f9d7db" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edtSenha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_lock_white_24dp"
-        android:drawablePadding="12dp"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:padding="8dp"
-        android:textColorHint="#fff"
-        android:layout_marginTop="18dp"
-        android:layout_below="@+id/view6"
-        android:layout_alignParentStart="true" />
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/edtSenha"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_person_white_24dp"
+            android:drawablePadding="12dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
 
-    <View
-        android:id="@+id/view7"
-        android:layout_width="match_parent"
-        android:layout_marginTop="355dp"
-        android:layout_height="1dp"
-        android:background="#f9d7db" />
+            android:padding="8dp"
+            android:textColorHint="#fff" />
 
-    <Button
-        android:id="@+id/btLogin"
-        style="@style/Base.TextAppearance.AppCompat.Body1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:background="@drawable/background_login"
-        android:clickable="true"
-        android:padding="16dp"
-        android:text="Entrar"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:layout_above="@+id/tvSenha"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="150dp" />
-    <TextView
-        android:id="@+id/tvSenha"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Esqueci minha senha"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:paddingLeft="100dp"
-        android:background="#33FFFFFF"
-        android:paddingTop="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        <View
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="300dp"
+            android:background="#f9d7db" />
 
+        <EditText
+            android:id="@+id/edtSenha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/view6"
+            android:layout_marginTop="18dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_lock_white_24dp"
+            android:drawablePadding="12dp"
+            android:hint="Senha"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textColorHint="#fff" />
 
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="355dp"
+            android:background="#f9d7db" />
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_below="@id/view7"
+            android:id="@+id/linearConectado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/chkConectado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Matenha-me conectado."
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btLogin"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearConectado"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_login"
+            android:clickable="true"
+            android:padding="16dp"
+            android:text="Entrar"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvSenha"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="#33FFFFFF"
+            android:paddingLeft="100dp"
+            android:paddingTop="10dp"
+            android:text="Esqueci minha senha"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</LinearLayout>
 

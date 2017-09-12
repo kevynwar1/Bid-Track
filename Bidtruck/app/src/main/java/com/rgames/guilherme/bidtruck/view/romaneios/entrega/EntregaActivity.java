@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
@@ -80,9 +81,13 @@ public class EntregaActivity extends AppCompatActivity {
             }
 
             @Override
-            protected Romaneio doInBackground(Void... voids) {
-                HttpEntrega httpEntrega = new HttpEntrega(EntregaActivity.this);
-                mRomaneio.setEntregaList(httpEntrega.select());
+            protected Romaneio doInBackground(Void... String) {
+                Facade facade = new Facade(EntregaActivity.this);
+                try {
+                    mRomaneio.setEntregaList(facade.selectEntrega());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return mRomaneio;
             }
 

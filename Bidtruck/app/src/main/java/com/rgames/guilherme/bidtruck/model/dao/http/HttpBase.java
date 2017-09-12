@@ -17,12 +17,11 @@ import java.util.List;
 
 public abstract class HttpBase<T> {
 
-
     /*
     * Sem teste consistente
     * */
-    protected Class<T> selectBy(HttpURLConnection connection, Class<T> classT) throws IOException, JSONException {
-        Class<T> objReturn = null;
+    protected T selectBy(HttpURLConnection connection, Class<T> classT) throws IOException, JSONException {
+        T objReturn = null;
         BufferedReader scanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         StringBuilder jsonScanner = new StringBuilder();
         String line = null;
@@ -34,8 +33,8 @@ public abstract class HttpBase<T> {
         JSONObject jsonObject = null;
         for (int i = 0; i < jsonArray.length(); i++) {
             jsonObject = jsonArray.getJSONObject(i);
-            Log.i("teste", "jsonobject: " + jsonObject.toString());
-            objReturn = (Class<T>) new Gson().fromJson(String.valueOf(jsonObject), classT);
+//            Log.i("teste", "jsonobject: " + jsonObject.toString());
+            objReturn = new Gson().fromJson(String.valueOf(jsonObject), classT);
         }
 
 //                JSONArray jsonArray = jsonObject.getJSONArray("");
@@ -72,4 +71,6 @@ public abstract class HttpBase<T> {
         connection.disconnect();
         return list;
     }
+
+
 }
