@@ -32,55 +32,83 @@
                     <div class="card-content">
                         <div class="tab-content">
                             <div class="tab-pane active" id="profile">
+                        		<form action="<?= base_url().'romaneio/editar' ?>" method="post">
+                    			<input type="hidden" name="codigo" value="<?= $romaneio[0]->codigo; ?>">
                             	<div class="row">
-									<div class="col-md-2 lm15">
+									<div class="col-md-3 lm15">
 										<div class="form-group label-floating">
-											<label>Romaneio</label>
-											<input type="text" class="form-control" value="<?= $romaneio[0]->codigo ?>" autocomplete="off" disabled>
+											<label class="control-label">Romaneio</label>
+											<input type="text" class="form-control" value="<?= $romaneio[0]->codigo; ?>" autocomplete="off" disabled>
 										</div>
 									</div>
-									<div class="col-md-10 lm15">
+									<div class="col-md-9 lm15">
 										<div class="form-group label-floating">
-											<label>Estabelecimento</label>
-											<input type="text" class="form-control" value="<?= $romaneio[0]->estabelecimento->logradouro; ?>, <?= $romaneio[0]->estabelecimento->numero; ?> — <?= $romaneio[0]->estabelecimento->bairro; ?>, <?= $romaneio[0]->estabelecimento->cidade; ?>" autocomplete="off" disabled>
+											<label class="control-label">Estabelecimento</label>
+											<select class="form-control estabelecimento" name="estabelecimento">
+												<?php foreach($estabelecimento as $row): ?>
+													<option class="option" value="<?= $row->codigo ?>|<?= $row->logradouro.", ".$row->numero." - ".$row->bairro ?>" <?= ($row->codigo == $romaneio[0]->estabelecimento->codigo) ? 'selected' : '' ?>>
+														<?= $row->razao_social." — ".$row->bairro; ?>
+													</option>
+												<?php endforeach; ?>
+											</select>
 										</div>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-6 lm15">
+									<div class="col-md-4 lm15">
 										<div class="form-group">
 											<label>Transportadora</label>
-											<input type="text" class="form-control" value="<?= (is_null($romaneio[0]->transportadora->nome_fantasia)) ? $romaneio[0]->estabelecimento->razao_social : $romaneio[0]->transportadora->nome_fantasia; ?>" autocomplete="off" disabled>
+											<select class="form-control" name="transportadora">
+												<option class="option-undefined" value="0" <?= ($romaneio[0]->estabelecimento->codigo == NULL) ? 'selected' : '' ?>>Estabelecimento</option>
+												<?php foreach($transportadora as $row): ?>
+													<option class="option" value="<?= $row->codigo ?>" <?= ($row->codigo == $romaneio[0]->transportadora->codigo) ? 'selected' : '' ?>>
+														<?= $row->nome_fantasia; ?>
+													</option>
+												<?php endforeach; ?>
+											</select>
 										</div>
 									</div>
-									<div class="col-md-6 lm15">
+									<div class="col-md-4 lm15">
 										<div class="form-group">
 											<label>Tipo do Veículo</label>
-											<input type="text" class="form-control" value="<?= $romaneio[0]->tipo_veiculo->descricao ?>" disabled>
+											<select class="form-control" name="tipoveiculo">
+												<?php foreach($tipoveiculo as $row): ?>
+													<option class="option" value="<?= $row->codigo ?>" <?= ($row->codigo == $romaneio[0]->tipo_veiculo->codigo) ? 'selected' : '' ?>>
+														<?= $row->descricao; ?>
+													</option>
+												<?php endforeach; ?>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4 lm15">
+										<div class="form-group">
+											<label>Motorista</label>
+											<select class="form-control motorista" name="motorista">
+												<option class="option-undefined" value="0" <?= ($romaneio[0]->motorista->codigo == NULL) ? 'selected' : '' ?>>Indefinido</option>
+												<?php
+													foreach($motorista as $row):
+														$nome = explode(" ", $row->nome);
+												?>
+													<option class="option" value="<?= $row->codigo ?>" <?= ($row->codigo == $romaneio[0]->motorista->codigo) ? 'selected' : '' ?>>
+														<?= $nome[0]." ".end($nome); ?>
+													</option>
+												<?php endforeach; ?>
+											</select>
 										</div>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-6 lm15">
-										<div class="form-group">
-											<label>Motorista</label>
-											<input type="text" class="form-control" value="<?= (is_null($romaneio[0]->motorista->nome)) ? "Indefinido" : $romaneio[0]->motorista->nome; ?>" autocomplete="off" disabled>
-										</div>
-									</div>
-									<div class="col-md-6 lm15">
-										<div class="form-group">
-											<label>Status</label>
-											<input type="text" class="form-control" value="<?= $romaneio[0]->status_romaneio->descricao ?>" disabled>
-										</div>
+									<div class="col-md-12">
+										<button type="submit" name="editar" class="btn btn-danger btn-fill pull-right f12 upper">Editar</button>
 									</div>
 								</div>
-							</div>
-							<div class="tab-pane" id="entregas">
+                            	</form>
+                            </div>
+                            <div class="tab-pane" id="entregas">
 								<?php
-									if(!empty($entrega)):
-										$i = 0;
-										foreach($entrega as $row):
-											$i++;
+									$i = 0;
+									foreach($entrega as $row):
+										$i++;
 								?>
 								<div aria-multiselectable="true" class="panel-group" id="accordion" role="tablist">
 									<div class="panel panel-default">
@@ -111,7 +139,7 @@
 													<div class="col-md-4 lm15">
 														<div class="form-group">
 															<label>Nota Fiscal</label>
-															<input type="text" name="pesocarga" value="<?= ($row->nota_fiscal == '0')? 'Indefinido' : $row->nota_fiscal; ?>" class="form-control" autocomplete="off" disabled>
+															<input type="text" name="pesocarga" value="<?= $row->nota_fiscal; ?>" class="form-control" autocomplete="off" disabled>
 														</div>
 													</div>
 													<div class="col-md-4 lm15">
@@ -125,10 +153,7 @@
 										</div>
 									</div>
 								</div>
-								<?php
-										endforeach;
-									endif;
-								?>
+								<?php endforeach; ?>
 							</div>
 							<div class="tab-pane" id="messages">
 								<form action="#" method="post">
@@ -158,7 +183,7 @@
 				<div class="card">
 					<div class="card-header" data-background-color="blue-center">
 						<h4 class="title">Rota de Entregas</h4>
-						<p class="category">Trajeto do Romaneio <?= $romaneio[0]->codigo ?></p>
+						<p class="category">Itinerário do Romaneio <?= $romaneio[0]->codigo ?></p>
 					</div>
 					<div class="card-content table-responsive" style="height: 350px; overflow-x: auto;" id="trajeto">
 						
@@ -188,18 +213,16 @@
 	function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 		var waypts = [];
 		<?php
-			if(!empty($entrega)):
-				$fim = array_pop($entrega);
-				if(count($entrega) >= 1):
-					foreach($entrega as $row):
+			$fim = array_pop($entrega);
+			if(count($entrega) >= 1):
+				foreach($entrega as $row):
 		?>
 			waypts.push({
 				location: '<?= $row->destinatario->logradouro.", ".$row->destinatario->numero." - ".$row->destinatario->bairro ?>',
 				stopover: true
 			});
 		<?php
-					endforeach;
-				endif;
+				endforeach;
 			endif;
 		?>
 

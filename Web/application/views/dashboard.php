@@ -24,7 +24,7 @@
 					</div>
 					<div class="card-content">
 						<p class="category">Faturamento</p>
-						<h3 class="title">$ 34,245</h3>
+						<h3 class="title"><span style="font-size: 14px;">R$</span> 34,245</h3>
 					</div>
 					<div class="card-footer">
 						<div class="stats">

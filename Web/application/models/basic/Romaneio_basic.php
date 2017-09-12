@@ -5,7 +5,7 @@ class Romaneio_basic extends CI_Model {
 	public $codigo;
 	public $status_romaneio;
 	public $estabelecimento;
-	public $veiculo;
+	public $tipo_veiculo;
 	public $transportadora;
 	public $motorista;
 	public $data_criacao;
@@ -16,13 +16,13 @@ class Romaneio_basic extends CI_Model {
 		parent::__construct();
 		$this->load->model('basic/StatusRomaneio_basic');
 		$this->load->model('basic/Estabelecimento_basic');
-		$this->load->model('basic/Veiculo_basic');
+		$this->load->model('basic/TipoVeiculo_basic');
 		$this->load->model('basic/Transportadora_basic');
 		$this->load->model('basic/Motorista_basic');
 
 		$this->status_romaneio = new StatusRomaneio_basic();
 		$this->estabelecimento = new Estabelecimento_basic();
-		$this->veiculo = new Veiculo_basic();
+		$this->tipo_veiculo = new TipoVeiculo_basic();
 		$this->transportadora = new Transportadora_basic();
 		$this->motorista = new Motorista_basic();
 	}
@@ -36,8 +36,8 @@ class Romaneio_basic extends CI_Model {
 	public function getEstabelecimento() { return $this->estabelecimento; }
 	public function setEstabelecimento($estabelecimento) { $this->estabelecimento = $estabelecimento; }
 
-	public function getVeiculo() { return $this->veiculo; }
-	public function setVeiculo($veiculo) { $this->veiculo = $veiculo; }
+	public function getTipoVeiculo() { return $this->tipo_veiculo; }
+	public function setTipoVeiculo($tipo_veiculo) { $this->tipo_veiculo = $tipo_veiculo; }
 
 	public function getTransportadora() { return $this->transportadora; }
 	public function setTransportadora($transportadora) { $this->transportadora = $transportadora; }

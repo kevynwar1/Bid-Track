@@ -31,10 +31,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		demo.initDashboardPageCharts();
-
-		$("#procurar").focus(function() {
-			$("#opcao").css("display", "block").fadeIn(3000);
-		});
 	});
 </script>
 </html>

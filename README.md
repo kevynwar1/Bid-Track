@@ -64,3 +64,35 @@ http://coopera.pe.hu/ws/empresa/format/xml
 ```
 http://coopera.pe.hu/ws/empresa/id/1/format/xml
 ```
+
+### Métodos
+Métodos de Listagem
+```
+http://coopera.pe.hu/ws/empresa/
+```
+```
+http://coopera.pe.hu/ws/entrega/
+```
+```
+http://coopera.pe.hu/ws/motorista/
+```
+```
+http://coopera.pe.hu/ws/romaneio/
+```
+```
+http://coopera.pe.hu/ws/usuario/
+```
+
+Métodos Mobile
+```
+http://coopera.pe.hu/ws/romaneio_motorista/1
+```
+```
+http://coopera.pe.hu/ws/romaneio_ofertavel/1/1
+```
+```
+http://coopera.pe.hu/ws/entrega_motorista/1
+```
+```
+http://coopera.pe.hu/ws/login/mariaj%40gmail.com/5678
+```

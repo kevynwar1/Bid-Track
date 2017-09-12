@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Motorista_basic extends CI_Model {
 	public $codigo;
 	public $empresa;
+	public $usuario;
 	public $nome;
 	public $cpf;
 	public $pontuacao;
@@ -23,8 +24,10 @@ class Motorista_basic extends CI_Model {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('basic/Empresa_basic');
+		$this->load->model('basic/Usuario_basic');
 
 		$this->empresa = new Empresa_basic();
+		$this->usuario = new Usuario_basic();
 	}
 
 	public function getCodigo() { return $this->codigo; }
@@ -32,6 +35,9 @@ class Motorista_basic extends CI_Model {
 
 	public function getEmpresa() { return $this->empresa; }
 	public function setEmpresa($empresa) { $this->empresa = $empresa; }
+
+	public function getUsuario() { return $this->usuario; }
+	public function setUsuario($usuario) { $this->usuario = $usuario; }
 
 	public function getNome() { return $this->nome; }
 	public function setNome($nome) { $this->nome = $nome; }
