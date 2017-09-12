@@ -4,6 +4,8 @@ import android.content.Intent;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 import com.viksaa.sssplash.lib.activity.AwesomeSplash;
 import com.viksaa.sssplash.lib.cnst.Flags;
 import com.viksaa.sssplash.lib.model.ConfigSplash;
@@ -22,10 +24,8 @@ public class SplashActivity extends AwesomeSplash {
         configSplash.setRevealFlagY(Flags.REVEAL_TOP); //or Flags.REVEAL_TOP
 
 
-
-
         //Customize Logo
-        configSplash.setLogoSplash(R.drawable.bridge);
+        configSplash.setLogoSplash(R.drawable.bid);
         configSplash.setAnimLogoSplashDuration(1000);
         configSplash.setAnimLogoSplashTechnique(Techniques.DropOut);
 
@@ -43,7 +43,7 @@ public class SplashActivity extends AwesomeSplash {
 
         //Customize Title
         configSplash.setTitleSplash("Bid & Track");
-        configSplash.setTitleTextColor(R.color.colorAccent);
+        configSplash.setTitleTextColor(R.color.colorPrimary);
         configSplash.setTitleTextSize(50f); //float value
         configSplash.setAnimTitleDuration(1000);
         configSplash.setAnimTitleTechnique(Techniques.FlipInX);
