@@ -18,7 +18,7 @@ public class Motorista extends Base {
 
     public Motorista(int codigo, int empresa) {
         setCodigo(codigo);
-        if (getEmpresa() != null){
+        if (getEmpresa() == null){
             setEmpresa(new Empresa());
             getEmpresa().setCodigo(empresa);
         }

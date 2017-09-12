@@ -99,7 +99,8 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView codigo, titulo, cardView, seq_entrega, razao_social, bairro, uf, cidade;
+        public TextView codigo, titulo, seq_entrega, razao_social, bairro, uf, cidade;
+        public CardView cardView;
         //final TextView cod_romaneio;
 
         public MyViewHolder(View itemView) {
