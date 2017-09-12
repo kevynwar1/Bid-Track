@@ -13,6 +13,7 @@
     <string name="menu_drw_sync">Sincronização</string>
     <string name="menu_drw_ocorr">Ocorrências</string>
     <string name="menu_drw_msg">Mensagens</string>
+    <string name="menu_drw_oferta">Ofertas</string>
 
     <!--Titles / SubTitles-->
     <string name="app_title_main">Main Fragment</string>

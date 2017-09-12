@@ -21,5 +21,10 @@
             android:id="@+id/nav_msg"
             android:icon="@drawable/ic_email_black_18dp"
             android:title="@string/menu_drw_msg" />
+
+        <item
+            android:id="@+id/nav_oferta"
+            android:icon="@drawable/ic_email_black_18dp"
+            android:title="@string/menu_drw_oferta" />
     </group>
 </menu>
