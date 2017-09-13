@@ -7,10 +7,7 @@ class Entrega_basic extends CI_Model {
 	public $destinatario;
 	public $status_entrega;
 	public $peso_carga;
-	public $imagem;
 	public $nota_fiscal;
-	public $finalizado;
-	public $situacao;
 
 	function __construct() {
 		parent::__construct();
@@ -38,16 +35,7 @@ class Entrega_basic extends CI_Model {
 	public function getPesoCarga() { return $this->peso_carga; }
 	public function setPesoCarga($peso_carga) { $this->peso_carga = $peso_carga; }
 
-	public function getImagem() { return $this->imagem; }
-	public function setImagem($imagem) { $this->imagem = $imagem; }
-
 	public function getNotaFiscal() { return $this->nota_fiscal; }
 	public function setNotaFiscal($nota_fiscal) { $this->nota_fiscal = $nota_fiscal; }
-
-	public function getFinalizado() { return $this->finalizado; }
-	public function setFinalizado($finalizado) { $this->finalizado = $finalizado; }
-
-	public function getSituacao() { return $this->situacao; }
-	public function setSituacao($situacao) { $this->situacao = $situacao; }
 }
 ?>

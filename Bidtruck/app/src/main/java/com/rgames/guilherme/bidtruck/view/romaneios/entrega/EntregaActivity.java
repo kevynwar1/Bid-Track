@@ -11,9 +11,12 @@ import android.widget.FrameLayout;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
+
+import java.util.List;
 
 public class EntregaActivity extends AppCompatActivity {
 
@@ -70,7 +73,7 @@ public class EntregaActivity extends AppCompatActivity {
     }
 
     private void initList() {
-        new AsyncTask<Void, Void, Romaneio>() {
+        new AsyncTask<Void, Void, List<Entrega>>() {
             @Override
             protected void onPreExecute() {
                 try {
@@ -81,20 +84,21 @@ public class EntregaActivity extends AppCompatActivity {
             }
 
             @Override
-            protected Romaneio doInBackground(Void... String) {
+            protected List<Entrega> doInBackground(Void... String) {
                 Facade facade = new Facade(EntregaActivity.this);
                 try {
-                    mRomaneio.setEntregaList(facade.selectEntrega());
+                    return facade.selectEntrega();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return mRomaneio;
+                return null;
             }
 
             @Override
-            protected void onPostExecute(Romaneio romaneio) {
+            protected void onPostExecute(List<Entrega> entregas) {
                 try {
-                    initRecyclerView(romaneio);
+                    if (entregas == null) throw new NullPointerException("Lista de entregas nullo");
+                    initRecyclerView(entregas);
                     finishProgressBar();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -103,10 +107,11 @@ public class EntregaActivity extends AppCompatActivity {
         }.execute();
     }
 
-    private void initRecyclerView(Romaneio romaneio) throws Exception {
+    private void initRecyclerView(List<Entrega> entregas) throws Exception {
         RecyclerView r = (RecyclerView) findViewById(R.id.recyclerview);
         r.setLayoutManager(new LinearLayoutManager(this));
-        r.setAdapter(new AdapterRecyclerDelivery(romaneio, this));
+        mRomaneio.setEntregaList(entregas);
+        r.setAdapter(new AdapterRecyclerDelivery(mRomaneio, this));
     }
 
     private void initProgressBar() throws ClassCastException, NullPointerException {

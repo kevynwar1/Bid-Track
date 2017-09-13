@@ -23,6 +23,7 @@ class Veiculo_model extends CI_Model {
 				$veiculo->getEmpresa()->setCodigo($row->cod_empresa);
 				$veiculo->getMotorista()->setCodigo($row->cod_motorista);
 				$veiculo->getTipoVeiculo()->setCodigo($row->cod_tipo_veiculo);
+				$veiculo->setModelo($row->modelo);
 				$veiculo->setPlaca($row->placa);
 				$veiculo->setChassi($row->chassi);
 				$veiculo->setProprio($row->proprio);

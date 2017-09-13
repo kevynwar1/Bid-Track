@@ -22,7 +22,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             if (getIntent().getExtras() != null) {
                 mEntrega = getIntent().getExtras().getParcelable(Entrega.PARCEL);
                 initToolbar();
-                initRecyclerView();
+//                initRecyclerView();
             } else {
                 onBackPressed();
                 throw new NullPointerException("Romaneio nulo.");

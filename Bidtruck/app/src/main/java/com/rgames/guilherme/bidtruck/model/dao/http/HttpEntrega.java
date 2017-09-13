@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 
@@ -22,19 +24,35 @@ import java.util.List;
 
 public class HttpEntrega extends HttpBase<Entrega> {
     private Context mContext;
+    Facade mFacade;
+    private Integer id_motorista_entrega;
 
     public HttpEntrega(Context context) {
         mContext = context;
     }
 
-    public List<Entrega> select() {
+    public List<Entrega> select() throws Exception {
         List<Entrega> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
+
+
+
             try {
-                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY_FOR_DRIVER, HttpMethods.GET, false, true, "");
-                list = super.select(connection, Entrega.class);
-                //pode ser redundante, se houver erro tira :3
-                connection.disconnect();
+
+
+                    mFacade = new Facade(mContext);
+
+                    Motorista driver = mFacade.isLogged();
+                    this.id_motorista_entrega = driver.getCodigo();
+
+                    if (id_motorista_entrega > 0 && !id_motorista_entrega.equals("")) {
+                        HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY_FOR_DRIVER, HttpMethods.GET, false, true, String.valueOf(id_motorista_entrega));
+                        list = super.select(connection, Entrega.class);
+                        //pode ser redundante, se houver erro tira :3
+                        connection.disconnect();
+                    }
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {

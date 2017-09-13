@@ -38,6 +38,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_delivery">DeliveryActivity</string>
     <string name="title_activity_occurrence">OccurrenceActivity</string>
+    <string name="titulo_romaneio">Romaneios</string>
 
 
 </resources>

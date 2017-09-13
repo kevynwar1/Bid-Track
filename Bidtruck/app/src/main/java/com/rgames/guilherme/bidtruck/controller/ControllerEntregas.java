@@ -22,7 +22,7 @@ public class ControllerEntregas {
         mContext = context;
     }
 
-    public List<Entrega> select() {
+    public List<Entrega> select() throws Exception {
         isConnect();
         if (httpEntrega == null) httpEntrega = new HttpEntrega(mContext);
         return httpEntrega.select();

@@ -6,6 +6,7 @@ import android.content.Context;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 
 import java.util.List;
 
@@ -17,13 +18,15 @@ public interface IFacade {
     boolean isConnected(Context context);
 
     /*Controller romaneio*/
-    List<Romaneio> selectRomaneio() throws Exception;
+    List<Romaneio> selectRomaneio(Motorista motorista) throws Exception;
 
     /*Controller entrega*/
     List<Entrega> selectEntrega() throws Exception;
 
     /*Controller login*/
     Motorista login(String email, String senha) throws Exception;
+
+    Usuario login(String email) throws Exception;
 
     Motorista isLogged() throws Exception;
 

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -43,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (chk && (motorista != null && motorista.getCodigo() > 0))
                     initMainActivity(motorista);
                 else initViews();
+
             } else
                 initViews();
         } catch (Exception e) {
@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     if (motorista == null) {
                                         Toast.makeText(LoginActivity.this, "Falha de autenticação, email e senha incorretos.", Toast.LENGTH_SHORT).show();
+                                        finishProgressBar();
                                     } else {
                                         initMainActivity(motorista);
                                     }

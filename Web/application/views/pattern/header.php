@@ -22,6 +22,15 @@
 	<link href="<?= base_url(); ?>assets/css/demo.css" rel="stylesheet" />
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons|Work+Sans' rel='stylesheet' type='text/css'>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		<?php if(!is_null($this->session->flashdata('success'))) { ?>
+			demo.showNotification('bottom', 'right', '<?= $this->session->flashdata('success') ?>');
+		<?php } else if(!is_null($this->session->flashdata('error'))) { ?>
+			demo.showNotification('bottom', 'right', '<?= $this->session->flashdata('error') ?>');
+		<?php } ?>
+	});
+	</script>
 
 	<style type="text/css">
 		select {
@@ -31,6 +40,16 @@
 			width: 100%;
 		}
 
+		.status {
+			text-transform: uppercase;
+			padding: 5px 10px 5px 10px;
+			border-radius: 2px;
+			font-size: 10.5px;
+			box-shadow: 0 5px 5px rgba(0,0,0, 0.1);
+			cursor: default;
+			transition: 0.3s;
+		}
+		
 		.btn-pattern {
 			font-size: 12px;
 			text-transform: uppercase;
@@ -41,10 +60,12 @@
 		.btn-pattern:hover { color: #555; }
 
 		.option { padding: 3px; }
+		.option-undefined { padding: 3px; color: #999 !important; }
 		.lm15 { margin-top: -15px; }
 		.desc { color: rgb(154, 154, 154); text-transform: uppercase; }
 		.th-desc { cursor: pointer; transition: 0.3s; }
 		.f10 { font-size: 10px; }
+		.f11 { font-size: 11px; }
 		.f12 { font-size: 12px; }
 		.upper { text-transform: uppercase; }
 		.collapse-menu {
@@ -56,6 +77,15 @@
 
 		.collapse-menu:hover { color: #000 !important; }
 		th { padding-bottom: 15px !important; }
+		.gray { color: #999; }
+		.panel-heading { background: none !important; }
+		.panel-title { font-size: 14px !important; }
+
+		.option_none { display: none; }
+		.adp-placemark tr { border-radius: 5px !important; }
+		.adp-legal { display: none !important; }
+		.adp-text { padding: 10px !important;}
+		footer { display: none !important; }
 	</style>
 </head>
 <body>
@@ -92,7 +122,7 @@
 					</div>
 				</li>
 				<li class="active-pro">
-					<a href="<?= base_url().'ws/empresa/' ?>" target="_blank">
+					<a href="#' ?>" target="_blank">
 						<i class="material-icons">message</i>
 						<p>Mensagem</p>
 					</a>
@@ -152,21 +182,26 @@
 					</ul>
 					<?php
 						if($page == 'romaneio'):
-							if($page_parameter != 'add' && $page_parameter != 'integracao'):
+							if($page_parameter != 'add' && $page_parameter != 'integracao' && $page_parameter != 'visualizar' && $page_parameter != 'editar'):
 					?>
-					<form class="navbar-form navbar-right" role="search">
-						<select id="opcao" style="display: none" class="form-control">
-							<option value="romaneio">Romaneio</option>
-							<option value="estabelecimento">Estabelecimento</option>
-							<option value="transportadora">Transportadora</option>
-							<option value="motorista">Motorista</option>
-							<option value="nota">Nota Fiscal</option>
-						</select>
+					<form action="<?= base_url().'romaneio/s/' ?>" method="get" class="navbar-form navbar-right" role="search">
 						<div class="form-group is-empty">
-							<input type="text" class="form-control" id="procurar" placeholder="Procurar" style="width: 250px; padding-left: 10px">
+							<input type="text" class="form-control" name="procurar" placeholder="Procurar" style="padding-left: 10px" autocomplete="off" value="<?= $this->input->get('procurar') ?>" ng-model="procurar" ng-minlength="3" required>
 							<span class="material-input"></span>
 						</div>
-						<button type="submit" class="btn btn-white btn-round btn-just-icon">
+	<select id="filtro" name="filtro" class="form-control" ng-disabled="!procurar" required>
+		<option value="" disabled selected>Filtro</option>
+		<option value="destinatario">Destinatário</option>
+		<option value="motorista" <?= ($this->input->get('filtro') == 'motorista')? 'selected':'' ?>>Motorista</option>
+		<option value="nota">Nota Fiscal</option>
+		<option value="romaneio" <?= ($this->input->get('filtro') == 'romaneio')? 'selected':'' ?>>
+			Romaneio
+		</option>
+		<option value="transportadora" <?= ($this->input->get('filtro') == 'transportadora')? 'selected':'' ?>>
+			Transportadora
+		</option>
+	</select>
+						<button type="submit" class="btn btn-white btn-round btn-just-icon" ng-disabled="!procurar">
 							<i class="material-icons">search</i><div class="ripple-container"></div>
 						</button>
 					</form>

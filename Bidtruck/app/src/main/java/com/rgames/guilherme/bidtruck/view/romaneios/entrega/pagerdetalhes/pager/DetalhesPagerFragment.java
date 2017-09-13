@@ -62,13 +62,13 @@ public class DetalhesPagerFragment extends Fragment {
     private void initViews() throws Exception {
         if (mView != null && mEntrega != null) {
             //Entrega
-            ((TextView) mView.findViewById(R.id.txtCodEntrega)).setText(String.valueOf(mEntrega.getCodigo()));
+//            ((TextView) mView.findViewById(R.id.txtCodEntrega)).setText(String.valueOf(mEntrega.getCodigo()));
             ((TextView) mView.findViewById(R.id.txtCodRomaneio)).setText(String.valueOf(mRomaneio.getCodigo()));
-            ((TextView) mView.findViewById(R.id.txtNFS)).setText("0000000-nfs");
-            ((TextView) mView.findViewById(R.id.txtSequencia)).setText("2-seq");
-            ((TextView) mView.findViewById(R.id.txtInicio)).setText("00/00/0000 00:00-inic");
-            ((TextView) mView.findViewById(R.id.txtTermino)).setText("00/00/0000 00:00-fim");
-            ((TextView) mView.findViewById(R.id.txtPeso)).setText("500kg-pes");
+            ((TextView) mView.findViewById(R.id.txtNFS)).setText(mEntrega.getNota_fiscal());
+            ((TextView) mView.findViewById(R.id.txtSequencia)).setText(String.valueOf(mEntrega.getSeq_entrega()));
+            ((TextView) mView.findViewById(R.id.txtInicio)).setText(mRomaneio.getDate_create());
+            ((TextView) mView.findViewById(R.id.txtTermino)).setText(mRomaneio.getDate_finalization());
+            ((TextView) mView.findViewById(R.id.txtPeso)).setText(String.valueOf(mEntrega.getPeso()));
             //Destinatario
             if (mEntrega.getDestinatario() != null) {
                 ((TextView) mView.findViewById(R.id.txtDestEmpresa)).setText(mEntrega.getDestinatario().getEmpresa().getRazao_social());

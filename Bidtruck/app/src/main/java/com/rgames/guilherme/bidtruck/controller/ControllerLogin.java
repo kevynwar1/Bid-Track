@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
+import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpLogin;
 
 import java.util.concurrent.ExecutionException;
@@ -70,4 +71,5 @@ public class ControllerLogin {
         editor.apply();
         editor.commit();
     }
+
 }

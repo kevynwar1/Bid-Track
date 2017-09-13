@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.model.dao.http;
 import android.content.Context;
 
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
+import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 
@@ -28,4 +29,5 @@ public class HttpLogin extends HttpBase<Motorista> {
         }
         return motorista;
     }
+
 }

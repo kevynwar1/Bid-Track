@@ -20,21 +20,21 @@ public class InitBasic {
                 , "Frete Joselico LRRTDSA", "Frete Joselico", 't', "000000000", "email@email", "1111-2222", "Joselito", "54896-585", "BA"
                 , "Augusta de Amorin", "Maranguape", "Rua Atras da Escola 101", "1001", "001Ml", 1, 2, false);
         mListDeliveries.add(new Entrega(
-                1, titulo
+                1, 0, "nota", titulo
 //                , null
                 , destinatario
                 , new StatusEntrega(0, new ArrayList<Entrega>(), new Ocorrencia(0, new ArrayList<StatusEntrega>(), new TipoOcorrencia(0, "", 's'), "", 's'), null)
                 , 0f, null, false));
     }
-
-    public void addListRomaneios(String titulo) {
-        try {
-            addListDelivery(titulo);
-            mListRomaneios.add(new Romaneio(5246, null, null, mListDeliveries, false, 's', false));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//
+//    public void addListRomaneios(String titulo) {
+//        try {
+//            addListDelivery(titulo);
+//            mListRomaneios.add(new Romaneio(5246, null, null, null, null, null, "", "", false, 's', false));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public List<Entrega> getListDelivery() {
         return mListDeliveries;

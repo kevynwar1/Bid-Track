@@ -1,7 +1,7 @@
 package com.rgames.guilherme.bidtruck.model.dao.http;
 
 import android.content.Context;
-
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
@@ -21,13 +21,15 @@ public class HttpRomaneio extends HttpBase<Romaneio> {
         mContext = context;
     }
 
-    public List<Romaneio> select() {
+    public List<Romaneio> select(Motorista motorista) throws Exception {
         List<Romaneio> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
             try {
-                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ROMANEIO_DRIVER, HttpMethods.GET, false, true, "");
-                list = super.select(connection, Romaneio.class);
-                connection.disconnect();
+                if (motorista.getCodigo() > 0) {
+                    HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ROMANEIO_DRIVER, HttpMethods.GET, false, true, String.valueOf(motorista.getCodigo()));
+                    list = super.select(connection, Romaneio.class);
+                    connection.disconnect();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {

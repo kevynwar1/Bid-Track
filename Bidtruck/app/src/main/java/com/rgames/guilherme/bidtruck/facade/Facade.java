@@ -6,9 +6,11 @@ import android.util.Log;
 import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
 import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
 import com.rgames.guilherme.bidtruck.controller.ControllerRomaneio;
+import com.rgames.guilherme.bidtruck.controller.ControllerUsuario;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpConnection;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
@@ -21,6 +23,7 @@ public class Facade implements IFacade {
     private ControllerRomaneio controllerRomaneio;
     private ControllerEntregas controllerEntregas;
     private ControllerLogin controllerLogin;
+    private ControllerUsuario controllerUsuario;
 
     public Facade(Context context) {
         mContext = context;
@@ -39,10 +42,10 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<Romaneio> selectRomaneio() throws Exception {
+    public List<Romaneio> selectRomaneio(Motorista motorista) throws Exception {
         if (controllerRomaneio == null)
             controllerRomaneio = new ControllerRomaneio(mContext);
-        return controllerRomaneio.select();
+        return controllerRomaneio.select(motorista);
     }
 
 
@@ -60,6 +63,15 @@ public class Facade implements IFacade {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
         return controllerLogin.login(email, senha);
     }
+
+    @Override
+    public Usuario login(String email) throws Exception {
+        if (!HttpConnection.isConnected(mContext))
+            throw new NullPointerException("Sem conexão");
+        if (controllerUsuario == null) controllerUsuario = new ControllerUsuario(mContext);
+        return controllerUsuario.login(email);
+    }
+
 
     @Override
     public Motorista isLogged() throws Exception {

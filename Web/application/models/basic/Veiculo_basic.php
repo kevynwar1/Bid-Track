@@ -6,6 +6,7 @@ class Veiculo_basic extends CI_Model {
 	public $empresa;
 	public $motorista;
 	public $tipo_veiculo;
+	public $modelo;
 	public $placa;
 	public $chassi;
 	public $proprio;
@@ -35,6 +36,9 @@ class Veiculo_basic extends CI_Model {
 	
 	public function getTipoVeiculo() { return $this->tipo_veiculo; }
 	public function setTipoVeiculo($tipo_veiculo) { $this->tipo_veiculo = $tipo_veiculo; }
+
+	public function getModelo() { return $this->modelo; }
+	public function setModelo($modelo) { $this->modelo = $modelo; }
 
 	public function getPlaca() { return $this->placa; }
 	public function setPlaca($placa) { $this->placa = $placa; }

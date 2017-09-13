@@ -11,10 +11,10 @@ public class Entrega implements Parcelable {
 
     public static final String PARCEL = "parcel_delivery";
     private int codigo;
-    //    private int sequence_delivery;
-//    private int NSF;
+    private int seq_entrega;
+    private String nota_fiscal;
     private String titulo;
-//    private Romaneio romaneio;
+    //    private Romaneio romaneio;
     private Destinatario destinatario;
     private StatusEntrega statusEntrega;
     private float peso;
@@ -24,8 +24,10 @@ public class Entrega implements Parcelable {
     public Entrega() {
     }
 
-    public Entrega(int codigo, String titulo, Destinatario destinatario, StatusEntrega statusEntrega, float peso, Bitmap image, boolean situacao) {
+    public Entrega(int codigo, int seq_entrega, String nota_fiscal, String titulo, Destinatario destinatario, StatusEntrega statusEntrega, float peso, Bitmap image, boolean situacao) {
         this.codigo = codigo;
+        this.seq_entrega = seq_entrega;
+        this.nota_fiscal = nota_fiscal;
         this.titulo = titulo;
 //        this.romaneio = romaneio;
         this.destinatario = destinatario;
@@ -37,6 +39,8 @@ public class Entrega implements Parcelable {
 
     protected Entrega(Parcel in) {
         codigo = in.readInt();
+        seq_entrega = in.readInt();
+        nota_fiscal = in.readString();
         titulo = in.readString();
 //        romaneio = in.readParcelable(Romaneio.class.getClassLoader());
         destinatario = in.readParcelable(Destinatario.class.getClassLoader());
@@ -48,6 +52,8 @@ public class Entrega implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(codigo);
+        dest.writeInt(seq_entrega);
+        dest.writeString(nota_fiscal);
         dest.writeString(titulo);
 //        dest.writeParcelable(romaneio, flags);
         dest.writeParcelable(destinatario, flags);
@@ -79,6 +85,22 @@ public class Entrega implements Parcelable {
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+
+    public int getSeq_entrega() {
+        return seq_entrega;
+    }
+
+    public void setSeq_entrega(int seq_entrega) {
+        this.seq_entrega = seq_entrega;
+    }
+
+    public String getNota_fiscal() {
+        return nota_fiscal;
+    }
+
+    public void setNota_fiscal(String nota_fiscal) {
+        this.nota_fiscal = nota_fiscal;
     }
 
     public String getTitulo() {
