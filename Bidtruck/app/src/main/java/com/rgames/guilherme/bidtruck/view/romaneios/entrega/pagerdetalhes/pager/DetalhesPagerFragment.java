@@ -62,7 +62,7 @@ public class DetalhesPagerFragment extends Fragment {
     private void initViews() throws Exception {
         if (mView != null && mEntrega != null) {
             //Entrega
-            ((TextView) mView.findViewById(R.id.txtCodEntrega)).setText(String.valueOf(mEntrega.getCodigo()));
+//            ((TextView) mView.findViewById(R.id.txtCodEntrega)).setText(String.valueOf(mEntrega.getCodigo()));
             ((TextView) mView.findViewById(R.id.txtCodRomaneio)).setText(String.valueOf(mRomaneio.getCodigo()));
             ((TextView) mView.findViewById(R.id.txtNFS)).setText(mEntrega.getNota_fiscal());
             ((TextView) mView.findViewById(R.id.txtSequencia)).setText(String.valueOf(mEntrega.getSeq_entrega()));

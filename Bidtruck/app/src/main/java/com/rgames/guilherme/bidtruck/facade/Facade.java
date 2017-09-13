@@ -41,10 +41,10 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<Romaneio> selectRomaneio() throws Exception {
+    public List<Romaneio> selectRomaneio(Motorista motorista) throws Exception {
         if (controllerRomaneio == null)
             controllerRomaneio = new ControllerRomaneio(mContext);
-        return controllerRomaneio.select();
+        return controllerRomaneio.select(motorista);
     }
 
 

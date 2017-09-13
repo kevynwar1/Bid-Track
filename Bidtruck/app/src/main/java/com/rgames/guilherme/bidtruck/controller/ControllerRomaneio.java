@@ -2,6 +2,7 @@ package com.rgames.guilherme.bidtruck.controller;
 
 import android.content.Context;
 
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpConnection;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
@@ -20,10 +21,13 @@ public class ControllerRomaneio {
         mContext = context;
     }
 
-    public List<Romaneio> select() throws Exception {
+    public List<Romaneio> select(Motorista motorista) throws Exception {
         isConnect();
+        if (motorista == null) throw new NullPointerException("Motorista null");
+        if (motorista.getCodigo() <= 0)
+            throw new IllegalArgumentException("Motorista não esta conectado");
         if (httpRomaneio == null) httpRomaneio = new HttpRomaneio(mContext);
-        return httpRomaneio.select();
+        return httpRomaneio.select(motorista);
     }
 
     private void isConnect() {

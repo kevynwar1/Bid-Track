@@ -16,6 +16,7 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+
 import java.util.List;
 
 /**
@@ -80,7 +81,7 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected List<Romaneio> doInBackground(Void... voids) {
                 try {
-                    return mFacade.selectRomaneio();
+                    return mFacade.selectRomaneio(mFacade.isLogged());
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;

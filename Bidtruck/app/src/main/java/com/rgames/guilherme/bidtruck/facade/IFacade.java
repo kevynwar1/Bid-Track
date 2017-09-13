@@ -18,7 +18,7 @@ public interface IFacade {
     boolean isConnected(Context context);
 
     /*Controller romaneio*/
-    List<Romaneio> selectRomaneio() throws Exception;
+    List<Romaneio> selectRomaneio(Motorista motorista) throws Exception;
 
     /*Controller entrega*/
     List<Entrega> selectEntrega() throws Exception;
