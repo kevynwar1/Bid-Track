@@ -7,6 +7,7 @@ public enum URLDictionary {
     URL_COMPANY("/empresa"),
     URL_DRIVER("/motorista"),
     URL_DELIVERY("/entrega"),
+    URL_OFFER("/romaneio_ofertavel/"),
     URL_LOGIN("/login"),
     URL_USER("/usuario"),
     URL_DELIVERY_DRIVER("/entrega_motorista/"),
