@@ -6,6 +6,7 @@ import android.content.Context;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public interface IFacade {
 
     /*Controller login*/
     Motorista login(String email, String senha) throws Exception;
+
+    Usuario login(String email) throws Exception;
 
     Motorista isLogged() throws Exception;
 

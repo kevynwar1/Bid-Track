@@ -25,7 +25,7 @@ public class SplashActivity extends AwesomeSplash {
 
 
         //Customize Logo
-        configSplash.setLogoSplash(R.drawable.bid);
+        configSplash.setLogoSplash(R.drawable.kevyn);
         configSplash.setAnimLogoSplashDuration(1000);
         configSplash.setAnimLogoSplashTechnique(Techniques.DropOut);
 
@@ -43,7 +43,7 @@ public class SplashActivity extends AwesomeSplash {
 
         //Customize Title
         configSplash.setTitleSplash("Bid & Track");
-        configSplash.setTitleTextColor(R.color.colorPrimary);
+        configSplash.setTitleTextColor(R.color.transparent);
         configSplash.setTitleTextSize(50f); //float value
         configSplash.setAnimTitleDuration(1000);
         configSplash.setAnimTitleTechnique(Techniques.FlipInX);
