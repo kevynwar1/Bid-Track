@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/txtRazao"
-            android:layout_width="250dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -52,12 +52,12 @@
         <View
             android:id="@+id/view6"
             android:layout_width="wrap_content"
-            android:layout_height="7dp"
+            android:layout_height="2dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtSequencia"
             android:layout_marginTop="2dp"
-            android:background="#D01E27" />
+            android:background="#FFFFFF" />
 
         <TextView
             android:id="@+id/txtBairro"
@@ -90,6 +90,7 @@
             android:layout_alignBottom="@+id/txtCidade"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="24dp"
+            android:layout_marginRight="5dp"
             android:padding="10dp"
             android:text=""
             android:textColor="#FFFFFF"
