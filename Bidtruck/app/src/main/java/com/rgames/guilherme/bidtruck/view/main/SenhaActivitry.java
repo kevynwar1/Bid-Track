@@ -102,7 +102,7 @@ public class SenhaActivitry extends AppCompatActivity {
                 @Override
                 protected void onPostExecute(Usuario result) {
                     dialog.dismiss();
-                    if (result.getSenha() != null && result.getPerfil() == "M") {
+                    if (result.getSenha() != null) {
                         EnviarM envia = new EnviarM(result.getSenha().toString());
                         envia.execute();
 
