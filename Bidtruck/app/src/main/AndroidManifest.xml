@@ -30,6 +30,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.main.MainActivity"
+            android:label="@string/titulo_romaneio"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.main.LoginActivity"

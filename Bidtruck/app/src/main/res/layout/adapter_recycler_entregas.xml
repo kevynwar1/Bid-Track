@@ -14,12 +14,13 @@
     app:cardCornerRadius="10dp"
 
     android:id="@+id/cardview"
-    app:cardBackgroundColor="#512DA8">
+  >
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/card_views">
 
 
         <TextView
@@ -57,7 +58,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtSequencia"
             android:layout_marginTop="2dp"
-            android:background="#00BCD4" />
+            android:background="#D01E27" />
 
         <TextView
             android:id="@+id/txtBairro"
