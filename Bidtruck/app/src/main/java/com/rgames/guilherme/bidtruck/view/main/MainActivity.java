@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
             case R.id.action_logout:
                 try {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try {
                                         Facade facade = new Facade(MainActivity.this);
-                                      //  facade.setLogged(new Motorista(0,0));
+                                        facade.setLogged(new Motorista(0,0));
                                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                         finish();
                                     } catch (Exception e) {

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,40 +37,16 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_entregas, parent, false));
-
-        // View v = LayoutInflater.from(mContext).inflate(R.layout.adapter_recycler_entregas, parent, false);
-
-        // EntregasViewHolder holder = new EntregasViewHolder(v);
-
-        // return holder;
-
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         try {
-
-
-            /*Entrega entrega = mListEntrega.get(position);
-            Destinatario destiny = new Destinatario();
-
-
-            holder.seq_entrega.setText(entrega.getCodigo());
-            holder.razao_social.setText(destiny.getRazao_social());
-            holder.bairro.setText(destiny.getBairro());
-            holder.cidade.setText(destiny.getCidade());
-            holder.uf.setText(destiny.getUF());*/
-
-
-            //holder.titulo.setText(mListEntrega.get(holder.getAdapterPosition()).getTitulo());
-
-
             holder.codigo.setText(String.valueOf(mListEntrega.get(holder.getAdapterPosition()).getCodigo()));
             holder.razao_social.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getRazao_social());
             holder.bairro.setText((mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getBairro()));
             holder.cidade.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getCidade());
             holder.uf.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getUF());
-            //holder.status.setText((CharSequence) mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega());
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
