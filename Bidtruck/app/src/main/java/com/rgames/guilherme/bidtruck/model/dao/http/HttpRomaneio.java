@@ -1,10 +1,15 @@
 package com.rgames.guilherme.bidtruck.model.dao.http;
 
 import android.content.Context;
+import android.widget.Toast;
 
+import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
+import com.rgames.guilherme.bidtruck.facade.Facade;
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
+import com.rgames.guilherme.bidtruck.view.main.LoginActivity;
 
 import org.json.JSONException;
 
@@ -16,18 +21,36 @@ import java.util.List;
 public class HttpRomaneio extends HttpBase<Romaneio> {
 
     private Context mContext;
+    Facade mFacade;
+    private Integer id_motorista;
+
+
+
 
     public HttpRomaneio(Context context) {
         mContext = context;
     }
 
-    public List<Romaneio> select() {
+
+
+
+    public List<Romaneio> select() throws Exception {
         List<Romaneio> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
             try {
-                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ROMANEIO_DRIVER, HttpMethods.GET, false, true, "");
-                list = super.select(connection, Romaneio.class);
-                connection.disconnect();
+
+                    mFacade = new Facade(mContext);
+
+                          Motorista driver = mFacade.isLogged();
+                          this.id_motorista = driver.getCodigo();
+
+                if (id_motorista > 0 && !id_motorista.equals("")){
+                    HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ROMANEIO_DRIVER, HttpMethods.GET, false, true, String.valueOf(id_motorista));
+                    list = super.select(connection, Romaneio.class);
+                    connection.disconnect();
+
+                    }
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {

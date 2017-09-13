@@ -20,7 +20,7 @@ public class ControllerRomaneio {
         mContext = context;
     }
 
-    public List<Romaneio> select() {
+    public List<Romaneio> select() throws Exception {
         isConnect();
         if (httpRomaneio == null) httpRomaneio = new HttpRomaneio(mContext);
         return httpRomaneio.select();

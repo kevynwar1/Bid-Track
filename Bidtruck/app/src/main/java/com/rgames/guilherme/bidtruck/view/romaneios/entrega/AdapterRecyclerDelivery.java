@@ -71,6 +71,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             holder.bairro.setText((mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getBairro()));
             holder.cidade.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getCidade());
             holder.uf.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getUF());
+            //holder.status.setText((CharSequence) mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega());
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,7 +100,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView codigo, titulo, seq_entrega, razao_social, bairro, uf, cidade;
+        public TextView codigo, titulo, seq_entrega, razao_social, bairro, uf, cidade, status;
         public CardView cardView;
         //final TextView cod_romaneio;
 
@@ -112,7 +113,10 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             bairro = itemView.findViewById(R.id.txtBairro);
             cidade = itemView.findViewById(R.id.txtCidade);
             uf = itemView.findViewById(R.id.txtUF);
+           // status = itemView.findViewById(R.id.txtStatus);
             cardView = itemView.findViewById(R.id.cardview);
+
+
         }
     }
 }
