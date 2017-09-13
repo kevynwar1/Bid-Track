@@ -15,8 +15,8 @@ public class Romaneio implements Parcelable {
     private List<Entrega> entregaList;
     private StatusRomaneio status_romaneio;
     private Veiculo veiculo;
-    //    private Calendar date_create;
-    //    private Calendar date_finalization;
+    private String date_create;
+    private String date_finalization;
     private boolean ofertar_viagem;
     private char finalized;
     private boolean situation;
@@ -31,15 +31,19 @@ public class Romaneio implements Parcelable {
                 .append(" Estabelecimento: ").append(getEstabelecimento().getCodigo())
                 .append(" Motorista: ").append(getMotorista().getCodigo())
                 .append(" Qtd de entregas: ").append((entregaList != null) ? entregaList.size() : "null")
-                .append(" Status do romaneio: ").append(getStatusRomaneio().getCodigo())
+                .append(" Status do romaneio: ").append(getStatus_romaneio().getCodigo())
                 .append(" Ofertar? ").append(isOfertar_viagem()).toString();
     }
 
-    public Romaneio(int id, Estabelecimento estabelecimento, Motorista motorista, List<Entrega> entregaList, boolean ofertar_viagem, char finalized, boolean situation) {
+    public Romaneio(int id, Estabelecimento estabelecimento, Motorista motorista, List<Entrega> entregaList, Veiculo veiculo, StatusRomaneio statusRomaneio, String date_create, String date_finalization, boolean ofertar_viagem, char finalized, boolean situation) {
         this.codigo = id;
         this.estabelecimento = estabelecimento;
         this.motorista = motorista;
         this.entregaList = entregaList;
+        this.veiculo = veiculo;
+        this.status_romaneio = statusRomaneio;
+        this.date_create = date_create;
+        this.date_finalization = date_finalization;
         this.ofertar_viagem = ofertar_viagem;
         this.situation = situation;
         this.finalized = finalized;
@@ -50,6 +54,9 @@ public class Romaneio implements Parcelable {
         estabelecimento = in.readParcelable(Estabelecimento.class.getClassLoader());
         motorista = in.readParcelable(Motorista.class.getClassLoader());
         status_romaneio = in.readParcelable(StatusRomaneio.class.getClassLoader());
+        veiculo = in.readParcelable(Veiculo.class.getClassLoader());
+        date_create = in.readString();
+        date_finalization = in.readString();
         setEntregaList(new ArrayList<Entrega>());
         in.readList(getEntregaList(), Entrega.class.getClassLoader());
         ofertar_viagem = in.readByte() > 0;
@@ -80,6 +87,9 @@ public class Romaneio implements Parcelable {
         parcel.writeParcelable(estabelecimento, i);
         parcel.writeParcelable(motorista, i);
         parcel.writeParcelable(status_romaneio, i);
+        parcel.writeParcelable(veiculo, i);
+        parcel.writeString(date_create);
+        parcel.writeString(date_finalization);
         parcel.writeList(entregaList);
         parcel.writeByte((byte) (ofertar_viagem ? 1 : 0));
         //parcel.writeCharArray(new char[]{finalized});
@@ -118,6 +128,7 @@ public class Romaneio implements Parcelable {
         this.ofertar_viagem = ofertar_viagem;
     }
 
+
     public char getFinalized() {
         return finalized;
     }
@@ -142,11 +153,35 @@ public class Romaneio implements Parcelable {
         this.entregaList = entregaList;
     }
 
-    public StatusRomaneio getStatusRomaneio() {
+    public StatusRomaneio getStatus_romaneio() {
         return status_romaneio;
     }
 
-    public void setStatusRomaneio(StatusRomaneio statusRomaneio) {
-        this.status_romaneio = statusRomaneio;
+    public void setStatus_romaneio(StatusRomaneio status_romaneio) {
+        this.status_romaneio = status_romaneio;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public String getDate_create() {
+        return date_create;
+    }
+
+    public void setDate_create(String date_create) {
+        this.date_create = date_create;
+    }
+
+    public String getDate_finalization() {
+        return date_finalization;
+    }
+
+    public void setDate_finalization(String date_finalization) {
+        this.date_finalization = date_finalization;
     }
 }

@@ -41,5 +41,8 @@
         <activity
             android:name=".view.main.SenhaActivitry"
             android:theme="@style/FullScreen" />
+        <activity
+        android:name=".view.romaneios.entrega.pagerdetalhes.pager.ocorrencia.OcorrenciaActivity"
+        android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>
