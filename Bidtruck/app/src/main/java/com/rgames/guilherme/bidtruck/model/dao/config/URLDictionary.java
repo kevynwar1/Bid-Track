@@ -8,6 +8,7 @@ public enum URLDictionary {
     URL_DRIVER("/motorista"),
     URL_DELIVERY("/entrega"),
     URL_LOGIN("/login"),
+    URL_USER("/usuario"),
     URL_DELIVERY_DRIVER("/entrega_motorista/"),
     URL_ROMANEIO_DRIVER("/romaneio_motorista/"),
     URL_DELIVERY_FOR_DRIVER("/entrega_motorista/");

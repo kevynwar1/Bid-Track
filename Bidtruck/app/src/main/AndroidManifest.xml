@@ -9,9 +9,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_bid"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_bid"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -30,6 +30,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.main.MainActivity"
+            android:label="@string/titulo_romaneio"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.main.LoginActivity"

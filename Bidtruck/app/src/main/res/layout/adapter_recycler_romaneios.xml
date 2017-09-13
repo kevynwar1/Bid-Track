@@ -13,7 +13,7 @@
     android:elevation="20dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="10dp"
-    app:cardBackgroundColor="#512DA8">
+    app:cardBackgroundColor="@color/colorPrimary">
 
     <TextView
         android:id="@+id/titulo"
