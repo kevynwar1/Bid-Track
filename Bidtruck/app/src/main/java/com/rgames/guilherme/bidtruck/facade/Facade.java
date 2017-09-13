@@ -1,6 +1,7 @@
 package com.rgames.guilherme.bidtruck.facade;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
 import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
@@ -63,6 +64,11 @@ public class Facade implements IFacade {
     @Override
     public Motorista isLogged() throws Exception {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
+        if(controllerLogin.isLogged().getCodigo() == 0){
+            Log.i("Motorista","veio nulo");
+        }else{
+            Log.i("Motorista", ""+controllerLogin.isLogged().getEmpresa().getCodigo());
+        }
         return controllerLogin.isLogged();
     }
 

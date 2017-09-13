@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             if (mFacade.isConnected(LoginActivity.this)) {
                 if (chk && (motorista != null && motorista.getCodigo() > 0))
                     initMainActivity(motorista);
+                else initViews();
             } else
                 initViews();
         } catch (Exception e) {
@@ -73,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
+                    Log.i("teste", "Login");
                     if (mFacade.isConnected(LoginActivity.this))
                         new AsyncTask<Void, Void, Motorista>() {
                             String email;
