@@ -13,6 +13,8 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 
+import org.json.JSONObject;
+
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -89,6 +91,7 @@ public class SenhaActivitry extends AppCompatActivity {
 
                     try {
                         return mFacade.login(rec);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -99,10 +102,12 @@ public class SenhaActivitry extends AppCompatActivity {
                 @Override
                 protected void onPostExecute(Usuario result) {
                     dialog.dismiss();
-                    if (result.getSenha() != null) {
-                        EnviarM envia = new EnviarM();
+                    if (result.getSenha() != null && result.getPerfil() == "M") {
+                        EnviarM envia = new EnviarM(result.getSenha().toString());
                         envia.execute();
 
+                    } else {
+                        Toast.makeText(SenhaActivitry.this, "Email Invalido", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -112,6 +117,12 @@ public class SenhaActivitry extends AppCompatActivity {
 
     class EnviarM extends AsyncTask<String, Void, String> {
 
+        private String stringss;
+
+        public EnviarM(String s) {
+            stringss = s;
+        }
+
         @Override
         protected String doInBackground(String... strings) {
 
@@ -119,8 +130,8 @@ public class SenhaActivitry extends AppCompatActivity {
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress("kevynh48@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
-                message.setSubject(subject);
-                message.setContent(textMessage, "text/html; charset=utf-8");
+                message.setSubject("Recuperação de Senha");
+                message.setContent("Sua senha é :" + stringss, "text/html; charset=utf-8");
                 Transport.send(message);
             } catch (MessagingException e) {
                 e.printStackTrace();
