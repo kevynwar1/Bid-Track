@@ -12,12 +12,12 @@ public class StatusEntrega implements Parcelable {
     private int codigo;
     private Ocorrencia ocorrencia;
     private List<Entrega> entregaList;
-    private Calendar date;
+    private String date;
 
     public StatusEntrega() {
     }
 
-    public StatusEntrega(int codigo, List<Entrega> entregaList, Ocorrencia ocorrencia, Calendar date) {
+    public StatusEntrega(int codigo, List<Entrega> entregaList, Ocorrencia ocorrencia, String date) {
         this.codigo = codigo;
         this.ocorrencia = ocorrencia;
         this.entregaList = entregaList;
@@ -30,9 +30,7 @@ public class StatusEntrega implements Parcelable {
         //ta bugando, reolver dps error: Unmarshalling unknown type code 115 at offset 820
 //        setEntregaList(new ArrayList<Entrega>());
 //        in.readList(getEntregaList(), Entrega.class.getClassLoader());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            date = (Calendar) in.readSerializable();
-        }
+        date = in.readString();
     }
 
     public static final Creator<StatusEntrega> CREATOR = new Creator<StatusEntrega>() {
@@ -57,11 +55,7 @@ public class StatusEntrega implements Parcelable {
         parcel.writeInt(codigo);
         parcel.writeParcelable(ocorrencia, i);
 //        parcel.writeList(entregaList);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //Requer a api na versao 24
-            //usar o getMilles tbm requer a 24
-            parcel.writeSerializable(date);
-        }
+        parcel.writeString(date);
     }
 
     public int getCodigo() {
@@ -80,11 +74,11 @@ public class StatusEntrega implements Parcelable {
         this.ocorrencia = ocorrencia;
     }
 
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
