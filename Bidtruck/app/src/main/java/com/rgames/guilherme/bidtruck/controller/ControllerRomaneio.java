@@ -5,6 +5,7 @@ import android.content.Context;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpConnection;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ControllerRomaneio {
     private Context mContext;
     private HttpRomaneio httpRomaneio;
+    private HttpOferta httpOferta;
 
     public ControllerRomaneio(Context context) {
         mContext = context;
@@ -28,6 +30,15 @@ public class ControllerRomaneio {
             throw new IllegalArgumentException("Motorista não esta conectado");
         if (httpRomaneio == null) httpRomaneio = new HttpRomaneio(mContext);
         return httpRomaneio.select(motorista);
+    }
+
+    public List<Romaneio> selectOffers(Motorista motorista) throws Exception {
+        isConnect();
+        if (motorista == null) throw new NullPointerException("Motorista null");
+        if (motorista.getCodigo() <= 0)
+            throw new IllegalArgumentException("Motorista não esta conectado");
+        if (httpOferta == null) httpOferta = new HttpOferta(mContext);
+        return httpOferta.loadOffers(motorista.getEmpresa().getCodigo(), motorista.getCodigo());
     }
 
     private void isConnect() {

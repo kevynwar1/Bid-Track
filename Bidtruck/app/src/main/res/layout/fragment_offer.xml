@@ -4,9 +4,15 @@
     android:layout_height="match_parent"
     tools:context="com.rgames.guilherme.bidtruck.view.oferta.OfferFragment">
 
+    <FrameLayout
+        android:id="@+id/frame_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/listViewOffers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>

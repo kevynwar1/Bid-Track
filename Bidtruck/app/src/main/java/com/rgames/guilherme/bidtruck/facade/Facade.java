@@ -48,6 +48,12 @@ public class Facade implements IFacade {
         return controllerRomaneio.select(motorista);
     }
 
+    @Override
+    public List<Romaneio> selectRomaneioOfertado(Motorista motorista) throws Exception {
+        if (controllerRomaneio == null) controllerRomaneio = new ControllerRomaneio(mContext);
+        return controllerRomaneio.selectOffers(motorista);
+    }
+
 
     public List<Entrega> selectEntrega() throws Exception {
         if (controllerEntregas == null)
@@ -76,11 +82,6 @@ public class Facade implements IFacade {
     @Override
     public Motorista isLogged() throws Exception {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
-        if(controllerLogin.isLogged().getCodigo() == 0){
-            Log.i("Motorista","veio nulo");
-        }else{
-            Log.i("Motorista", ""+controllerLogin.isLogged().getEmpresa().getCodigo());
-        }
         return controllerLogin.isLogged();
     }
 

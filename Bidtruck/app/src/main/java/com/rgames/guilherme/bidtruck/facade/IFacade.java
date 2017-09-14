@@ -19,6 +19,8 @@ public interface IFacade {
 
     /*Controller romaneio*/
     List<Romaneio> selectRomaneio(Motorista motorista) throws Exception;
+    List<Romaneio> selectRomaneioOfertado(Motorista motorista) throws Exception;
+
 
     /*Controller entrega*/
     List<Entrega> selectEntrega() throws Exception;
