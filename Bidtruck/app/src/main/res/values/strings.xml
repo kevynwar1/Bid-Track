@@ -18,6 +18,7 @@
     <!--Titles / SubTitles-->
     <string name="app_title_main">Main Fragment</string>
     <string name="app_title_home">Home Fragment</string>
+    <string name="title_empresa">Empresas</string>
     <string name="app_title_estudo_detalhes">Detalhes da Entrega</string>
     <string name="app_subtitle_entregas">Entregas</string>
     <!--Toast-->
