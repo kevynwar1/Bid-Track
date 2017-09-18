@@ -8,6 +8,7 @@ import android.util.Log;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
+import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -46,8 +47,15 @@ public class HttpConnection {
     }
 
     public static boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
+        if (context != null) {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            return (networkInfo != null && networkInfo.isConnected());
+        }else try {
+            throw new ContextNullException();
+        } catch (ContextNullException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

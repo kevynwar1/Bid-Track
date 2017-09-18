@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -42,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (chk && (motorista != null && motorista.getCodigo() > 0))
                     initMainActivity(motorista);
                 else initViews();
-
             } else
                 initViews();
         } catch (Exception e) {
@@ -74,11 +72,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    Log.i("teste", "Login");
                     if (mFacade.isConnected(LoginActivity.this))
                         new AsyncTask<Void, Void, Motorista>() {
                             String email;
                             String senha;
+                            String msg;
 
                             @Override
                             protected void onPreExecute() {
@@ -98,8 +96,8 @@ public class LoginActivity extends AppCompatActivity {
                             protected Motorista doInBackground(Void... strings) {
                                 try {
                                     return mFacade.login(email, senha);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                } catch (IllegalArgumentException | NullPointerException e) {
+                                    msg = e.getMessage();
                                     return null;
                                 }
                             }
@@ -109,17 +107,25 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     if (motorista == null) {
                                         Toast.makeText(LoginActivity.this, "Falha de autenticação, email e senha incorretos.", Toast.LENGTH_SHORT).show();
-                                        finishProgressBar();
+                                        ((TextView) findViewById(R.id.txtError)).setText(
+                                                (msg.equals("")) ? getString(R.string.app_err_input_dadosIncorretos) : msg);
+                                        findViewById(R.id.txtError).setVisibility(View.VISIBLE);
                                     } else {
+                                        findViewById(R.id.txtError).setVisibility(View.GONE);
                                         initMainActivity(motorista);
                                     }
+                                    finishProgressBar();
                                 } catch (Exception e) {
+                                    ((TextView) findViewById(R.id.txtError)).setText(getString(R.string.app_err_input_dadosIncorretos));
+                                    findViewById(R.id.txtError).setVisibility(View.VISIBLE);
                                     e.printStackTrace();
                                 }
                             }
                         }.execute();
                     else {
-                        Toast.makeText(LoginActivity.this, "Não foi possivel enviar seus dados, por favor verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
+                        ((TextView) findViewById(R.id.txtError)).setText(getString(R.string.app_err_exc_semConexao));
+                        findViewById(R.id.txtError).setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -132,8 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         tvSenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SenhaActivitry.class);
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, SenhaActivitry.class));
             }
         });
     }

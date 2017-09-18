@@ -7,14 +7,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 
 import java.util.List;
 
@@ -32,10 +33,9 @@ public class EntregaActivity extends AppCompatActivity {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                 initToobal();
                 initList();
-                //            initViewPager();
             } else {
+                Toast.makeText(this, getString(R.string.app_err_null_romaneio), Toast.LENGTH_SHORT).show();
                 onBackPressed();
-                throw new NullPointerException("Romaneio nulo.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,7 +97,8 @@ public class EntregaActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<Entrega> entregas) {
                 try {
-                    if (entregas == null) throw new NullPointerException("Lista de entregas nullo");
+                    if (entregas == null)
+                        emptyView(true);
                     initRecyclerView(entregas);
                     finishProgressBar();
                 } catch (Exception e) {
@@ -105,6 +106,10 @@ public class EntregaActivity extends AppCompatActivity {
                 }
             }
         }.execute();
+    }
+
+    private void emptyView(boolean isVisible) {
+        findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
     }
 
     private void initRecyclerView(List<Entrega> entregas) throws Exception {

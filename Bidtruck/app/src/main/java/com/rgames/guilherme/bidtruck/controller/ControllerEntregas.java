@@ -6,6 +6,7 @@ import android.util.Log;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpConnection;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
+import com.rgames.guilherme.bidtruck.model.errors.WithoutConnectionException;
 
 import java.util.List;
 
@@ -22,13 +23,8 @@ public class ControllerEntregas {
         mContext = context;
     }
 
-    public List<Entrega> select() throws Exception {
-        isConnect();
+    public List<Entrega> select(){
         if (httpEntrega == null) httpEntrega = new HttpEntrega(mContext);
         return httpEntrega.select();
-    }
-
-    private void isConnect() {
-        if (!HttpConnection.isConnected(mContext)) throw new NullPointerException("Sem conexão");
     }
 }

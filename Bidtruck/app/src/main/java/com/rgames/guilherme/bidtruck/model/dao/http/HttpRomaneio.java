@@ -21,7 +21,7 @@ public class HttpRomaneio extends HttpBase<Romaneio> {
         mContext = context;
     }
 
-    public List<Romaneio> select(Motorista motorista) throws Exception {
+    public List<Romaneio> select(Motorista motorista){
         List<Romaneio> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
             try {
@@ -30,9 +30,7 @@ public class HttpRomaneio extends HttpBase<Romaneio> {
                     list = super.select(connection, Romaneio.class);
                     connection.disconnect();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -47,9 +45,7 @@ public class HttpRomaneio extends HttpBase<Romaneio> {
                 connection.getOutputStream().write(String.valueOf(id).getBytes());
                 romaneioReturn = super.selectBy(connection, Romaneio.class);
                 connection.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
         }

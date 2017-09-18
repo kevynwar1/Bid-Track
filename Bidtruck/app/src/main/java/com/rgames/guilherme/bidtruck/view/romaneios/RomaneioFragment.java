@@ -11,11 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 
 import java.util.List;
 
@@ -54,7 +56,11 @@ public class RomaneioFragment extends Fragment {
         super.onResume();
         try {
             mFacade = new Facade(getActivity());
-            init();
+            if (!mFacade.isConnected(getActivity())) {
+                Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
+                emptyView(true);
+            } else
+                init();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,11 +68,12 @@ public class RomaneioFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
         return mView = inflater.inflate(R.layout.fragment_romaneio, container, false);
     }
 
-    private void init() throws Exception {
+    private void init(){
         new AsyncTask<Void, Void, List<Romaneio>>() {
             @Override
             protected void onPreExecute() {
@@ -82,7 +89,7 @@ public class RomaneioFragment extends Fragment {
             protected List<Romaneio> doInBackground(Void... voids) {
                 try {
                     return mFacade.selectRomaneio(mFacade.isLogged());
-                } catch (Exception e) {
+                } catch (MotoristaNaoConectadoException e) {
                     e.printStackTrace();
                     return null;
                 }

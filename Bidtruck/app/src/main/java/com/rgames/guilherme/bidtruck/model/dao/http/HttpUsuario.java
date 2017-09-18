@@ -20,7 +20,7 @@ public class HttpUsuario extends HttpBase<Usuario> {
         mContext = context;
     }
 
-    public Usuario login(String[] email) throws Exception {
+    public Usuario login(String[] email){
         Usuario usuario = null;
         try {
             HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_USER, HttpMethods.GET, false, true,

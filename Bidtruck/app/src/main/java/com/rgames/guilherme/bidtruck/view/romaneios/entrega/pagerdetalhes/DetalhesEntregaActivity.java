@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
@@ -31,8 +32,8 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
                 init();
                 initViewPager();
             } else {
+                Toast.makeText(this, getString(R.string.app_err_null_entrega), Toast.LENGTH_SHORT).show();
                 onBackPressed();
-                throw new NullPointerException("Entrega nula.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +50,7 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initViewPager() {
+    private void initViewPager() throws Exception {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(new AdapterViewPager(getSupportFragmentManager(), this, mRomaneio, mEntrega));
         mTabLayout = (TabLayout) findViewById(R.id.tablayout);

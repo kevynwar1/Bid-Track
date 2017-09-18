@@ -14,7 +14,9 @@ import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpConnection;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
+import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 
+import java.util.IllegalFormatException;
 import java.util.List;
 
 public class Facade implements IFacade {
@@ -42,20 +44,20 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<Romaneio> selectRomaneio(Motorista motorista) throws Exception {
+    public List<Romaneio> selectRomaneio(Motorista motorista) throws MotoristaNaoConectadoException {
         if (controllerRomaneio == null)
             controllerRomaneio = new ControllerRomaneio(mContext);
         return controllerRomaneio.select(motorista);
     }
 
     @Override
-    public List<Romaneio> selectRomaneioOfertado(Motorista motorista) throws Exception {
+    public List<Romaneio> selectRomaneioOfertado(Motorista motorista) throws MotoristaNaoConectadoException, NullPointerException {
         if (controllerRomaneio == null) controllerRomaneio = new ControllerRomaneio(mContext);
         return controllerRomaneio.selectOffers(motorista);
     }
 
 
-    public List<Entrega> selectEntrega() throws Exception {
+    public List<Entrega> selectEntrega() {
         if (controllerEntregas == null)
             controllerEntregas = new ControllerEntregas(mContext);
         return controllerEntregas.select();
@@ -63,42 +65,38 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public Motorista login(String email, String senha) throws Exception {
-        if (!HttpConnection.isConnected(mContext))
-            throw new NullPointerException("Sem conexão");
+    public Motorista login(String email, String senha) throws IllegalFormatException, NullPointerException {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
         return controllerLogin.login(email, senha);
     }
 
     @Override
-    public Usuario login(String email) throws Exception {
-        if (!HttpConnection.isConnected(mContext))
-            throw new NullPointerException("Sem conexão");
+    public Usuario login(String email) throws IllegalArgumentException, NullPointerException {
         if (controllerUsuario == null) controllerUsuario = new ControllerUsuario(mContext);
         return controllerUsuario.login(email);
     }
 
 
     @Override
-    public Motorista isLogged() throws Exception {
+    public Motorista isLogged() {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
         return controllerLogin.isLogged();
     }
 
     @Override
-    public void setLogged(Motorista motorista) throws Exception {
+    public void setLogged(Motorista motorista) throws NullPointerException {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
         controllerLogin.setLogged(motorista);
     }
 
     @Override
-    public boolean isMatenhaConectado() throws Exception {
+    public boolean isMatenhaConectado() {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
         return controllerLogin.isMatenhaConectado();
     }
 
     @Override
-    public void setMatenhaConectado(boolean isConnected) throws Exception {
+    public void setMatenhaConectado(boolean isConnected) {
         if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
         controllerLogin.setMatenhaConectado(isConnected);
     }

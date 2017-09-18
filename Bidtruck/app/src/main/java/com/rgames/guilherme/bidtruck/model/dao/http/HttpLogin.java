@@ -17,7 +17,7 @@ public class HttpLogin extends HttpBase<Motorista> {
         mContext = context;
     }
 
-    public Motorista login(String[] email, String senha) throws Exception {
+    public Motorista login(String[] email, String senha){
         Motorista motorista = null;
         try {
             HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_LOGIN, HttpMethods.GET, false, true,

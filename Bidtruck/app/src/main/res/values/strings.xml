@@ -32,6 +32,15 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!--Mensagens de erro-->
+    <string name="app_err_exc_semConexao">Conexão com a internet não foi encontrada."</string>
+    <string name="app_err_null_motorista">Os dados de autenticação não foram encontrados.</string>
+    <string name="app_err_null_destinatario">Ocorreu um erro ao tentar ler os dados do destinatario.</string>
+    <string name="app_err_null_entrega">Ocorreu um erro ao tentar ler os dados da entrega.</string>
+    <string name="app_err_null_romaneio">Ocorreu um erro ao tentar ler os dados do romaneio.</string>
+    <string name="app_err_input_email">Por favor, informe um email válido.</string>
+    <string name="app_err_input_dadosIncorretos">Os dados informados estão incorretos.</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_detalhes_estudo">DetalhesEstudoActivity</string>

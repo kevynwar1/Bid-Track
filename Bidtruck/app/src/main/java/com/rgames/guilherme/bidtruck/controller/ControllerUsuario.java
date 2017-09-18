@@ -18,12 +18,11 @@ public class ControllerUsuario {
         mContext = context;
     }
 
-    public Usuario login(String email) throws Exception {
+    public Usuario login(String email) throws IllegalArgumentException, NullPointerException{
         if (email != null) {
             String[] emailArray = email.split("@");
             if (httpUsuario == null) httpUsuario = new HttpUsuario(mContext);
             if (emailArray.length == 2 && (!emailArray[0].trim().equals("") && !emailArray[1].trim().equals(""))) {
-                Log.i("teste", emailArray[0] + " " + emailArray[1]);
                 return httpUsuario.login(emailArray);
             } else throw new IllegalArgumentException("Informe um email válido!");
         } else throw new NullPointerException("Dados não informados");

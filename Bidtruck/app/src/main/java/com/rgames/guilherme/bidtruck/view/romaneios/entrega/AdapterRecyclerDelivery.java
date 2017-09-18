@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.DetalhesEntregaActivity;
 
 
@@ -25,13 +27,13 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     private List<Entrega> mListEntrega;
     private Context mContext;
 
-    public AdapterRecyclerDelivery(Romaneio romaneio, Context context) {
+    public AdapterRecyclerDelivery(Romaneio romaneio, Context context) throws ContextNullException{
         if (romaneio != null) {
             mListEntrega = (romaneio.getEntregaList() != null) ? romaneio.getEntregaList() : new ArrayList<Entrega>();
             mRomaneio = romaneio;
-        } else throw new NullPointerException("Romaneio nulo");
+        } else Toast.makeText(context, context.getString(R.string.app_err_null_romaneio), Toast.LENGTH_SHORT).show();
         if (context != null) mContext = context;
-        else throw new NullPointerException("Contexto nulo");
+        else throw new ContextNullException();
     }
 
     @Override

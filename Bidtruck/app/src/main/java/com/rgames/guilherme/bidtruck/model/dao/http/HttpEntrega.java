@@ -31,7 +31,7 @@ public class HttpEntrega extends HttpBase<Entrega> {
         mContext = context;
     }
 
-    public List<Entrega> select() throws Exception {
+    public List<Entrega> select(){
         List<Entrega> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
 
