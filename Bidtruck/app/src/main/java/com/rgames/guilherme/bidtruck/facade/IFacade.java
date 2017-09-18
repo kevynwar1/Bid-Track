@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.facade;
 
 import android.content.Context;
 
+import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
@@ -19,11 +20,16 @@ public interface IFacade {
 
     /*Controller romaneio*/
     List<Romaneio> selectRomaneio(Motorista motorista) throws Exception;
+
     List<Romaneio> selectRomaneioOfertado(Motorista motorista) throws Exception;
 
 
     /*Controller entrega*/
     List<Entrega> selectEntrega() throws Exception;
+
+    /*Controller Empresa*/
+    List<Empresa> selectEmpresa(Motorista motorista) throws Exception;
+
 
     /*Controller login*/
     Motorista login(String email, String senha) throws Exception;

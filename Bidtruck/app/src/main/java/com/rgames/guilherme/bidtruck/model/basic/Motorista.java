@@ -8,7 +8,7 @@ import android.os.Parcel;
 
 public class Motorista extends Base {
 
-    public final String PARCEL_MOTORISTA = "parcel_motorista";
+    public static final String PARCEL_MOTORISTA = "parcel_motorista";
     private Empresa empresa;
     private String nome;
     private String cpf;

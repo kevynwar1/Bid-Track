@@ -3,10 +3,12 @@ package com.rgames.guilherme.bidtruck.facade;
 import android.content.Context;
 import android.util.Log;
 
+import com.rgames.guilherme.bidtruck.controller.ControllerEmpresa;
 import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
 import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
 import com.rgames.guilherme.bidtruck.controller.ControllerRomaneio;
 import com.rgames.guilherme.bidtruck.controller.ControllerUsuario;
+import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
@@ -24,6 +26,7 @@ public class Facade implements IFacade {
     private ControllerEntregas controllerEntregas;
     private ControllerLogin controllerLogin;
     private ControllerUsuario controllerUsuario;
+    private ControllerEmpresa controllerEmpresa;
 
     public Facade(Context context) {
         mContext = context;
@@ -60,6 +63,13 @@ public class Facade implements IFacade {
             controllerEntregas = new ControllerEntregas(mContext);
         return controllerEntregas.select();
 
+    }
+
+    @Override
+    public List<Empresa> selectEmpresa(Motorista motorista) throws Exception {
+        if (controllerEmpresa == null)
+            controllerEmpresa = new ControllerEmpresa(mContext);
+        return controllerEmpresa.selectEmpresas(motorista);
     }
 
     @Override

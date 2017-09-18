@@ -17,6 +17,7 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
+import com.rgames.guilherme.bidtruck.view.empresa.EmpresasActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initMainActivity(Motorista motorista) throws Exception {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, EmpresasActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(motorista.PARCEL_MOTORISTA, motorista);
         mFacade.setLogged(motorista);
