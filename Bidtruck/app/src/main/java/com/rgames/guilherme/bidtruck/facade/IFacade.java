@@ -31,7 +31,7 @@ public interface IFacade {
     List<Entrega> selectEntrega()throws Exception;
 
     /*Controller Empresa*/
-    List<Empresa> selectEmpresa(Motorista motorista) throws Exception;
+    List<Empresa> selectEmpresa() throws Exception;
 
 
     /*Controller login*/

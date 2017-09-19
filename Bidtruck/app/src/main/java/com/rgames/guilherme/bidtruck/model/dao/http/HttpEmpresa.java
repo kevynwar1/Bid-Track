@@ -27,15 +27,15 @@ public class HttpEmpresa extends HttpBase<Empresa> {
 
     }
 
-    public List<Empresa> selectEmpresa(Motorista motorista) {
+    public List<Empresa> selectEmpresa() {
         List<Empresa> list = new ArrayList<>();
         if (HttpConnection.isConnected(context)) {
             try {
-                if (motorista.getCodigo() > 0) {
-                    HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_COMPANY, HttpMethods.GET, false, true, String.valueOf(motorista.getCodigo()));
+           //     if (motorista.getCodigo() > 0) {
+                    HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_COMPANY, HttpMethods.GET, false, true,"");
                     list = super.select(connection, Empresa.class);
                     connection.disconnect();
-                }
+             //   }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {

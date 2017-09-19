@@ -49,7 +49,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.empresa.EmpresasActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_empresa"
+          ></activity>
     </application>
 
 </manifest>

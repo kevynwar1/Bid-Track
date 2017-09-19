@@ -23,13 +23,10 @@ public class ControllerEmpresa {
         this.context = context;
     }
 
-    public List<Empresa> selectEmpresas(Motorista motorista) throws Exception {
+    public List<Empresa> selectEmpresas() throws Exception {
         isConnect();
-        if (motorista == null) throw new NullPointerException("Empresa null");
-        if (motorista.getCodigo() <= 0)
-            throw new IllegalArgumentException("Empresa não esta conectado");
         if (httpEmpresa == null) httpEmpresa = new HttpEmpresa(context);
-        return httpEmpresa.selectEmpresa(motorista);
+        return httpEmpresa.selectEmpresa();
     }
 
 

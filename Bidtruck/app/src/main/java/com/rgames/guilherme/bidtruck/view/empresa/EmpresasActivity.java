@@ -79,7 +79,7 @@ public class EmpresasActivity extends AppCompatActivity {
             protected List<Empresa> doInBackground(Void... String) {
                 facade = new Facade(EmpresasActivity.this);
                 try {
-                    return facade.selectEmpresa(facade.isLogged());
+                    return facade.selectEmpresa();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -68,10 +68,10 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<Empresa> selectEmpresa(Motorista motorista) throws Exception {
+    public List<Empresa> selectEmpresa() throws Exception {
         if (controllerEmpresa == null)
             controllerEmpresa = new ControllerEmpresa(mContext);
-        return controllerEmpresa.selectEmpresas(motorista);
+        return controllerEmpresa.selectEmpresas();
     }
 
     @Override

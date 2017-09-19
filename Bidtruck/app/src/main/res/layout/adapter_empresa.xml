@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvEmpresa"
@@ -9,6 +10,15 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
+        android:dividerHeight="10dp"
         android:text="asdasda"
-        android:textSize="25dp" />
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+    <View
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="45dp"
+        android:background="#f9d7db" />
+
 </RelativeLayout>
