@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
+import com.rgames.guilherme.bidtruck.model.basic.Empresa;
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
@@ -30,6 +32,8 @@ public class RomaneioFragment extends Fragment {
     private View mView;
     private MyProgressBar myProgressBar;
     private Facade mFacade;
+    private Empresa empresa;
+    private Motorista motorista;
 
     public RomaneioFragment() {
     }
@@ -49,6 +53,8 @@ public class RomaneioFragment extends Fragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+
+
     }
 
     @Override

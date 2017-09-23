@@ -8,6 +8,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpConnection;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEmpresa;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
+import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 
 import java.util.List;
 
@@ -23,15 +24,11 @@ public class ControllerEmpresa {
         this.context = context;
     }
 
-    public List<Empresa> selectEmpresas() throws Exception {
-        isConnect();
+    public List<Empresa> selectEmpresas(Motorista motorista) throws Exception {
+        if (motorista == null || motorista.getCodigo() <= 0)
+            throw new MotoristaNaoConectadoException();
         if (httpEmpresa == null) httpEmpresa = new HttpEmpresa(context);
-        return httpEmpresa.selectEmpresa();
-    }
-
-
-    private void isConnect() {
-        if (!HttpConnection.isConnected(context)) throw new NullPointerException("Sem conexão");
+        return httpEmpresa.selectEmpresa(motorista);
     }
 
 }
