@@ -22,7 +22,7 @@ public interface IFacade {
     boolean isConnected(Context context);
 
     /*Controller romaneio*/
-    List<Romaneio> selectRomaneio(Motorista motorista) throws Exception;
+    List<Romaneio> selectRomaneio(Empresa empresa, Motorista motorista) throws Exception;
 
     List<Romaneio> selectRomaneioOfertado(Motorista motorista) throws Exception;
 
@@ -31,7 +31,7 @@ public interface IFacade {
     List<Entrega> selectEntrega()throws Exception;
 
     /*Controller Empresa*/
-    List<Empresa> selectEmpresa() throws Exception;
+    List<Empresa> selectEmpresa(Motorista motorista) throws Exception;
 
 
     /*Controller login*/

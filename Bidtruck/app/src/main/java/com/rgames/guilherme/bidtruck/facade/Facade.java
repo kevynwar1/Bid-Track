@@ -16,6 +16,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpConnection;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
+import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 
 import java.util.IllegalFormatException;
@@ -47,10 +48,10 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<Romaneio> selectRomaneio(Motorista motorista) throws MotoristaNaoConectadoException {
+    public List<Romaneio> selectRomaneio(Empresa empresa, Motorista motorista) throws MotoristaNaoConectadoException, EmpresaNullException {
         if (controllerRomaneio == null)
             controllerRomaneio = new ControllerRomaneio(mContext);
-        return controllerRomaneio.select(motorista);
+        return controllerRomaneio.select(empresa, motorista);
     }
 
     @Override
@@ -68,10 +69,10 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<Empresa> selectEmpresa() throws Exception {
+    public List<Empresa> selectEmpresa(Motorista motorista) throws Exception {
         if (controllerEmpresa == null)
             controllerEmpresa = new ControllerEmpresa(mContext);
-        return controllerEmpresa.selectEmpresas();
+        return controllerEmpresa.selectEmpresas(motorista);
     }
 
     @Override

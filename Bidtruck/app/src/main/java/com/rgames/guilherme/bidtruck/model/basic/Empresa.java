@@ -5,12 +5,14 @@ import android.os.Parcelable;
 
 
 public class Empresa extends Base implements Parcelable {
-    public static final String PARCEL = "parcel_empresa";
+    public static final String PARCEL_EMPRESA = "parcel_empresa";
+   // private int cod_empresa;
     private String razao_social;
     private String nome_fantasia;
     private String cnpj;
 
-    public Empresa() {}
+    public Empresa() {
+    }
 
     public Empresa(String razao_social) {
         this.razao_social = razao_social;
@@ -18,6 +20,7 @@ public class Empresa extends Base implements Parcelable {
 
     protected Empresa(Parcel in) {
         super(in);
+     //   cod_empresa = in.readInt();
         razao_social = in.readString();
         nome_fantasia = in.readString();
         cnpj = in.readString();
@@ -43,6 +46,7 @@ public class Empresa extends Base implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
+     // parcel.writeInt(cod_empresa);
         parcel.writeString(razao_social);
         parcel.writeString(nome_fantasia);
         parcel.writeString(cnpj);
@@ -71,4 +75,13 @@ public class Empresa extends Base implements Parcelable {
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
+
+
+  //  public int getCod_empresa() {
+    //    return cod_empresa;
+   // }
+
+   // public void setCod_empresa(int cod_empresa) {
+     //   this.cod_empresa = cod_empresa;
+   // }
 }

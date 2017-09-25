@@ -34,9 +34,9 @@
             android:label="@string/title_activity_detalhes_estudo"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--<activity-->
-            <!--android:name=".view.main.MainActivity"-->
-            <!--android:label="@string/titulo_romaneio"-->
-            <!--android:theme="@style/AppTheme.NoActionBar" />-->
+        <!--android:name=".view.main.MainActivity"-->
+        <!--android:label="@string/titulo_romaneio"-->
+        <!--android:theme="@style/AppTheme.NoActionBar" />-->
         <activity
             android:name=".view.main.LoginActivity"
             android:theme="@style/FullScreen" />
@@ -53,7 +53,6 @@
         <activity
             android:name=".view.empresa.EmpresasActivity"
             android:label="@string/title_empresa" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCRXIP-xfakNAk8lodv20x4xD6hFWNwD8Y" />

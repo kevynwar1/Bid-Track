@@ -19,4 +19,10 @@ public class MotoristaNaoConectadoException extends Exception{
         return (msg != null && !msg.trim().equals("")) ? msg
                 : "Dados de autenticação não foram encontrados.";
     }
+
+    @Override
+    public String getMessage() {
+        return (msg != null && !msg.trim().equals("")) ? msg
+                : "Dados de autenticação não foram encontrados.";
+    }
 }

@@ -18,7 +18,7 @@ public class Motorista extends Base {
 
     public Motorista(int codigo, int empresa) {
         setCodigo(codigo);
-        if (getEmpresa() == null){
+        if (getEmpresa() == null) {
             setEmpresa(new Empresa());
             getEmpresa().setCodigo(empresa);
         }
@@ -26,7 +26,7 @@ public class Motorista extends Base {
 
     protected Motorista(Parcel in) {
         super(in);
-        empresa = in.readParcelable(Empresa.class.getClassLoader());
+        //  empresa = in.readParcelable(Empresa.class.getClassLoader());
         nome = in.readString();
         cpf = in.readString();
         pontuacao = in.readInt();
