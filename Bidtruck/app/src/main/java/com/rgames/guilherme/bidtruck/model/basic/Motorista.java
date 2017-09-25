@@ -9,7 +9,7 @@ import android.os.Parcel;
 public class Motorista extends Base {
 
     public static final String PARCEL_MOTORISTA = "parcel_motorista";
-    private Empresa empresa;
+     private Empresa empresa;
     private String nome;
     private String cpf;
     private int pontuacao;
@@ -26,7 +26,7 @@ public class Motorista extends Base {
 
     protected Motorista(Parcel in) {
         super(in);
-        empresa = in.readParcelable(Empresa.class.getClassLoader());
+        //  empresa = in.readParcelable(Empresa.class.getClassLoader());
         nome = in.readString();
         cpf = in.readString();
         pontuacao = in.readInt();

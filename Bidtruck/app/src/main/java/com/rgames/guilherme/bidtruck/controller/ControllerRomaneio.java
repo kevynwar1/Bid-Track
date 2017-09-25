@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.controller;
 import android.content.Context;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
@@ -24,11 +25,11 @@ public class ControllerRomaneio {
         mContext = context;
     }
 
-    public List<Romaneio> select(Motorista motorista) throws MotoristaNaoConectadoException {
+    public List<Romaneio> select(Empresa empresa, Motorista motorista) throws MotoristaNaoConectadoException {
         if (motorista == null || motorista.getCodigo() <= 0)
             throw new MotoristaNaoConectadoException();
         if (httpRomaneio == null) httpRomaneio = new HttpRomaneio(mContext);
-        return httpRomaneio.select(motorista);
+        return httpRomaneio.select(empresa, motorista);
     }
 
     public List<Romaneio> selectOffers(Motorista motorista) throws NullPointerException, MotoristaNaoConectadoException {
@@ -38,5 +39,6 @@ public class ControllerRomaneio {
             throw new MotoristaNaoConectadoException();
         if (httpOferta == null) httpOferta = new HttpOferta(mContext);
         return httpOferta.loadOffers(motorista.getEmpresa().getCodigo(), motorista.getCodigo());
+        //return null;
     }
 }

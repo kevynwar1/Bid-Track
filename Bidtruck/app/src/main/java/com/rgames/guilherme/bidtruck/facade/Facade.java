@@ -47,10 +47,10 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public List<Romaneio> selectRomaneio(Motorista motorista) throws MotoristaNaoConectadoException {
+    public List<Romaneio> selectRomaneio(Empresa empresa, Motorista motorista) throws MotoristaNaoConectadoException {
         if (controllerRomaneio == null)
             controllerRomaneio = new ControllerRomaneio(mContext);
-        return controllerRomaneio.select(motorista);
+        return controllerRomaneio.select(empresa, motorista);
     }
 
     @Override

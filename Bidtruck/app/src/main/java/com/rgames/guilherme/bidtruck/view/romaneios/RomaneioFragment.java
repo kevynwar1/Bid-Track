@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
+import com.rgames.guilherme.bidtruck.view.empresa.PassadorDeInformacao;
 
 import java.util.List;
 
@@ -27,35 +27,48 @@ import java.util.List;
  * Created by Guilherme on 05/09/2017.
  */
 
-public class RomaneioFragment extends Fragment {
+public class RomaneioFragment extends Fragment  {
 
     private View mView;
     private MyProgressBar myProgressBar;
     private Facade mFacade;
     private Empresa empresa;
-    private Motorista motorista;
+    private Motorista motoristas;
 
     public RomaneioFragment() {
+
     }
+
 
     public static RomaneioFragment newInstance() {
         return new RomaneioFragment();
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
+
+
+        /*  try {
             if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
                         getActivity().getResources().getString(R.string.menu_drw_romaneio));
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
         } catch (NullPointerException e) {
             e.printStackTrace();
+        }*/
+
+        Bundle b = getArguments();
+        if (b != null) {
+            empresa = b.getParcelable(Empresa.PARCEL_EMPRESA);
+
+        } else {
+            Toast.makeText(getContext(), "DEU MERDA no BUNDLE DO ROMANEIO", Toast.LENGTH_LONG).show();
+
         }
-
-
     }
+
 
     @Override
     public void onResume() {
@@ -76,10 +89,24 @@ public class RomaneioFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
+
         return mView = inflater.inflate(R.layout.fragment_romaneio, container, false);
     }
 
-    private void init(){
+    //AQUI O METODO QUE RECEBE OS DADOS DA ACTIVITY
+   /* @Override
+    public void passaInformacao(Empresa informacao) {
+        if (informacao != null) {
+            empresa = informacao;
+
+        }
+
+    }*/
+
+
+    private void init() {
+
+
         new AsyncTask<Void, Void, List<Romaneio>>() {
             @Override
             protected void onPreExecute() {
@@ -94,11 +121,17 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected List<Romaneio> doInBackground(Void... voids) {
                 try {
-                    return mFacade.selectRomaneio(mFacade.isLogged());
+                    if (empresa == null) {
+                        Toast.makeText(getActivity(), "EMPRESA D MERDA N VEIO", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        return mFacade.selectRomaneio(empresa, mFacade.isLogged());
+                    }
                 } catch (MotoristaNaoConectadoException e) {
                     e.printStackTrace();
-                    return null;
+
                 }
+                return null;
             }
 
             @Override
@@ -116,6 +149,7 @@ public class RomaneioFragment extends Fragment {
         }.execute();
     }
 
+
     private void emptyView(boolean isVisible) {
         mView.findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
     }
@@ -130,7 +164,7 @@ public class RomaneioFragment extends Fragment {
 
     private void initProgressBar() throws ClassCastException, NullPointerException {
         if (myProgressBar == null)
-            myProgressBar = new MyProgressBar((FrameLayout) mView.findViewById(R.id.frame_progress));
+            myProgressBar = new MyProgressBar((FrameLayout) mView.findViewById(R.id.content));
     }
 
     private void finishProgressBar() throws Exception {
@@ -138,4 +172,7 @@ public class RomaneioFragment extends Fragment {
             myProgressBar.onFinish();
         }
     }
+
+
 }
+

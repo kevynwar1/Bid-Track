@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,9 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
+import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
 import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
@@ -22,20 +26,36 @@ import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
 import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private Empresa empresa;
+    private Motorista motorista;
+    Bundle b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);
+        if (getIntent().getExtras() != null)
+            empresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
+
         try {
             init();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (savedInstanceState == null)
-            getSupportFragmentManager().beginTransaction().add(R.id.content_main, RomaneioFragment.newInstance()).commit();
+        if (savedInstanceState == null) {
+            b = new Bundle();
+            b.putParcelable(Empresa.PARCEL_EMPRESA, empresa);
+
+            RomaneioFragment frag = new RomaneioFragment();
+            frag.setArguments(b);
+            // getSupportFragmentManager().beginTransaction().add(R.id.content_main, RomaneioFragment.newInstance()).add(R.id.content_main, frag).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.content_main, frag).commit();
+        }
     }
 
     @Override
@@ -77,7 +97,7 @@ public class MainActivity extends AppCompatActivity
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try {
                                         Facade facade = new Facade(MainActivity.this);
-                                        facade.setLogged(new Motorista(0,0));
+                                        facade.setLogged(new Motorista(0, 0));
                                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                         finish();
                                     } catch (Exception e) {
@@ -132,13 +152,22 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        TextView tvNome = (TextView) header.findViewById(R.id.tvNomeMotorista);
+        TextView tvEmail = (TextView) header.findViewById(R.id.tvEmailMotorista);
+        tvNome.setText("jusefa");
+        tvEmail.setText("maria");
+
     }
 }

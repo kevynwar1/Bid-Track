@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent.putExtras(bundle));
         finishProgressBar();
         finish();
+        Toast.makeText(this, "Bem Vindo! " + motorista.getNome(), Toast.LENGTH_LONG).show();
     }
 
     private void botaoEntrar() {
@@ -119,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                                     ((TextView) findViewById(R.id.txtError)).setText(getString(R.string.app_err_input_dadosIncorretos));
                                     findViewById(R.id.txtError).setVisibility(View.VISIBLE);
                                     e.printStackTrace();
-                                }finally {
+                                } finally {
                                     try {
                                         finishProgressBar();
                                     } catch (Exception e) {

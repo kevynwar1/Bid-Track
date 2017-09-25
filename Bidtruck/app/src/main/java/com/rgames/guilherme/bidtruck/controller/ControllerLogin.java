@@ -24,7 +24,7 @@ public class ControllerLogin {
         mContext = context;
     }
 
-    public Motorista login(String email, String senha) throws IllegalFormatException, NullPointerException{
+    public Motorista login(String email, String senha) throws IllegalFormatException, NullPointerException {
         if (email != null && senha != null) {
             String[] emailArray = email.split("@");
             if (httpLogin == null) httpLogin = new HttpLogin(mContext);
@@ -37,7 +37,7 @@ public class ControllerLogin {
     }
 
     private static SharedPreferences instance(Context context) {
-        if(context==null) try {
+        if (context == null) try {
             throw new ContextNullException();
         } catch (ContextNullException e) {
             e.printStackTrace();
@@ -62,7 +62,8 @@ public class ControllerLogin {
                     editor.putString("prefKey_motorista_codEmpresa", String.valueOf(motorista.getEmpresa().getCodigo()));
                 editor.apply();
                 editor.commit();
-            } else throw new NullPointerException(mContext.getString(R.string.app_err_null_motorista));
+            } else
+                throw new NullPointerException(mContext.getString(R.string.app_err_null_motorista));
         }
     }
 
