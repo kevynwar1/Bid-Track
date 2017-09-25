@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
@@ -88,6 +89,7 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected List<Romaneio> doInBackground(Void... voids) {
                 try {
+                    mFacade.setLogged(new Motorista(9, 1));
                     return mFacade.selectRomaneio(mFacade.isLogged());
                 } catch (MotoristaNaoConectadoException e) {
                     e.printStackTrace();

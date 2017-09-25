@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -97,7 +98,7 @@ public class EntregaActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<Entrega> entregas) {
                 try {
-                    if (entregas == null)
+                    if (entregas == null || entregas.size() == 0)
                         emptyView(true);
                     initRecyclerView(entregas);
                     finishProgressBar();
