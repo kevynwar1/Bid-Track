@@ -13,15 +13,18 @@ public class Motorista extends Base {
     private String nome;
     private String cpf;
     private int pontuacao;
+    private String email;
+    private String senha;
     private String tipo_carteira;
     private String validade_carteira;
 
-    public Motorista(int codigo, int empresa) {
+    public Motorista(int codigo, String empresa) {
         setCodigo(codigo);
-        if (getEmpresa() == null) {
+        setNome(empresa);
+       /* if (getEmpresa() == null) {
             setEmpresa(new Empresa());
             getEmpresa().setCodigo(empresa);
-        }
+        }*/
     }
 
     protected Motorista(Parcel in) {
@@ -30,6 +33,8 @@ public class Motorista extends Base {
         nome = in.readString();
         cpf = in.readString();
         pontuacao = in.readInt();
+        email = in.readString();
+        senha = in.readString();
         tipo_carteira = in.readString();
         validade_carteira = in.readString();
     }
@@ -58,6 +63,8 @@ public class Motorista extends Base {
         parcel.writeString(nome);
         parcel.writeString(cpf);
         parcel.writeInt(pontuacao);
+        parcel.writeString(email);
+        parcel.writeString(senha);
         parcel.writeString(tipo_carteira);
         parcel.writeString(validade_carteira);
     }
@@ -108,5 +115,21 @@ public class Motorista extends Base {
 
     public void setValidade_carteira(String validade_carteira) {
         this.validade_carteira = validade_carteira;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,7 +22,9 @@ import com.rgames.guilherme.bidtruck.view.empresa.EmpresasActivity;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText edtSenha;
+    private EditText edtEmail;
     private TextView tvSenha;
+    private CheckBox check;
     private MyProgressBar myProgressBar;
     private Facade mFacade;
 
@@ -29,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
         verifyIsLogged();
     }
 
@@ -50,8 +55,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        edtEmail = (EditText) findViewById(R.id.edtEmail);
         edtSenha = (EditText) findViewById(R.id.edtSenha);
         tvSenha = (TextView) findViewById(R.id.tvSenha);
+        check = (CheckBox) findViewById(R.id.chkConectado);
+        check.setChecked(false);
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/museo500.otf");
         tvSenha.setTypeface(font);
         botaoEntrar();
@@ -66,7 +74,11 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent.putExtras(bundle));
         finishProgressBar();
         finish();
-        Toast.makeText(this, "Bem Vindo! " + motorista.getNome(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Bem Vindo(a)! " + motorista.getNome(), Toast.LENGTH_LONG).show();
+       /*  tot.setGravity(Gravity.CENTER, 0, 0);
+        tot.show()*/
+        ;
+
     }
 
     private void botaoEntrar() {
@@ -108,10 +120,15 @@ public class LoginActivity extends AppCompatActivity {
                             protected void onPostExecute(Motorista motorista) {
                                 try {
                                     if (motorista == null) {
-                                        Toast.makeText(LoginActivity.this, "Falha de autenticação, email e senha incorretos.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "Falha de autenticação, Email ou Senha Incorretos.", Toast.LENGTH_LONG).show();
                                         ((TextView) findViewById(R.id.txtError)).setText(
                                                 (msg.equals("")) ? getString(R.string.app_err_input_dadosIncorretos) : msg);
                                         findViewById(R.id.txtError).setVisibility(View.VISIBLE);
+
+                                        edtEmail.setText("");
+                                        edtSenha.setText("");
+                                        check.setChecked(false);
+
                                     } else {
                                         findViewById(R.id.txtError).setVisibility(View.GONE);
                                         initMainActivity(motorista);
@@ -119,6 +136,9 @@ public class LoginActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     ((TextView) findViewById(R.id.txtError)).setText(getString(R.string.app_err_input_dadosIncorretos));
                                     findViewById(R.id.txtError).setVisibility(View.VISIBLE);
+                                    edtEmail.setText("");
+                                    edtSenha.setText("");
+                                    check.setChecked(false);
                                     e.printStackTrace();
                                 } finally {
                                     try {
@@ -140,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void botaoSenha() {
         tvSenha.setOnClickListener(new View.OnClickListener() {

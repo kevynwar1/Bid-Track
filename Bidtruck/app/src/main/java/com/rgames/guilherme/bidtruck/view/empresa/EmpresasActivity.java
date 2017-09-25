@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.empresa;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -117,8 +118,13 @@ public class EmpresasActivity extends AppCompatActivity {
                         Bundle b = new Bundle();
                         emp = empresas.get(0);
                         b.putParcelable(Empresa.PARCEL_EMPRESA, emp);
+                        // b.putParcelable(Motorista.PARCEL_MOTORISTA, motorista);
                         startActivity(it.putExtras(b));
-                        // Toast.makeText(EmpresasActivity.this, "Não há empresas disponíveis no momento", Toast.LENGTH_LONG).show();
+                        finish();
+
+                    } else if (empresas.size() == 0) {
+                        Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa", Toast.LENGTH_LONG).show();
+
                     } else {
                         initView(empresas);
                     }
@@ -177,7 +183,8 @@ public class EmpresasActivity extends AppCompatActivity {
                 //  fragmentManager.beginTransaction().replace(R.id.content,frag).commit();
 
                 startActivity(it.putExtras(b));
-                finish();
+
+
             }
         });
     }

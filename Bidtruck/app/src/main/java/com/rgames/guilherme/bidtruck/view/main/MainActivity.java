@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (getIntent().getExtras() != null) {
-            if (getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA) != null)
-                motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);
+        /*    if (getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA) != null)
+                motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);*/
             if (getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA) != null)
                 empresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
-        }else {
+        } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
         }
         try {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try {
                                         Facade facade = new Facade(MainActivity.this);
-                                        facade.setLogged(new Motorista(0, 0));
+                                        facade.setLogged(new Motorista(0, ""));
                                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                         finish();
                                     } catch (Exception e) {
@@ -168,8 +168,8 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         TextView tvNome = (TextView) header.findViewById(R.id.tvNomeMotorista);
         TextView tvEmail = (TextView) header.findViewById(R.id.tvEmailMotorista);
-        tvNome.setText("jusefa");
-        tvEmail.setText("maria");
+        tvNome.setText("motorista");
+        tvEmail.setText(empresa.getNome_fantasia().toString());
 
     }
 }

@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".view.main.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/FullScreen">
             <intent-filter>
@@ -33,16 +33,17 @@
             android:name=".view.romaneios.entrega.pagerdetalhes.DetalhesEntregaActivity"
             android:label="@string/title_activity_detalhes_estudo"
             android:theme="@style/AppTheme.NoActionBar" />
-        <!--<activity-->
-        <!--android:name=".view.main.MainActivity"-->
-        <!--android:label="@string/titulo_romaneio"-->
-        <!--android:theme="@style/AppTheme.NoActionBar" />-->
+
         <activity
             android:name=".view.main.LoginActivity"
             android:theme="@style/FullScreen" />
         <activity
             android:name=".view.romaneios.entrega.EntregaActivity"
             android:label="@string/title_activity_delivery"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.main.MainActivity"
+            android:label="Romaneio"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.main.SenhaActivitry"
@@ -52,7 +53,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.empresa.EmpresasActivity"
-            android:label="@string/title_empresa" />
+            android:label="@string/title_empresa"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCRXIP-xfakNAk8lodv20x4xD6hFWNwD8Y" />

@@ -123,14 +123,9 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected List<Romaneio> doInBackground(Void... voids) {
                 try {
-//<<<<<<< HEAD
-//                    mFacade.setLogged(new Motorista(9, 1));
-//                    return mFacade.selectRomaneio(mFacade.isLogged());
-//=======
+
                     return mFacade.selectRomaneio(empresa, mFacade.isLogged());
-                    //VIEW NAO PODE SER UTILIZADA AQUI
-//                        Toast.makeText(getActivity(), "EMPRESA D MERDA N VEIO", Toast.LENGTH_SHORT).show();
-//>>>>>>> 4a73dd92a54e488c2c4c60c9c1684946e2f9e401
+
                 } catch (MotoristaNaoConectadoException e) {
                     msg = e.getMessage();
                     e.printStackTrace();
@@ -143,10 +138,11 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
-                    if (romaneios == null)
+                    if (romaneios.size() == 0)
                         emptyView(true);
                     else
                         initRecyclerView(romaneios);
+
                     if (msg != null && !msg.equals(""))
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     finishProgressBar();
