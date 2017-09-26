@@ -8,15 +8,22 @@ class Ws extends REST_Controller {
 
 		$this->methods['entrega_get']['limit'] = 500;
 		$this->methods['entrega_motorista_get']['limit'] = 500;
+        $this->methods['entrega_romaneio_get']['limit'] = 500; // Carlos E. - 25/09
 
 		$this->methods['romaneio_get']['limit'] = 500;
-        $this->methods['romaneio_ofertavel_get']['limit'] = 500;
+        $this->methods['romaneio_aceitar_get']['limit'] = 500; // Erick C. - 26/09
+        $this->methods['romaneio_ofertavel_get']['limit'] = 500; // Erick C. - 25/09
 		$this->methods['romaneio_motorista_get']['limit'] = 500;
+        $this->methods['romaneio_motorista_empresa_get']['limit'] = 500; // Kevyn H. - 23/09
 
-		$this->methods['empresa_get']['limit'] = 500;
 		$this->methods['motorista_get']['limit'] = 500;
-		$this->methods['usuario_get']['limit'] = 500;
-		$this->methods['login_get']['limit'] = 500;
+        $this->methods['motorista_esqueci_senha_get']['limit'] = 500; // Kevyn H. - 26/09
+        $this->methods['motorista_login_get']['limit'] = 500;
+
+        $this->methods['empresa_get']['limit'] = 500;
+        $this->methods['empresa_motorista_get']['limit'] = 500;
+
+        $this->methods['usuario_get']['limit'] = 500;
 	}
 
 	/* Empresa */
@@ -60,6 +67,29 @@ class Ws extends REST_Controller {
 				'message' => 'Empresa não pôde ser encontrado.'
 			], REST_Controller::HTTP_NOT_FOUND);
 		}
+    }
+
+    public function empresa_motorista_get() {
+        $this->load->model('model/Empresa_model');
+        $empresas = $this->Empresa_model->empresa_motorista($this->uri->segment(3));
+
+        if($empresas) {
+            $this->response($empresas, REST_Controller::HTTP_OK);
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Nenhum Empresa foi encontrado para este Motorista.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        if(!empty($romaneio)) {
+            $this->set_response($romaneio, REST_Controller::HTTP_OK);
+        } else {
+            $this->set_response([
+                'status' => FALSE,
+                'message' => 'Empresa não pôde ser encontrado.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
     }
 
 
@@ -109,19 +139,42 @@ class Ws extends REST_Controller {
         }
     }
 
+    /* Aceita Oferta de Romaneio */
+    public function romaneio_aceitar_get() {
+        $this->load->model('model/Motorista_model');
+        $this->load->model('model/Romaneio_model');
+
+        $motorista = $this->uri->segment(3);
+        $romaneio = $this->uri->segment(4);
+        $empresa = $this->uri->segment(5);
+        $estabelecimento = $this->uri->segment(6);
+
+        $romaneios = $this->Romaneio_model->romaneio_aceitar($motorista, $romaneio, $empresa, $estabelecimento);
+
+        if($romaneios) {
+            $this->Motorista_model->disponibilidade(FALSE, $motorista);
+            $this->response($romaneios, REST_Controller::HTTP_OK);
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Nenhum linha foi afetada.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
+    }
+
     /* Romaneio do Motorista */
     public function romaneio_ofertavel_get() {
         $this->load->model('model/Romaneio_model');
         $romaneios = $this->Romaneio_model->romaneio_ofertavel($this->uri->segment(3), $this->uri->segment(4));
 
-		if($romaneios) {
-			$this->response($romaneios, REST_Controller::HTTP_OK);
-		} else {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'Nenhum Romaneio foi encontrado.'
-			], REST_Controller::HTTP_NOT_FOUND);
-		}
+        if($romaneios) {
+            $this->response($romaneios, REST_Controller::HTTP_OK);
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Nenhum Romaneio foi encontrado.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
 
         if(!empty($romaneio)) {
             $this->set_response($romaneio, REST_Controller::HTTP_OK);
@@ -176,6 +229,23 @@ class Ws extends REST_Controller {
         }
     }
 
+    /* Romaneio do Motorista com Empresa */
+    public function romaneio_motorista_empresa_get() {
+        $empresa = $this->uri->segment(3);
+        $motorista = $this->uri->segment(4);
+
+        $this->load->model('model/Romaneio_model');
+        $romaneios = $this->Romaneio_model->romaneio_empresa_motorista($empresa, $motorista);
+
+        if($romaneios) {
+            $this->response($romaneios, REST_Controller::HTTP_OK);
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Nenhum Romaneio foi encontrado.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
+    }
 
 
 
@@ -266,6 +336,29 @@ class Ws extends REST_Controller {
         }
 	}
 
+    public function entrega_romaneio_get() {
+        $this->load->model('model/Entrega_model');
+        $entregas = $this->Entrega_model->entrega_romaneio($this->uri->segment(3));
+
+        if($entregas) {
+            $this->response($entregas, REST_Controller::HTTP_OK);
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Nenhum Entrega para o Romaneio foi encontrado.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        if(!empty($romaneio)) {
+            $this->set_response($romaneio, REST_Controller::HTTP_OK);
+        } else {
+            $this->set_response([
+                'status' => FALSE,
+                'message' => 'Entregas não pôde ser encontrada.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
+    }
+
 
 
 
@@ -313,6 +406,42 @@ class Ws extends REST_Controller {
         }
     }
 
+	/* Motorista Login */
+    public function motorista_login_get() {
+        $email = explode("%40", $this->uri->segment(3));
+        $email = $email[0].'@'.$email[1];
+        $senha = $this->uri->segment(4);
+
+        $this->load->model('model/Motorista_model');
+        $motorista = $this->Motorista_model->login($email, $senha);
+
+        if($motorista) {
+            $this->response($motorista, REST_Controller::HTTP_OK);
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Nenhum Usuário foi encontrado.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
+    }
+
+    /* Motorista Esqueci Senha */
+    public function motorista_esqueci_senha_get() {
+        $email = explode("%40", $this->uri->segment(3));
+        $email = $email[0].'@'.$email[1];
+
+        $this->load->model('model/Motorista_model');
+        $motorista = $this->Motorista_model->esqueci_senha($email);
+
+        if($motorista) {
+            $this->response($motorista, REST_Controller::HTTP_OK);
+        } else {
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Nenhum Usuário foi encontrado.'
+            ], REST_Controller::HTTP_NOT_FOUND);
+        }
+    }
 
 
 
@@ -359,30 +488,4 @@ class Ws extends REST_Controller {
             ], REST_Controller::HTTP_NOT_FOUND);
         }
     }
-
-
-
-
-
-	/* Login */
-	public function login_get() {
-		$email = explode("%40", $this->uri->segment(3));
-		$email = $email[0].'@'.$email[1];
-		$senha = $this->uri->segment(4);
-
-		$this->load->model('model/Usuario_model');
-		$usuario = $this->Usuario_model->login($email, $senha);
-
-		if($usuario) {
-			$this->load->model('model/Motorista_model');
-        	$motorista = $this->Motorista_model->motorista_usuario($usuario[0]->codigo);
-
-			$this->response($motorista, REST_Controller::HTTP_OK);
-		} else {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'Nenhum Usuário foi encontrado.'
-			], REST_Controller::HTTP_NOT_FOUND);
-		}
-	}
 }

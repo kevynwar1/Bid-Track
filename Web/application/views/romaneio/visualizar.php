@@ -55,23 +55,38 @@
 									</div>
 									<div class="col-md-6 lm15">
 										<div class="form-group">
-											<label>Tipo do Veículo</label>
-											<input type="text" class="form-control" value="<?= $romaneio[0]->tipo_veiculo->descricao ?>" disabled>
+											<label>Motorista</label>
+											<input type="text" class="form-control" value="<?= (is_null($romaneio[0]->motorista->nome)) ? "Indefinido" : $romaneio[0]->motorista->nome; ?>" autocomplete="off" disabled>
 										</div>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-6 lm15">
 										<div class="form-group">
-											<label>Motorista</label>
-											<input type="text" class="form-control" value="<?= (is_null($romaneio[0]->motorista->nome)) ? "Indefinido" : $romaneio[0]->motorista->nome; ?>" autocomplete="off" disabled>
+											<label>Tipo do Veículo</label>
+											<input type="text" class="form-control" value="<?= $romaneio[0]->tipo_veiculo->descricao ?>" disabled>
 										</div>
 									</div>
-									<div class="col-md-6 lm15">
+									<div class="col-md-3 lm15">
 										<div class="form-group">
 											<label>Status</label>
 											<input type="text" class="form-control" value="<?= $romaneio[0]->status_romaneio->descricao ?>" disabled>
 										</div>
+									</div>
+									<div class="col-md-3 lm15">
+										<div class="form-group">
+											<label>Preço</label>
+											<input type="text" id="valor" class="form-control" value="<?= $romaneio[0]->valor ?>" disabled>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<a href="<?= base_url().'romaneio/imprimir/'.$romaneio[0]->codigo ?>">
+											<span type="submit" class="btn btn-danger btn-simple btn-fill pull-left f12 upper">
+												Imprimir
+											</span>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -87,7 +102,7 @@
 										<div class="panel-heading" id="headingOne" role="tab">
 											<a aria-controls="collapseOne" aria-expanded="true" data-parent="#accordion" data-toggle="collapse" href="#collapse<?= $i; ?>" role="button" class="">
 												<h2 class="panel-title">
-													<?= $row->destinatario->logradouro; ?>, <?= $row->destinatario->numero; ?> — <?= $row->destinatario->bairro; ?>, <?= $row->destinatario->cidade ?>
+													<?= $row->destinatario->razao_social; ?> — <?= $row->destinatario->bairro; ?>, <?= $row->destinatario->cidade ?>
 												</h2>
 											</a>
 										</div>
@@ -134,7 +149,7 @@
 								<form action="#" method="post">
 									<input type="hidden" name="romaneio" value="<?= $this->uri->segment(3); ?>">
 									<div class="row">
-										<div class="col-md-12">
+										<div class="col-md-12 lm20">
 											<div class="form-group label-floating">
 												<label class="control-label">E-mail</label>
 												<input type="email" name="email" class="form-control" autocomplete="off" ng-model="email">
@@ -170,6 +185,7 @@
 </div>
 <div id="map" style="width: 45%;"></div>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
 <script type="text/javascript">
 	function initMap() {
 		var directionsService = new google.maps.DirectionsService;
@@ -217,6 +233,10 @@
 			}
 		});
 	}
+
+	$(document).ready(function(){
+		$('#valor').mask('000.000.000.000.000,00', {reverse: true});
+	});
 </script>
 
 <!-- https://developers.google.com/maps/documentation/javascript/examples/directions-waypoints?hl=pt-br -->

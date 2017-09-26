@@ -20,6 +20,7 @@
 	<link href="<?= base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="<?= base_url(); ?>assets/css/material-dashboard-dash.css" rel="stylesheet"/>
 	<link href="<?= base_url(); ?>assets/css/demo.css" rel="stylesheet" />
+	<link href="<?= base_url(); ?>assets/img/favicon.ico" rel="shortcut icon">
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons|Work+Sans' rel='stylesheet' type='text/css'>
 	<script type="text/javascript">
@@ -62,6 +63,7 @@
 		.option { padding: 3px; }
 		.option-undefined { padding: 3px; color: #999 !important; }
 		.lm15 { margin-top: -15px; }
+		.lm20 { margin-top: -20px; }
 		.desc { color: rgb(154, 154, 154); text-transform: uppercase; }
 		.th-desc { cursor: pointer; transition: 0.3s; }
 		.f10 { font-size: 10px; }
@@ -86,6 +88,12 @@
 		.adp-legal { display: none !important; }
 		.adp-text { padding: 10px !important;}
 		footer { display: none !important; }
+		.btn-remove {
+			opacity: 0.5;
+			cursor: pointer;
+			transition: 0.4s;
+		}
+		.btn-remove:hover { opacity: 1; }
 	</style>
 </head>
 <body>
@@ -122,7 +130,7 @@
 					</div>
 				</li>
 				<li class="active-pro">
-					<a href="#' ?>" target="_blank">
+					<a href="#" target="_blank">
 						<i class="material-icons">message</i>
 						<p>Mensagem</p>
 					</a>
@@ -182,29 +190,31 @@
 					</ul>
 					<?php
 						if($page == 'romaneio'):
-							if($page_parameter != 'add' && $page_parameter != 'integracao' && $page_parameter != 'visualizar' && $page_parameter != 'editar'):
+							if($page_parameter != 'add' && $page_parameter != 'integracao' && $page_parameter != 'visualizar' && $page_parameter != 'editar' && $page_parameter != 'imprimir'):
 					?>
-					<form action="<?= base_url().'romaneio/s/' ?>" method="get" class="navbar-form navbar-right" role="search">
-						<div class="form-group is-empty">
-							<input type="text" class="form-control" name="procurar" placeholder="Procurar" style="padding-left: 10px" autocomplete="off" value="<?= $this->input->get('procurar') ?>" ng-model="procurar" ng-minlength="3" required>
-							<span class="material-input"></span>
-						</div>
-	<select id="filtro" name="filtro" class="form-control" ng-disabled="!procurar" required>
-		<option value="" disabled selected>Filtro</option>
-		<option value="destinatario">Destinatário</option>
-		<option value="motorista" <?= ($this->input->get('filtro') == 'motorista')? 'selected':'' ?>>Motorista</option>
-		<option value="nota">Nota Fiscal</option>
-		<option value="romaneio" <?= ($this->input->get('filtro') == 'romaneio')? 'selected':'' ?>>
-			Romaneio
-		</option>
-		<option value="transportadora" <?= ($this->input->get('filtro') == 'transportadora')? 'selected':'' ?>>
-			Transportadora
-		</option>
-	</select>
-						<button type="submit" class="btn btn-white btn-round btn-just-icon" ng-disabled="!procurar">
-							<i class="material-icons">search</i><div class="ripple-container"></div>
-						</button>
-					</form>
+						<form action="<?= base_url().'romaneio/s/' ?>" method="get" class="navbar-form navbar-right" role="search">
+							<div class="form-group is-empty">
+								<input type="text" class="form-control" name="procurar" placeholder="Procurar" style="padding-left: 10px" autocomplete="off" value="<?= $this->input->get('procurar') ?>" ng-model="procurar" ng-minlength="3" required>
+								<span class="material-input"></span>
+							</div>
+							<div class="form-group is-empty">
+								<select id="filtro" name="filtro" class="form-control" required>
+									<option value="" disabled selected>Filtro</option>
+									<option class="option" value="cliente">Cliente</option>
+									<option class="option" value="motorista" <?= ($this->input->get('filtro') == 'motorista')? 'selected':'' ?>>Motorista</option>
+									<option class="option" value="nota" <?= ($this->input->get('filtro') == 'nota')? 'selected':'' ?>>Nota Fiscal</option>
+									<option class="option" value="romaneio" <?= ($this->input->get('filtro') == 'romaneio')? 'selected':'' ?>>
+										Romaneio
+									</option>
+									<option class="option" value="transportadora" <?= ($this->input->get('filtro') == 'transportadora')? 'selected':'' ?>>
+										Transportadora
+									</option>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-white btn-round btn-just-icon" ng-disabled="!procurar">
+								<i class="material-icons">search</i><div class="ripple-container"></div>
+							</button>
+						</form>
 					<?php
 							endif;
 						endif;

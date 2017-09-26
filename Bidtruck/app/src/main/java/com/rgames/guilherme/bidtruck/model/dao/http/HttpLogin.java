@@ -17,7 +17,7 @@ public class HttpLogin extends HttpBase<Motorista> {
         mContext = context;
     }
 
-    public Motorista login(String[] email, String senha){
+    public Motorista login(String[] email, String senha) {
         Motorista motorista = null;
         try {
             HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_LOGIN, HttpMethods.GET, false, true,
@@ -29,5 +29,19 @@ public class HttpLogin extends HttpBase<Motorista> {
         }
         return motorista;
     }
+
+    public Motorista senha(String[] email) {
+        Motorista motorista = null;
+        try {
+            HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ESQUECI_SENHA, HttpMethods.GET, false, true,
+                    new StringBuilder("/").append(email[0]).append("%40").append(email[1])
+                            .append("/").toString());
+            motorista = super.selectBy(connection, Motorista.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return motorista;
+    }
+
 
 }

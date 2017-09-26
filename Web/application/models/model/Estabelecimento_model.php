@@ -11,6 +11,8 @@ class Estabelecimento_model extends CI_Model {
 
 	public function listar() {
 		$this->db->select('*')->from($this->table);
+		$this->db->order_by($this->table.".bairro", "ASC");
+		$this->db->where($this->table.'.cod_empresa', '1'); // SESSION Empresa
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0) {

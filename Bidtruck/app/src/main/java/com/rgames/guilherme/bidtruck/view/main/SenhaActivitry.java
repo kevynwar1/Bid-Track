@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,9 +12,7 @@ import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
-import com.rgames.guilherme.bidtruck.model.basic.Usuario;
-
-import org.json.JSONObject;
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 
 import java.util.Properties;
 
@@ -49,9 +48,10 @@ public class SenhaActivitry extends AppCompatActivity {
         btEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                dialog = ProgressDialog.show(SenhaActivitry.this, "", "Verificando Dados...", true);
+                //   if (validaCampos() == true)
                 rec = edtEsqueceu.getText().toString();
+
 
                 Properties props = new Properties();
                 props.put("mail.smtp.host", "smtp.gmail.com");
@@ -66,16 +66,15 @@ public class SenhaActivitry extends AppCompatActivity {
                     }
                 });
 
-                dialog = ProgressDialog.show(SenhaActivitry.this, "", "Enviando Email...", true);
 
                 RetreiveFeedTask task = new RetreiveFeedTask();
                 task.execute();
             }
 
-            class RetreiveFeedTask extends AsyncTask<String, Object, Usuario> {
+            class RetreiveFeedTask extends AsyncTask<Object, Object, Motorista> {
 
                 @Override
-                protected Usuario doInBackground(String... params) {
+                protected Motorista doInBackground(Object... params) {
                    /* try {
                         Message message = new MimeMessage(session);
                         message.setFrom(new InternetAddress("kevynh48@gmail.com"));
@@ -90,7 +89,7 @@ public class SenhaActivitry extends AppCompatActivity {
                     }*/
 
                     try {
-                        return mFacade.login(rec);
+                        return mFacade.senha(rec);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -100,14 +99,21 @@ public class SenhaActivitry extends AppCompatActivity {
 
 
                 @Override
-                protected void onPostExecute(Usuario result) {
+                protected void onPostExecute(Motorista result) {
                     dialog.dismiss();
-                    if (result.getSenha() != null) {
-                        EnviarM envia = new EnviarM(result.getSenha().toString());
-                        envia.execute();
+                    try {
+                        if (result.getSenha() != null) {
+                            dialog = ProgressDialog.show(SenhaActivitry.this, "", "Enviando Email...", true);
+                            EnviarM envia = new EnviarM(result.getSenha().toString(), result.getNome().toString());
+                            envia.execute();
 
-                    } else {
-                        Toast.makeText(SenhaActivitry.this, "Email Invalido", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(SenhaActivitry.this, "Email Invalido", Toast.LENGTH_LONG).show();
+                            edtEsqueceu.setText("");
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(SenhaActivitry.this, "Email Inválido", Toast.LENGTH_LONG).show();
+                        edtEsqueceu.setText("");
                     }
 
                 }
@@ -118,9 +124,13 @@ public class SenhaActivitry extends AppCompatActivity {
     class EnviarM extends AsyncTask<String, Void, String> {
 
         private String stringss;
+        private String nomes;
 
-        public EnviarM(String s) {
+        public EnviarM(String s, String nome) {
             stringss = s;
+            nomes = nome;
+
+
         }
 
         @Override
@@ -130,8 +140,8 @@ public class SenhaActivitry extends AppCompatActivity {
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress("kevynh48@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
-                message.setSubject("Recuperação de Senha");
-                message.setContent("Sua senha é :" + stringss, "text/html; charset=utf-8");
+                message.setSubject("BID & TRACK");
+                message.setContent("Recuperação de Acesso do usuário " + nomes + ", " + "sua senha é: " + stringss, "text/html; charset=utf-8");
                 Transport.send(message);
             } catch (MessagingException e) {
                 e.printStackTrace();
@@ -153,27 +163,41 @@ public class SenhaActivitry extends AppCompatActivity {
             //msg.setText("");
             //sub.setText("");
             Toast.makeText(getApplicationContext(), "Mensagem Enviada", Toast.LENGTH_LONG).show();
+            finish();
         }
 
     }
 
 
-  /*  private Message enviar(String senha) {
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("kevynh48@gmail.com"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
-            message.setSubject("Recuperar Senha");
-            message.setContent(senha, "text/plain; charset=utf-8");
-            Transport.send(message);
-            return message;
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+    /*  private Message enviar(String senha) {
+          try {
+              Message message = new MimeMessage(session);
+              message.setFrom(new InternetAddress("kevynh48@gmail.com"));
+              message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
+              message.setSubject("Recuperar Senha");
+              message.setContent(senha, "text/plain; charset=utf-8");
+              Transport.send(message);
+              return message;
+          } catch (MessagingException e) {
+              e.printStackTrace();
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+          return null;
+      }*/
+    private boolean validaCampos() {
+        if (!isValidEmail(edtEsqueceu.getText().toString())) {
+            edtEsqueceu.setError("Informe um e-mail valido");
+            edtEsqueceu.setFocusable(true);
+            edtEsqueceu.requestFocus();
+            return false;
         }
-        return null;
-    }*/
+        return true;
+    }
+
+    public final static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
 
 
 }

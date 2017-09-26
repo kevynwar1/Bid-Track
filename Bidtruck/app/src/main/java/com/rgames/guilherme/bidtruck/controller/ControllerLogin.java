@@ -36,6 +36,16 @@ public class ControllerLogin {
         } else throw new NullPointerException("Dados não informados");
     }
 
+    public Motorista senha(String email) throws IllegalFormatException, NullPointerException {
+        if (email != null) {
+            String[] emailArray = email.split("@");
+            if (httpLogin == null) httpLogin = new HttpLogin(mContext);
+            if (emailArray.length == 2 && (!emailArray[0].trim().equals("") && !emailArray[1].trim().equals(""))) {
+                return httpLogin.senha(emailArray);
+            } else throw new IllegalArgumentException("Informe um email válido!");
+        } else throw new NullPointerException("Dados não informados");
+    }
+
     private static SharedPreferences instance(Context context) {
         if (context == null) try {
             throw new ContextNullException();
