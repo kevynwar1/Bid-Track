@@ -51,8 +51,10 @@
 											$bairro 		 = $romaneio->estabelecimento->bairro;
 											$cidade 		 = $romaneio->estabelecimento->cidade;
 											$transportadora  = $romaneio->transportadora->nome_fantasia;
+											$cod_motorista   = $romaneio->motorista->codigo;
 											$motorista  	 = $romaneio->motorista->nome;
 											$data_criacao	 = $romaneio->data_criacao;
+											$cod_status		 = $romaneio->status_romaneio->codigo;
 											$status_romaneio = $romaneio->status_romaneio->descricao;
 											$data_format	 = explode("-", $romaneio->data_criacao);
 								?>
@@ -64,7 +66,9 @@
 										</a>
 									</td>
 									<td><?= (is_null($transportadora)) ? $romaneio->estabelecimento->razao_social : $transportadora; ?></td>
-									<td><?= (is_null($motorista)) ? "<span class='gray'>Indefinido</span>" : $motorista; ?></td>
+									<td>
+										<?= (is_null($motorista[0])) ? "<span class='gray'>Indefinido</span>" : $motorista; ?>
+									</td>
 									<td>
 										<?= $data_format[2]."/".$data_format[1]; ?>
 										<span class="f11 upper">
@@ -72,7 +76,19 @@
 										</span>
 									</td>
 									<td>
-										<span class="btn-<?= ($status_romaneio == 'Liberado') ? 'success' : 'danger' ?> btn-xs status">
+										<?php
+											$color = NULL;
+											if($cod_status == 1) { // Liberado
+												$color = "success";
+											} else if($cod_status == 2) { // Pendente
+												$color = "danger";
+											} else if($cod_status == 3) { // Em Processo
+												$color = "warning";
+											} else if($cod_status == 5) { // Aceito
+												$color = "primary";
+											}
+										?>
+										<span class="btn-<?= $color ?> btn-xs status">
 											<?= $status_romaneio; ?>
 										</span>
 									</td>
@@ -82,16 +98,18 @@
 												<i class="fa fa-eye" aria-hidden="true"></i>
 											</button>
 										</a>
+										<?php if($cod_status != 3): ?>
 										<a href="<?= base_url().'romaneio/editar/'.$codigo ?>">
 											<button type="button" rel="tooltip" data-placement="left" title="Editar" class="btn-pattern">
 												<i class="fa fa-edit"></i>
 											</button>
 										</a>
-										<a href="<?= base_url().'romaneio/excluir/'.$codigo ?>">
+										<a href="<?= base_url().'romaneio/excluir/'.$codigo.'/'.$cod_motorista ?>">
 											<button type="button" rel="tooltip" data-placement="left" title="Excluir" class="btn-pattern">
 												<i class="fa fa-times"></i>
 											</button>
 										</a>
+										<?php endif; ?>
 									</td>
 								</tr>
 								<?php 

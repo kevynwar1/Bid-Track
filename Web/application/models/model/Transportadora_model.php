@@ -11,6 +11,7 @@ class Transportadora_model extends CI_Model {
 
 	public function listar() {
 		$this->db->select('*')->from($this->table);
+		$this->db->order_by($this->table.".nome_fantasia", "ASC");
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0) {

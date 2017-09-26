@@ -24,7 +24,7 @@
 					</div>
 					<div class="card-content">
 						<p class="category">Faturamento</p>
-						<h3 class="title"><span style="font-size: 14px;">R$</span> 34,245</h3>
+						<h3 class="title"><!-- span style="font-size: 12px;">R$</span --> <span id="valor"><?= $faturamento[0]->valor ?></span></h3>
 					</div>
 					<div class="card-footer">
 						<div class="stats">
@@ -93,3 +93,10 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#valor').mask('000.000.000.000.000,00', {reverse: true});
+	});
+</script>

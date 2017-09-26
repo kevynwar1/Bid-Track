@@ -27,7 +27,8 @@
 <script src="<?= base_url(); ?>assets/js/material-dashboard.js"></script>
 <script src="<?= base_url(); ?>assets/js/demo.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyIn0nbXxWrWrdyV9plcwTO_bJ-Rm9y7w&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyIn0nbXxWrWrdyV9plcwTO_bJ-Rm9y7w&callback=initMap" async defer>
+</script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		demo.initDashboardPageCharts();

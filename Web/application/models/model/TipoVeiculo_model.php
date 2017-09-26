@@ -11,6 +11,8 @@ class TipoVeiculo_model extends CI_Model {
 
 	public function listar() {
 		$this->db->select('*')->from($this->table);
+		$this->db->where($this->table.'.cod_empresa', '1');
+		$this->db->order_by($this->table.".descricao", "ASC");
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0) {

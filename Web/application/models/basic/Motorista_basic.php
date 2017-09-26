@@ -4,7 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Motorista_basic extends CI_Model {
 	public $codigo;
 	public $empresa;
-	public $usuario;
 	public $nome;
 	public $cpf;
 	public $pontuacao;
@@ -15,19 +14,20 @@ class Motorista_basic extends CI_Model {
 	public $cidade;
 	public $uf;
 	public $cep;
+	public $email;
+	public $senha;
 	public $latitude;
 	public $longitude;
 	public $tipo_carteira;
 	public $validade_carteira;
+	public $disponibilidade;
 	public $situacao;
 
 	function __construct() {
 		parent::__construct();
 		$this->load->model('basic/Empresa_basic');
-		$this->load->model('basic/Usuario_basic');
 
 		$this->empresa = new Empresa_basic();
-		$this->usuario = new Usuario_basic();
 	}
 
 	public function getCodigo() { return $this->codigo; }
@@ -35,9 +35,6 @@ class Motorista_basic extends CI_Model {
 
 	public function getEmpresa() { return $this->empresa; }
 	public function setEmpresa($empresa) { $this->empresa = $empresa; }
-
-	public function getUsuario() { return $this->usuario; }
-	public function setUsuario($usuario) { $this->usuario = $usuario; }
 
 	public function getNome() { return $this->nome; }
 	public function setNome($nome) { $this->nome = $nome; }
@@ -69,6 +66,12 @@ class Motorista_basic extends CI_Model {
 	public function getCep() { return $this->cep; }
 	public function setCep($cep) { $this->cep = $cep; }
 
+	public function getEmail() { return $this->email; }
+	public function setEmail($email) { $this->email = $email; }
+
+	public function getSenha() { return $this->senha; }
+	public function setSenha($senha) { $this->senha = $senha; }
+
 	public function getLatitude() { return $this->latitude; }
 	public function setLatitude($latitude) { $this->latitude = $latitude; }
 
@@ -80,6 +83,9 @@ class Motorista_basic extends CI_Model {
 
 	public function getValidadeCarteira() { return $this->validade_carteira; }
 	public function setValidadeCarteira($validade_carteira) { $this->validade_carteira = $validade_carteira; }
+
+	public function getDisponibilidade() { return $this->disponibilidade; }
+	public function setDisponibilidade($disponibilidade) { $this->disponibilidade = $disponibilidade; }
 
 	public function getSituacao() { return $this->situacao; }
 	public function setSituacao($situacao) { $this->situacao = $situacao; }

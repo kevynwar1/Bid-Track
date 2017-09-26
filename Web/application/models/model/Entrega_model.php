@@ -11,6 +11,7 @@ class Entrega_model extends CI_Model {
 
 	public function cadastrar($entrega) {
 		$data = array(
+			'seq_entrega' 		 => $entrega->getSeqEntrega(),
 			'cod_romaneio' 		 => $entrega->getRomaneio()->getCodigo(),
 			'cod_destinatario' 	 => $entrega->getDestinatario()->getCodigo(),
 			'cod_status_entrega' => $entrega->getStatusEntrega()->getCodigo(),
@@ -25,8 +26,16 @@ class Entrega_model extends CI_Model {
 		return true;
 	}
 
-	public function excluir_romaneio($romaneio) {
-		$this->db->where($this->table.'.cod_romaneio', $romaneio->getCodigo());
+	public function excluir($romaneio) { // Exclui todas entrega(s) do Romaneio
+		$this->db->where($this->table.'.cod_romaneio', $romaneio->codigo);
+		$this->db->delete($this->table);
+
+		return $this->db->affected_rows(); 
+	}
+
+	public function excluir_entrega($entrega, $romaneio) { // Excluir entrega específica
+		$this->db->where($this->table.'.seq_entrega', $entrega);
+		$this->db->where($this->table.'.cod_romaneio', $romaneio);
 		$this->db->delete($this->table);
 
 		return $this->db->affected_rows(); 
@@ -44,11 +53,28 @@ class Entrega_model extends CI_Model {
 		}
 	}
 
+	public function verificar_notafiscal($nota_fiscal) {
+		$this->db->select($this->table.'.nota_fiscal')->from($this->table);
+		$this->db->where($this->table.'.nota_fiscal', $nota_fiscal);
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	public function listar($romaneio) {
-		$this->db->select('*')->from($this->table);
+		$this->db->select('*, 
+			entrega.seq_entrega AS seq_entrega, 
+			entrega.cod_romaneio AS cod_romaneio, 
+			entrega.cod_destinatario AS cod_destinatario
+		')->from($this->table);
 		$this->db->join('status_entrega', 'status_entrega.codigo = '.$this->table.'.cod_status_entrega');
 		$this->db->join('destinatario', 'destinatario.codigo = '.$this->table.'.cod_destinatario');
 		$this->db->where($this->table.'.cod_romaneio', $romaneio);
+		$this->db->order_by($this->table.'.seq_entrega', 'ASC');
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0) {
@@ -57,9 +83,12 @@ class Entrega_model extends CI_Model {
 			foreach($result as $row) {
 				$entrega = new Entrega_basic();
 
-				$entrega->setCodigo($row->seq_entrega);
+				$entrega->setSeqEntrega($row->seq_entrega);
 				$entrega->getRomaneio()->setCodigo($row->cod_romaneio);
 				$entrega->getDestinatario()->setCodigo($row->cod_destinatario);
+				$entrega->getDestinatario()->setCnpjCpf($row->cnpj_cpf);
+				$entrega->getDestinatario()->setEmail($row->email);
+				$entrega->getDestinatario()->setTelefone($row->telefone);
 				$entrega->getDestinatario()->setRazaoSocial($row->razao_social);
 				$entrega->getDestinatario()->setLogradouro($row->logradouro);
 				$entrega->getDestinatario()->setNumero($row->numero);
@@ -116,7 +145,7 @@ class Entrega_model extends CI_Model {
 			foreach($result as $row) {
 				$entrega = new Entrega_basic();
 
-				$entrega->setCodigo($row->seq_entrega);
+				$entrega->setSeqEntrega($row->seq_entrega);
 				$entrega->getRomaneio()->setCodigo($row->cod_romaneio);
 				$entrega->getRomaneio()->getMotorista()->setCodigo($row->cod_motorista);
 				$entrega->getDestinatario()->setCodigo($row->cod_destinatario);
@@ -135,6 +164,66 @@ class Entrega_model extends CI_Model {
 				$entrega->getStatusEntrega()->setDescricao($row->descricao);
 				$entrega->setPesoCarga($row->peso_carga);
 				$entrega->setNotaFiscal($row->nota_fiscal);
+
+				$entregas[] = $entrega;
+			}
+
+			return $entregas;
+		} else {
+			return false;
+		}
+	}
+
+	public function entrega_romaneio($motorista) {
+		$this->db->select('
+			lpad(entrega.cod_romaneio, 4, 0) AS cod_romaneio, 
+			romaneio.cod_motorista AS cod_motorista, 
+			romaneio.cod_estabelecimento AS cod_estabelecimento, 
+			entrega.seq_entrega AS seq_entrega, 
+			destinatario.razao_social AS razao_social, 
+			destinatario.bairro AS bairro, 
+			destinatario.cidade AS cidade,
+			destinatario.uf AS uf, 
+			destinatario.latitude AS latitude, 
+			destinatario.longitude AS longitude, 
+			estabelecimento.latitude AS est_latitude, 
+			estabelecimento.longitude AS est_longitude, 
+			status_romaneio.descricao AS descricao_romaneio, 
+			status_entrega.codigo AS cod_status_entrega, 
+			status_entrega.descricao AS descricao_entrega
+			')->from($this->table);
+		$this->db->join('romaneio', 'romaneio.codigo = '.$this->table.'.cod_romaneio');
+		$this->db->join('destinatario', 'destinatario.codigo = '.$this->table.'.cod_destinatario');
+		$this->db->join('motorista', 'motorista.codigo = romaneio.cod_motorista', 'left');
+		$this->db->join('status_romaneio', 'status_romaneio.codigo = romaneio.cod_status_romaneio', 'left');
+		$this->db->join('status_entrega', 'status_entrega.codigo = '.$this->table.'.cod_status_entrega');
+		$this->db->join('estabelecimento', 'estabelecimento.codigo = romaneio.cod_estabelecimento', 'left');
+		$this->db->where('romaneio.cod_motorista', $motorista);
+		$this->db->where('romaneio.cod_status_romaneio', '1');
+		$this->db->order_by($this->table.'.seq_entrega', 'ASC');
+		$query = $this->db->get();
+
+		if($query->num_rows() > 0) {
+			$result = $query->result();
+			$entregas = array();
+			foreach($result as $row) {
+				$entrega = new Entrega_basic();
+
+				$entrega->setSeqEntrega($row->seq_entrega);
+				$entrega->getDestinatario()->setRazaoSocial($row->razao_social);
+				$entrega->getDestinatario()->setBairro($row->bairro);
+				$entrega->getDestinatario()->setCidade($row->cidade);
+				$entrega->getDestinatario()->setUf($row->uf);
+				$entrega->getDestinatario()->setLatitude($row->latitude);
+				$entrega->getDestinatario()->setLongitude($row->longitude);
+				$entrega->getRomaneio()->getEstabelecimento()->setLatitude($row->est_latitude);
+				$entrega->getRomaneio()->getEstabelecimento()->setLongitude($row->est_longitude);
+				$entrega->getRomaneio()->setCodigo($row->cod_romaneio);
+				$entrega->getRomaneio()->getEstabelecimento()->setCodigo($row->cod_estabelecimento);
+				$entrega->getRomaneio()->getMotorista()->setCodigo($row->cod_motorista);
+				$entrega->getRomaneio()->getStatusRomaneio()->setDescricao($row->descricao_romaneio);
+				$entrega->getStatusEntrega()->setCodigo($row->cod_status_entrega);
+				$entrega->getStatusEntrega()->setDescricao($row->descricao_entrega);
 
 				$entregas[] = $entrega;
 			}
