@@ -69,7 +69,7 @@ public class Facade implements IFacade {
     }
 
 
-    public Entrega atualiza(Entrega entrega) throws Exception{
+    public Entrega atualiza(Entrega entrega) throws Exception {
         if (controllerEntregas == null)
             controllerEntregas = new ControllerEntregas(mContext);
         return controllerEntregas.atualizaEntrega(entrega);
@@ -90,9 +90,9 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public Usuario login(String email) throws IllegalArgumentException, NullPointerException {
-        if (controllerUsuario == null) controllerUsuario = new ControllerUsuario(mContext);
-        return controllerUsuario.login(email);
+    public Motorista senha(String email) throws IllegalArgumentException, NullPointerException {
+        if (controllerLogin == null) controllerLogin = new ControllerLogin(mContext);
+        return controllerLogin.senha(email);
     }
 
 

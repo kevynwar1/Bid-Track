@@ -28,9 +28,9 @@ public interface IFacade {
 
 
     /*Controller entrega*/
-    List<Entrega> selectEntrega()throws Exception;
+    List<Entrega> selectEntrega() throws Exception;
 
-     Entrega atualiza(Entrega entrega)throws Exception;
+    Entrega atualiza(Entrega entrega) throws Exception;
 
 
     /*Controller Empresa*/
@@ -40,13 +40,13 @@ public interface IFacade {
     /*Controller login*/
     Motorista login(String email, String senha) throws Exception;
 
-    Usuario login(String email)throws Exception;
+    Motorista senha(String email) throws Exception;
 
-    Motorista isLogged()throws Exception;
+    Motorista isLogged() throws Exception;
 
-    void setLogged(Motorista motorista)throws Exception;
+    void setLogged(Motorista motorista) throws Exception;
 
-    boolean isMatenhaConectado()throws Exception;
+    boolean isMatenhaConectado() throws Exception;
 
-    void setMatenhaConectado(boolean isConnected)throws Exception;
+    void setMatenhaConectado(boolean isConnected) throws Exception;
 }

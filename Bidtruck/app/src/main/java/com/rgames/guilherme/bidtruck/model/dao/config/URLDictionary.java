@@ -11,6 +11,7 @@ public enum URLDictionary {
     URL_OFFER("/romaneio_ofertavel/"),
     URL_LOGIN("/motorista_login"),
     URL_USER("/usuario"),
+    URL_ESQUECI_SENHA("/motorista_esqueci_senha"),
     URL_ROMANEIO_EMPRESA("/romaneio_motorista_empresa"),
     URL_DELIVERY_DRIVER("/entrega_motorista/"),
     URL_ROMANEIO_DRIVER("/romaneio_motorista/"),

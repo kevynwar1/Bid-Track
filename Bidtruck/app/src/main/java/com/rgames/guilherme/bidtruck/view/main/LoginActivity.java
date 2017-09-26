@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -96,8 +97,8 @@ public class LoginActivity extends AppCompatActivity {
                             protected void onPreExecute() {
                                 try {
                                     initProgressBar();
-
-                                    email = String.valueOf(((EditText) findViewById(R.id.edtEmail)).getText());
+                                    if (validarCampos() == true)
+                                        email = String.valueOf(((EditText) findViewById(R.id.edtEmail)).getText());
                                     senha = String.valueOf(((EditText) findViewById(R.id.edtSenha)).getText());
                                     mFacade.setMatenhaConectado(
                                             ((CheckBox) findViewById(R.id.chkConectado)).isChecked()
@@ -122,9 +123,9 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     if (motorista == null) {
                                         Toast.makeText(LoginActivity.this, "Falha de autenticação, Email ou Senha Incorretos.", Toast.LENGTH_LONG).show();
-                                        ((TextView) findViewById(R.id.txtError)).setText(
+                                        /*((TextView) findViewById(R.id.txtError)).setText(
                                                 (msg.equals("")) ? getString(R.string.app_err_input_dadosIncorretos) : msg);
-                                        findViewById(R.id.txtError).setVisibility(View.VISIBLE);
+                                        findViewById(R.id.txtError).setVisibility(View.VISIBLE);*/
 
 //                                        edtEmail.setText("");
 //                                        edtSenha.setText("");
@@ -158,8 +159,11 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             }
+
         });
+
     }
 
 
@@ -170,6 +174,37 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, SenhaActivitry.class));
             }
         });
+    }
+
+    private boolean validarCampos() {
+        if (edtSenha.getText().toString().isEmpty()) {
+            edtSenha.setError("Preencha o campo Senha");
+            edtSenha.setFocusable(true);
+            edtSenha.requestFocus();
+            return false;
+        } else if (edtSenha.getText().toString().length() <= 3) {
+            edtSenha.setError("Informe uma senha com mais de 3 digitos");
+            edtSenha.setFocusable(true);
+            edtSenha.requestFocus();
+            return false;
+        } else if (edtEmail.getText().toString().isEmpty()) {
+            edtEmail.setError("Preencha o campo Login");
+            edtEmail.setFocusable(true);
+            edtEmail.requestFocus();
+            return false;
+        } else if (!isValidEmail(edtEmail.getText().toString())) {
+            edtEmail.setError("Informe um e-mail valido");
+            edtEmail.setFocusable(true);
+            edtEmail.requestFocus();
+            return false;
+        }
+
+
+        return true;
+    }
+
+    public final static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
     @Override
