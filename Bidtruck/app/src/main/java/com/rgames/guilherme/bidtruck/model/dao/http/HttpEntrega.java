@@ -46,7 +46,7 @@ public class HttpEntrega extends HttpBase<Entrega> {
                     this.id_motorista_entrega = driver.getCodigo();
 
                     if (id_motorista_entrega > 0 && !id_motorista_entrega.equals("")) {
-                        HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY_FOR_DRIVER, HttpMethods.GET, false, true, String.valueOf(id_motorista_entrega));
+                        HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ENTREGA_ROMANEIO, HttpMethods.GET, false, true, String.valueOf(id_motorista_entrega));
                         list = super.select(connection, Entrega.class);
                         //pode ser redundante, se houver erro tira :3
                         connection.disconnect();
@@ -64,6 +64,19 @@ public class HttpEntrega extends HttpBase<Entrega> {
 
 
     }
+
+    public Entrega atualizar(Entrega entrega) {
+        entrega  = null;
+        try {
+            HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ENTREGA_ROMANEIO,HttpMethods.POST, false, true, String.valueOf((entrega.getCodigo())));
+            entrega = super.selectBy(connection, Entrega.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return entrega;
+    }
+
+
 
 
 

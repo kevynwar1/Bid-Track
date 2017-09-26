@@ -96,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                             protected void onPreExecute() {
                                 try {
                                     initProgressBar();
+
                                     email = String.valueOf(((EditText) findViewById(R.id.edtEmail)).getText());
                                     senha = String.valueOf(((EditText) findViewById(R.id.edtSenha)).getText());
                                     mFacade.setMatenhaConectado(

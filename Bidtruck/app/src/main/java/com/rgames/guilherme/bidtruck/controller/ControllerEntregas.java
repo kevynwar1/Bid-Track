@@ -27,4 +27,11 @@ public class ControllerEntregas {
         if (httpEntrega == null) httpEntrega = new HttpEntrega(mContext);
         return httpEntrega.select();
     }
+
+
+    public Entrega atualizaEntrega(Entrega enntrega){
+        if (httpEntrega == null) httpEntrega = new HttpEntrega(mContext);
+        return httpEntrega.atualizar(enntrega);
+
+    }
 }

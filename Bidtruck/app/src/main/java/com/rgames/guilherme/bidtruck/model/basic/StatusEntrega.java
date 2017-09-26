@@ -1,7 +1,5 @@
 package com.rgames.guilherme.bidtruck.model.basic;
 
-import android.icu.util.Calendar;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,17 +9,19 @@ public class StatusEntrega implements Parcelable {
 
     private int codigo;
     private Ocorrencia ocorrencia;
+   // private String descricao;
     private List<Entrega> entregaList;
     private String date;
 
     public StatusEntrega() {
     }
 
-    public StatusEntrega(int codigo, List<Entrega> entregaList, Ocorrencia ocorrencia, String date) {
+    public StatusEntrega(int codigo, List<Entrega> entregaList, Ocorrencia ocorrencia, String date ) {
         this.codigo = codigo;
         this.ocorrencia = ocorrencia;
         this.entregaList = entregaList;
         this.date = date;
+
     }
 
     protected StatusEntrega(Parcel in) {
@@ -89,4 +89,8 @@ public class StatusEntrega implements Parcelable {
     public void setEntregaList(List<Entrega> entregaList) {
         this.entregaList = entregaList;
     }
+
+
+
+
 }
