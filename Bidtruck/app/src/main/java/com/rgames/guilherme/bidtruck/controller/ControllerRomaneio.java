@@ -29,7 +29,6 @@ public class ControllerRomaneio {
     public List<Romaneio> select(Empresa empresa, Motorista motorista) throws MotoristaNaoConectadoException, EmpresaNullException {
         if (motorista == null || motorista.getCodigo() <= 0)
             throw new MotoristaNaoConectadoException();
-        //Gerar uma exception..
         if (empresa == null)
             throw new EmpresaNullException();
         if (httpRomaneio == null) httpRomaneio = new HttpRomaneio(mContext);

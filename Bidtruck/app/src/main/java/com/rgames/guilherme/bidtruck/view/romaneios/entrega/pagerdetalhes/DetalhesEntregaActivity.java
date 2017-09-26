@@ -28,7 +28,8 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                 int index = getIntent().getExtras().getInt(Entrega.PARCEL);
-                mEntrega = mRomaneio.getEntregaList().get(index);
+                if (mRomaneio.getEntregaList().size() > 0)
+                    mEntrega = mRomaneio.getEntregaList().get(index);
                 init();
                 initViewPager();
             } else {

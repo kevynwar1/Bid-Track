@@ -40,8 +40,12 @@ public class RomaneioFragment extends Fragment {
     }
 
 
-    public static RomaneioFragment newInstance() {
-        return new RomaneioFragment();
+    public static RomaneioFragment newInstance(Empresa empresa) {
+        RomaneioFragment fragment = new RomaneioFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Empresa.PARCEL_EMPRESA, empresa);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
 
@@ -58,28 +62,32 @@ public class RomaneioFragment extends Fragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }*/
-
-        Bundle b = getArguments();
-        if (b != null) {
-            empresa = b.getParcelable(Empresa.PARCEL_EMPRESA);
-
-        } else {
-            Toast.makeText(getContext(), "DEU MERDA no BUNDLE DO ROMANEIO", Toast.LENGTH_LONG).show();
-
-        }
+        pegarEmpresa();
     }
 
+    private void pegarEmpresa() {
+        if (getArguments() != null && getArguments().getParcelable(Empresa.PARCEL_EMPRESA) != null) {
+            empresa = getArguments().getParcelable(Empresa.PARCEL_EMPRESA);
+        } else {
+            Toast.makeText(getContext(), "Empresa não encontrada. - Err 1", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         try {
             mFacade = new Facade(getActivity());
-            if (!mFacade.isConnected(getActivity())) {
-                Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
+            if (empresa == null) {
+                pegarEmpresa();
                 emptyView(true);
-            } else
-                init();
+            } else {
+                if (!mFacade.isConnected(getActivity())) {
+                    Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
+                    emptyView(true);
+                } else
+                    init();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,8 +113,6 @@ public class RomaneioFragment extends Fragment {
 
 
     private void init() {
-
-
         new AsyncTask<Void, Void, List<Romaneio>>() {
             String msg = "";
 
@@ -123,14 +129,7 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected List<Romaneio> doInBackground(Void... voids) {
                 try {
-//<<<<<<< HEAD
-//                    mFacade.setLogged(new Motorista(9, 1));
-//                    return mFacade.selectRomaneio(mFacade.isLogged());
-//=======
                     return mFacade.selectRomaneio(empresa, mFacade.isLogged());
-                    //VIEW NAO PODE SER UTILIZADA AQUI
-//                        Toast.makeText(getActivity(), "EMPRESA D MERDA N VEIO", Toast.LENGTH_SHORT).show();
-//>>>>>>> 4a73dd92a54e488c2c4c60c9c1684946e2f9e401
                 } catch (MotoristaNaoConectadoException e) {
                     msg = e.getMessage();
                     e.printStackTrace();
@@ -143,10 +142,11 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
-                    if (romaneios == null)
+                    if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
                     else
                         initRecyclerView(romaneios);
+
                     if (msg != null && !msg.equals(""))
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     finishProgressBar();

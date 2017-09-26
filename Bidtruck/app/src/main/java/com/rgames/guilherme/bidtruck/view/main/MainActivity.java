@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,13 +40,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (getIntent().getExtras() != null) {
-            if (getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA) != null)
-                motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);
-            if (getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA) != null)
-                empresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
-        }else {
+        if (getIntent().getExtras() != null && getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA) != null) {
+        /*    if (getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA) != null)
+                motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);*/
+            empresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
+        } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
+            Facade facade = new Facade(this);
+            facade.setLogged(new Motorista(0, ""));
+            onBackPressed();
         }
         try {
             init();
@@ -53,13 +56,8 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         if (savedInstanceState == null) {
-            b = new Bundle();
-            b.putParcelable(Empresa.PARCEL_EMPRESA, empresa);
-
-            RomaneioFragment frag = new RomaneioFragment();
-            frag.setArguments(b);
-            // getSupportFragmentManager().beginTransaction().add(R.id.content_main, RomaneioFragment.newInstance()).add(R.id.content_main, frag).commit();
-            getSupportFragmentManager().beginTransaction().add(R.id.content_main, frag).commit();
+             getSupportFragmentManager().beginTransaction().add(R.id.content_main
+                     , RomaneioFragment.newInstance(empresa)).commit();
         }
     }
 
@@ -102,7 +100,7 @@ public class MainActivity extends AppCompatActivity
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try {
                                         Facade facade = new Facade(MainActivity.this);
-                                        facade.setLogged(new Motorista(0, 0));
+                                        facade.setLogged(new Motorista(0, ""));
                                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                         finish();
                                     } catch (Exception e) {
@@ -129,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         onCloseDrawer();
         switch (item.getItemId()) {
             case R.id.nav_entrega:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, RomaneioFragment.newInstance()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, RomaneioFragment.newInstance(empresa)).commit();
                 return true;
             case R.id.nav_sync:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();
@@ -168,8 +166,8 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         TextView tvNome = (TextView) header.findViewById(R.id.tvNomeMotorista);
         TextView tvEmail = (TextView) header.findViewById(R.id.tvEmailMotorista);
-        tvNome.setText("jusefa");
-        tvEmail.setText("maria");
+        tvNome.setText("motorista");
+        tvEmail.setText(empresa.getNome_fantasia().toString());
 
     }
 }

@@ -49,6 +49,8 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             holder.bairro.setText((mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getBairro()));
             holder.cidade.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getCidade());
             holder.uf.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getUF());
+           // holder.status_entrega.setText(mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega().getDescricao());
+
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -57,6 +59,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
                         /*Vou passar o index pois tive problemas com a passagem de dois Parcelables.. talvez pq o bundle
                         * sobreescreva o put e a utilização do arrayParce tbm teve problemas*/
                         Intent intent = new Intent(mContext, DetalhesEntregaActivity.class);
+                        //Intent intent = new Intent(mContext, FinalizaEntrega.class);
                         Bundle bundle = new Bundle();
                         bundle.putInt(Entrega.PARCEL, holder.getAdapterPosition());
                         bundle.putParcelable(Romaneio.PARCEL, mRomaneio);
@@ -77,7 +80,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView codigo, titulo, seq_entrega, razao_social, bairro, uf, cidade, status;
+        public TextView codigo, titulo, seq_entrega, razao_social, bairro, uf, cidade, status_entrega;
         public CardView cardView;
         //final TextView cod_romaneio;
 
@@ -90,7 +93,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             bairro = itemView.findViewById(R.id.txtBairro);
             cidade = itemView.findViewById(R.id.txtCidade);
             uf = itemView.findViewById(R.id.txtUF);
-           // status = itemView.findViewById(R.id.txtStatus);
+          //  status_entrega = itemView.findViewById(R.id.txtStatusEntrega);
             cardView = itemView.findViewById(R.id.cardview);
 
 

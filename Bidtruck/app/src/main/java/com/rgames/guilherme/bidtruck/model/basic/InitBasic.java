@@ -15,7 +15,7 @@ public class InitBasic {
         mListOcorrencia = new ArrayList<>();
     }
 
-    public void addListDelivery(String titulo) {
+   /* public void addListDelivery(String titulo) {
         Destinatario destinatario = new Destinatario(1, new ArrayList<Entrega>(), new Empresa("Empresa joselico")
                 , "Frete Joselico LRRTDSA", "Frete Joselico", 't', "000000000", "email@email", "1111-2222", "Joselito", "54896-585", "BA"
                 , "Augusta de Amorin", "Maranguape", "Rua Atras da Escola 101", "1001", "001Ml", 1, 2, false);
@@ -25,7 +25,7 @@ public class InitBasic {
                 , destinatario
                 , new StatusEntrega(0, new ArrayList<Entrega>(), new Ocorrencia(0, new ArrayList<StatusEntrega>(), new TipoOcorrencia(0, "", 's'), "", 's'), null)
                 , 0f, null, false));
-    }
+    }*/
 //
 //    public void addListRomaneios(String titulo) {
 //        try {

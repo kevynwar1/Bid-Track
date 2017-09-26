@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.empresa;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -29,6 +30,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.view.main.LoginActivity;
 import com.rgames.guilherme.bidtruck.view.main.MainActivity;
 import com.rgames.guilherme.bidtruck.view.oferta.OfferAdapter;
 import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
@@ -53,27 +55,21 @@ public class EmpresasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_empresas);
-
-        try {
-            if (getIntent().getExtras() != null) {
-                motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);
-                initList();
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         try {
+            facade = new Facade(EmpresasActivity.this);
+            if (getIntent().getExtras() != null) {
+                motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);
+            } else {
+                motorista = facade.isLogged();
+            }
+            initList();
             empresaList = (ListView) findViewById(R.id.lv_empresas);
             empresaList.setDivider(null);
-            facade = new Facade(EmpresasActivity.this);
             initList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,6 +100,7 @@ public class EmpresasActivity extends AppCompatActivity {
                 try {
                     return facade.selectEmpresa(motorista);
                 } catch (Exception e) {
+                    Log.i("teste", e.getMessage());
                     e.printStackTrace();
                 }
                 return null;
@@ -112,24 +109,38 @@ public class EmpresasActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<Empresa> empresas) {
                 try {
-                    if (empresas.size() == 1) {
-                        Intent it = new Intent(EmpresasActivity.this, MainActivity.class);
-                        Bundle b = new Bundle();
-                        emp = empresas.get(0);
-                        b.putParcelable(Empresa.PARCEL_EMPRESA, emp);
-                        startActivity(it.putExtras(b));
-                        // Toast.makeText(EmpresasActivity.this, "Não há empresas disponíveis no momento", Toast.LENGTH_LONG).show();
+                    if (empresas != null) {
+                        if (empresas.size() > 0 && empresas.size() == 1) {
+                            Intent it = new Intent(EmpresasActivity.this, MainActivity.class);
+                            Bundle b = new Bundle();
+                            emp = empresas.get(0);
+                            b.putParcelable(Empresa.PARCEL_EMPRESA, emp);
+                            // b.putParcelable(Motorista.PARCEL_MOTORISTA, motorista);
+                            startActivity(it.putExtras(b));
+                            finish();
+                        } else if (empresas.size() == 0) {
+                            Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa - ERR 1", Toast.LENGTH_LONG).show();
+                            deslogar();
+                        } else {
+                            initView(empresas);
+                        }
                     } else {
-                        initView(empresas);
+                        Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa - ERR 2", Toast.LENGTH_LONG).show();
+                        deslogar();
                     }
-
-
                     finishProgressBar();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    deslogar();
                 }
             }
         }.execute();
+    }
+
+    private void deslogar() {
+        facade.setLogged(new Motorista(0, ""));
+        startActivity(new Intent(EmpresasActivity.this, LoginActivity.class));
+        finish();
     }
 
     private void initView(List<Empresa> empresas) throws Exception {
@@ -160,7 +171,6 @@ public class EmpresasActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Empresa empresa = (Empresa) adapterView.getAdapter().getItem(i);
-
                 Intent it = new Intent(EmpresasActivity.this, MainActivity.class);
                 //    RomaneioFragment frag = new RomaneioFragment();
 
@@ -177,7 +187,8 @@ public class EmpresasActivity extends AppCompatActivity {
                 //  fragmentManager.beginTransaction().replace(R.id.content,frag).commit();
 
                 startActivity(it.putExtras(b));
-                finish();
+
+
             }
         });
     }
