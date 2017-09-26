@@ -22,6 +22,7 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
+import com.rgames.guilherme.bidtruck.view.oferta.Preferences;
 import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
 import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
 import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         /*    if (getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA) != null)
                 motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);*/
             empresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
+            Preferences preferences = new Preferences(this);
+            preferences.setCompanyCode(empresa.getCodigo());
         } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
             Facade facade = new Facade(this);

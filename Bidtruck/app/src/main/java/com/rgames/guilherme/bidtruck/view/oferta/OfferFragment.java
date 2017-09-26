@@ -19,6 +19,7 @@ import com.rgames.guilherme.bidtruck.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 
@@ -29,6 +30,7 @@ public class OfferFragment extends Fragment {
     private OfferAdapter offerAdapter;
     private View mView;
     private MyProgressBar myProgressBar;
+    private Preferences preferences;
 
 
     public OfferFragment() {
@@ -59,6 +61,9 @@ public class OfferFragment extends Fragment {
             offerList = (ListView) mView.findViewById(R.id.listViewOffers);
             offerList.setDivider(null);
             facade = new Facade(getActivity());
+            preferences = new Preferences(getActivity());
+            Log.i("Nuan", ""+facade.isLogged().getCodigo());
+            Log.i("Erick", ""+preferences.getCompanyCode());
             loadOffers();
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,12 +84,15 @@ public class OfferFragment extends Fragment {
 
             @Override
             protected List<Romaneio> doInBackground(Void... voids) {
+                List<Romaneio> offers = null;
                 try {
-                    return facade.selectRomaneioOfertado(facade.isLogged());
+                    Motorista driver = facade.isLogged();
+                    driver.getEmpresa().setCodigo(preferences.getCompanyCode());
+                    offers = facade.selectRomaneioOfertado(driver);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return new ArrayList<Romaneio>();
+                return offers;
             }
 
             @Override
