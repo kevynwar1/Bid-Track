@@ -71,6 +71,4 @@ public abstract class HttpBase<T> {
         connection.disconnect();
         return list;
     }
-
-
 }

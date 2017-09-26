@@ -14,7 +14,9 @@ public enum URLDictionary {
     URL_ROMANEIO_EMPRESA("/romaneio_motorista_empresa"),
     URL_DELIVERY_DRIVER("/entrega_motorista/"),
     URL_ROMANEIO_DRIVER("/romaneio_motorista/"),
-    URL_DELIVERY_FOR_DRIVER("/entrega_motorista/");
+    URL_DELIVERY_FOR_DRIVER("/entrega_motorista/"),
+    URL_ROUTE("https://maps.googleapis.com/maps/api/directions/json?");
+    //origin=Disneyland&destination=Universal+Studios+Hollywood4&key=AIzaSyCRXIP-xfakNAk8lodv20x4xD6hFWNwD8Y
 
     private String value;
 
