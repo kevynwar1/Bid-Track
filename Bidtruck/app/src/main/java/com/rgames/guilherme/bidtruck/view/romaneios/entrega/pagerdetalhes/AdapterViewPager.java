@@ -30,7 +30,7 @@ public class AdapterViewPager extends FragmentStatePagerAdapter {
             case 0:
                 return DetalhesPagerFragment.newInstance(mRomaneio, mEntrega);
             case 1:
-                return RotaPagerFragment.newInstance(mEntrega);
+                return RotaPagerFragment.newInstance(mRomaneio, mEntrega);
             default:
                 return DetalhesPagerFragment.newInstance(mRomaneio, mEntrega);
         }

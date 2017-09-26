@@ -2,6 +2,7 @@ package com.rgames.guilherme.bidtruck.model.basic;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Created by Guilherme on 09/09/2017.

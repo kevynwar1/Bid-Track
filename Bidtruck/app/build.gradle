@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key_test'
+            keyPassword '34683235'
+            storeFile file('C:/Users/Guilherme/keys/teste/androidkey.jks')
+            storePassword '34683235'
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
@@ -15,6 +23,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }

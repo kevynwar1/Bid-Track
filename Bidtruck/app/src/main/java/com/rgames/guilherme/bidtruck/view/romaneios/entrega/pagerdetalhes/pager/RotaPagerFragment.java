@@ -1,6 +1,7 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.DirectionFinder;
 import com.rgames.guilherme.bidtruck.model.basic.DirectionFinderListener;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
+import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.basic.Route;
 
 import java.io.UnsupportedEncodingException;
@@ -39,21 +41,24 @@ import java.util.List;
 public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyCallback, DirectionFinderListener {
 
     private final static String ARG_1 = "arg_1";
+    private final static String ARG_2 = "arg_2";
     private View mView;
     private Entrega mEntrega;
     private GoogleMap mMap;
-    private Marker marker;
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
+    private ProgressDialog progressDialog;
+    private Romaneio mRomaneio;
 
     public RotaPagerFragment() {
     }
 
-    public static RotaPagerFragment newInstance(Entrega entrega) {
+    public static RotaPagerFragment newInstance(Romaneio romaneio, Entrega entrega) {
         RotaPagerFragment fragment = new RotaPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ARG_1, entrega);
+        bundle.putParcelable(ARG_2, romaneio);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -64,29 +69,18 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
         getMapAsync(this);
         if (getArguments() != null) {
             mEntrega = getArguments().getParcelable(ARG_1);
+            mRomaneio = getArguments().getParcelable(ARG_2);
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    //    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        return mView = inflater.inflate(R.layout.fragment_rota_pager, container, false);
-//    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng hcmus = new LatLng(10.762963, 106.682394);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hcmus, 18));
-        originMarkers.add(mMap.addMarker(new MarkerOptions()
-                .title("Đại học Khoa học tự nhiên")
-                .position(hcmus)));
-
+//        LatLng hcmus = new LatLng(10.762963, 106.682394);
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hcmus, 18));
+//        originMarkers.add(mMap.addMarker(new MarkerOptions()
+//                .title("Đại học Khoa học tự nhiên")
+//                .position(hcmus)));
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -95,10 +89,11 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
             return;
         }
         mMap.setMyLocationEnabled(true);
-        sendRequest();
 //        mMap = googleMap;
 //        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 //        addMarker(new LatLng(-23.564224, -46.653156), "Primeiro", "Marcador 1");
@@ -109,78 +104,87 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
 //        mMap.addPolyline(new PolylineOptions().add(latLng, latLng1).width(10).color(Color.RED));
 
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                Log.i("teste", "setOnMapClickListener()");
-            }
-        });
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                Log.i("teste", "setOnMarkerClickListener() / Marker: " + marker.getTitle());
-                return false;
-            }
-        });
-
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Log.i("teste", "setOnInfoWindowClickListener() / Marker: " + marker.getTitle());
-            }
-        });
-
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-            //Altera toda a janela (TUTÔ!!) e sobreescreve o InfoContent
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
-
-            //Altera toda a janela e mantem o balao
-            @Override
-            public View getInfoContents(Marker marker) {
-                TextView textView = new TextView(getActivity());
-                textView.setText(Html.fromHtml("<b><font color=#F44336>" + marker.getTitle() + "</font>"
-                        + marker.getSnippet() + "</b>"));
-                return null;
-            }
-        });
+//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng latLng) {
+//                Log.i("teste", "setOnMapClickListener()");
+//            }
+//        });
+//
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                Log.i("teste", "setOnMarkerClickListener() / Marker: " + marker.getTitle());
+//                return false;
+//            }
+//        });
+//
+//        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//            @Override
+//            public void onInfoWindowClick(Marker marker) {
+//                Log.i("teste", "setOnInfoWindowClickListener() / Marker: " + marker.getTitle());
+//            }
+//        });
+//
+//        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+//
+//            //Altera toda a janela (TUTÔ!!) e sobreescreve o InfoContent
+//            @Override
+//            public View getInfoWindow(Marker marker) {
+//                return null;
+//            }
+//
+//            //Altera toda a janela e mantem o balao
+//            @Override
+//            public View getInfoContents(Marker marker) {
+//                TextView textView = new TextView(getActivity());
+//                textView.setText(Html.fromHtml("<b><font color=#F44336>" + marker.getTitle() + "</font>"
+//                        + marker.getSnippet() + "</b>"));
+//                return textView;
+//            }
+//        });
+        sendRequest();
     }
 
     private void sendRequest() {
-        String origin = "-23.564224, -46.653156";
-        String destination = "-23.564500, -46.653500";
-        if (origin.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter origin address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (destination.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter destination address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         try {
+            Log.i("teste", mEntrega.getDestinatario().getLatitude() + "" + mEntrega.getDestinatario().getLongitude());
+            Log.i("teste", mRomaneio.getEstabelecimento().getCodigo() + " / " + mRomaneio.getEstabelecimento().getLatitude() + "" + mRomaneio.getEstabelecimento().getLongitude());
+            String origin = "-23.564224, -46.653156";
+            origin = mEntrega.getDestinatario().getLatitude() + ", " + mEntrega.getDestinatario().getLongitude();
+            String destination = "-23.654500, -46.653500";
+            destination = mRomaneio.getEstabelecimento().getLatitude() + ", " + mRomaneio.getEstabelecimento().getLongitude();
+            if (origin.isEmpty()) {
+                Toast.makeText(getActivity(), "Please enter origin address!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (destination.isEmpty()) {
+                Toast.makeText(getActivity(), "Please enter destination address!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             new DirectionFinder(this, origin, destination).execute();
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void addMarker(LatLng latLng, String title, String snippet) {
-        MarkerOptions options = new MarkerOptions();
-        options.position(latLng);
-        options.title(title);
-        options.snippet(snippet);
-        //pra poder mexer ele com clique
-        options.draggable(false);
-        marker = mMap.addMarker(options);
-    }
+//    private void addMarker(LatLng latLng, String title, String snippet) {
+//        MarkerOptions options = new MarkerOptions();
+//        options.position(latLng);
+//        options.title(title);
+//        options.snippet(snippet);
+//        //pra poder mexer ele com clique
+//        options.draggable(false);
+//        marker = mMap.addMarker(options);
+//    }
 
     @Override
     public void onDirectionFinderStart() {
+        progressDialog = ProgressDialog.show(getActivity(), "Please wait.",
+                "Finding direction..!", true);
         if (originMarkers != null) {
             for (Marker marker : originMarkers) {
                 marker.remove();
@@ -202,6 +206,7 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
 
     @Override
     public void onDirectionFinderSuccess(List<Route> routes) {
+        progressDialog.dismiss();
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();

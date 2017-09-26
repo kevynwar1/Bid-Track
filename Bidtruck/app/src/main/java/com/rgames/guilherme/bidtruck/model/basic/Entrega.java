@@ -4,10 +4,12 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Classe da entrega.
  */
-public class Entrega implements Parcelable {
+public class Entrega implements Parcelable, Serializable {
 
     public static final String PARCEL = "parcel_delivery";
     private int codigo;

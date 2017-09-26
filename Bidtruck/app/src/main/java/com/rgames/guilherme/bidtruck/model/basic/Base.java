@@ -12,8 +12,8 @@ public abstract class Base implements Parcelable{
     private String cidade;
     private String uf;
     private String cep;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private String situacao;
 
     public Base(){
@@ -29,8 +29,8 @@ public abstract class Base implements Parcelable{
         cidade = in.readString();
         uf = in.readString();
         cep = in.readString();
-        latitude = in.readString();
-        longitude = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
         situacao = in.readString();
     }
 
@@ -61,8 +61,8 @@ public abstract class Base implements Parcelable{
         parcel.writeString(cidade);
         parcel.writeString(uf);
         parcel.writeString(cep);
-        parcel.writeString(latitude);
-        parcel.writeString(longitude);
+        parcel.writeDouble(latitude);
+        parcel.writeDouble(longitude);
         parcel.writeString(situacao);
     }
 
@@ -130,19 +130,19 @@ public abstract class Base implements Parcelable{
         this.cep = cep;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

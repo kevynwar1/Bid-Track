@@ -1,10 +1,7 @@
 package com.rgames.guilherme.bidtruck.model.basic;
 
-/**
- * Created by Guilherme on 25/09/2017.
- */
-
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;

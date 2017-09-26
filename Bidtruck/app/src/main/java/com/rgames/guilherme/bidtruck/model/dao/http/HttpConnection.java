@@ -22,8 +22,8 @@ public class HttpConnection {
     public static HttpURLConnection newInstance(URLDictionary configUrl, HttpMethods metodo, boolean doOutput, boolean doInput, String paramExtras) throws IOException {
         URL url = new URL(configUrl.getValue() + paramExtras);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setReadTimeout(10000);
-        connection.setConnectTimeout(15000);
+        connection.setReadTimeout(15000);
+        connection.setConnectTimeout(20000);
         connection.setRequestMethod(metodo.getValue());
         connection.setDoInput(doInput);
         connection.setDoOutput(doOutput);

@@ -42,7 +42,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         try {
             holder.codigo.setText(String.valueOf(mListEntrega.get(holder.getAdapterPosition()).getCodigo()));
             holder.razao_social.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getRazao_social());
@@ -61,7 +61,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
                         Intent intent = new Intent(mContext, DetalhesEntregaActivity.class);
                         //Intent intent = new Intent(mContext, FinalizaEntrega.class);
                         Bundle bundle = new Bundle();
-                        bundle.putInt(Entrega.PARCEL, holder.getAdapterPosition());
+                        bundle.putSerializable(Entrega.PARCEL, mListEntrega.get(position));
                         bundle.putParcelable(Romaneio.PARCEL, mRomaneio);
                         mContext.startActivity(intent.putExtras(bundle));
                     } catch (Exception e) {

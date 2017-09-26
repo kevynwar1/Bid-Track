@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -27,9 +28,7 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
         try {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
-                int index = getIntent().getExtras().getInt(Entrega.PARCEL);
-                if (mRomaneio.getEntregaList().size() > 0)
-                    mEntrega = mRomaneio.getEntregaList().get(index);
+                mEntrega = (Entrega) getIntent().getExtras().getSerializable(Entrega.PARCEL);
                 init();
                 initViewPager();
             } else {

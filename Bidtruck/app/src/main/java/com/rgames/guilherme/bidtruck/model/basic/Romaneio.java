@@ -2,6 +2,7 @@ package com.rgames.guilherme.bidtruck.model.basic;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class Romaneio implements Parcelable {
         estabelecimento = in.readParcelable(Estabelecimento.class.getClassLoader());
         motorista = in.readParcelable(Motorista.class.getClassLoader());
         status_romaneio = in.readParcelable(StatusRomaneio.class.getClassLoader());
-        veiculo = in.readParcelable(Veiculo.class.getClassLoader());
+//        veiculo = in.readParcelable(Veiculo.class.getClassLoader());
         date_create = in.readString();
         date_finalization = in.readString();
         setEntregaList(new ArrayList<Entrega>());
@@ -87,7 +88,7 @@ public class Romaneio implements Parcelable {
         parcel.writeParcelable(estabelecimento, i);
         parcel.writeParcelable(motorista, i);
         parcel.writeParcelable(status_romaneio, i);
-        parcel.writeParcelable(veiculo, i);
+//        parcel.writeParcelable(veiculo, i);
         parcel.writeString(date_create);
         parcel.writeString(date_finalization);
         parcel.writeList(entregaList);
