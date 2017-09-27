@@ -59,7 +59,7 @@ public class ControllerLogin {
         return (mContext != null)
                 ? new Motorista(
                 Integer.parseInt(instance(mContext).getString("prefKey_motorista_id", "0"))
-                , String.valueOf(instance(mContext).getString("prefKey_motorista_codEmpresa", "0")))
+                , String.valueOf(instance(mContext).getString("prefKey_motorista_nome", "0")))
                 : null;
     }
 
@@ -69,7 +69,7 @@ public class ControllerLogin {
                 SharedPreferences.Editor editor = instance(mContext).edit();
                 editor.putString("prefKey_motorista_id", String.valueOf(motorista.getCodigo()));
                 if (motorista.getNome() != null)
-                    editor.putString("prefKey_motorista_codEmpresa", String.valueOf(motorista.getNome()));
+                    editor.putString("prefKey_motorista_nome", String.valueOf(motorista.getNome()));
                 editor.apply();
                 editor.commit();
             } else

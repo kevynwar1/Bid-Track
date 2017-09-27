@@ -20,6 +20,7 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private Entrega mEntrega;
     private Romaneio mRomaneio;
+    private double mLat, mLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                 mEntrega = (Entrega) getIntent().getExtras().getSerializable(Entrega.PARCEL);
+                mLat = getIntent().getExtras().getDouble("arg1");
+                mLong = getIntent().getExtras().getDouble("arg2");
                 init();
                 initViewPager();
             } else {
@@ -52,7 +55,8 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
 
     private void initViewPager() throws Exception {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new AdapterViewPager(getSupportFragmentManager(), this, mRomaneio, mEntrega));
+        mViewPager.setAdapter(new AdapterViewPager(getSupportFragmentManager(), this, mRomaneio
+                , mEntrega, mLat, mLong));
         mTabLayout = (TabLayout) findViewById(R.id.tablayout);
         mTabLayout.post(new Runnable() {
             @Override

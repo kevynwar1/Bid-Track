@@ -6,28 +6,20 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.DirectionFinder;
 import com.rgames.guilherme.bidtruck.model.basic.DirectionFinderListener;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
@@ -42,6 +34,7 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
 
     private final static String ARG_1 = "arg_1";
     private final static String ARG_2 = "arg_2";
+    private final static String ARG_3 = "arg_3";
     private View mView;
     private Entrega mEntrega;
     private GoogleMap mMap;
@@ -49,16 +42,17 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
-    private Romaneio mRomaneio;
+    private double latEmpresa, longEmpresa;
 
     public RotaPagerFragment() {
     }
 
-    public static RotaPagerFragment newInstance(Romaneio romaneio, Entrega entrega) {
+    public static RotaPagerFragment newInstance(double latEmpresa, double longEmpresa, Entrega entrega) {
         RotaPagerFragment fragment = new RotaPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ARG_1, entrega);
-        bundle.putParcelable(ARG_2, romaneio);
+        bundle.putDouble(ARG_2, latEmpresa);
+        bundle.putDouble(ARG_3, longEmpresa);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -69,18 +63,14 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
         getMapAsync(this);
         if (getArguments() != null) {
             mEntrega = getArguments().getParcelable(ARG_1);
-            mRomaneio = getArguments().getParcelable(ARG_2);
+            latEmpresa = getArguments().getDouble(ARG_2);
+            longEmpresa = getArguments().getDouble(ARG_3);
         }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//        LatLng hcmus = new LatLng(10.762963, 106.682394);
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hcmus, 18));
-//        originMarkers.add(mMap.addMarker(new MarkerOptions()
-//                .title("Đại học Khoa học tự nhiên")
-//                .position(hcmus)));
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -148,12 +138,11 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
 
     private void sendRequest() {
         try {
-            Log.i("teste", mEntrega.getDestinatario().getLatitude() + "" + mEntrega.getDestinatario().getLongitude());
-            Log.i("teste", mRomaneio.getEstabelecimento().getCodigo() + " / " + mRomaneio.getEstabelecimento().getLatitude() + "" + mRomaneio.getEstabelecimento().getLongitude());
+            //vou deixar esses valores pq eles sao proximos e qualquer coisa eu testo com eles.
             String origin = "-23.564224, -46.653156";
-            origin = mEntrega.getDestinatario().getLatitude() + ", " + mEntrega.getDestinatario().getLongitude();
+            origin = latEmpresa + ", " + longEmpresa;
             String destination = "-23.654500, -46.653500";
-            destination = mRomaneio.getEstabelecimento().getLatitude() + ", " + mRomaneio.getEstabelecimento().getLongitude();
+            destination = mEntrega.getDestinatario().getLatitude() + ", " + mEntrega.getDestinatario().getLongitude();
             if (origin.isEmpty()) {
                 Toast.makeText(getActivity(), "Please enter origin address!", Toast.LENGTH_SHORT).show();
                 return;
@@ -212,15 +201,17 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
         destinationMarkers = new ArrayList<>();
 
         for (Route route : routes) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 12));
 //            ((TextView) getActivity().findViewById(R.id.tvDuration)).setText(route.duration.text);
 //            ((TextView) getActivity().findViewById(R.id.tvDistance)).setText(route.distance.text);
 
             originMarkers.add(mMap.addMarker(new MarkerOptions()
 //                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                     .title(route.startAddress)
                     .position(route.startLocation)));
             destinationMarkers.add(mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
 //                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green))
                     .title(route.endAddress)
                     .position(route.endLocation)));

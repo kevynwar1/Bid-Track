@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public abstract class Base implements Parcelable{
+
     private int codigo;
     private String logradouro;
     private String numero;

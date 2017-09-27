@@ -35,6 +35,7 @@
 
     <!--Mensagens de erro-->
     <string name="app_err_exc_semConexao">Conexão com a internet não foi encontrada."</string>
+    <string name="app_err_exc_timeout">Tempo de conexão excedido."</string>
     <string name="app_err_null_motorista">Os dados de autenticação não foram encontrados.</string>
     <string name="app_err_null_destinatario">Ocorreu um erro ao tentar ler os dados do destinatario.</string>
     <string name="app_err_null_entrega">Ocorreu um erro ao tentar ler os dados da entrega.</string>

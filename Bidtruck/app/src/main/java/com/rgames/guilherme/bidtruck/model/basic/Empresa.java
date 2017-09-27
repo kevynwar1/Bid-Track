@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 
 public class Empresa extends Base implements Parcelable {
+
     public static final String PARCEL_EMPRESA = "parcel_empresa";
    // private int cod_empresa;
     private String razao_social;

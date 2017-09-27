@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,7 +40,6 @@ public class RomaneioFragment extends Fragment {
 
     }
 
-
     public static RomaneioFragment newInstance(Empresa empresa) {
         RomaneioFragment fragment = new RomaneioFragment();
         Bundle bundle = new Bundle();
@@ -52,16 +52,14 @@ public class RomaneioFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        /*  try {
+        try {
             if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
                         getActivity().getResources().getString(R.string.menu_drw_romaneio));
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
         } catch (NullPointerException e) {
             e.printStackTrace();
-        }*/
+        }
         pegarEmpresa();
     }
 

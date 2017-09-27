@@ -1,89 +1,99 @@
-package com.rgames.guilherme.bidtruck.view.empresa;
+package com.rgames.guilherme.bidtruck.view.main;
 
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
-import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
-import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.view.main.LoginActivity;
-import com.rgames.guilherme.bidtruck.view.main.MainActivity;
-import com.rgames.guilherme.bidtruck.view.oferta.OfferAdapter;
-import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
-import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
-import com.rgames.guilherme.bidtruck.view.romaneios.entrega.AdapterRecyclerDelivery;
-import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
+import com.rgames.guilherme.bidtruck.view.empresa.EmpresaAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class EmpresasActivity extends AppCompatActivity {
+public class EmpresaCardStackFragment extends Fragment {
+
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     private ListView empresaList;
     private Facade facade;
-    private EmpresaAdapter empresaAdapter;
     private Empresa emp;
 
     private MyProgressBar myProgressBar;
     private Motorista motorista;
+    private View mView;
 
+    public EmpresaCardStackFragment() {
+        // Required empty public constructor
+    }
+
+
+    public static EmpresaCardStackFragment newInstance() {
+        return new EmpresaCardStackFragment();
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_empresas);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return mView = inflater.inflate(R.layout.fragment_empresa_card_stack, container, false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            facade = new Facade(EmpresasActivity.this);
-            if (getIntent().getExtras() != null) {
-                motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);
-            } else {
-                motorista = facade.isLogged();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            try {
+                if (getActivity() != null) {
+                    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null)
+                        if (getView() != null)
+                            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    facade = new Facade(getActivity());
+                    motorista = facade.isLogged();
+                    viewSemMotorista(true);
+                    if (motorista.getCodigo() > 0) {
+                        empresaList = (ListView) mView.findViewById(R.id.lv_empresas);
+                        empresaList.setDivider(null);
+                        initList();
+                    }else
+                        viewSemMotorista(false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            initList();
-            empresaList = (ListView) findViewById(R.id.lv_empresas);
-            empresaList.setDivider(null);
-            initList();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-  /*  private void initToobal() throws Exception {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(
-                getResources().getString(R.string.title_empresa));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }*/
+    private void viewSemMotorista(boolean isOk) {
+        mView.findViewById(R.id.txtSemMotorista).setVisibility((isOk) ? View.GONE : View.VISIBLE);
+    }
 
     private void initList() {
         new AsyncTask<Void, Void, List<Empresa>>() {
@@ -112,21 +122,20 @@ public class EmpresasActivity extends AppCompatActivity {
                 try {
                     if (empresas != null) {
                         if (empresas.size() > 0 && empresas.size() == 1) {
-                            Intent it = new Intent(EmpresasActivity.this, MainActivity.class);
+                            Intent it = new Intent(getActivity(), MainActivity.class);
                             Bundle b = new Bundle();
                             emp = empresas.get(0);
                             b.putParcelable(Empresa.PARCEL_EMPRESA, emp);
                             // b.putParcelable(Motorista.PARCEL_MOTORISTA, motorista);
                             startActivity(it.putExtras(b));
-                            finish();
                         } else if (empresas.size() == 0) {
-                            Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa - ERR 1", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Você não está vinculado em nenhuma empresa - ERR 1", Toast.LENGTH_LONG).show();
                             deslogar();
                         } else {
                             initView(empresas);
                         }
                     } else {
-                        Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa - ERR 2", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Você não está vinculado em nenhuma empresa - ERR 2", Toast.LENGTH_LONG).show();
                         deslogar();
                     }
                     finishProgressBar();
@@ -140,13 +149,12 @@ public class EmpresasActivity extends AppCompatActivity {
 
     private void deslogar() {
         facade.setLogged(new Motorista(0, ""));
-        startActivity(new Intent(EmpresasActivity.this, LoginActivity.class));
-        finish();
+//        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     private void initView(List<Empresa> empresas) throws Exception {
-        empresaList = (ListView) findViewById(R.id.lv_empresas);
-        empresaAdapter = new EmpresaAdapter(getApplicationContext(), empresas);
+        empresaList = (ListView) mView.findViewById(R.id.lv_empresas);
+        EmpresaAdapter empresaAdapter = new EmpresaAdapter(getActivity(), empresas);
         empresaList.setAdapter(empresaAdapter);
         clickLista();
     }
@@ -154,7 +162,7 @@ public class EmpresasActivity extends AppCompatActivity {
 
     private void initProgressBar() throws ClassCastException, NullPointerException {
         if (myProgressBar == null)
-            myProgressBar = new MyProgressBar((FrameLayout) findViewById(R.id.frame_progress));
+            myProgressBar = new MyProgressBar((FrameLayout) mView.findViewById(R.id.frame_progress));
     }
 
     private void finishProgressBar() throws Exception {
@@ -163,16 +171,12 @@ public class EmpresasActivity extends AppCompatActivity {
         }
     }
 
-    public void enviaMensagemParaOFragment(Empresa message, PassadorDeInformacao fragment) {
-        fragment.passaInformacao(message);
-    }
-
     private void clickLista() {
         empresaList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Empresa empresa = (Empresa) adapterView.getAdapter().getItem(i);
-                Intent it = new Intent(EmpresasActivity.this, MainActivity.class);
+                Intent it = new Intent(getActivity(), MainActivity.class);
                 //    RomaneioFragment frag = new RomaneioFragment();
 
                 //  enviaMensagemParaOFragment(empresa, frag);
@@ -193,14 +197,4 @@ public class EmpresasActivity extends AppCompatActivity {
             }
         });
     }
-
-
-  /*  public static RomaneioFragment newInstance(Empresa empresa) {
-        RomaneioFragment frag = new RomaneioFragment();
-        Bundle b = new Bundle();
-        b.putParcelable(Empresa.PARCEL, empresa);
-        frag.setArguments(b);
-        return frag;
-    }*/
-
 }

@@ -32,23 +32,21 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private Empresa empresa;
-    private Motorista motorista;
-    Bundle b;
+
+    private Empresa mEmpresa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (getIntent().getExtras() != null && getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA) != null) {
-        /*    if (getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA) != null)
-                motorista = getIntent().getExtras().getParcelable(Motorista.PARCEL_MOTORISTA);*/
-            empresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
+            mEmpresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
         } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
             Facade facade = new Facade(this);
             facade.setLogged(new Motorista(0, ""));
-            onBackPressed();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
         try {
             init();
@@ -56,8 +54,8 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         if (savedInstanceState == null) {
-             getSupportFragmentManager().beginTransaction().add(R.id.content_main
-                     , RomaneioFragment.newInstance(empresa)).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.content_main
+                    , RomaneioFragment.newInstance(mEmpresa)).commit();
         }
     }
 
@@ -127,7 +125,7 @@ public class MainActivity extends AppCompatActivity
         onCloseDrawer();
         switch (item.getItemId()) {
             case R.id.nav_entrega:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, RomaneioFragment.newInstance(empresa)).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, RomaneioFragment.newInstance(mEmpresa)).commit();
                 return true;
             case R.id.nav_sync:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();
@@ -160,14 +158,12 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
-        TextView tvNome = (TextView) header.findViewById(R.id.tvNomeMotorista);
-        TextView tvEmail = (TextView) header.findViewById(R.id.tvEmailMotorista);
-        tvNome.setText("motorista");
-        tvEmail.setText(empresa.getNome_fantasia().toString());
-
+        Facade facade = new Facade(this);
+        ((TextView) header.findViewById(R.id.tvNomeMotorista)).setText(facade.isLogged().getNome());
+        if (mEmpresa != null)
+            ((TextView) header.findViewById(R.id.tvNomeEmpresa)).setText(mEmpresa.getNome_fantasia());
     }
 }

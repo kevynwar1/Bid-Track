@@ -16,9 +16,12 @@ public class AdapterViewPager extends FragmentStatePagerAdapter {
     private String[] mTitles;
     private int COUNT = 2;
     private Entrega mEntrega;
+    private double mLatEmpresa, mLongEmpresa;
 
-    public AdapterViewPager(FragmentManager fm, Context context, Romaneio romaneio, Entrega entrega) {
+    public AdapterViewPager(FragmentManager fm, Context context, Romaneio romaneio, Entrega entrega, double latEmpresa, double longEmpresa) {
         super(fm);
+        mLatEmpresa = latEmpresa;
+        mLongEmpresa = longEmpresa;
         mRomaneio = romaneio;
         mEntrega = entrega;
         mTitles = context.getResources().getStringArray(R.array.app_tablayout_entrega_detalhes);
@@ -30,7 +33,7 @@ public class AdapterViewPager extends FragmentStatePagerAdapter {
             case 0:
                 return DetalhesPagerFragment.newInstance(mRomaneio, mEntrega);
             case 1:
-                return RotaPagerFragment.newInstance(mRomaneio, mEntrega);
+                return RotaPagerFragment.newInstance(mLatEmpresa, mLongEmpresa, mEntrega);
             default:
                 return DetalhesPagerFragment.newInstance(mRomaneio, mEntrega);
         }
