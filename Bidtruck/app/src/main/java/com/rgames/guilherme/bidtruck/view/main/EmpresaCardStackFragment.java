@@ -63,31 +63,31 @@ public class EmpresaCardStackFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+            init();
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            try {
-                if (getActivity() != null) {
-                    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null)
-                        if (getView() != null)
-                            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                    facade = new Facade(getActivity());
-                    motorista = facade.isLogged();
-                    viewSemMotorista(true);
-                    if (motorista.getCodigo() > 0) {
-                        empresaList = (ListView) mView.findViewById(R.id.lv_empresas);
-                        empresaList.setDivider(null);
-                        initList();
-                    }else
-                        viewSemMotorista(false);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    /**
+     * EM METODO SEPARDO POIS ESTOU VERIFICANDO O MELHOR LOCAL PARA ELE
+     */
+    private void init() {
+        try {
+            if (getActivity() != null) {
+                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null)
+                    if (getView() != null)
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                facade = new Facade(getActivity());
+                motorista = facade.isLogged();
+                viewSemMotorista(true);
+                empresaList = (ListView) mView.findViewById(R.id.lv_empresas);
+                if (motorista.getCodigo() > 0) {
+                    empresaList.setDivider(null);
+                    initList();
+                } else
+                    viewSemMotorista(false);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
