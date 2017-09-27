@@ -111,7 +111,6 @@ public class EmpresaCardStackFragment extends Fragment {
                 try {
                     return facade.selectEmpresa(motorista);
                 } catch (Exception e) {
-                    Log.i("teste", e.getMessage());
                     e.printStackTrace();
                 }
                 return null;

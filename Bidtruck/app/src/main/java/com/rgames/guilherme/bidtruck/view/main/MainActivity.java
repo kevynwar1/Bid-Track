@@ -22,6 +22,7 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
+import com.rgames.guilherme.bidtruck.view.oferta.Preferences;
 import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
 import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
 import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
