@@ -9,18 +9,19 @@ public class StatusEntrega implements Parcelable {
 
     private int codigo;
     private Ocorrencia ocorrencia;
-   // private String descricao;
+    private String descricao;
     private List<Entrega> entregaList;
     private String date;
 
     public StatusEntrega() {
     }
 
-    public StatusEntrega(int codigo, List<Entrega> entregaList, Ocorrencia ocorrencia, String date ) {
+    public StatusEntrega(int codigo, List<Entrega> entregaList, Ocorrencia ocorrencia, String date, String descricao ) {
         this.codigo = codigo;
         this.ocorrencia = ocorrencia;
         this.entregaList = entregaList;
         this.date = date;
+        this.setDescricao(descricao);
 
     }
 
@@ -91,6 +92,11 @@ public class StatusEntrega implements Parcelable {
     }
 
 
+    public String getDescricao() {
+        return descricao;
+    }
 
-
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }
