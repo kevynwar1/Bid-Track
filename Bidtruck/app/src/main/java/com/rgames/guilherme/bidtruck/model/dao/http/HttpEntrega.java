@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
+import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
@@ -26,10 +28,12 @@ public class HttpEntrega extends HttpBase<Entrega> {
     private Context mContext;
     Facade mFacade;
     private Integer id_motorista_entrega;
-
+    ControllerLogin controlLogin;
     public HttpEntrega(Context context) {
         mContext = context;
     }
+
+
 
     public List<Entrega> select(){
         List<Entrega> list = new ArrayList<>();
@@ -38,11 +42,13 @@ public class HttpEntrega extends HttpBase<Entrega> {
 
 
             try {
+                  controlLogin = new ControllerLogin(mContext);
+                   // mFacade = new Facade(mContext);
 
 
-                    mFacade = new Facade(mContext);
 
-                    Motorista driver = mFacade.isLogged();
+                  //Motorista driver = mFacade.isLogged();
+                   Motorista driver = controlLogin.isLogged();
                     this.id_motorista_entrega = driver.getCodigo();
 
                     if (id_motorista_entrega > 0 && !id_motorista_entrega.equals("")) {

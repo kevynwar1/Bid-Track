@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +14,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
+import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.AdapterRecyclerDelivery;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia.OcorrenciaActivity;
 
-public class DetalhesPagerFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DetalhesPagerFragment extends Fragment{
 
     private Romaneio mRomaneio;
     private Entrega mEntrega;
     private View mView;
+
+
+
+
+
 
     public DetalhesPagerFragment() {
     }
@@ -55,6 +68,8 @@ public class DetalhesPagerFragment extends Fragment {
         super.onResume();
         try {
             initViews();
+            initButtons();
+            finishDelivery();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,9 +100,41 @@ public class DetalhesPagerFragment extends Fragment {
                     ((TextView) mView.findViewById(R.id.txtDestNumero)).setText(mEntrega.getDestinatario().getNumero());
                     ((TextView) mView.findViewById(R.id.txtDestComplemento)).setText(mEntrega.getDestinatario().getComplemento());
                 }else Toast.makeText(getActivity(), getString(R.string.app_err_null_destinatario), Toast.LENGTH_SHORT).show();
-                initButtons();
+               // initButtons();
             } else Toast.makeText(getActivity(), getString(R.string.app_err_null_entrega), Toast.LENGTH_SHORT).show();
+
     }
+
+
+    private void finishDelivery() throws Exception {
+
+          if(mEntrega != null){
+                int status_entrega = mEntrega.getStatusEntrega().getCodigo();
+
+              if(status_entrega == 4){
+
+              }
+
+
+
+
+
+
+
+
+
+          }
+
+
+
+
+
+
+    }
+
+
+
+
 
     private void initButtons() {
 
@@ -95,6 +142,7 @@ public class DetalhesPagerFragment extends Fragment {
         mView.findViewById(R.id.btn_finalize).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 AlertDialog alertDialog = newAlertDialog(getString(R.string.app_name), "Deseja confirmar a entrega?");
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE
                         , getString(R.string.app_dlg_cancel)

@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.view.romaneios.entrega;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     private List<Entrega> mListEntrega;
     private Context mContext;
 
+
     public AdapterRecyclerDelivery(Romaneio romaneio, Context context) throws ContextNullException {
         if (romaneio != null) {
             mListEntrega = (romaneio.getEntregaList() != null) ? romaneio.getEntregaList() : new ArrayList<Entrega>();
@@ -36,6 +38,15 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
         if (context != null) mContext = context;
         else throw new ContextNullException();
     }
+
+    public AdapterRecyclerDelivery(Romaneio romaneio) {
+        if (romaneio != null) {
+            mListEntrega = (romaneio.getEntregaList() != null) ? romaneio.getEntregaList() : new ArrayList<Entrega>();
+            mRomaneio = romaneio;
+        }
+
+    }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,7 +61,9 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             holder.bairro.setText((mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getBairro()));
             holder.cidade.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getCidade());
             holder.uf.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getUF());
-            // holder.status_entrega.setText(mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega().getDescricao());
+            holder.status_entrega.setText(mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega().getDescricao());
+
+
 
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +117,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             bairro = itemView.findViewById(R.id.txtBairro);
             cidade = itemView.findViewById(R.id.txtCidade);
             uf = itemView.findViewById(R.id.txtUF);
-            //  status_entrega = itemView.findViewById(R.id.txtStatusEntrega);
+            status_entrega = itemView.findViewById(R.id.txtStatusEntrega);
             cardView = itemView.findViewById(R.id.cardview);
 
 
