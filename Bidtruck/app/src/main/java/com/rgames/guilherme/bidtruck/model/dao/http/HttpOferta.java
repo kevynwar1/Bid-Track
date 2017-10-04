@@ -6,9 +6,11 @@ import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class HttpOferta extends HttpBase<Romaneio>{
 
@@ -33,5 +35,30 @@ public class HttpOferta extends HttpBase<Romaneio>{
             e.printStackTrace();
         }
         return offers;
+    }
+
+    public boolean acceptOffer(int codMotorista, int codRomaneio, int codEmpresa, int codEstabelecimento){
+        boolean result = false;
+        try {
+            if(HttpConnection.isConnected(context)){
+                String params = codMotorista + "/" + codRomaneio + "/" + codEmpresa + "/" + codEstabelecimento;
+                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_OFFER_ACCEPT, HttpMethods.GET, false, true, params);
+                if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    InputStream is = connection.getInputStream();
+                    if(is != null){
+                        Scanner scanner = new Scanner(is);
+                        String json = scanner.nextLine();
+                        Integer.parseInt(json);
+                        result = true;
+                    }
+                    connection.disconnect();
+                }
+            }
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 }
