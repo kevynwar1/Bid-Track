@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +14,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
+import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.AdapterRecyclerDelivery;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia.OcorrenciaActivity;
 
-public class DetalhesPagerFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DetalhesPagerFragment extends Fragment{
 
     private Romaneio mRomaneio;
     private Entrega mEntrega;
     private View mView;
+
+
+
+
+
 
     public DetalhesPagerFragment() {
     }
@@ -55,6 +68,8 @@ public class DetalhesPagerFragment extends Fragment {
         super.onResume();
         try {
             initViews();
+            initButtons();
+            finishDelivery();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,16 +100,48 @@ public class DetalhesPagerFragment extends Fragment {
                     ((TextView) mView.findViewById(R.id.txtDestNumero)).setText(mEntrega.getDestinatario().getNumero());
                     ((TextView) mView.findViewById(R.id.txtDestComplemento)).setText(mEntrega.getDestinatario().getComplemento());
                 }else Toast.makeText(getActivity(), getString(R.string.app_err_null_destinatario), Toast.LENGTH_SHORT).show();
-                initButtons();
+               // initButtons();
             } else Toast.makeText(getActivity(), getString(R.string.app_err_null_entrega), Toast.LENGTH_SHORT).show();
+
     }
 
-    private void initButtons() {
 
+    private void finishDelivery() throws Exception {
+
+          if(mEntrega != null){
+                int status_entrega = mEntrega.getStatusEntrega().getCodigo();
+
+              if(status_entrega == 4){
+
+              }
+
+
+
+
+
+
+
+
+
+          }
+
+
+
+
+
+
+    }
+
+
+
+
+
+    private void initButtons() {
         //FINALIZAR
         mView.findViewById(R.id.btn_finalize).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 AlertDialog alertDialog = newAlertDialog(getString(R.string.app_name), "Deseja confirmar a entrega?");
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE
                         , getString(R.string.app_dlg_cancel)
@@ -145,40 +192,40 @@ public class DetalhesPagerFragment extends Fragment {
 
         //OCORRENCIA
 
-        mView.findViewById(R.id.btn_occurrence).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-//                builderSingle.setTitle("Selecione uma ocorrência.");
+//        mView.findViewById(R.id.btn_occurrence).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+////                builderSingle.setTitle("Selecione uma ocorrência.");
+////
+////                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice);
+////                arrayAdapter.add("Almoço");
+////                arrayAdapter.add("Caminhão quebrado");
+////                arrayAdapter.add("10kg de maconha");
+////                arrayAdapter.add("Iput4 stop");
+////
+////                builderSingle.setNegativeButton(getString(R.string.app_dlg_cancel), new DialogInterface.OnClickListener() {
+////                    @Override
+////                    public void onClick(DialogInterface dialog, int which) {
+////                        dialog.dismiss();
+////                    }
+////                });
+////
+////                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+////                    @Override
+////                    public void onClick(DialogInterface dialog, int pos) {
+////                        ((TextView) mView.findViewById(R.id.txtOcorrencia)).setText(arrayAdapter.getItem(pos));
+////                        dialog.dismiss();
+////                    }
+////                });
+////                builderSingle.show();
 //
-//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice);
-//                arrayAdapter.add("Almoço");
-//                arrayAdapter.add("Caminhão quebrado");
-//                arrayAdapter.add("10kg de maconha");
-//                arrayAdapter.add("Iput4 stop");
-//
-//                builderSingle.setNegativeButton(getString(R.string.app_dlg_cancel), new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int pos) {
-//                        ((TextView) mView.findViewById(R.id.txtOcorrencia)).setText(arrayAdapter.getItem(pos));
-//                        dialog.dismiss();
-//                    }
-//                });
-//                builderSingle.show();
-
-                Intent intent = new Intent(getActivity(), OcorrenciaActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Entrega.PARCEL, mEntrega);
-                startActivity(intent.putExtras(bundle));
-            }
-        });
+//                Intent intent = new Intent(getActivity(), OcorrenciaActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable(Entrega.PARCEL, mEntrega);
+//                startActivity(intent.putExtras(bundle));
+//            }
+//        });
     }
 
     private AlertDialog newAlertDialog(String titulo, String msg) {

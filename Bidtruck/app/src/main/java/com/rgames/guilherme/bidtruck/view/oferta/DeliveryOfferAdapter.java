@@ -49,7 +49,7 @@ public class DeliveryOfferAdapter extends RecyclerView.Adapter<DeliveryOfferAdap
 
         public OffersViewHolder(View view){
             super(view);
-            this.seq_entrega = (TextView) view.findViewById(R.id.seq_entrega);
+            this.seq_entrega = view.findViewById(R.id.seq_entrega);
         }
     }
 }

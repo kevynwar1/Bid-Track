@@ -13,6 +13,8 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 
+import java.util.ArrayList;
+
 public class DetalhesEntregaActivity extends AppCompatActivity {
 
 

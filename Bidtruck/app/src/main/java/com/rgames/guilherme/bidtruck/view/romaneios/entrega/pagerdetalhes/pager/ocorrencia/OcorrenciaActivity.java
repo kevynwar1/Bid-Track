@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.AdapterRecyclerOcorrencia;
 
 public class OcorrenciaActivity extends AppCompatActivity {
 
@@ -46,11 +47,5 @@ public class OcorrenciaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void initRecyclerView() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new AdapterRecyclerOcorrencia());
     }
 }

@@ -1,10 +1,11 @@
-package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
+package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rgames.guilherme.bidtruck.model.basic.InitBasic;
+import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 
 import java.util.List;
@@ -17,14 +18,13 @@ public class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyc
 
     private List<Ocorrencia> mList;
 
-    public AdapterRecyclerOcorrencia(){
-        InitBasic initBasic = new InitBasic();
-        mList = initBasic.getListOccurrence();
+    public AdapterRecyclerOcorrencia(List<Ocorrencia> ocorrencias){
+        mList = ocorrencias;
     }
 
     @Override
     public MyViewPager onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        return new MyViewPager(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_ocorrencia, parent));
     }
 
     @Override
