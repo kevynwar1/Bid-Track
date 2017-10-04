@@ -9,5 +9,6 @@
     <string-array name="app_tablayout_entrega_detalhes">
         <item>Detalhes</item>
         <item>Rota</item>
+        <item>Ocorrências</item>
     </string-array>
 </resources>

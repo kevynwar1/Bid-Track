@@ -90,7 +90,6 @@ public class DetalhesPagerFragment extends Fragment {
     }
 
     private void initButtons() {
-
         //FINALIZAR
         mView.findViewById(R.id.btn_finalize).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,40 +144,40 @@ public class DetalhesPagerFragment extends Fragment {
 
         //OCORRENCIA
 
-        mView.findViewById(R.id.btn_occurrence).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-//                builderSingle.setTitle("Selecione uma ocorrência.");
+//        mView.findViewById(R.id.btn_occurrence).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+////                builderSingle.setTitle("Selecione uma ocorrência.");
+////
+////                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice);
+////                arrayAdapter.add("Almoço");
+////                arrayAdapter.add("Caminhão quebrado");
+////                arrayAdapter.add("10kg de maconha");
+////                arrayAdapter.add("Iput4 stop");
+////
+////                builderSingle.setNegativeButton(getString(R.string.app_dlg_cancel), new DialogInterface.OnClickListener() {
+////                    @Override
+////                    public void onClick(DialogInterface dialog, int which) {
+////                        dialog.dismiss();
+////                    }
+////                });
+////
+////                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+////                    @Override
+////                    public void onClick(DialogInterface dialog, int pos) {
+////                        ((TextView) mView.findViewById(R.id.txtOcorrencia)).setText(arrayAdapter.getItem(pos));
+////                        dialog.dismiss();
+////                    }
+////                });
+////                builderSingle.show();
 //
-//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice);
-//                arrayAdapter.add("Almoço");
-//                arrayAdapter.add("Caminhão quebrado");
-//                arrayAdapter.add("10kg de maconha");
-//                arrayAdapter.add("Iput4 stop");
-//
-//                builderSingle.setNegativeButton(getString(R.string.app_dlg_cancel), new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int pos) {
-//                        ((TextView) mView.findViewById(R.id.txtOcorrencia)).setText(arrayAdapter.getItem(pos));
-//                        dialog.dismiss();
-//                    }
-//                });
-//                builderSingle.show();
-
-                Intent intent = new Intent(getActivity(), OcorrenciaActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Entrega.PARCEL, mEntrega);
-                startActivity(intent.putExtras(bundle));
-            }
-        });
+//                Intent intent = new Intent(getActivity(), OcorrenciaActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable(Entrega.PARCEL, mEntrega);
+//                startActivity(intent.putExtras(bundle));
+//            }
+//        });
     }
 
     private AlertDialog newAlertDialog(String titulo, String msg) {

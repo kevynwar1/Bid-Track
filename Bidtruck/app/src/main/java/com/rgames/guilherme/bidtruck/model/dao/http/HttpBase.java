@@ -71,4 +71,17 @@ public abstract class HttpBase<T> {
         connection.disconnect();
         return list;
     }
+
+    protected boolean insert(HttpURLConnection connection, Object object) throws IOException, JSONException {
+        Gson gson = new Gson();
+        String jsonCon = gson.toJson(object);
+        connection.getOutputStream().write(jsonCon.getBytes());
+        if (connection.getResponseCode() == 201) {
+            connection.disconnect();
+            return true;
+        } else {
+            connection.disconnect();
+            return false;
+        }
+    }
 }

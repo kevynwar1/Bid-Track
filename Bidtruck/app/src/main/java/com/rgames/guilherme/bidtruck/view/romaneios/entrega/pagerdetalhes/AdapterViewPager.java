@@ -14,7 +14,7 @@ import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.
 public class AdapterViewPager extends FragmentStatePagerAdapter {
     private Romaneio mRomaneio;
     private String[] mTitles;
-    private int COUNT = 2;
+    private int COUNT = 3;
     private Entrega mEntrega;
     private double mLatEmpresa, mLongEmpresa;
 
@@ -33,6 +33,8 @@ public class AdapterViewPager extends FragmentStatePagerAdapter {
             case 0:
                 return DetalhesPagerFragment.newInstance(mRomaneio, mEntrega);
             case 1:
+                return RotaPagerFragment.newInstance(mLatEmpresa, mLongEmpresa, mEntrega);
+            case 2:
                 return RotaPagerFragment.newInstance(mLatEmpresa, mLongEmpresa, mEntrega);
             default:
                 return DetalhesPagerFragment.newInstance(mRomaneio, mEntrega);
