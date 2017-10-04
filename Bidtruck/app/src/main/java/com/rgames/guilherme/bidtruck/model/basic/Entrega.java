@@ -18,7 +18,7 @@ public class Entrega implements Parcelable, Serializable {
     private String titulo;
     //    private Romaneio romaneio;
     private Destinatario destinatario;
-    private StatusEntrega statusEntrega;
+    private StatusEntrega status_entrega;
     private float peso;
     private Bitmap image;
     private boolean situacao;
@@ -26,14 +26,14 @@ public class Entrega implements Parcelable, Serializable {
     public Entrega() {
     }
 
-    public Entrega(int codigo, int seq_entrega, String nota_fiscal, String titulo, Destinatario destinatario, StatusEntrega statusEntrega, float peso, Bitmap image, boolean situacao) {
+    public Entrega(int codigo, int seq_entrega, String nota_fiscal, String titulo, Destinatario destinatario, StatusEntrega status_entrega, float peso, Bitmap image, boolean situacao) {
         this.codigo = codigo;
         this.seq_entrega = seq_entrega;
         this.nota_fiscal = nota_fiscal;
         this.titulo = titulo;
 //        this.romaneio = romaneio;
         this.destinatario = destinatario;
-        this.statusEntrega = statusEntrega;
+        this.status_entrega = status_entrega;
         this.peso = peso;
         this.image = image;
         this.situacao = situacao;
@@ -46,7 +46,7 @@ public class Entrega implements Parcelable, Serializable {
         titulo = in.readString();
 //        romaneio = in.readParcelable(Romaneio.class.getClassLoader());
         destinatario = in.readParcelable(Destinatario.class.getClassLoader());
-        statusEntrega = in.readParcelable(StatusEntrega.class.getClassLoader());
+        status_entrega = in.readParcelable(StatusEntrega.class.getClassLoader());
         peso = in.readFloat();
         situacao = in.readByte() > 0;
     }
@@ -59,7 +59,7 @@ public class Entrega implements Parcelable, Serializable {
         dest.writeString(titulo);
 //        dest.writeParcelable(romaneio, flags);
         dest.writeParcelable(destinatario, flags);
-        dest.writeParcelable(statusEntrega, flags);
+        dest.writeParcelable(status_entrega, flags);
         dest.writeFloat(peso);
         dest.writeByte((byte) (situacao ? 1 : 0));
     }
@@ -130,11 +130,11 @@ public class Entrega implements Parcelable, Serializable {
     }
 
     public StatusEntrega getStatusEntrega() {
-        return statusEntrega;
+        return status_entrega;
     }
 
-    public void setStatusEntrega(StatusEntrega statusEntrega) {
-        this.statusEntrega = statusEntrega;
+    public void setStatusEntrega(StatusEntrega status_entrega) {
+        this.status_entrega = status_entrega;
     }
 
     public float getPeso() {

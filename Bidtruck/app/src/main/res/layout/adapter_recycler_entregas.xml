@@ -18,7 +18,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="129dp"
         android:background="@drawable/card_views">
 
 
@@ -75,12 +75,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/txtBairro"
+            android:layout_toEndOf="@+id/txtBairro"
             android:padding="10dp"
             android:text=""
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="14dp"
-            android:layout_toEndOf="@+id/txtBairro" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/txtUF"
@@ -95,6 +95,16 @@
             android:text=""
             android:textColor="#FFFFFF"
             android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/txtStatusEntrega"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="aaaaaaaaaaaa"
+            android:textColor="#FFEB3B"
+            android:textSize="17dp"
+            android:layout_below="@+id/txtBairro"
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>

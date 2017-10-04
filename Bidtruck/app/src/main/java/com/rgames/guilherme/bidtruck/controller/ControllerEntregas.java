@@ -23,6 +23,11 @@ public class ControllerEntregas {
         mContext = context;
     }
 
+    public ControllerEntregas() {
+
+    }
+
+
     public List<Entrega> select(){
         if (httpEntrega == null) httpEntrega = new HttpEntrega(mContext);
         return httpEntrega.select();
