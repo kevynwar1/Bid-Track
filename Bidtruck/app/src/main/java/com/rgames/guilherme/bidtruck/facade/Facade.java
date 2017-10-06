@@ -69,12 +69,12 @@ public class Facade implements IFacade {
     }
 
 
-    public Entrega atualiza(Entrega entrega) throws Exception {
+   /* public Entrega atualiza(Entrega entrega) throws Exception {
         if (controllerEntregas == null)
             controllerEntregas = new ControllerEntregas(mContext);
         return controllerEntregas.atualizaEntrega(entrega);
 
-    }
+    }*/
 
     @Override
     public List<Empresa> selectEmpresa(Motorista motorista) throws Exception {
