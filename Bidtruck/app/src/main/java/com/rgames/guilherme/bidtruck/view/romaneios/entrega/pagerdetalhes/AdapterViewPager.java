@@ -9,6 +9,7 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.DetalhesPagerFragment;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.OcorrenciaPagerFragment;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.RotaPagerFragment;
 
 public class AdapterViewPager extends FragmentStatePagerAdapter {
@@ -35,7 +36,7 @@ public class AdapterViewPager extends FragmentStatePagerAdapter {
             case 1:
                 return RotaPagerFragment.newInstance(mLatEmpresa, mLongEmpresa, mEntrega);
             case 2:
-                return RotaPagerFragment.newInstance(mLatEmpresa, mLongEmpresa, mEntrega);
+                return OcorrenciaPagerFragment.newInstance(mRomaneio);
             default:
                 return DetalhesPagerFragment.newInstance(mRomaneio, mEntrega);
         }
