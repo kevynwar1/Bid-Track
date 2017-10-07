@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
+import com.rgames.guilherme.bidtruck.model.business.BusLogin;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpLogin;
 import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
+import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 
 import java.util.IllegalFormatException;
 
@@ -19,9 +22,11 @@ public class ControllerLogin {
 
     private HttpLogin httpLogin;
     private Context mContext;
+    private BusLogin busLogin;
 
     public ControllerLogin(Context context) {
         mContext = context;
+        busLogin = new BusLogin(context);
     }
 
     public Motorista login(String email, String senha) throws IllegalFormatException, NullPointerException {
@@ -75,6 +80,14 @@ public class ControllerLogin {
             } else
                 throw new NullPointerException(mContext.getString(R.string.app_err_null_motorista));
         }
+    }
+
+    public void setIdEmpresa(Empresa empresa) throws EmpresaNullException{
+       busLogin.setIdEmpresa(empresa);
+    }
+
+    public int getIdEmpresa() {
+        return busLogin.getIdEmpresa();
     }
 
     public boolean isMatenhaConectado() {

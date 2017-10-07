@@ -47,7 +47,6 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
 
     }
 
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_entregas, parent, false));
@@ -63,9 +62,6 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             holder.uf.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getUF());
             holder.status_entrega.setText(mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega().getDescricao());
 
-
-
-
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,7 +74,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
                         bundle.putSerializable(Entrega.PARCEL, mListEntrega.get(position));
                         bundle.putParcelable(Romaneio.PARCEL, mRomaneio);
                         double lat, lon;
-                        if (mListEntrega.get(position).getSeq_entrega() == 1) {
+                        if (position == 0) {
                             lat = mRomaneio.getEstabelecimento().getLatitude();
                             lon = mRomaneio.getEstabelecimento().getLongitude();
                         } else {
@@ -89,6 +85,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
                         bundle.putDouble("arg2", lon);
                         mContext.startActivity(intent.putExtras(bundle));
                     } catch (Exception e) {
+                        Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 }

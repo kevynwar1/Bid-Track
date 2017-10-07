@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
@@ -18,18 +19,20 @@ public class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyc
 
     private List<Ocorrencia> mList;
 
-    public AdapterRecyclerOcorrencia(List<Ocorrencia> ocorrencias){
+    public AdapterRecyclerOcorrencia(List<Ocorrencia> ocorrencias) {
         mList = ocorrencias;
     }
 
     @Override
     public MyViewPager onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyViewPager(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_ocorrencia, parent));
+        return new MyViewPager(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycler_ocorrencia, parent, false));
     }
 
     @Override
     public void onBindViewHolder(MyViewPager holder, int position) {
-
+        holder.txtTipo.setText(String.valueOf(mList.get(position).getTipoOcorrencia().getDescription()));
+        holder.txtData.setText(String.valueOf(mList.get(position).getData()));
+        holder.txtDesc.setText(String.valueOf(mList.get(position).getDescricao()));
     }
 
     @Override
@@ -37,10 +40,15 @@ public class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyc
         return mList.size();
     }
 
-    public class MyViewPager extends RecyclerView.ViewHolder{
+    public class MyViewPager extends RecyclerView.ViewHolder {
+
+        public TextView txtData, txtDesc, txtTipo;
 
         public MyViewPager(View itemView) {
             super(itemView);
+            txtData = itemView.findViewById(R.id.txt_data);
+            txtTipo = itemView.findViewById(R.id.txt_tipo);
+            txtDesc = itemView.findViewById(R.id.txt_descricao);
         }
     }
 }

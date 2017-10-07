@@ -28,7 +28,7 @@ public class HttpConnection {
         connection.setDoInput(doInput);
         connection.setDoOutput(doOutput);
         if (doOutput)
-            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         connection.connect();
         return connection;
     }

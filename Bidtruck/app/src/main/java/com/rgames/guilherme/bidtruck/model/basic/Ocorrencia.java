@@ -8,25 +8,44 @@ import java.util.List;
 public class Ocorrencia implements Parcelable {
 
     private int codigo;
+    private Empresa empresa;
+    private Entrega entrega;
+    private Romaneio romaneio;
     private List<StatusEntrega> statusEntregaList;
-    private TipoOcorrencia tipoOcorrencia;
-    private String description;
+    private TipoOcorrencia tipo_ocorrencia;
+    private String descricao;
+    private String data;
     private char situation;
 
+    public Ocorrencia(int empresa, int entrega, int romaneio, int tipo, String descricao) {
+        setEmpresa(new Empresa());
+        getEmpresa().setCodigo(empresa);
+        setEntrega(new Entrega());
+        getEntrega().setSeq_entrega(entrega);
+        setRomaneio(new Romaneio());
+        getRomaneio().setCodigo(romaneio);
+        setTipoOcorrencia(new TipoOcorrencia());
+        getTipoOcorrencia().setCodigo(tipo);
+        setDescricao(descricao);
+    }
 
     public Ocorrencia(int codigo, List<StatusEntrega> statusEntregaList, TipoOcorrencia tipoOcorrencia, String description, char situation) {
         this.codigo = codigo;
         this.statusEntregaList = statusEntregaList;
-        this.tipoOcorrencia = tipoOcorrencia;
-        this.description = description;
+        this.tipo_ocorrencia = tipoOcorrencia;
+        this.descricao = description;
         this.situation = situation;
     }
 
     protected Ocorrencia(Parcel in) {
         codigo = in.readInt();
         in.readList(getStatusEntregaList(), null);
-        tipoOcorrencia = in.readParcelable(TipoOcorrencia.class.getClassLoader());
-        description = in.readString();
+        empresa = in.readParcelable(Empresa.class.getClassLoader());
+        entrega = in.readParcelable(Entrega.class.getClassLoader());
+        romaneio = in.readParcelable(Romaneio.class.getClassLoader());
+        tipo_ocorrencia = in.readParcelable(TipoOcorrencia.class.getClassLoader());
+        descricao = in.readString();
+        data = in.readString();
         //situation = in.writeCharArray(new char[]);
     }
 
@@ -51,8 +70,12 @@ public class Ocorrencia implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(codigo);
         parcel.writeList(statusEntregaList);
-        parcel.writeParcelable(tipoOcorrencia, i);
-        parcel.writeString(description);
+        parcel.writeParcelable(empresa, i);
+        parcel.writeParcelable(entrega, i);
+        parcel.writeParcelable(romaneio, i);
+        parcel.writeParcelable(tipo_ocorrencia, i);
+        parcel.writeString(descricao);
+        parcel.writeString(data);
 //        parcel.writeCharArray(new char[]{situation});
     }
 
@@ -64,20 +87,44 @@ public class Ocorrencia implements Parcelable {
         this.codigo = codigo;
     }
 
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
+    public Entrega getEntrega() {
+        return entrega;
+    }
+
+    public void setEntrega(Entrega entrega) {
+        this.entrega = entrega;
+    }
+
+    public Romaneio getRomaneio() {
+        return romaneio;
+    }
+
+    public void setRomaneio(Romaneio romaneio) {
+        this.romaneio = romaneio;
+    }
+
     public TipoOcorrencia getTipoOcorrencia() {
-        return tipoOcorrencia;
+        return tipo_ocorrencia;
     }
 
     public void setTipoOcorrencia(TipoOcorrencia tipoOcorrencia) {
-        this.tipoOcorrencia = tipoOcorrencia;
+        this.tipo_ocorrencia = tipoOcorrencia;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescricao(String description) {
+        this.descricao = description;
     }
 
     public char getSituation() {
@@ -86,6 +133,14 @@ public class Ocorrencia implements Parcelable {
 
     public void setSituation(char situation) {
         this.situation = situation;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     public List<StatusEntrega> getStatusEntregaList() {

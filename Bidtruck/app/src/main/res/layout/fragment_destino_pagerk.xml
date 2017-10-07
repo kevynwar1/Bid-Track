@@ -409,18 +409,18 @@
         </RelativeLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/linear_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/linear_4">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/linear_3"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@+id/linear_4">-->
 
-        <Button
-            android:id="@+id/btn_occurrence"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Gerar ocorrência" />
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:id="@+id/btn_occurrence"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Gerar ocorrência" />-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/linear_4"

@@ -21,7 +21,6 @@ import java.util.List;
 public abstract class HttpBase<T> {
 
 
-
     /*
     * Sem teste consistente
     * */
@@ -64,24 +63,24 @@ public abstract class HttpBase<T> {
         JSONObject jsonObject = null;
         for (int i = 0; i < jsonArray.length(); i++) {
             jsonObject = jsonArray.getJSONObject(i);
-       //   Log.i("teste", "jsonobject: " + jsonObject.toString());
+            //   Log.i("teste", "jsonobject: " + jsonObject.toString());
             list.add(new Gson().fromJson(String.valueOf(jsonObject), classT));
         }
 
-         //      JSONArray jsonArrays = jsonObject.getJSONArray("");
-         //      Log.i("teste", "jsonarray: " + jsonArray.toString());
-         //      Type type = new TypeToken<ArrayList<Entrega>>() {
-         //      }.getType();
-         //       list = new Gson().fromJson(String.valueOf(jsonObject), type);
+        //      JSONArray jsonArrays = jsonObject.getJSONArray("");
+        //      Log.i("teste", "jsonarray: " + jsonArray.toString());
+        //      Type type = new TypeToken<ArrayList<Entrega>>() {
+        //      }.getType();
+        //       list = new Gson().fromJson(String.valueOf(jsonObject), type);
         connection.disconnect();
         return list;
     }
 
-    protected boolean insert(HttpURLConnection connection, Object object) throws IOException, JSONException {
-        Gson gson = new Gson();
-        String jsonCon = gson.toJson(object);
-        connection.getOutputStream().write(jsonCon.getBytes());
-        if (connection.getResponseCode() == 201) {
+    protected boolean insert(HttpURLConnection connection, String object) throws IOException, JSONException {
+        connection.getOutputStream().write(object.getBytes());
+        connection.getOutputStream().flush();
+        connection.getOutputStream().close();
+        if (connection.getResponseCode() == 200) {
             connection.disconnect();
             return true;
         } else {

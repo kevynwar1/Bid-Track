@@ -17,7 +17,9 @@ public enum URLDictionary {
     URL_ROMANEIO_DRIVER("/romaneio_motorista/"),
     URL_DELIVERY_FOR_DRIVER("/entrega_motorista/"),
     URL_ENTREGA_ROMANEIO("/entrega_romaneio/"),
-    URL_OCORRENCIA("/ocorrencia");
+    URL_OCORRENCIA_ADD("/ocorrencia_add"),
+    URL_OCORRENCIA_ENTREGA("/ocorrencia_entrega/"),
+    URL_TIPO_OCORRENCIA("/tipo_ocorrencia/");
 
     private String value;
 
