@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MensagensFragment.newInstance()).commit();
                 return true;
             case R.id.nav_oferta:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, OfferFragment.newInstance()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new OfferFragment()).commit();
                 return true;
             default:
                 return true;

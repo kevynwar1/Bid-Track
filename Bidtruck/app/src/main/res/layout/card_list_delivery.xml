@@ -1,0 +1,10 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardDelivery"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    card_view:cardCornerRadius="3dp">
+    <include layout="@layout/item_card_delivery"/>
+
+</android.support.v7.widget.CardView>

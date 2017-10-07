@@ -1,14 +1,19 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,7 +31,13 @@ import com.rgames.guilherme.bidtruck.model.basic.TipoOcorrencia;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.EntregaNullException;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.AdapterRecyclerOcorrencia;
+import com.vlk.multimager.activities.MultiCameraActivity;
+import com.vlk.multimager.adapters.GalleryImagesAdapter;
+import com.vlk.multimager.utils.Constants;
+import com.vlk.multimager.utils.Image;
+import com.vlk.multimager.utils.Params;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OcorrenciaActivity extends AppCompatActivity {
@@ -37,6 +48,8 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private ControllerLogin controllerLogin;
     private MyProgressBar myProgressBar;
     private AdapterRecyclerTipoOcorrencia adapter;
+    private Button fab_photo;
+    private RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,8 @@ public class OcorrenciaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initFab();
+        clickfloat();
         initList();
         initButton();
     }
@@ -175,6 +190,55 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     private void initEmpty(boolean b) {
         findViewById(R.id.txt_empty).setVisibility((b) ? View.VISIBLE : View.GONE);
+    }
+
+    private void initFab() {
+        fab_photo = (Button) findViewById(R.id.fab_photo);
+        rv = (RecyclerView) findViewById(R.id.rv_photo);
+    }
+
+    private void clickfloat() {
+        fab_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
+                Params params = new Params();
+                params.setCaptureLimit(10);
+                intent.putExtra(Constants.KEY_PARAMS, params);
+                startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case Constants.TYPE_MULTI_CAPTURE:
+                handleResponseIntent(data);
+                break;
+
+        }
+    }
+
+    private int getColumnCount() {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        float thumbnailDpWidth = getResources().getDimension(R.dimen.thumbnail_width) / displayMetrics.density;
+        return (int) (dpWidth / thumbnailDpWidth);
+    }
+
+    private void handleResponseIntent(Intent intent) {
+        ArrayList<Image> imagesList = intent.getParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST);
+        rv.setHasFixedSize(true);
+        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getColumnCount(), GridLayoutManager.VERTICAL);
+        mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        rv.setLayoutManager(mLayoutManager);
+        GalleryImagesAdapter imageAdapter = new GalleryImagesAdapter(this, imagesList, getColumnCount(), new Params());
+        rv.setAdapter(imageAdapter);
     }
 
     private void initToolbar() throws Exception {

@@ -13,12 +13,18 @@ import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by Guilherme on 09/09/2017.
@@ -29,34 +35,32 @@ public class HttpEntrega extends HttpBase<Entrega> {
     Facade mFacade;
     private Integer id_motorista_entrega;
     ControllerLogin controlLogin;
+
     public HttpEntrega(Context context) {
         mContext = context;
     }
 
 
-
-    public List<Entrega> select(){
+    public List<Entrega> select() {
         List<Entrega> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
 
 
-
             try {
-                  controlLogin = new ControllerLogin(mContext);
-                   // mFacade = new Facade(mContext);
+                controlLogin = new ControllerLogin(mContext);
+                // mFacade = new Facade(mContext);
 
 
+                //Motorista driver = mFacade.isLogged();
+                Motorista driver = controlLogin.isLogged();
+                this.id_motorista_entrega = driver.getCodigo();
 
-                  //Motorista driver = mFacade.isLogged();
-                   Motorista driver = controlLogin.isLogged();
-                    this.id_motorista_entrega = driver.getCodigo();
-
-                    if (id_motorista_entrega > 0 && !id_motorista_entrega.equals("")) {
-                        HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ENTREGA_ROMANEIO, HttpMethods.GET, false, true, String.valueOf(id_motorista_entrega));
-                        list = super.select(connection, Entrega.class);
-                        //pode ser redundante, se houver erro tira :3
-                        connection.disconnect();
-                    }
+                if (id_motorista_entrega > 0 && !id_motorista_entrega.equals("")) {
+                    HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ENTREGA_ROMANEIO, HttpMethods.GET, false, true, String.valueOf(id_motorista_entrega));
+                    list = super.select(connection, Entrega.class);
+                    //pode ser redundante, se houver erro tira :3
+                    connection.disconnect();
+                }
 
 
             } catch (IOException e) {
@@ -68,19 +72,48 @@ public class HttpEntrega extends HttpBase<Entrega> {
         return list;
 
 
-
     }
 
-    public Entrega atualizar(Entrega entrega) {
-        entrega  = null;
+    public boolean statusEntrega(int cod_status_entrega, int cod_sequencia_entrega, int cod_romaneio) {
+        boolean retorno = false;
+
         try {
-            HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ENTREGA_ROMANEIO,HttpMethods.POST, false, true, String.valueOf((entrega.getCodigo())));
-            entrega = super.selectBy(connection, Entrega.class);
-        } catch (Exception e) {
+            if (HttpConnection.isConnected(mContext)) {
+                String parms = cod_status_entrega + "/" + cod_sequencia_entrega + "/" + cod_romaneio;
+                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_STATUS_ENTREGA, HttpMethods.GET, false, true, parms);
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+                    BufferedReader scanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    StringBuilder jsonScanner = new StringBuilder();
+                    String line = null;
+                    while ((line = scanner.readLine()) != null) {
+                        jsonScanner.append(line).append("\n");
+                        Integer.parseInt(line);
+                        retorno = true;
+                    }
+
+
+                   /* InputStream input = connection.getInputStream();
+                    if (input != null) {
+                        Scanner scan = new Scanner(input);
+                        String json = scan.nextLine();
+                        Integer.parseInt(json);
+                        retorno = true;
+
+                    }*/
+                    connection.disconnect();
+                }
+
+            }
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        } catch (Exception e){
             e.printStackTrace();
         }
-        return entrega;
+
+        return  retorno;
     }
+
 
 
 
@@ -112,6 +145,7 @@ public class HttpEntrega extends HttpBase<Entrega> {
 
         return lista;
     }*/
+
 
 
 

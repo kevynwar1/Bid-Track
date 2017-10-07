@@ -80,7 +80,7 @@ public class FinalizaEntrega extends AppCompatActivity{
             @Override
             protected Entrega doInBackground(Void... Integer) {
                 try {
-                    return mFacade.atualiza(mEntrega);
+                    //return mFacade.atualiza(mEntrega);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

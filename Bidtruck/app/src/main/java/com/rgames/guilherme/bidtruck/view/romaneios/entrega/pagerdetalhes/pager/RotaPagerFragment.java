@@ -157,6 +157,9 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (progressDialog != null && progressDialog.isShowing())
+                progressDialog.dismiss();
         }
     }
 
