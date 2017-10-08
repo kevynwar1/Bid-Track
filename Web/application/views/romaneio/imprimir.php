@@ -152,8 +152,8 @@
 	</div>
 </div>
 
-<!-- script type="text/javascript">
-	function initMap() {
+<script type="text/javascript">
+	/* function initMap() {
 		var directionsService = new google.maps.DirectionsService;
 		var directionsDisplay = new google.maps.DirectionsRenderer;
 		directionsDisplay.setPanel(document.getElementById('trajeto'));
@@ -193,5 +193,9 @@
 				window.alert('Directions request failed due to ' + status);
 			}
 		});
-	}
-</script -->
+	} */
+
+	$(document).ready(function() {
+		window.print();
+	});
+</script>

@@ -28,7 +28,7 @@ public class HttpConnection {
         connection.setDoInput(doInput);
         connection.setDoOutput(doOutput);
         if (doOutput)
-            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         connection.connect();
         return connection;
     }
@@ -51,7 +51,7 @@ public class HttpConnection {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             return (networkInfo != null && networkInfo.isConnected());
-        }else try {
+        } else try {
             throw new ContextNullException();
         } catch (ContextNullException e) {
             e.printStackTrace();

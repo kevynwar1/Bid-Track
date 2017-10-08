@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,12 @@ public class DetalhesPagerFragment extends Fragment{
     private Romaneio mRomaneio;
     private Entrega mEntrega;
     private View mView;
+    private boolean tem_entrega;
+    private boolean entrega_atualizada;
+    private StatusTask mStatus;
+    private AtualizaTask mAtualiza;
+    private ListaTask mLista;
+    private List<Entrega> mEntregas;
 
 
 
@@ -54,6 +61,9 @@ public class DetalhesPagerFragment extends Fragment{
         if (getArguments() != null) {
             mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
             mEntrega = getArguments().getParcelable(Entrega.PARCEL);
+            mStatus = new StatusTask();
+            mAtualiza = new AtualizaTask();
+            mLista = new ListaTask();
         } else mEntrega = new Entrega();
     }
 
@@ -61,6 +71,7 @@ public class DetalhesPagerFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return mView = inflater.inflate(R.layout.fragment_destino_pagerk, container, false);
+
     }
 
     @Override
@@ -69,7 +80,6 @@ public class DetalhesPagerFragment extends Fragment{
         try {
             initViews();
             initButtons();
-            finishDelivery();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,31 +116,139 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
 
-    private void finishDelivery() throws Exception {
 
-          if(mEntrega != null){
-                int status_entrega = mEntrega.getStatusEntrega().getCodigo();
-
-              if(status_entrega == 4){
-
-              }
+    class StatusTask extends AsyncTask<Void, Void, Void>{
 
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+            HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
+            if(mEntrega != null){
+                if(mEntrega.getStatusEntrega().getCodigo() == 3 && mEntrega.getSeq_entrega() > 0 && mRomaneio.getCodigo() > 0){
+
+                    int novo_status = 4;
+                    //int status_entrega = mEntrega.getStatusEntrega().setCodigo(novo_status);
+                    int seq_entrega = mEntrega.getSeq_entrega();
+                    int cod_romaneio = mRomaneio.getCodigo();
+                    tem_entrega = mHttpEntrega.statusEntrega(novo_status,seq_entrega,cod_romaneio);
+                }
+                else{
+                    Toast.makeText(getActivity(),"Desculpe, você tem permissão para finalizar esta entrega!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            return null;
+        }
 
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(tem_entrega) {
+                Toast.makeText(getActivity(), "Entrega finalizada com Sucesso!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Desculpe, erro ao finalizar a entrega, tente novamente!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    class ListaTask extends AsyncTask<Void, Void, List<Entrega>>{
+
+        @Override
+        protected List<Entrega> doInBackground(Void... String) {
+            //Facade facade = new Facade(getActivity());
+            HttpEntrega httpEntregas = new HttpEntrega(getActivity());
+            try {
+                return httpEntregas.select();
 
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
 
+        @Override
+        protected void onPostExecute(List<Entrega> entregas) {
+            super.onPostExecute(entregas);
+            try {
+                if (entregas == null || entregas.size() > 0) {
 
-          }
+                    mEntregas = entregas;
 
-
-
-
-
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
+
+
+    class AtualizaTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //Facade facade = new Facade(getActivity());
+            HttpEntrega httpEntregas = new HttpEntrega(getActivity());
+            try {
+                if(mEntregas != null){
+                    for (int i = 0; i < mEntregas.size(); i++) {
+
+                        Entrega atualizaEntrega = mEntregas.get(i);
+                        if (atualizaEntrega.getStatusEntrega().getCodigo() == 4 && atualizaEntrega.getSeq_entrega() > 0) {
+
+                            for (int j = 0; j < mEntregas.size(); j++) {
+
+                                Entrega recebeStatusEntrega = mEntregas.get(j);
+                                if (recebeStatusEntrega.getStatusEntrega().getDescricao().equals("Liberado") && recebeStatusEntrega.getSeq_entrega() > atualizaEntrega.getSeq_entrega()) {
+                                    HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
+                                    if (recebeStatusEntrega != null) {
+                                        int novo_status = 3;
+                                        int seq_nova_entrega = recebeStatusEntrega.getSeq_entrega();
+                                        int cod_romaneio = mRomaneio.getCodigo();
+                                        entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status,seq_nova_entrega,cod_romaneio);
+
+                                    }
+                                    break;
+
+                                }
+
+
+                            }
+
+
+                        }
+
+                    }
+
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void voids) {
+            super.onPostExecute(voids);
+
+        }
+
+    }
+
+
+
+
+
+
+
+
 
 
 
@@ -156,7 +274,8 @@ public class DetalhesPagerFragment extends Fragment{
                         , new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getActivity(), "Finalizado", Toast.LENGTH_SHORT).show();
+                                mStatus.execute();
+                               // Toast.makeText(getActivity(), "Finalizado", Toast.LENGTH_SHORT).show();
                                 dialogInterface.dismiss();
                             }
                         });

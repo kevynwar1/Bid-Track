@@ -43,6 +43,23 @@ public class EntregaActivity extends AppCompatActivity {
         }
     }
 
+
+    public void onResume(){
+        super.onResume();
+
+        try {
+            initList();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

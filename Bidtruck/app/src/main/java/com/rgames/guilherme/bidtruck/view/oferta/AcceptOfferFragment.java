@@ -79,8 +79,8 @@ public class AcceptOfferFragment extends Fragment {
 
     class AcceptTask extends AsyncTask<Void, Void, Void>{
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+            protected void onPreExecute() {
+                super.onPreExecute();
         }
 
         @Override

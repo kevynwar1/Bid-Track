@@ -41,6 +41,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.android.support:cardview-v7:26.+'
     compile 'com.google.android.gms:play-services-maps:11.0.2'
+    compile 'com.github.vansikrishna:Multimager:1.0.8'
     testCompile 'junit:junit:4.12'
     compile files('libs/activation.jar')
     compile files('libs/additionnal.jar')
@@ -78,4 +79,10 @@ dependencies {
 }
 dependencies {
     compile 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
+}
+dependencies {
+    compile 'com.github.vansikrishna:Multimager:1.0.8'
+}
+dependencies {
+    compile 'com.github.QuadFlask:colorpicker:0.0.10@aar'
 }

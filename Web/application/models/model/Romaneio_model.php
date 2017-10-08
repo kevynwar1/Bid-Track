@@ -12,6 +12,7 @@ class Romaneio_model extends CI_Model {
 	public function cadastrar($romaneio) {
 		$data = array(
 			'codigo' 				=> $romaneio->getCodigo(),
+			'cod_empresa' 			=> $romaneio->getEmpresa()->getCodigo(),
 			'cod_status_romaneio' 	=> $romaneio->getStatusRomaneio()->getCodigo(),
 			'cod_estabelecimento' 	=> $romaneio->getEstabelecimento()->getCodigo(),
 			'cod_tipo_veiculo' 	 	=> $romaneio->getTipoVeiculo()->getCodigo(),
@@ -32,6 +33,7 @@ class Romaneio_model extends CI_Model {
 
 	public function editar($romaneio) {
 		$this->db->where($this->table.'.codigo', $romaneio['codigo']);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
 		$this->db->update($this->table, $romaneio);
 
 		return $this->db->affected_rows();
@@ -39,6 +41,7 @@ class Romaneio_model extends CI_Model {
 
 	public function excluir($romaneio) {
 		$this->db->where($this->table.'.codigo', $romaneio->getCodigo());
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
 		$this->db->delete($this->table);
 
 		return $this->db->affected_rows(); 
@@ -46,6 +49,7 @@ class Romaneio_model extends CI_Model {
 
 	public function verificar_romaneio($romaneio) {
 		$this->db->select($this->table.'.codigo')->from($this->table);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
 		$this->db->where($this->table.'.codigo', $romaneio);
 		$query = $this->db->get();
 
@@ -56,7 +60,16 @@ class Romaneio_model extends CI_Model {
 		}
 	}
 
-	public function listar() {
+	public function total() {
+    	$this->db->select('*')->from($this->table);
+    	$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where($this->table.'.cod_status_romaneio <>', '4');
+		$query = $this->db->get();
+
+		return $query->num_rows();
+	}
+
+	public function listar($limit = null, $offset = null) {
 		$this->db->select('*, 
 			lpad(romaneio.codigo, 4, 0) AS cod_romaneio,
 			estabelecimento.razao_social AS est_razao, 
@@ -75,8 +88,11 @@ class Romaneio_model extends CI_Model {
 		$this->db->join('transportadora', 'transportadora.codigo = '.$this->table.'.cod_transportadora', 'left');
 		$this->db->join('tipo_veiculo', 'tipo_veiculo.codigo = '.$this->table.'.cod_tipo_veiculo');
 		$this->db->join('status_romaneio', 'status_romaneio.codigo = '.$this->table.'.cod_status_romaneio');
-		$this->db->where('empresa.codigo', '1'); // SESSION Empresa
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
 		$this->db->where($this->table.'.cod_status_romaneio <>', '4');
+		if(isset($limit) && isset($offset)) {
+			$this->db->limit($limit, $offset);
+		}
 		$this->db->order_by("DATE(data_criacao)", "DESC");
 		$query = $this->db->get();
 
@@ -154,7 +170,7 @@ class Romaneio_model extends CI_Model {
 		$this->db->join('transportadora', 'transportadora.codigo = '.$this->table.'.cod_transportadora');
 		$this->db->join('tipo_veiculo', 'tipo_veiculo.codigo = '.$this->table.'.cod_tipo_veiculo');
 		$this->db->join('status_romaneio', 'status_romaneio.codigo = '.$this->table.'.cod_status_romaneio');
-		$this->db->where('empresa.codigo', '1'); // SESSION Empresa
+		$this->db->where('empresa.codigo', $this->session->userdata('empresa'));
 
 		if($filtro == "romaneio") {
 			$this->db->where($this->table.'.codigo', $procurar);
@@ -248,7 +264,8 @@ class Romaneio_model extends CI_Model {
 			motorista.uf AS mot_uf, 
 
 			tipo_veiculo.codigo AS tip_codigo, 
-			tipo_veiculo.descricao AS tip_descricao
+			tipo_veiculo.descricao AS tip_descricao, 
+			tipo_veiculo.peso AS peso
 			')->from($this->table);
 		$this->db->join('estabelecimento', 'estabelecimento.codigo = '.$this->table.'.cod_estabelecimento');
 		$this->db->join('motorista', 'motorista.codigo = '.$this->table.'.cod_motorista', 'left');
@@ -277,6 +294,7 @@ class Romaneio_model extends CI_Model {
 				$romaneio->getEstabelecimento()->setUf($row->est_uf);
 				$romaneio->getTipoVeiculo()->setCodigo($row->tip_codigo);
 				$romaneio->getTipoVeiculo()->setDescricao($row->tip_descricao);
+				$romaneio->getTipoVeiculo()->setPeso($row->peso);
 				$romaneio->getTransportadora()->setCodigo($row->cod_transportadora);
 				$romaneio->getTransportadora()->setCnpj($row->trans_cnpj);
 				$romaneio->getTransportadora()->setRazaoSocial($row->trans_razao_social);
@@ -312,7 +330,7 @@ class Romaneio_model extends CI_Model {
 
 	public function faturamento() {
 		$this->db->select('SUM('.$this->table.'.valor) AS valor')->from($this->table);
-		$this->db->where($this->table.'.cod_empresa', '1'); // SESSION Empresa
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
 		$query = $this->db->get();
 
 		if($query->num_rows() == 1) {
@@ -349,7 +367,15 @@ class Romaneio_model extends CI_Model {
 		$this->db->where($this->table.'.cod_motorista IS NULL');
 		$this->db->update($this->table, $data);
 
-		return $this->db->affected_rows(); 
+		return $this->db->affected_rows();
+	}
+
+	public function romaneio_status($status, $romaneio) {
+		$this->db->set($this->table.'.cod_status_romaneio', $status);
+		$this->db->where($this->table.'.codigo', $romaneio);
+		$this->db->update($this->table);
+
+		return $this->db->affected_rows();
 	}
 
 	public function consultar_motorista_id($motorista) {
@@ -459,6 +485,8 @@ class Romaneio_model extends CI_Model {
 			estabelecimento.bairro AS est_bairro, 
 			estabelecimento.cidade AS est_cidade, 
 			estabelecimento.uf AS est_uf, 
+			estabelecimento.latitude AS est_latitude, 
+			estabelecimento.longitude AS est_longitude, 
 			tipo_veiculo.codigo AS tip_codigo, 
 			tipo_veiculo.descricao AS tip_descricao')->from($this->table);
 		$this->db->join('estabelecimento', 'estabelecimento.codigo = '.$this->table.'.cod_estabelecimento');
@@ -484,6 +512,8 @@ class Romaneio_model extends CI_Model {
 				$romaneio->getEstabelecimento()->setBairro($row->est_bairro);
 				$romaneio->getEstabelecimento()->setCidade($row->est_cidade);
 				$romaneio->getEstabelecimento()->setUf($row->est_uf);
+				$romaneio->getEstabelecimento()->setLatitude($row->est_latitude);
+				$romaneio->getEstabelecimento()->setLongitude($row->est_longitude);
 				$romaneio->getTipoVeiculo()->setCodigo($row->tip_codigo);
 				$romaneio->getTipoVeiculo()->setDescricao($row->tip_descricao);
 				$romaneio->getTransportadora()->setCodigo($row->cod_transportadora);

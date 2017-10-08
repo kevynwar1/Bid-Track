@@ -26,10 +26,13 @@
     <string name="app_dlg_confirm">Confirmar</string>
     <string name="app_dlg_cancel">Cancelar</string>
     <!--Button-->
+    <string name="app_dlg_cadastrar">Cadastrar</string>
+    <string name="app_dlg_foto">Tirar foto</string>
     <!--Forms-->
 
     <!--Outers-->
     <string name="app_empty_list">Nenhum resultado foi encontrado.</string>
+    <string name="app_empty_ocorrencia_list">Esta entrega não possuí ocorrências.</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="toolbar_offer_details">Detalhes da Oferta</string>

@@ -20,9 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
+import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.view.oferta.Preferences;
 import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
 import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
@@ -59,8 +61,15 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.content_main
-                    , RomaneioFragment.newInstance(mEmpresa)).commit();
+            ControllerLogin controllerLogin = new ControllerLogin(MainActivity.this);
+            try {
+                controllerLogin.setIdEmpresa(mEmpresa);
+                getSupportFragmentManager().beginTransaction().add(R.id.content_main
+                        , RomaneioFragment.newInstance(mEmpresa)).commit();
+            } catch (EmpresaNullException e) {
+                e.printStackTrace();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

@@ -6,18 +6,25 @@ import android.os.Parcelable;
 public class TipoOcorrencia implements Parcelable {
 
     private int codigo;
-    private String description;
+    private Empresa empresa;
+    private String descricao;
     private char situation;
 
-    public TipoOcorrencia(int codigo, String description, char situation) {
+    public TipoOcorrencia(){
+
+    }
+
+    public TipoOcorrencia(int codigo, Empresa empresa, String description, char situation) {
         this.codigo = codigo;
-        this.description = description;
+        this.empresa = empresa;
+        this.descricao = description;
         this.situation = situation;
     }
 
     protected TipoOcorrencia(Parcel in) {
         codigo = in.readInt();
-        description = in.readString();
+        empresa = in.readParcelable(Empresa.class.getClassLoader());
+        descricao = in.readString();
         //situation
     }
 
@@ -41,7 +48,8 @@ public class TipoOcorrencia implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(codigo);
-        parcel.writeString(description);
+        parcel.writeParcelable(empresa, i);
+        parcel.writeString(descricao);
         parcel.writeCharArray(new char[]{situation});
     }
 
@@ -54,11 +62,11 @@ public class TipoOcorrencia implements Parcelable {
     }
 
     public String getDescription() {
-        return description;
+        return descricao;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.descricao = description;
     }
 
     public char getSituation() {
@@ -67,5 +75,13 @@ public class TipoOcorrencia implements Parcelable {
 
     public void setSituation(char situation) {
         this.situation = situation;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 }
