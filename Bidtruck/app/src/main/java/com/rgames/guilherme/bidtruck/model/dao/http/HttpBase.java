@@ -1,10 +1,6 @@
 package com.rgames.guilherme.bidtruck.model.dao.http;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +9,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +72,6 @@ public abstract class HttpBase<T> {
     }
 
     protected boolean insert(HttpURLConnection connection, String object) throws IOException, JSONException {
-
         connection.getOutputStream().write(object.getBytes());
         connection.getOutputStream().flush();
         connection.getOutputStream().close();

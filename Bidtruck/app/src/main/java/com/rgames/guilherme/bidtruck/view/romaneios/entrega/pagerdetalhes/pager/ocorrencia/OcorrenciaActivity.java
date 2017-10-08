@@ -25,7 +25,6 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
 import com.rgames.guilherme.bidtruck.controller.ControllerOcorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
-import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
@@ -46,7 +45,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     private int seq_entrega;
     private int romaneio;
-    private  Entrega entrega;
+    //    private Entrega entrega;
     private ControllerOcorrencia controllerOcorrencia;
     private ControllerLogin controllerLogin;
     private HttpImagem httpImagem;
@@ -66,7 +65,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
         try {
             if (getIntent().getExtras() != null) {
                 seq_entrega = getIntent().getExtras().getInt(Entrega.PARCEL);
-                entrega = getIntent().getExtras().getParcelable(Entrega.PARCEL);
+//                entrega = getIntent().getExtras().getParcelable(Entrega.PARCEL);
                 romaneio = getIntent().getExtras().getInt(Romaneio.PARCEL);
                 initToolbar();
                 httpImagem = new HttpImagem();
@@ -224,7 +223,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
                 Params params = new Params();
-                params.setCaptureLimit(1);
+                params.setCaptureLimit(5);
                 intent.putExtra(Constants.KEY_PARAMS, params);
                 startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
             }
@@ -253,25 +252,30 @@ public class OcorrenciaActivity extends AppCompatActivity {
     }
 
     private void handleResponseIntent(Intent intent) {
-        ArrayList<Image> imagesList = intent.getParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST);
+        try {
+            ArrayList<Image> imagesList = intent.getParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST);
 
 
-         for (int i = 0; i < imagesList.size(); i++) {
-        String caminho = imagesList.get(0).imagePath;
-        Bitmap bit = BitmapFactory.decodeFile(caminho);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bit.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        byte[] fotoB = stream.toByteArray();
-        codado = Base64.encodeToString(fotoB, Base64.DEFAULT);
-        listImagem.add(codado);
+            for (int i = 0; i < imagesList.size(); i++) {
+                String caminho = imagesList.get(0).imagePath;
+                Bitmap bit = BitmapFactory.decodeFile(caminho);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bit.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+                byte[] fotoB = stream.toByteArray();
+                codado = Base64.encodeToString(fotoB, Base64.DEFAULT);
+                listImagem.add(codado);
+            }
+
+            rv.setHasFixedSize(true);
+            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getColumnCount(), GridLayoutManager.VERTICAL);
+            mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+            rv.setLayoutManager(mLayoutManager);
+            GalleryImagesAdapter imageAdapter = new GalleryImagesAdapter(this, imagesList, getColumnCount(), new Params());
+            rv.setAdapter(imageAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        rv.setHasFixedSize(true);
-        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getColumnCount(), GridLayoutManager.VERTICAL);
-        mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-        rv.setLayoutManager(mLayoutManager);
-        GalleryImagesAdapter imageAdapter = new GalleryImagesAdapter(this, imagesList, getColumnCount(), new Params());
-        rv.setAdapter(imageAdapter);
     }
 
     private void initToolbar() throws Exception {
@@ -298,7 +302,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             @Override
             protected void onPreExecute() {
-                super.onPreExecute();
                 dialog = ProgressDialog.show(OcorrenciaActivity.this, "fotos", "Enviando Fotos", true);
             }
 
@@ -306,7 +309,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             protected Boolean doInBackground(Void... voids) {
                 try {
                     if (listImagem != null) {
-                        return httpImagem.insert(entrega.getCodigo(),listImagem);
+                        return httpImagem.insert(1, listImagem);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -318,9 +321,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
                 dialog.dismiss();
-
                 try {
                     if (msg.equals(""))
                         if (aBoolean) {
