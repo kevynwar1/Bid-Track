@@ -6,6 +6,7 @@ import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
@@ -16,14 +17,14 @@ import java.util.ArrayList;
  */
 
 public class HttpImagem extends HttpBase<ImagemOcorrencia> {
-    public boolean insert(int ocorrencia, ArrayList<String> list) {
 
-        
+    public boolean insert(int ocorrencia, ArrayList<String> list) {
         try {
+            JSONArray jsonArray = new JSONArray(list);
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("ocorrencia", ocorrencia);
             // while (i < list.size()) {
-            jsonObject.accumulate("foto", list);
+            jsonObject.accumulate("foto", jsonArray);
             Log.i("teste", jsonObject.toString());
 
             HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_IMAGEM, HttpMethods.POST, true, true, "");
