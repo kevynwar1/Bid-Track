@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.List;
 
 public class Ocorrencia implements Parcelable {
+    public static final String PARCEL = "ocorrencia";
 
     private int codigo;
     private Empresa empresa;

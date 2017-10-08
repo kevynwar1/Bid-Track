@@ -15,24 +15,24 @@ import java.util.ArrayList;
  */
 
 public class HttpImagem extends HttpBase<ImagemOcorrencia> {
-    public boolean insert(int ocorrencia, String list) {
+    public boolean insert(int ocorrencia, ArrayList<String> list) {
 
-
+        
         try {
             JSONObject jsonObject = new JSONObject();
-            //  JSONArray jsonArray = new JSONArray(list);
             jsonObject.accumulate("ocorrencia", ocorrencia);
+            // while (i < list.size()) {
             jsonObject.accumulate("foto", list);
-            //jsonObject.accumulate("foto", jsonArray);
+
 
             HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_IMAGEM, HttpMethods.POST, true, true, "");
             return super.insert(connection, jsonObject.toString());
-
+            //}
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
-        }
 
+        }
+        return false;
 
     }
 

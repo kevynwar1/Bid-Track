@@ -51,6 +51,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     private int seq_entrega;
     private int romaneio;
+    private  Entrega entrega;
     private ControllerOcorrencia controllerOcorrencia;
     private ControllerLogin controllerLogin;
     private HttpImagem httpImagem;
@@ -61,6 +62,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private RecyclerView rv;
     String codado;
     private ArrayList<String> listImagem;
+    private ArrayList<String> test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +71,16 @@ public class OcorrenciaActivity extends AppCompatActivity {
         try {
             if (getIntent().getExtras() != null) {
                 seq_entrega = getIntent().getExtras().getInt(Entrega.PARCEL);
+                entrega = getIntent().getExtras().getParcelable(Entrega.PARCEL);
                 romaneio = getIntent().getExtras().getInt(Romaneio.PARCEL);
                 initToolbar();
                 httpImagem = new HttpImagem();
                 listImagem = new ArrayList<>();
+           /*     test = new ArrayList<>();
+                test.add("bola");
+                test.add("bobo");
+                test.add("roxao");*/
+
                 controllerOcorrencia = new ControllerOcorrencia();
                 controllerLogin = new ControllerLogin(OcorrenciaActivity.this);
             } else {
@@ -83,6 +91,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
     @Override
     protected void onResume() {
@@ -220,7 +229,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
                 Params params = new Params();
-                params.setCaptureLimit(10);
+                params.setCaptureLimit(1);
                 intent.putExtra(Constants.KEY_PARAMS, params);
                 startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
             }
@@ -302,7 +311,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             protected Boolean doInBackground(Void... voids) {
                 try {
                     if (listImagem != null) {
-                        return httpImagem.insert(1, "IKARO JR.");
+                        return httpImagem.insert(entrega.getCodigo(),listImagem);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
