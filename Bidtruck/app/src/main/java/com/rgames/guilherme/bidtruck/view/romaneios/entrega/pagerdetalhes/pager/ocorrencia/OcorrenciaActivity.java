@@ -1,6 +1,9 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,10 +25,12 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
 import com.rgames.guilherme.bidtruck.controller.ControllerOcorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
+import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.basic.TipoOcorrencia;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpImagem;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.vlk.multimager.activities.MultiCameraActivity;
 import com.vlk.multimager.adapters.GalleryImagesAdapter;
@@ -32,6 +38,7 @@ import com.vlk.multimager.utils.Constants;
 import com.vlk.multimager.utils.Image;
 import com.vlk.multimager.utils.Params;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +46,18 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     private int seq_entrega;
     private int romaneio;
+    private  Entrega entrega;
     private ControllerOcorrencia controllerOcorrencia;
     private ControllerLogin controllerLogin;
+    private HttpImagem httpImagem;
     private MyProgressBar myProgressBar;
     private AdapterRecyclerTipoOcorrencia adapter;
     private Button fab_photo;
+    private Button teste;
     private RecyclerView rv;
+    String codado;
+    private ArrayList<String> listImagem;
+    private ArrayList<String> test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +66,16 @@ public class OcorrenciaActivity extends AppCompatActivity {
         try {
             if (getIntent().getExtras() != null) {
                 seq_entrega = getIntent().getExtras().getInt(Entrega.PARCEL);
+                entrega = getIntent().getExtras().getParcelable(Entrega.PARCEL);
                 romaneio = getIntent().getExtras().getInt(Romaneio.PARCEL);
                 initToolbar();
+                httpImagem = new HttpImagem();
+                listImagem = new ArrayList<>();
+           /*     test = new ArrayList<>();
+                test.add("bola");
+                test.add("bobo");
+                test.add("roxao");*/
+
                 controllerOcorrencia = new ControllerOcorrencia();
                 controllerLogin = new ControllerLogin(OcorrenciaActivity.this);
             } else {
@@ -66,13 +87,16 @@ public class OcorrenciaActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+
         initFab();
         clickfloat();
         initList();
         initButton();
+        clickTeste();
     }
 
     @Override
@@ -137,6 +161,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
                         }
                     }
                 }.execute();
+                // initFoto();
             }
         });
     }
@@ -190,6 +215,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private void initFab() {
         fab_photo = (Button) findViewById(R.id.fab_photo);
         rv = (RecyclerView) findViewById(R.id.rv_photo);
+        teste = (Button) findViewById(R.id.testb);
     }
 
     private void clickfloat() {
@@ -198,7 +224,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
                 Params params = new Params();
-                params.setCaptureLimit(10);
+                params.setCaptureLimit(1);
                 intent.putExtra(Constants.KEY_PARAMS, params);
                 startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
             }
@@ -228,6 +254,18 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     private void handleResponseIntent(Intent intent) {
         ArrayList<Image> imagesList = intent.getParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST);
+
+
+         for (int i = 0; i < imagesList.size(); i++) {
+        String caminho = imagesList.get(0).imagePath;
+        Bitmap bit = BitmapFactory.decodeFile(caminho);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        byte[] fotoB = stream.toByteArray();
+        codado = Base64.encodeToString(fotoB, Base64.DEFAULT);
+        listImagem.add(codado);
+        }
+
         rv.setHasFixedSize(true);
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getColumnCount(), GridLayoutManager.VERTICAL);
         mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -251,5 +289,63 @@ public class OcorrenciaActivity extends AppCompatActivity {
         if (myProgressBar != null) {
             myProgressBar.onFinish();
         }
+    }
+
+    private void initFoto() {
+        new AsyncTask<Void, Void, Boolean>() {
+            ProgressDialog dialog;
+            String msg = "";
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                dialog = ProgressDialog.show(OcorrenciaActivity.this, "fotos", "Enviando Fotos", true);
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                try {
+                    if (listImagem != null) {
+                        return httpImagem.insert(entrega.getCodigo(),listImagem);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    msg = e.getMessage();
+                }
+
+                return false;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                dialog.dismiss();
+
+                try {
+                    if (msg.equals(""))
+                        if (aBoolean) {
+                            Toast.makeText(OcorrenciaActivity.this, "Foto Enviada.", Toast.LENGTH_LONG).show();
+                            onBackPressed();
+                        } else {
+                            Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a foto.", Toast.LENGTH_LONG).show();
+                        }
+                    else
+                        Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
+
+
+    }
+
+    private void clickTeste() {
+        teste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initFoto();
+            }
+        });
     }
 }

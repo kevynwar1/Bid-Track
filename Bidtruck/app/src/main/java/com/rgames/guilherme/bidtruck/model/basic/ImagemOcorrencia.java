@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by kevyn on 06/10/2017.
  */
@@ -14,10 +16,11 @@ public class ImagemOcorrencia implements Parcelable {
     private Uri uri;
     private String imagePath;
     private boolean isPortraitImage;
-    private byte[] foto;
+    private ArrayList<String> foto;
     private Ocorrencia ocorrencia;
+    private int cod_ocorrencia;
 
-    public ImagemOcorrencia(long _id, Uri uri, String imagePath, byte[] foto, boolean isPortraitImage) {
+    public ImagemOcorrencia(long _id, Uri uri, String imagePath, ArrayList<String> foto, boolean isPortraitImage) {
         this._id = _id;
         this.uri = uri;
         this.imagePath = imagePath;
@@ -38,8 +41,9 @@ public class ImagemOcorrencia implements Parcelable {
         this._id = in.readLong();
         this.uri = in.readParcelable(Uri.class.getClassLoader());
         this.imagePath = in.readString();
-        this.foto = new byte[in.readInt()];
+        this.foto = in.readArrayList(ArrayList.class.getClassLoader());
         this.ocorrencia = in.readParcelable(Ocorrencia.class.getClassLoader());
+        this.cod_ocorrencia = in.readInt();
         this.isPortraitImage = in.readByte() != 0;
 
     }
@@ -66,9 +70,9 @@ public class ImagemOcorrencia implements Parcelable {
         dest.writeLong(this._id);
         dest.writeParcelable(this.uri, flags);
         dest.writeString(this.imagePath);
-        dest.writeInt(foto.length);
-        dest.writeByteArray(foto);
+        dest.writeList(foto);
         dest.writeParcelable(this.ocorrencia, flags);
+        dest.writeInt(cod_ocorrencia);
         dest.writeByte(this.isPortraitImage ? (byte) 1 : (byte) 0);
     }
 
@@ -112,11 +116,19 @@ public class ImagemOcorrencia implements Parcelable {
         isPortraitImage = portraitImage;
     }
 
-    public byte[] getFoto() {
+    public ArrayList<String> getFoto() {
         return foto;
     }
 
-    public void setFoto(byte[] foto) {
+    public void setFoto(ArrayList<String> foto) {
         this.foto = foto;
+    }
+
+    public int getCod_ocorrencia() {
+        return cod_ocorrencia;
+    }
+
+    public void setCod_ocorrencia(int cod_ocorrencia) {
+        this.cod_ocorrencia = cod_ocorrencia;
     }
 }

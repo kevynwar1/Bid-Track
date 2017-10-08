@@ -1,3 +1,12 @@
+<?php
+	if(!empty($entrega)) {
+		$peso_ent = 0;
+		foreach($entrega as $row) {
+			$peso_ent += $row->peso_carga;
+		}
+	}
+?>
+
 <div class="content" style="width: 55%; float: left">
 	<div class="container-fluid">
 		<div class="row">
@@ -31,12 +40,18 @@
                     </div>
                     <div class="card-content">
                         <div class="tab-content">
-                            <div class="tab-pane active" id="profile">
+							<div class="tab-pane active" id="profile">
+								<div class="row">
+									<div class="col-md-12" style="padding: 10px 10px 5px 10px">
+										<div class="fb-save pull-right" data-uri="http://coopera.pe.hu/romaneio/visualizar/<?= $romaneio[0]->codigo ?>"></div>
+										<iframe src="https://www.facebook.com/plugins/share_button.php?href=http://coopera.pe.hu/romaneio/visualizar/<?= $romaneio[0]->codigo ?>&layout=button&size=large&mobile_iframe=true&appId=119082038778375&width=119&height=28" width="119" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+									</div>
+								</div>
                             	<div class="row">
 									<div class="col-md-2 lm15">
 										<div class="form-group label-floating">
 											<label>Romaneio</label>
-											<input type="text" class="form-control" value="<?= $romaneio[0]->codigo ?>" autocomplete="off" disabled>
+											<input type="text" class="form-control" value="<?= $romaneio[0]->codigo ?>" autocomplete="off" style="text-align: center;" disabled>
 										</div>
 									</div>
 									<div class="col-md-10 lm15">
@@ -144,6 +159,13 @@
 										endforeach;
 									endif;
 								?>
+								<div class="row">
+									<div class="col-md-12">
+										<span class="btn btn-danger btn-simple upper pull-right" style="cursor: default;">
+											Capacidade de Carga Disponível <?= $romaneio[0]->tipo_veiculo->peso-$peso_ent ?> Kg.
+										</span>
+									</div>
+								</div>
 							</div>
 							<div class="tab-pane" id="messages">
 								<form action="#" method="post">
@@ -187,6 +209,14 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
 <script type="text/javascript">
+	(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.6&appId=119082038778375";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
 	function initMap() {
 		var directionsService = new google.maps.DirectionsService;
 		var directionsDisplay = new google.maps.DirectionsRenderer;

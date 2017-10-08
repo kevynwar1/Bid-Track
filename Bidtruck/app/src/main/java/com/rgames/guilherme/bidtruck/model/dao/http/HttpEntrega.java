@@ -74,33 +74,75 @@ public class HttpEntrega extends HttpBase<Entrega> {
 
     }
 
-    public boolean statusEntrega(int cod_status_entrega, int cod_sequencia_entrega, int cod_romaneio) {
+    public boolean statusEntrega(int cod_status_entrega, int seq_entrega, int cod_romaneio) {
         boolean retorno = false;
 
         try {
             if (HttpConnection.isConnected(mContext)) {
-                String parms = cod_status_entrega + "/" + cod_sequencia_entrega + "/" + cod_romaneio;
+                String parms = cod_status_entrega + "/" + seq_entrega + "/" + cod_romaneio;
                 HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_STATUS_ENTREGA, HttpMethods.GET, false, true, parms);
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
-                    BufferedReader scanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    int id = connection.getResponseCode();
+                    /*BufferedReader scanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     StringBuilder jsonScanner = new StringBuilder();
                     String line = null;
                     while ((line = scanner.readLine()) != null) {
                         jsonScanner.append(line).append("\n");
                         Integer.parseInt(line);
                         retorno = true;
-                    }
+                    }*/
 
 
-                   /* InputStream input = connection.getInputStream();
+                    InputStream input = connection.getInputStream();
                     if (input != null) {
                         Scanner scan = new Scanner(input);
                         String json = scan.nextLine();
                         Integer.parseInt(json);
                         retorno = true;
 
+                    }
+                    connection.disconnect();
+                }
+
+            }
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return  retorno;
+    }
+
+
+
+    public boolean statusEntregaUltima(int status_entrega, int cod_seq_entrega, int cod_romaneioo) {
+        boolean retorno = false;
+
+        try {
+            if (HttpConnection.isConnected(mContext)) {
+                String parms = status_entrega + "/" + cod_seq_entrega + "/" + cod_romaneioo;
+                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_NOVO_STATUS_ENTREGA, HttpMethods.GET, false, true, parms);
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    int id = connection.getResponseCode();
+                    /*BufferedReader scanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    StringBuilder jsonScanner = new StringBuilder();
+                    String line = null;
+                    while ((line = scanner.readLine()) != null) {
+                        jsonScanner.append(line).append("\n");
+                        Integer.parseInt(line);
+                        retorno = true;
                     }*/
+
+
+                    InputStream input = connection.getInputStream();
+                    if (input != null) {
+                        Scanner scan = new Scanner(input);
+                        String json = scan.nextLine();
+                        Integer.parseInt(json);
+                        retorno = true;
+
+                    }
                     connection.disconnect();
                 }
 

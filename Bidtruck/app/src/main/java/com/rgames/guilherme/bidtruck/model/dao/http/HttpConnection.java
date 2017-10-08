@@ -51,7 +51,7 @@ public class HttpConnection {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             return (networkInfo != null && networkInfo.isConnected());
-        }else try {
+        } else try {
             throw new ContextNullException();
         } catch (ContextNullException e) {
             e.printStackTrace();

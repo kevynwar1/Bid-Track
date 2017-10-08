@@ -1,3 +1,11 @@
+<?php
+	if(!empty($entrega)) {
+		$peso_ent = 0;
+		foreach($entrega as $row) {
+			$peso_ent += $row->peso_carga;
+		}
+	}
+?>
 <style type="text/css">
 	.seq { color: #999; }
 	.seq-icon { color: #FFF; transition: 0.3s; }
@@ -5,6 +13,7 @@
 	.panel-group .panel .panel-heading h2 { cursor: grab; }
 	.panel-group .panel .panel-heading:hover .seq-icon { color: #999; }
 </style>
+<link href="<?= base_url(); ?>assets/css/pop-up.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
@@ -15,7 +24,39 @@ $(function() {
 	});
 	$("#sortable").disableSelection();
 });
+
+function exclusao(entrega, romaneio) {
+	$('.cd-popup').addClass('is-visible');
+	$('.btn-confirm-yes').on('click', function(event){
+		event.preventDefault();
+		window.location.replace("<?= base_url() ?>entrega/excluir/"+entrega+"/"+romaneio);
+		return true;
+	});
+	$('.btn-confirm-no').on('click', function(event){
+		event.preventDefault();
+		$('.cd-popup').removeClass('is-visible');
+		return false;
+	});
+	$('.cd-popup').on('click', function(event){
+		if($(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup')) {
+			event.preventDefault();
+			$(this).removeClass('is-visible');
+		}
+	});
+	return false;
+}
 </script>
+
+<div class="cd-popup" role="alert">
+	<div class="cd-popup-container">
+		<p><?= $this->session->userdata('nome') ?>, tem certeza que quer<br> excluir esta Entrega ?</p>
+		<ul class="cd-buttons">
+			<li><a href="#" class="btn-confirm-yes">Sim</a></li>
+			<li><a href="#" class="btn-confirm-no">Não</a></li>
+		</ul>
+		<a href="#" class="cd-popup-close img-replace"></a>
+	</div>
+</div>
 
 <div class="content" style="width: 55%; float: left">
 	<div class="container-fluid">
@@ -52,7 +93,7 @@ $(function() {
 									<div class="col-md-2 lm15">
 										<div class="form-group label-floating">
 											<label class="control-label">Romaneio</label>
-											<input type="text" class="form-control" value="<?= $romaneio[0]->codigo; ?>" autocomplete="off" disabled>
+											<input type="text" class="form-control" value="<?= $romaneio[0]->codigo; ?>" autocomplete="off" style="text-align: center;" disabled>
 										</div>
 									</div>
 									<div class="col-md-7 lm15">
@@ -194,16 +235,14 @@ $(function() {
 														<div class="col-md-3 lm15">
 															<div class="form-group">
 																<label>Peso da Carga</label>
-																<input type="text" pattern="[0-9]+$" name="peso_carga-<?= $i; ?>" value="<?= $peso_carga[0]; ?>" class="form-control" autocomplete="off">
+																<input type="number" min="1" pattern="[0-9]+$" name="peso_carga-<?= $i; ?>" value="<?= $peso_carga[0]; ?>" class="form-control" autocomplete="off">
 															</div>
 														</div>
 														<div class="col-md-3 lm15">
 															<div class="form-group">
 																<label>Medida</label>
 																<select class="form-control" name="medida-<?= $i; ?>">
-																	<option class="option" value="kg" <?= ($peso_carga[1] == 'kg')? 'selected' : '' ?>>Quilograma</option>
-																	<option class="option" value="t" <?= ($peso_carga[1] == 't')? 'selected' : '' ?>>Tonelada</option>
-																	<option class="option" value="hg" <?= ($peso_carga[1] == 'hg')? 'selected' : '' ?>>Hectograma</option>
+																	<option class="option" value="kg" selected>Quilograma</option>
 																</select>
 															</div>
 														</div>
@@ -224,10 +263,10 @@ $(function() {
 														<?php if(count($entrega) >= 2): ?>
 														<div class="col-md-12">
 															<a href="<?= base_url().'entrega/excluir/'.$row->seq_entrega.'/'.$row->romaneio->codigo ?>">
-																<span class="btn btn-danger btn-fill btn-simple pull-left f12 upper">
+																<button class="btn btn-danger btn-fill btn-simple pull-left f12 upper" onclick="return exclusao('<?= $row->seq_entrega ?>', '<?= $row->romaneio->codigo ?>')">
 																	<i class="material-icons">delete</i>
 																	Excluir
-																</span>
+																</button>
 															</a>
 														</div>
 														<?php endif; ?>
@@ -237,6 +276,13 @@ $(function() {
 										</div>
 									</div>
 									<?php endforeach; ?>
+								</div>
+								<div class="row capacidade-disponivel">
+									<div class="col-md-12">
+										<span class="btn btn-danger btn-simple upper pull-right" style="cursor: default;">
+											Capacidade de Carga Disponível <?= $romaneio[0]->tipo_veiculo->peso-$peso_ent ?> Kg.
+										</span>
+									</div>
 								</div>
 								<div class="row btn-footer">
 									<div class="col-md-12">
@@ -253,14 +299,14 @@ $(function() {
 										<input type="hidden" name="romaneio" value="<?= $this->uri->segment(3); ?>">
 										<input type="hidden" name="entrega" value="<?= ++$ult_entrega; ?>">
 										<div class="row">
-											<div class="col-md-3 lm15">
+											<div class="col-md-2 lm15">
 												<div class="form-group label-floating">
 													<label class="control-label">Romaneio</label>
 													<input type="hidden" name="entrega1" value="entrega1">
-													<input type="text" value="<?= $this->uri->segment(3); ?>" class="form-control" disabled>
+													<input type="text" value="<?= $this->uri->segment(3); ?>" class="form-control" style="text-align: center;" disabled>
 												</div>
 											</div>
-											<div class="col-md-9 lm15">
+											<div class="col-md-10 lm15">
 												<div class="form-group label-floating">
 													<label class="control-label">Destinatário</label>
 													<select class="form-control" name="destinatario" ng-model="destinatario">
@@ -278,17 +324,14 @@ $(function() {
 											<div class="col-md-3 lm15">
 												<div class="form-group label-floating">
 													<label class="control-label">Peso da Carga</label>
-													<input type="text" ng-model="peso_carga" pattern="[0-9]+$" class="form-control" name="peso_carga" required>
+													<input type="number" min="1" max="<?= $romaneio[0]->tipo_veiculo->peso-$peso_ent ?>" ng-model="peso_carga" pattern="[0-9]+$" class="form-control" name="peso_carga" required>
 												</div>
 											</div>
 											<div class="col-md-3 lm15">
 												<div class="form-group label-floating">
 													<label class="control-label">Medida</label>
-													<select ng-model="medida" class="form-control" name="medida" required>
-														<option value="" class="option_none" disabled selected></option>
-														<option value="kg">Quilograma</option>
-														<option value="t">Tonelada</option>
-														<option value="hg">Hectograma</option>
+													<select class="form-control" name="medida" required>
+														<option value="kg" selected>Quilograma</option>
 													</select>
 												</div>
 											</div>
@@ -304,7 +347,7 @@ $(function() {
 												<span class="btn btn-danger btn-round btn-fab btn-simple btn-close pull-left f12 upper pull-left" rel="tooltip" title="Fechar" data-placement="right">
 													<i class="material-icons" style="font-size: 25px;">close</i>
 												</span>
-												<button type="submit" class="btn btn-danger btn-fill btn-salvar pull-right f12 upper" ng-disabled="!destinatario || !peso_carga || !medida">Adicionar</button>
+												<button type="submit" class="btn btn-danger btn-fill btn-salvar pull-right f12 upper" ng-disabled="!destinatario || !peso_carga">Adicionar</button>
 											</div>
 										</div>
 									</form>
@@ -334,6 +377,14 @@ $(function() {
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
 <script type="text/javascript">
+	(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.6&appId=119082038778375";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
 	function initMap() {
 		var directionsService = new google.maps.DirectionsService;
 		var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -374,7 +425,7 @@ $(function() {
 			if (status === 'OK') {
 				directionsDisplay.setDirections(response);
 			} else {
-				window.alert('A solicitação de instruções falhou devido a ' + status);
+				location.reload();
 			}
 		});
 	}
@@ -411,6 +462,7 @@ $(function() {
 
 	$(".btn-add").click(function() {
 		$("#sortable").hide();
+		$(".capacidade-disponivel").hide();
 		$(".btn-footer").hide();
 		$("#add").fadeIn();
 	});
@@ -418,6 +470,7 @@ $(function() {
 	$(".btn-close").click(function() {
 		$("#add").hide();
 		$("#sortable").fadeIn();
+		$(".capacidade-disponivel").fadeIn();
 		$(".btn-footer").fadeIn();
 	});
 

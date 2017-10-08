@@ -21,8 +21,10 @@ public enum URLDictionary {
     URL_OCORRENCIA_ENTREGA("/ocorrencia_entrega/"),
     URL_TIPO_OCORRENCIA("/tipo_ocorrencia/"),
     URL_OFFER_ACCEPT("/romaneio_aceitar/"),
+    URL_IMAGEM("/imagem_ocorrencia_add"),
     URL_OCORRENCIA("/ocorrencia"),
-    URL_STATUS_ENTREGA("/entrega_status_entrega/");
+    URL_STATUS_ENTREGA("/entrega_status/"),
+    URL_NOVO_STATUS_ENTREGA("/entrega_status/");
 
     private String value;
 

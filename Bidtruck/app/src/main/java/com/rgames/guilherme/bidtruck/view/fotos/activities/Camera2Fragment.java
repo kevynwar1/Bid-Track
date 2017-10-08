@@ -1006,11 +1006,11 @@ public class Camera2Fragment extends Fragment
 
     private void takeCapturedFile() {
         if (mFile != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(mFile));
+         /*   Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(mFile));
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] fotoB = stream.toByteArray();
-            ImagemOcorrencia image = new ImagemOcorrencia(ContentUris.parseId(fileUri), fileUri, mFile.getPath(), fotoB,
+            byte[] fotoB = stream.toByteArray();*/
+            ImagemOcorrencia image = new ImagemOcorrencia(ContentUris.parseId(fileUri), fileUri, mFile.getPath(),
                     (mSensorOrientation == 90 || mSensorOrientation == 270));
             selectedImages.add(image);
             showCameraLayout(false);

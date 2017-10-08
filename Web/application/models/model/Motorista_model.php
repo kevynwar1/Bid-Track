@@ -28,7 +28,7 @@ class Motorista_model extends CI_Model {
 			$this->db->join('romaneio', 'romaneio.cod_motorista = '.$this->table.'.codigo');
 			$this->db->where('romaneio.codigo', $romaneio);
 		}
-		$this->db->where('empresa_motorista.cod_empresa', '1'); // SESSION Empresa
+		$this->db->where('empresa_motorista.cod_empresa', $this->session->userdata('empresa'));
 		$this->db->order_by($this->table.'.nome', 'ASC');
 		$query = $this->db->get();
 
@@ -130,6 +130,7 @@ class Motorista_model extends CI_Model {
 			motorista.validade_carteira AS validade_carteira, 
 			motorista.situacao AS situacao
 		')->from($this->table);
+		/*$this->db->join('empresa_motorista', 'empresa_motorista.cod_motorista = '.$this->table.'.codigo');*/
 		$this->db->where($this->table.'.email', $email);
 		$this->db->where($this->table.'.senha', $senha);
 		$query = $this->db->get();
@@ -141,6 +142,7 @@ class Motorista_model extends CI_Model {
 				$motorista = new Motorista_basic();
 
 				$motorista->setCodigo($row->codigo);
+				/*$motorista->getEmpresa()->setCodigo($row->cod_empresa);*/
 				$motorista->setNome($row->nome);
 				$motorista->setCpf($row->cpf);
 				$motorista->setPontuacao($row->pontuacao);
