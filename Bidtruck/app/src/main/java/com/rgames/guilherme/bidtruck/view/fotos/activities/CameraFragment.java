@@ -733,11 +733,11 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         protected void onPostExecute(File file) {
             super.onPostExecute(file);
             if (file != null) {
-                Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(file));
+              /*  Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(file));
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-                byte[] fotoB = stream.toByteArray();
-                ImagemOcorrencia image = new ImagemOcorrencia(ContentUris.parseId(fileUri), fileUri, file.getPath(), fotoB,
+                byte[] fotoB = stream.toByteArray();*/
+                ImagemOcorrencia image = new ImagemOcorrencia(ContentUris.parseId(fileUri), fileUri, file.getPath(),
                         (pictureRotation == 90 || pictureRotation == 270));
                 selectedImages.add(image);
                 showCameraLayout(false);

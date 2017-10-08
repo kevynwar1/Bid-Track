@@ -77,6 +77,7 @@ public abstract class HttpBase<T> {
     }
 
     protected boolean insert(HttpURLConnection connection, String object) throws IOException, JSONException {
+
         connection.getOutputStream().write(object.getBytes());
         connection.getOutputStream().flush();
         connection.getOutputStream().close();
