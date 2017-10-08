@@ -54,6 +54,14 @@ public class Facade implements IFacade {
         return controllerRomaneio.select(empresa, motorista);
     }
 
+    public List<Romaneio> selectNovo(Empresa empresa, Motorista motorista) throws MotoristaNaoConectadoException, EmpresaNullException {
+        if (controllerRomaneio == null)
+            controllerRomaneio = new ControllerRomaneio(mContext);
+        return controllerRomaneio.selectNovoRomaneio(empresa, motorista);
+    }
+
+
+
     @Override
     public List<Romaneio> selectRomaneioOfertado(Motorista motorista) throws MotoristaNaoConectadoException, NullPointerException {
         if (controllerRomaneio == null) controllerRomaneio = new ControllerRomaneio(mContext);
@@ -67,6 +75,8 @@ public class Facade implements IFacade {
         return controllerEntregas.select();
 
     }
+
+
 
 
    /* public Entrega atualiza(Entrega entrega) throws Exception {

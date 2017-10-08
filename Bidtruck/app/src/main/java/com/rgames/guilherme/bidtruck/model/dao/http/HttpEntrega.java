@@ -125,15 +125,6 @@ public class HttpEntrega extends HttpBase<Entrega> {
                 HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_NOVO_STATUS_ENTREGA, HttpMethods.GET, false, true, parms);
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     int id = connection.getResponseCode();
-                    /*BufferedReader scanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    StringBuilder jsonScanner = new StringBuilder();
-                    String line = null;
-                    while ((line = scanner.readLine()) != null) {
-                        jsonScanner.append(line).append("\n");
-                        Integer.parseInt(line);
-                        retorno = true;
-                    }*/
-
 
                     InputStream input = connection.getInputStream();
                     if (input != null) {
