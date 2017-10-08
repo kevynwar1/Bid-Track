@@ -11,30 +11,30 @@ class Destinatario_model extends CI_Model {
 
 	public function listar($romaneio = NULL) {
 		$this->db->select('
-			destinatario.codigo, 
-			destinatario.cod_empresa, 
-			destinatario.razao_social, 
-			destinatario.nome_fantasia, 
-			destinatario.tipo_pessoa, 
-			destinatario.cnpj_cpf, 
-			destinatario.email, 
-			destinatario.telefone, 
-			destinatario.logradouro, 
-			destinatario.numero, 
-			destinatario.complemento, 
-			destinatario.bairro, 
-			destinatario.cidade, 
-			destinatario.uf, 
-			destinatario.cep, 
-			destinatario.latitude, 
-			destinatario.longitude, 
-			destinatario.situacao
+			destinatario.codigo AS codigo, 
+			destinatario.cod_empresa AS cod_empresa, 
+			destinatario.razao_social AS razao_social, 
+			destinatario.nome_fantasia AS nome_fantasia, 
+			destinatario.tipo_pessoa AS tipo_pessoa, 
+			destinatario.cnpj_cpf AS cnpj_cpf, 
+			destinatario.email AS email, 
+			destinatario.telefone AS telefone, 
+			destinatario.logradouro AS logradouro, 
+			destinatario.numero AS numero, 
+			destinatario.complemento AS complemento, 
+			destinatario.bairro AS bairro, 
+			destinatario.cidade AS cidade, 
+			destinatario.uf AS uf, 
+			destinatario.cep AS cep, 
+			destinatario.latitude AS latitude, 
+			destinatario.longitude AS longitude, 
+			destinatario.situacao AS situacao
 		')->from($this->table);
 		if(!is_null($romaneio)) {
 			$this->db->join('entrega', 'entrega.cod_destinatario = destinatario.codigo');
 			$this->db->where('entrega.cod_romaneio', $romaneio);
 		}
-		$this->db->where($this->table.'.cod_empresa', '1'); // SESSION Empresa
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0) {

@@ -88,7 +88,7 @@ html {
 	position: absolute;
 	background-color: #FFF;
 	box-shadow: 0 0 15px rgba(0,0,0, 0.15);
-	padding: 40px 10px 40px 10px;
+	padding: 30px 10px 30px 10px;
 	z-index: 999;
 	transition: 0.5s;
 }

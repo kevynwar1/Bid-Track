@@ -80,6 +80,9 @@ class Entrega extends CI_Controller {
 
 		$result = $this->Entrega_model->excluir_entrega($entrega, $romaneio);
 		if($result) {
+			$this->load->model('model/Ocorrencia_model');
+			$this->Ocorrencia_model->excluir_ocorrencia($entrega, $romaneio);
+			
 			$this->session->set_flashdata('entrega', 'Tab Entrega ativa.');
 			$this->session->set_flashdata('success', 'Entrega, excluída com Sucesso.');
 		} else {

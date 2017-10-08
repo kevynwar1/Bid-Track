@@ -1,0 +1,60 @@
+select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	width: 100%;
+}
+
+.status {
+	text-transform: uppercase;
+	padding: 5px 10px 5px 10px;
+	border-radius: 2px;
+	font-size: 10.5px;
+	box-shadow: 0 5px 5px rgba(0,0,0, 0.1);
+	cursor: default;
+	transition: 0.3s;
+}
+
+.btn-pattern {
+	font-size: 12px;
+	text-transform: uppercase;
+	background: none;
+	border: none;
+	color: #999;
+}
+.btn-pattern:hover { color: #555; }
+
+.option { padding: 3px; }
+.option-undefined { padding: 3px; color: #999 !important; }
+.lm15 { margin-top: -15px; }
+.lm20 { margin-top: -20px; }
+.desc { color: rgb(154, 154, 154); text-transform: uppercase; }
+.th-desc { cursor: pointer; transition: 0.3s; }
+.f10 { font-size: 10px; }
+.f11 { font-size: 11px; }
+.f12 { font-size: 12px; }
+.upper { text-transform: uppercase; }
+.collapse-menu {
+	background: none !important;
+	box-shadow: none !important;
+	color: #777 !important;
+	transition: 0.3s !important;
+}
+
+.collapse-menu:hover { color: #000 !important; }
+th { padding-bottom: 15px !important; }
+.gray { color: #999; }
+.panel-heading { background: none !important; }
+.panel-title { font-size: 14px !important; }
+
+.option_none { display: none; }
+.adp-placemark tr { border-radius: 5px !important; }
+.adp-legal { display: none !important; }
+.adp-text { padding: 10px !important;}
+footer { display: none !important; }
+.btn-remove {
+	opacity: 0.5;
+	cursor: pointer;
+	transition: 0.4s;
+}
+.btn-remove:hover { opacity: 1; }

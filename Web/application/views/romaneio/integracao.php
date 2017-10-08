@@ -1,11 +1,13 @@
-<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/css/input-field.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<link rel="stylesheet" href="<?= base_url(); ?>assets/css/materialize.css">
+<link rel="stylesheet" href="<?= base_url(); ?>assets/css/input-field.css">
 
 <div class="content">
 	<div class="container-fluid">
 	<?php if(!isset($romaneio)) { ?>
 	<div class="row">
 		<div class="col-md-12" align="center">
-			<form action="<?= base_url().'romaneio/integrar' ?>" method="post" enctype="multipart/form-data" autocomplete="off">
+			<form action="<?= base_url().'romaneio/integrar' ?>" method="post" enctype="multipart/form-data">
 				<div class="box">
 					<input type="file" name="arquivo" id="file-6" class="inputfile inputfile-5" style="display: none;" required />
 					<label for="file-6">
@@ -17,35 +19,39 @@
 						<span></span>
 					</label>
 				</div>
-				<button type="submit" class="btn btn-primary">
+				<button type="submit" class="btn btn-danger btn-simple">
 					Enviar
 				</button>
 			</form>
 		</div>
 	</div>
 	<?php } else { ?>
+	<?= p($entrega[0]); ?>
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
-				<div class="card-header" data-background-color="red">
+				<div class="card-header" data-background-color="blue-left">
 					<h4 class="card-title">Romaneio</h4>
 				</div>
 				<div class="card-content table-responsive">
-					<table class="table table-hover">
+					<table class="table">
 						<thead class="text-primary">
+							<th>Código</th>
+							<th>Estabelecimento</th>
+							<th>Preço</th>
 							<th>Transportadora</th>
 							<th>Motorista</th>
-							<th>Ofertar</th>
-							<th>Integrado</th>
-							<th>Situação</th>
+							<th>Tipo de Veículo</th>
 						</thead>
 						<tbody>
-							<tr>
+							<tr>	
 								<td><?= $romaneio[0]; ?></td>
-								<td><?= $romaneio[1]; ?></td>
-								<td><?= ($romaneio[2] == 1) ? 'Sim' : 'Não' ; ?></td>
-								<td><?= ($romaneio[3] == 1) ? 'Sim' : 'Não' ; ?></td>
-								<td><?= ($romaneio[4] == 1) ? 'Ativo' : 'Não Ativo' ; ?></td>
+								<td><?= $romaneio[1]->razao_social; ?></td>
+								<td><span id="valor"><?= $romaneio[2] ?></span> R$</td>
+								<td><?= $romaneio[3]->nome_fantasia; ?></td>
+								<td><?= $romaneio[4]->nome; ?></td>
+								<td><?= $romaneio[5]->descricao; ?></td>
 							</tr>
 						</tbody>
 					</table>
@@ -53,52 +59,57 @@
 			</div>
 		</div>
 	</div>
+
+	<?php
+		$i = 0;
+		foreach ($entrega as $row):
+			++$i;
+			if($i == 3):
+	?>
+	<div class="row">
+	<?php endif; ?>
+		<div class="col-md-4">
+			<div class="card">
+			<div class="waves-effect waves-block waves-light"> <!-- card-image  -->
+				<a href="#">
+					<img width="600" src="https://maps.googleapis.com/maps/api/staticmap?center=<?= str_replace(" ", "+", $row[0]); ?>&zoom=18&scale=1&size=600x300&maptype=roadmap&key=AIzaSyDQjgSKcQEHV6GY-_TL3vxbEwZ6rYG7LVA&format=png&visual_refresh=true&markers=icon:http://i.imgur.com/jRfjvrz.png%7Cshadow:true%7C<?= str_replace(" ", "+", $row[0]); ?>">
+				</a>
+			</div>
+			<div class="card-content">
+				<span class="card-title activator grey-text text-darken-4">
+					<?= $row[0] ?> <i class="material-icons pull-right">more_vert</i>
+				</span>
+				<p>Entrega <?= $i; ?></p>
+			</div>
+			<div class="card-reveal">
+				<span class="card-title grey-text text-darken-4">
+					Cor e Boca<i class="material-icons pull-right">close</i>
+				</span>
+				<br>
+				<p>CNPJ</p>
+			</div>
+			</div>
+		</div>
+	<?php if($i == 3): ?>
+	</div>
+	<?php
+			endif;
+		endforeach;
+	?>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="card">
-				<div class="card-header" data-background-color="red">
-					<h4 class="card-title">Entregas</h4>
-				</div>
-				<div class="card-content table-responsive">
-					<table class="table table-hover">
-						<thead class="text-primary">
-							<th>Destinatário</th>
-							<th>Peso</th>
-							<th>Nota Fiscal</th>
-							<th>Situação</th>
-						</thead>
-						<tbody>
-							<?php foreach ($entrega as $row): ?>
-							<tr>
-								<td>
-									<a href="<?= base_url().'romaneio/mapa?endereco='.$row[0] ?>">
-										<?= $row[0]; ?>
-									</a>
-								</td>
-								<td><?= $row[1]; ?></td>
-								<td><?= $row[2]; ?></td>
-								<td><?= ($row[3] == 1) ? 'Ativo' : 'Não Ativo' ; ?></td>
-							</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
+			<span class="btn btn-danger">
+				Cadastrar
+			</span>
 		</div>
 	</div>
-	<!-- div class="row">
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header" data-background-color="red">
-					<h4 class="card-title">SQL</h4>
-				</div>
-				<div class="card-content">
-					<pre>INSERT INTO `pessoa`(`nome`, `cpf`, `email`)<br><?php foreach($api as $row): ?>VALUES (`<?= $row[0] ?>`, `<?= trim($row[1]) ?>`, `<?= trim($row[2]) ?>`), <br><?php endforeach; ?>
-					</pre>
-				</div>
-			</div>
-		</div>
-	</div -->
 	<?php } ?>
 	</div>
 </div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#valor').mask('000.000.000.000.000,00', {reverse: true});
+	});
+</script>

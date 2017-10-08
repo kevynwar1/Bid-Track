@@ -1,7 +1,7 @@
 <div class="content">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-lg-3 col-md-6 col-sm-6">
+			<div class="<?= ($this->session->userdata('perfil') == 'A')? 'col-lg-3' : 'col-lg-4'; ?> col-md-6 col-sm-6">
 				<div class="card card-stats">
 					<div class="card-header" data-background-color="red">
 						<i class="material-icons">local_shipping</i>
@@ -17,6 +17,7 @@
 					</div>
 				</div>
 			</div>
+			<?php if($this->session->userdata('perfil') == 'A'): ?>
 			<div class="col-lg-3 col-md-6 col-sm-6">
 				<div class="card card-stats">
 					<div class="card-header" data-background-color="red">
@@ -24,32 +25,28 @@
 					</div>
 					<div class="card-content">
 						<p class="category">Faturamento</p>
-						<h3 class="title"><!-- span style="font-size: 12px;">R$</span --> <span id="valor"><?= $faturamento[0]->valor ?></span></h3>
+						<h3 class="title"><span id="valor"><?= $faturamento[0]->valor ?></span></h3>
 					</div>
 					<div class="card-footer">
 						<div class="stats">
-							<i class="material-icons">date_range</i> Mês de Julho
+							<i class="material-icons">date_range</i> Mês de Outubro
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-6 col-sm-6">
+			<?php endif; ?>
+			<div class="<?= ($this->session->userdata('perfil') == 'A')? 'col-lg-3' : 'col-lg-4'; ?> col-md-6 col-sm-6">
 				<div class="card card-stats">
 					<div class="card-header" data-background-color="red">
 						<i class="material-icons">info_outline</i>
 					</div>
 					<div class="card-content">
-						<p class="category">Ocorrências</p>
-						<h3 class="title">17</h3>
-					</div>
-					<div class="card-footer">
-						<div class="stats">
-							<i class="material-icons">date_range</i> Atualizado há 4 horas
-						</div>
+						<p class="category"><?= ($ocorrencia <= 1)? 'Ocorrência' : 'Ocorrências'; ?></p>
+						<h3 class="title"><?= $ocorrencia; ?></h3>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-6 col-sm-6">
+			<div class="<?= ($this->session->userdata('perfil') == 'A')? 'col-lg-3' : 'col-lg-4'; ?> col-md-6 col-sm-6">
 				<div class="card card-stats">
 					<div class="card-header" data-background-color="blue">
 						<i class="fa fa-twitter"></i>
@@ -79,17 +76,19 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4">
-				<div class="card">
-					<div class="card-header card-chart" data-background-color="blue-center">
-						<div class="ct-chart" id="emailsSubscriptionChart"></div>
-					</div>
-					<div class="card-content">
-						<h4 class="title">Faturamento Mensal</h4>
-						<p class="category">Desempenho do Faturamento das entregas.</p>
+			<?php if($this->session->userdata('perfil') == 'A'): ?>
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-header card-chart" data-background-color="blue-center">
+							<div class="ct-chart" id="emailsSubscriptionChart"></div>
+						</div>
+						<div class="card-content">
+							<h4 class="title">Faturamento Mensal</h4>
+							<p class="category">Desempenho do Faturamento das entregas.</p>
+						</div>
 					</div>
 				</div>
-			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

@@ -12,12 +12,12 @@ class Estabelecimento_model extends CI_Model {
 	public function listar() {
 		$this->db->select('*')->from($this->table);
 		$this->db->order_by($this->table.".bairro", "ASC");
-		$this->db->where($this->table.'.cod_empresa', '1'); // SESSION Empresa
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0) {
 			$result = $query->result();
-			$estabelecimetos = array();
+			$estabelecimentos = array();
 			foreach($result as $row) {
 				$estabelecimento = new Estabelecimento_basic();
 
@@ -36,10 +36,10 @@ class Estabelecimento_model extends CI_Model {
 				$estabelecimento->setLongitude($row->longitude);
 				$estabelecimento->setSituacao($row->situacao);
 
-				$estabelecimetos[] = $estabelecimento;
+				$estabelecimentos[] = $estabelecimento;
 			}
 
-			return $estabelecimetos;
+			return $estabelecimentos;
 		} else {
 			return false;
 		}
