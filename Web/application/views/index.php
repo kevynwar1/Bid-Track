@@ -1,3 +1,8 @@
+<?php
+	if(!is_null($this->session->userdata('codigo'))) {
+		redirect(base_url().'dashboard');
+	}
+?>
 <html lang="pt-br" ng-app>
 <head>
 	<title><?= SYSTEM_NAME; ?></title>
@@ -7,28 +12,31 @@
 	<meta name="viewport" content="width=device-width" />
 
 	<!-- Facebook -->
-	<meta property="og:title" content="Coopera"/>
-	<meta property="og:image" content="<?= base_url() ?>assets/img/129x129.png"/>
-	<meta property="og:url" content="<?= base_url() ?>"/>
+	<meta property="og:title" content="Bid & Track"/>
+	<meta property="og:locale" content="pt_BR">
+	<meta property="og:site_name" content="Bid & Track">
+	<meta property="og:description" content="Solução para ofertar e realizar a gestão de entregas das empresas.">
+	<meta property="og:image" content="<?= base_url(); ?>assets/img/fb.jpg">
+	<meta property="og:image:type" content="image/jpeg">
 
 	<!-- Twitter -->
 	<meta name="twitter:title" content="Coopera" />
-	<meta name="twitter:url" content="<?= base_url() ?>" />
+	<meta name="twitter:url" content="<?= base_url(); ?>" />
 	<meta name="twitter:card" content="summary" />
 
 	<!-- Apple -->
 	<meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="<?= SYSTEM_NAME; ?>">
+    <meta name="application-name" content="Bid & Track">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
+    <link href="<?= base_url(); ?>assets/img/favicon.ico" rel="shortcut icon">
 	<link rel="stylesheet" href="<?= base_url(); ?>assets/css/style.css" type="text/css">
 	<link rel="stylesheet" href="<?= base_url(); ?>assets/css/style-700.css" type="text/css" media="screen and (max-width: 780px)">
 	<link rel="stylesheet" href="<?= base_url(); ?>assets/css/modal.css" type="text/css">
 	<link rel="stylesheet" href="<?= base_url(); ?>assets/css/animate.css" type="text/css">
 	<link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap.min.css" type="text/css">
 	<link rel="stylesheet" href="<?= base_url(); ?>assets/css/material-dashboard.css"/>
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/demo.css" />
 
 	<!-- Phone -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/css/default.css" />
@@ -38,6 +46,24 @@
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+	<script>
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId      : '119082038778375',
+				xfbml      : true,
+				version    : 'v2.10'
+			});
+			FB.AppEvents.logPageView();
+		};
+
+		(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/pt_BR/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 	<div id="modal-cadastrar" class="modal animated fadeIn">
 		<div class="modal-content">
 			<span class="close close-cadastrar" data-toggle="tooltip" title="Fechar">&times;</span>
@@ -191,30 +217,35 @@
 				</div>
 				<div class="card-content table-responsive">
 					<br>
-					<form action="#" method="post" autocomplete="off">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>E-mail</label>
-								<input type="email" ng-model="login_email" placeholder="E-mail" id="email" class="form-control" value="ikarosales7@gmail.com" required>
+					<form action="<?= base_url().'usuario/entrar' ?>" method="post" autocomplete="off">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>E-mail</label>
+									<input type="email" name="email" ng-model="login_email" placeholder="E-mail" id="email" class="form-control" value="ikarosales7@gmail.com" autocomplete="off" required>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>Senha</label>
-								<input type="password" ng-model="login_senha" placeholder="Senha" class="form-control" maxlength="12" required>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Senha</label>
+									<input type="password" name="senha" ng-model="login_senha" placeholder="Senha" class="form-control" maxlength="12" autocomplete="off" required>
+								</div>
 							</div>
 						</div>
-					</div><br>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<input type="submit" value="Entrar" ng-disabled="!login_email || !login_senha" class="form-control btn-primary">
+						<div class="row">
+							<div class="col-md-12">
+								<label><?= $this->session->flashdata('error'); ?></label>
+							</div>
+						</div><br>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<input type="submit" ng-disabled="!login_email || !login_senha" value="Entrar" class="form-control btn-primary">
+								</div>
 							</div>
 						</div>
-					</div>
 					</form>
 				</div>
 			</div>
@@ -228,15 +259,21 @@
 	</div>
 	<nav class="ct-nav col-md-10 col-md-offset-1 animated fadeInDown">
 		<div class="row">
-			<div class="col-md-3 animated fadeInUp" align="center"></div>
-			<div class="col-md-6 animated fadeInUp" align="center">
+			<div class="col-md-3 animated fadeInUp" align="center">
+				<a href="<?= base_url(); ?>">
+					<img src="<?= base_url().'assets/img/menu-logo.png' ?>" width="31" height="46">
+				</a>
+			</div>
+			<div class="col-md-6 animated fadeInUp" align="center" style="padding-top: 14px;">
 				<span class="menu-item menu-active"><a href="#">Início</a></span>
 				<span class="menu-item"><a href="#servicos">Serviços</a></span>
-				<span class="menu-item"><a href="<?= base_url().'dashboard' ?>">Contato</a></span>
+				<span class="menu-item"><a href="#contato">Contato</a></span>
 			</div>
-			<div class="col-md-3 animated fadeInUp" align="center">
-				<span class="menu-entrar"><a id="btEntrar">Entrar</a></span>
-				<span class="menu-cadastrar"><a id="btCadastrar">Cadastrar</a></span>
+			<div class="col-md-3 animated fadeInUp" align="center" style="padding-top: 14px;">
+				<span class="menu-cadastrar"><a id="btEntrar">Entrar</a></span>
+
+				<span class="menu-cadastrar" style="display: none"><a id="btCadastrar">Cadastrar</a></span>
+				<!-- span class="menu-entrar"><a id="btEntrar">Entrar</a></span -->
 			</div>
 		</div>
 	</nav>
@@ -247,6 +284,7 @@
 				<p>Solução para ofertar<br>
 				e realizar a gestão<br>
 				de entregas das empresas.</p><br>
+
 				<span class="button-more">Saiba +</span>
 			</div>
 		</div>
@@ -352,7 +390,7 @@
 		</div>
 	</footer>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="<?= base_url(); ?>assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/js/jquery.parallax-1.1.3.js"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/js/jquery.localscroll-1.2.7-min.js"></script>
@@ -417,7 +455,7 @@
 		var btn_cadastrar = document.getElementById("cadastrar");
 
 		cadastrar.onclick = function() { modal_cadastrar.style.display = "block"; cnpj.focus(); }
-		entrar.onclick = function() { modal_entrar.style.display = "block"; email.focus(); }
+		entrar.onclick = function() { modal_entrar.style.display = "block"; $('#email').focus(); }
 
 		close_cadastrar.onclick = function() { modal_cadastrar.style.display = "none"; }
 		close_entrar.onclick = function() { modal_entrar.style.display = "none"; }

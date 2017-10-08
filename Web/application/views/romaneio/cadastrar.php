@@ -83,6 +83,14 @@
 								</div>
 							</div>
 						</div>
+
+						<!-- div class="row" ng-if="tipoveiculo">
+							<div class="col-md-12">
+								<span class="btn btn-danger btn-simple upper pull-right" style="cursor: default;">
+									Capacidade de Carga {{tipoveiculo}} Kg.
+								</span>
+							</div>
+						</div -->
 					</div>
 				</div>
 			</div>
@@ -96,14 +104,14 @@
 					</div>
 					<div class="card-content">
 						<div class="row">
-							<div class="col-md-3 lm15">
+							<div class="col-md-2 lm15">
 								<div class="form-group label-floating">
 									<label class="control-label">Romaneio</label>
 									<input type="hidden" name="entrega1" value="entrega1">
-									<input type="text" value="{{codigo}}" class="form-control" disabled>
+									<input type="text" value="{{codigo}}" class="form-control" style="text-align: center;" disabled>
 								</div>
 							</div>
-							<div class="col-md-9 lm15">
+							<div class="col-md-10 lm15">
 								<div class="form-group label-floating">
 									<label class="control-label">Destinatário</label>
 									<select class="form-control destinatario1" name="destinatario1" ng-disabled="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista" ng-model="destinatario" required>
@@ -120,18 +128,15 @@
 						<div class="row">
 							<div class="col-md-3 lm15">
 								<div class="form-group label-floating">
-									<label class="control-label">Peso da Carga</label>
-									<input type="text" pattern="[0-9]+$" class="form-control peso_carga1" name="peso_carga1" required>
+									<label class="control-label">Peso Carga</label>
+									<input type="number" min="1" pattern="[0-9]+$" class="form-control peso_carga1" name="peso_carga1" ng-model="peso_carga1" required> <!-- max="{{tipoveiculo}}" -->
 								</div>
 							</div>
 							<div class="col-md-3 lm15">
 								<div class="form-group label-floating">
 									<label class="control-label">Medida</label>
 									<select class="form-control medida1" name="medida1" required>
-										<option value="" class="option_none" disabled selected></option>
-										<option value="kg">Quilograma</option>
-										<option value="t">Tonelada</option>
-										<option value="hg">Hectograma</option>
+										<option value="kg" selected>Quilograma</option>
 									</select>
 								</div>
 							</div>
@@ -152,11 +157,11 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<span class="btn btn-danger btn-round btn-fab btn-entrega btn-fab-mini pull-left" rel="tooltip" title="Adicionar Entrega" data-placement="right" onclick="add()" ng-hide="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista || !valor"> <!--  -->
+				<span class="btn btn-danger btn-round btn-fab btn-entrega btn-fab-mini pull-left" rel="tooltip" title="Adicionar Entrega" data-placement="right" onclick="add()" ng-hide="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista"> <!--  -->
 					<i class="material-icons" style="font-size: 25px;">add</i>
 					<div class="ripple-container"></div>
 				</span>
-				<button type="submit" class="btn btn-danger btn-fill pull-right f12 upper" ng-disabled="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista || !valor">Cadastrar</button>
+				<button type="submit" class="btn btn-danger btn-fill pull-right f12 upper" ng-disabled="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista">Cadastrar</button>
 			</div>
 		</div>
 	</form>
@@ -183,7 +188,7 @@
 						++count;
 						$(".btn-remove").hide();
 						var wrapper = document.querySelector('#card-entrega');
-						var html = '<div class="row" id="card-entrega'+count+'"><div class="col-md-12"><div class="card"><div class="card-header card-header-text" data-background-color="blue-center"><h4 class="card-title">Entrega '+count+'<span class="pull-right btn-remove btn-remove-'+count+'" onclick="remove('+count+')" rel="tooltip" title="Excluir"><i class="material-icons">delete</i></span></h4></div><div class="card-content"><div class="row"><div class="col-md-12 lm15"><input type="hidden" name="entrega'+count+'" value="entrega'+count+'"><div class="form-group label-floating"><label class="control-label">Destinatário</label><select class="form-control destinatario'+count+'" name="destinatario'+count+'" ng-disabled="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista" required><option value="" class="option_none" disabled selected></option><?php foreach($destinatario as $row): ?><option class="option" value="<?= $row->codigo ?>|<?= $row->logradouro.", ".$row->numero." - ".$row->bairro ?>"><?= $row->razao_social." — ".$row->bairro.", ".$row->cidade; ?></option><?php endforeach; ?></select></div></div></div><div class="row"><div class="col-md-3 lm15"><div class="form-group label-floating"><label class="control-label">Peso da Carga</label><input type="text" pattern="[0-9]+$" class="form-control peso_carga'+count+'" name="peso_carga'+count+'" required></div></div><div class="col-md-3 lm15"><div class="form-group label-floating"><label class="control-label">Medida</label><select class="form-control medida'+count+'" name="medida'+count+'" required><option value="" class="option_none" disabled selected></option><option value="kg">Quilograma</option><option value="t">Tonelada</option><option value="hg">Hectograma</option></select></div></div><div class="col-md-6 lm15"><div class="form-group label-floating"><label class="control-label">Nota Fiscal</label><input type="text" pattern="[0-9]+$" class="form-control nota_fiscal" name="nota_fiscal'+count+'" minlength="7" maxlength="7"></div></div></div></div></div></div></div>';
+						var html = '<div class="row" id="card-entrega'+count+'"><div class="col-md-12"><div class="card"><div class="card-header card-header-text" data-background-color="blue-center"><h4 class="card-title">Entrega '+count+'<span class="pull-right btn-remove btn-remove-'+count+'" onclick="remove('+count+')" rel="tooltip" title="Excluir"><i class="material-icons">delete</i></span></h4></div><div class="card-content"><div class="row"><div class="col-md-12 lm15"><input type="hidden" name="entrega'+count+'" value="entrega'+count+'"><div class="form-group label-floating"><label class="control-label">Destinatário</label><select class="form-control destinatario'+count+'" name="destinatario'+count+'" ng-disabled="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista" required><option value="" class="option_none" disabled selected></option><?php foreach($destinatario as $row): ?><option class="option" value="<?= $row->codigo ?>|<?= $row->logradouro.", ".$row->numero." - ".$row->bairro ?>"><?= $row->razao_social." — ".$row->bairro.", ".$row->cidade; ?></option><?php endforeach; ?></select></div></div></div><div class="row"><div class="col-md-3 lm15"><div class="form-group label-floating"><label class="control-label">Peso da Carga</label><input type="number" pattern="[0-9]+$" class="form-control peso_carga'+count+'" ng-model="peso_carga'+count+'" name="peso_carga'+count+'" required></div></div><div class="col-md-3 lm15"><div class="form-group label-floating"><label class="control-label">Medida</label><select class="form-control medida'+count+'" name="medida'+count+'" required><option value="" class="option_none" disabled selected></option><option value="kg">Quilograma</option><option value="t">Tonelada</option><option value="hg">Hectograma</option></select></div></div><div class="col-md-6 lm15"><div class="form-group label-floating"><label class="control-label">Nota Fiscal</label><input type="text" pattern="[0-9]+$" class="form-control nota_fiscal" name="nota_fiscal'+count+'" minlength="7" maxlength="7"></div></div></div></div></div></div></div>';
 
 						wrapper.insertAdjacentHTML('beforeend', html);
 						/*if(count == total) {

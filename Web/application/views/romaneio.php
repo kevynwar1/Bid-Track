@@ -1,9 +1,42 @@
+<link href="<?= base_url(); ?>assets/css/pop-up.css" rel="stylesheet" />
 <script src="<?= base_url(); ?>assets/js/konami.min.js"></script>
 <script>
-	$(document).on('keyup', Konami.code(function() {
-		$('#konami').css('display', 'block');
-	}));
+$(document).on('keyup', Konami.code(function() {
+	$('#konami').css('display', 'block');
+}));
+
+function exclusao(romaneio, motorista) {
+	$('.cd-popup').addClass('is-visible');
+	$('.btn-confirm-yes').on('click', function(event){
+		event.preventDefault();
+		window.location.replace("<?= base_url() ?>romaneio/excluir/"+romaneio+"/"+motorista);
+		return true;
+	});
+	$('.btn-confirm-no').on('click', function(event){
+		event.preventDefault();
+		$('.cd-popup').removeClass('is-visible');
+		return false;
+	});
+	$('.cd-popup').on('click', function(event){
+		if($(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup')) {
+			event.preventDefault();
+			$(this).removeClass('is-visible');
+		}
+	});
+	return false;
+}
 </script>
+
+<div class="cd-popup" role="alert">
+	<div class="cd-popup-container">
+		<p><?= $this->session->userdata('nome') ?>, tem certeza que quer<br> excluir este Romaneio ?</p>
+		<ul class="cd-buttons">
+			<li><a href="#" class="btn-confirm-yes">Sim</a></li>
+			<li><a href="#" class="btn-confirm-no">Não</a></li>
+		</ul>
+		<a href="#" class="cd-popup-close img-replace"></a>
+	</div>
+</div>
 
 <div class="content">
 	<div class="container-fluid">
@@ -61,7 +94,7 @@
 								<tr>
 									<td align="center"><?= $romaneio->codigo; ?></td>
 									<td>
-										<a href="<?= base_url().'romaneio/mapa?endereco='.$logradouro.','.$numero ?>" rel="tooltip" title="<?= $logradouro ?>, <?= $numero ?> — <?= $bairro ?>, <?= $cidade ?>" data-placement="right">
+										<a href="<?= base_url().'home/mapa?endereco='.str_replace(" ", "+", $logradouro).','.$numero ?>" rel="tooltip" title="<?= $logradouro ?>, <?= $numero ?> — <?= $bairro ?>, <?= $cidade ?>" data-placement="right">
 											<?= $razao_social; ?> — <?= $bairro; ?>
 										</a>
 									</td>
@@ -99,16 +132,18 @@
 											</button>
 										</a>
 										<?php if($cod_status != 3): ?>
-										<a href="<?= base_url().'romaneio/editar/'.$codigo ?>">
-											<button type="button" rel="tooltip" data-placement="left" title="Editar" class="btn-pattern">
-												<i class="fa fa-edit"></i>
-											</button>
-										</a>
-										<a href="<?= base_url().'romaneio/excluir/'.$codigo.'/'.$cod_motorista ?>">
-											<button type="button" rel="tooltip" data-placement="left" title="Excluir" class="btn-pattern">
-												<i class="fa fa-times"></i>
-											</button>
-										</a>
+											<?php if($this->session->userdata('perfil') == 'A'): ?>
+												<a href="<?= base_url().'romaneio/editar/'.$codigo ?>">
+													<button type="button" rel="tooltip" data-placement="left" title="Editar" class="btn-pattern">
+														<i class="fa fa-edit"></i>
+													</button>
+												</a>
+												<a href="<?= base_url().'romaneio/excluir/'.$codigo.'/'.$cod_motorista ?>">
+													<button type="button" rel="tooltip" data-placement="left" title="Excluir" class="btn-pattern" onclick="return exclusao('<?= $codigo ?>', '<?= $cod_motorista ?>')">
+														<i class="fa fa-times"></i>
+													</button>
+												</a>
+											<?php endif; ?>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -129,18 +164,20 @@
 												if($this->uri->segment(2) == 's') {
 													echo count($romaneios).' Romaneio(s) — '.$this->input->get('filtro').': '.$this->input->get('procurar');
 												} else {
-													echo count($romaneios).' Romaneio(s) totais';
+													echo $total.' Romaneio(s) totais';
 												}
 											?>
 										</span>
 									</td>
-									<td colspan="3" align="center">
-										<?= ($this->uri->segment(2) == 's') ? "<small class='desc'><a href='".base_url()."romaneio'>voltar</a></small> " : ''; ?>
+									<td colspan="3" align="left">
+										<?= ($this->uri->segment(2) == 's') ? "<small class='desc'><a href='".base_url()."romaneio'>voltar</a></small> " : $pagination; ?>
 									</td>
 									<td colspan="2" align="right">
-										<a href="<?= base_url().'romaneio/add' ?>">
-											<button type="submit" class="btn btn-danger btn-simple btn-fill pull-right f12 upper">Adicionar</button>
-										</a>
+										<?php if($this->session->userdata('perfil') == 'A'): ?>
+											<a href="<?= base_url().'romaneio/add' ?>">
+												<button type="submit" class="btn btn-danger btn-simple btn-fill pull-right f12 upper">Adicionar</button>
+											</a>
+										<?php endif; ?>
 									</td>
 								</tr>
 							</tfoot>

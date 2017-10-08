@@ -4,6 +4,11 @@
 
 	$page = $this->uri->segment(1);
 	$page_parameter = $this->uri->segment(2);
+
+	if(is_null($this->session->userdata('codigo'))) {
+		$this->session->set_flashdata('error', 'Sessão encerrada, realiza o Login novamente.');
+		redirect(base_url());
+	}
 ?>
 <!doctype html>
 <html ng-app lang="pt-br">
@@ -17,6 +22,29 @@
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name="viewport" content="width=device-width" />
 
+	<!-- Facebook -->
+	<meta property="og:title" content="Bid & Track"/>
+	<meta property="og:locale" content="pt_BR">
+	<meta property="og:site_name" content="Bid & Track">
+	<meta property="og:description" content="Solução para ofertar e realizar a gestão de entregas das empresas.">
+	<meta property="og:image" content="<?= base_url() ?>assets/img/fb.jpg">
+	<meta property="og:image:type" content="image/jpeg">
+
+	<!-- Apple -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="red">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Bid & Track">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Bid & Track">
+    <link rel="apple-touch-icon-precomposed" href="<?= base_url() ?>assets/img/129x129.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?= base_url() ?>assets/img/72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?= base_url() ?>assets/img/114x144.png">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="<?= base_url() ?>romaneio">
+    <link rel="canonical" href="<?= base_url() ?>transportadora">
+
+    <link href="<?= base_url(); ?>assets/css/dash.css" rel="stylesheet" />
 	<link href="<?= base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="<?= base_url(); ?>assets/css/material-dashboard-dash.css" rel="stylesheet"/>
 	<link href="<?= base_url(); ?>assets/css/demo.css" rel="stylesheet" />
@@ -26,77 +54,33 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 		<?php if(!is_null($this->session->flashdata('success'))) { ?>
-			demo.showNotification('bottom', 'right', '<?= $this->session->flashdata('success') ?>');
+			demo.showNotification('bottom', 'right', '<?= $this->session->flashdata('success'); ?>');
 		<?php } else if(!is_null($this->session->flashdata('error'))) { ?>
-			demo.showNotification('bottom', 'right', '<?= $this->session->flashdata('error') ?>');
+			demo.showNotification('bottom', 'right', '<?= $this->session->flashdata('error'); ?>');
 		<?php } ?>
 	});
 	</script>
-
-	<style type="text/css">
-		select {
-			-webkit-appearance: none;
-			-moz-appearance: none;
-			appearance: none;
-			width: 100%;
-		}
-
-		.status {
-			text-transform: uppercase;
-			padding: 5px 10px 5px 10px;
-			border-radius: 2px;
-			font-size: 10.5px;
-			box-shadow: 0 5px 5px rgba(0,0,0, 0.1);
-			cursor: default;
-			transition: 0.3s;
-		}
-		
-		.btn-pattern {
-			font-size: 12px;
-			text-transform: uppercase;
-			background: none;
-			border: none;
-			color: #999;
-		}
-		.btn-pattern:hover { color: #555; }
-
-		.option { padding: 3px; }
-		.option-undefined { padding: 3px; color: #999 !important; }
-		.lm15 { margin-top: -15px; }
-		.lm20 { margin-top: -20px; }
-		.desc { color: rgb(154, 154, 154); text-transform: uppercase; }
-		.th-desc { cursor: pointer; transition: 0.3s; }
-		.f10 { font-size: 10px; }
-		.f11 { font-size: 11px; }
-		.f12 { font-size: 12px; }
-		.upper { text-transform: uppercase; }
-		.collapse-menu {
-			background: none !important;
-			box-shadow: none !important;
-			color: #777 !important;
-			transition: 0.3s !important;
-		}
-
-		.collapse-menu:hover { color: #000 !important; }
-		th { padding-bottom: 15px !important; }
-		.gray { color: #999; }
-		.panel-heading { background: none !important; }
-		.panel-title { font-size: 14px !important; }
-
-		.option_none { display: none; }
-		.adp-placemark tr { border-radius: 5px !important; }
-		.adp-legal { display: none !important; }
-		.adp-text { padding: 10px !important;}
-		footer { display: none !important; }
-		.btn-remove {
-			opacity: 0.5;
-			cursor: pointer;
-			transition: 0.4s;
-		}
-		.btn-remove:hover { opacity: 1; }
-	</style>
 </head>
 <body>
+<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId      : '119082038778375',
+			xfbml      : true,
+			version    : 'v2.10'
+		});
+		FB.AppEvents.logPageView();
+	};
+
+	(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/pt_BR/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+</script>
+
 <div class="wrapper">
 	<div class="sidebar" data-color="red"> <!-- data-image="<?= base_url(); ?>assets/img/sidebar-1.jpg" -->
 		<div class="logo">
@@ -104,7 +88,7 @@
 		</div>
 		<div class="sidebar-wrapper">
 			<ul class="nav">
-				<li class="<?= ($page == 'home' || $page == 'dashboard') ? 'active' : '' ?>">
+				<li class="<?= ($page == 'home' || $page == 'dashboard' || $page == 'usuario') ? 'active' : '' ?>">
 					<a href="<?= base_url().'dashboard' ?>">
 						<i class="material-icons">dashboard</i>
 						<p>Dashboard</p>
@@ -112,22 +96,27 @@
 				</li>
 				<li class="<?= ($page == 'romaneio') ? 'active' : '' ?>" routerlinkactive="active">
 					<a href="<?= base_url().'romaneio' ?>" href="#romaneio">
-						<i class="material-icons">local_shipping</i>
+						<i class="material-icons">assignment</i>
 						<p>Romaneio</p>
 					</a>
-					<div class="collapse <?= ($page == 'romaneio') ? 'in' : '' ?>" id="romaneio" aria-expanded="true">
-						<ul>
-							<li>
-								<a href="<?= base_url().'romaneio' ?>" class="collapse-menu">Listagem</a>
-							</li>
-							<li>
-								<a href="<?= base_url().'romaneio/add' ?>" class="collapse-menu">Cadastrar</a>
-							</li>
-							<li>
-								<a href="<?= base_url().'romaneio/integracao' ?>" class="collapse-menu">Integração</a>
-							</li>
-						</ul>
-					</div>
+					<?php if($this->session->userdata('perfil') == 'A'): ?>
+						<div class="collapse <?= ($page == 'romaneio') ? 'in' : '' ?>" id="romaneio" aria-expanded="true">
+							<ul>
+								<li>
+									<a href="<?= base_url().'romaneio/add' ?>" class="collapse-menu">Cadastrar</a>
+								</li>
+								<li>
+									<a href="<?= base_url().'romaneio/integracao' ?>" class="collapse-menu">Integração</a>
+								</li>
+							</ul>
+						</div>
+					<?php endif; ?>
+				</li>
+				<li class="<?= ($page == 'transportadora') ? 'active' : '' ?>">
+					<a href="<?= base_url().'transportadora' ?>" href="#transportadora">
+						<i class="material-icons">local_shipping</i>
+						<p>Transportadora</p>
+					</a>
 				</li>
 				<li class="active-pro">
 					<a href="#" target="_blank">
@@ -154,6 +143,8 @@
                                 echo 'Dashboard';
                             } else if($page == 'romaneio') { 
                                 echo 'Romaneio';
+                            } else if($page == 'transportadora') { 
+                                echo 'Transportadora';
                             } else {
                                 echo $page;
                             }
@@ -175,21 +166,28 @@
 								<p class="hidden-lg hidden-md">Notifications</p>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">IkaroSales</a></li>
-								<li><a href="#">IkaroSales</a></li>
-								<li><a href="#">IkaroSales</a></li>
+								<li><a href="#">Ikaro Sales</a></li>
+								<li><a href="#">Neymar Jr.</a></li>
+								<li><a href="#">Kylian Mbappe</a></li>
 							</ul>
 						</li>
 						<li>
 							<a href="#ikaro" class="dropdown-toggle" data-toggle="dropdown">
  							   <i class="material-icons">person</i>
  							   <p class="hidden-lg hidden-md">Profile</p>
- 							   Ikaro Sales
+								<?php
+									$nome = explode(" ", $this->session->userdata('nome'));
+									echo (count($nome) >= 2)? $nome[0]." ".end($nome) : $nome[0];
+								?>
 	 						</a>
+	 						<ul class="dropdown-menu">
+	 							<li><a href="#">Configuração</a></li>
+								<li><a href="<?= base_url().'usuario/sair' ?>">Sair</a></li>
+							</ul>
 						</li>
 					</ul>
 					<?php
-						if($page == 'romaneio'):
+						if($page == 'romaneio' || $page == 'transportadora'):
 							if($page_parameter != 'add' && $page_parameter != 'integracao' && $page_parameter != 'visualizar' && $page_parameter != 'editar' && $page_parameter != 'imprimir'):
 					?>
 						<form action="<?= base_url().'romaneio/s/' ?>" method="get" class="navbar-form navbar-right" role="search">
@@ -198,6 +196,7 @@
 								<span class="material-input"></span>
 							</div>
 							<div class="form-group is-empty">
+								<?php if($page == 'romaneio'): ?>
 								<select id="filtro" name="filtro" class="form-control" required>
 									<option value="" disabled selected>Filtro</option>
 									<option class="option" value="cliente">Cliente</option>
@@ -210,6 +209,7 @@
 										Transportadora
 									</option>
 								</select>
+							<?php endif; ?>
 							</div>
 							<button type="submit" class="btn btn-white btn-round btn-just-icon" ng-disabled="!procurar">
 								<i class="material-icons">search</i><div class="ripple-container"></div>
