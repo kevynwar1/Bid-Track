@@ -27,7 +27,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     private Romaneio mRomaneio;
     private List<Entrega> mListEntrega;
     private Context mContext;
-
+    private Integer entregas;
 
     public AdapterRecyclerDelivery(Romaneio romaneio, Context context) throws ContextNullException {
         if (romaneio != null) {
@@ -55,41 +55,50 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         try {
-            holder.codigo.setText(String.valueOf(mListEntrega.get(holder.getAdapterPosition()).getCodigo()));
-            holder.razao_social.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getRazao_social());
-            holder.bairro.setText((mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getBairro()));
-            holder.cidade.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getCidade());
-            holder.uf.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getUF());
-            holder.status_entrega.setText(mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega().getDescricao());
 
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
+
+
+                        holder.codigo.setText(String.valueOf(mListEntrega.get(holder.getAdapterPosition()).getCodigo()));
+                        holder.razao_social.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getRazao_social());
+                        holder.bairro.setText((mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getBairro()));
+                        holder.cidade.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getCidade());
+                        holder.uf.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getUF());
+                        holder.status_entrega.setText(mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega().getDescricao());
+
+
+                        holder.cardView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                try {
                         /*Vou passar o index pois tive problemas com a passagem de dois Parcelables.. talvez pq o bundle
                         * sobreescreva o put e a utilização do arrayParce tbm teve problemas*/
-                        Intent intent = new Intent(mContext, DetalhesEntregaActivity.class);
-                        //Intent intent = new Intent(mContext, FinalizaEntrega.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable(Entrega.PARCEL, mListEntrega.get(position));
-                        bundle.putParcelable(Romaneio.PARCEL, mRomaneio);
-                        double lat, lon;
-                        if (position == 0) {
-                            lat = mRomaneio.getEstabelecimento().getLatitude();
-                            lon = mRomaneio.getEstabelecimento().getLongitude();
-                        } else {
-                            lat = mListEntrega.get(position - 1).getDestinatario().getLatitude();
-                            lon = mListEntrega.get(position - 1).getDestinatario().getLongitude();
-                        }
-                        bundle.putDouble("arg1", lat);
-                        bundle.putDouble("arg2", lon);
-                        mContext.startActivity(intent.putExtras(bundle));
-                    } catch (Exception e) {
-                        Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-                }
-            });
+                                    Intent intent = new Intent(mContext, DetalhesEntregaActivity.class);
+                                    //Intent intent = new Intent(mContext, FinalizaEntrega.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable(Entrega.PARCEL, mListEntrega.get(position));
+                                    bundle.putParcelable(Romaneio.PARCEL, mRomaneio);
+                                    double lat, lon;
+                                    if (position == 0) {
+                                        lat = mRomaneio.getEstabelecimento().getLatitude();
+                                        lon = mRomaneio.getEstabelecimento().getLongitude();
+                                    } else {
+                                        lat = mListEntrega.get(position - 1).getDestinatario().getLatitude();
+                                        lon = mListEntrega.get(position - 1).getDestinatario().getLongitude();
+                                    }
+                                    bundle.putDouble("arg1", lat);
+                                    bundle.putDouble("arg2", lon);
+                                    mContext.startActivity(intent.putExtras(bundle));
+                                } catch (Exception e) {
+                                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                        });
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

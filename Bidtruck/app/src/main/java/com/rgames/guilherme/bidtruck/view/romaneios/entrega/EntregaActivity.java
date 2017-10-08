@@ -17,6 +17,8 @@ import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 
 import java.util.List;
 
@@ -24,6 +26,12 @@ public class EntregaActivity extends AppCompatActivity {
 
     private MyProgressBar myProgressBar;
     private Romaneio mRomaneio;
+    private StatusRomaneioTask mRomaneioTask;
+    private List<Entrega> mListEntregas;
+    private boolean tem_romaneio;
+    private boolean finish = true;
+    private boolean atualizadaEntrega = true;
+    private RetornaListaTask mRetornaTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +41,9 @@ public class EntregaActivity extends AppCompatActivity {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                 initToobal();
-                initList();
+               // initList();
+                mRomaneioTask = new StatusRomaneioTask();
+
             } else {
                 Toast.makeText(this, getString(R.string.app_err_null_romaneio), Toast.LENGTH_SHORT).show();
                 onBackPressed();
@@ -48,7 +58,20 @@ public class EntregaActivity extends AppCompatActivity {
         super.onResume();
 
         try {
-            initList();
+            if(finish == true){
+                initList();
+                finish = false;
+            }
+            else {
+
+                    mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
+                    mRetornaTask = new RetornaListaTask();
+                    mRetornaTask.execute();
+                    mRomaneioTask.execute();
+
+
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -119,12 +142,104 @@ public class EntregaActivity extends AppCompatActivity {
                         emptyView(true);
                     initRecyclerView(entregas);
                     finishProgressBar();
+                           // mListEntregas = entregas;
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }.execute();
     }
+
+
+    class StatusRomaneioTask extends AsyncTask<Void, Void, Void>{
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try {
+
+                HttpRomaneio mhttpRomaneio = new HttpRomaneio(EntregaActivity.this);
+                if (mListEntregas != null) {
+
+                    //for(int i = 0; i < mListEntregas.size(); i++){
+                    Entrega mEtrenga = mListEntregas.get(mListEntregas.size() - 1);
+
+
+                    if (mEtrenga.getStatusEntrega().getCodigo() == 4 && mRomaneio.getCodigo() > 0) {
+
+                        int novo_status = 4;
+                        int cod_romaneio = mRomaneio.getCodigo();
+                        tem_romaneio = mhttpRomaneio.statusRomaneioEntrega(novo_status, cod_romaneio);
+
+                    } else {
+                        Toast.makeText(EntregaActivity.this, "Desculpe, este romaneio não pode ser finalizado!", Toast.LENGTH_SHORT).show();
+                    }
+                    //break;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(tem_romaneio) {
+                Toast.makeText(EntregaActivity.this, "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
+            } else {
+                //Toast.makeText(EntregaActivity.this, "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+
+       class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
+
+
+            @Override
+                protected List<Entrega> doInBackground(Void... String) {
+                Facade facade = new Facade(EntregaActivity.this);
+                try {
+                    return facade.selectEntrega();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(List<Entrega> entregas) {
+                try {
+                    if (entregas == null || entregas.size() == 0)
+                        emptyView(true);
+                    initRecyclerView(entregas);
+                    mListEntregas = entregas;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void emptyView(boolean isVisible) {
         findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);

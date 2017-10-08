@@ -80,6 +80,8 @@ public class DetalhesPagerFragment extends Fragment{
         try {
             initViews();
             initButtons();
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,6 +114,15 @@ public class DetalhesPagerFragment extends Fragment{
                 }else Toast.makeText(getActivity(), getString(R.string.app_err_null_destinatario), Toast.LENGTH_SHORT).show();
                // initButtons();
             } else Toast.makeText(getActivity(), getString(R.string.app_err_null_entrega), Toast.LENGTH_SHORT).show();
+                    if(mEntrega != null){
+
+                        if(mEntrega.getStatusEntrega().getCodigo() == 1 || mEntrega.getStatusEntrega().getCodigo() == 4 ){
+
+                            mView.findViewById(R.id.btn_finalize).setEnabled(false);
+                        }
+
+
+                    }
 
     }
 
@@ -202,7 +213,7 @@ public class DetalhesPagerFragment extends Fragment{
                             for (int j = 0; j < mEntregas.size(); j++) {
 
                                 Entrega recebeStatusEntrega = mEntregas.get(j);
-                                if (recebeStatusEntrega.getStatusEntrega().getDescricao().equals("Liberado") && recebeStatusEntrega.getSeq_entrega() > atualizaEntrega.getSeq_entrega()) {
+                                if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 1 && recebeStatusEntrega.getSeq_entrega() > atualizaEntrega.getSeq_entrega()) {
                                     HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
                                     if (recebeStatusEntrega != null) {
                                         int novo_status = 3;
@@ -237,6 +248,7 @@ public class DetalhesPagerFragment extends Fragment{
         @Override
         protected void onPostExecute(Void voids) {
             super.onPostExecute(voids);
+
 
         }
 
@@ -275,6 +287,8 @@ public class DetalhesPagerFragment extends Fragment{
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 mStatus.execute();
+                                mLista.execute();
+                                mAtualiza.execute();
                                // Toast.makeText(getActivity(), "Finalizado", Toast.LENGTH_SHORT).show();
                                 dialogInterface.dismiss();
                             }
