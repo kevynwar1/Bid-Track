@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.R;
@@ -41,11 +44,10 @@ public class OfferFragment extends Fragment {
     private ArrayAdapter<Romaneio> offerAdapter;
     private ListView offerList;
     private List<Romaneio> offers;
-    //private Facade facade;
-    //private Preferences preferences;
-    //private Motorista driver;
+    private Preferences preferences;
     private OfferTask mTask;
-
+    private TextView emptyView;
+    private View view;
 
     public OfferFragment() {
         // Required empty public constructor
@@ -55,7 +57,7 @@ public class OfferFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         try {
             if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getActivity().getResources().getString(R.string.menu_drw_oferta));
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.menu_drw_oferta));
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -65,41 +67,43 @@ public class OfferFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_offer, container, false);
-        offerList = (ListView) view.findViewById(R.id.listViewOffers);
+        view = inflater.inflate(R.layout.fragment_offer, container, false);
+        offerList = view.findViewById(R.id.listViewOffers);
         offerList.setDivider(null);
+        emptyView = view.findViewById(R.id.empty);
+        preferences = new Preferences(getActivity());
 
         offerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new AcceptOfferFragment()).commit();
-                //Toast.makeText(getActivity(), "Clicou", Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_main, new AcceptOfferFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
-        //facade = new Facade(getActivity());
-        //preferences = new Preferences(getActivity());
-
         mTask = new OfferTask();
         mTask.execute();
 
         return view;
     }
 
+
     class OfferTask extends AsyncTask<Void, Void, Void>{
+        private ProgressBar progressBar;
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            progressBar = view.findViewById(R.id.progress_offer);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             try{
-                //driver = new Facade(getActivity()).isLogged();
-                //driver = new Motorista(9, "Tua mãe");
-                //driver.getEmpresa().setCodigo(preferences.getCompanyCode());
+                int driverCode = new Facade(getActivity()).isLogged().getCodigo();
                 HttpOferta oferta = new HttpOferta(getActivity());
-                offers = oferta.loadOffers(1, 9);
+                offers = oferta.loadOffers(preferences.getCompanyCode(), driverCode);
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -110,9 +114,10 @@ public class OfferFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if(offers.size() == 0){
-                Toast.makeText(getActivity(), "Não há ofertas disponíveis no momento.", Toast.LENGTH_LONG).show();
-            } else {
+            progressBar.setVisibility(View.INVISIBLE);
+            if(offers.isEmpty()){
+                offerList.setEmptyView(emptyView);
+            }else {
                 offerAdapter = new OfferAdapter(getActivity(), offers);
                 offerList.setAdapter(offerAdapter);
             }

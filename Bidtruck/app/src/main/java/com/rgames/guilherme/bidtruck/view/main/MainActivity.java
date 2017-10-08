@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -35,13 +36,16 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Empresa mEmpresa;
+    private Preferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = new Preferences(this);
         if (getIntent().getExtras() != null && getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA) != null) {
             mEmpresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
+            preferences.setCompanyCode(mEmpresa.getCodigo());
         } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
             Facade facade = new Facade(this);
@@ -138,7 +142,7 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MensagensFragment.newInstance()).commit();
                 return true;
             case R.id.nav_oferta:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new OfferFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new OfferFragment()).addToBackStack(null).commit();
                 return true;
             default:
                 return true;

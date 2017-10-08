@@ -1,7 +1,9 @@
 package com.rgames.guilherme.bidtruck.model.dao.http;
+
 import android.content.Context;
 import android.util.Log;
 
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
@@ -61,4 +63,23 @@ public class HttpOferta extends HttpBase<Romaneio>{
         }
         return result;
     }
+
+    public List<Entrega> loadDeliverys(int codRomaneio){
+        List<Entrega> list = new ArrayList<>();
+        try{
+            if(HttpConnection.isConnected(context)){
+                String params = String.valueOf(codRomaneio);
+                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY_ROMANEIO, HttpMethods.GET, false, true, params);
+                if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    //list = super.select(connection, Entrega.class);
+                    connection.disconnect();
+                }
+            }
+        }catch (Exception e){
+
+        }
+        return list;
+    }
+
+
 }

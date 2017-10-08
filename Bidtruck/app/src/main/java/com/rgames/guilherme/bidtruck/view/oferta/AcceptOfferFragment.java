@@ -4,8 +4,10 @@ package com.rgames.guilherme.bidtruck.view.oferta;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,17 @@ public class AcceptOfferFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        try {
+            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.toolbar_offer_details));
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

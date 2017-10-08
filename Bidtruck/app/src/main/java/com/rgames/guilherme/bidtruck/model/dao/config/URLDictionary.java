@@ -18,6 +18,7 @@ public enum URLDictionary {
     URL_DELIVERY_FOR_DRIVER("/entrega_motorista/"),
     URL_ENTREGA_ROMANEIO("/entrega_romaneio/"),
     URL_OFFER_ACCEPT("/romaneio_aceitar/"),
+    URL_DELIVERY_ROMANEIO("/entrega_by_romaneio/"),
     URL_OCORRENCIA("/ocorrencia");
 
 
