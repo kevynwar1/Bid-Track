@@ -1,10 +1,11 @@
 package com.rgames.guilherme.bidtruck.model.dao.http;
 
+import android.util.Log;
+
 import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
@@ -23,7 +24,7 @@ public class HttpImagem extends HttpBase<ImagemOcorrencia> {
             jsonObject.accumulate("ocorrencia", ocorrencia);
             // while (i < list.size()) {
             jsonObject.accumulate("foto", list);
-
+            Log.i("teste", jsonObject.toString());
 
             HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_IMAGEM, HttpMethods.POST, true, true, "");
             return super.insert(connection, jsonObject.toString());

@@ -3,17 +3,12 @@ package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -25,16 +20,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.EntregaNullException;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia.OcorrenciaActivity;
-import com.vlk.multimager.activities.MultiCameraActivity;
-import com.vlk.multimager.adapters.GalleryImagesAdapter;
-import com.vlk.multimager.utils.Constants;
-import com.vlk.multimager.utils.Image;
-import com.vlk.multimager.utils.Params;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 public class OcorrenciaPagerFragment extends Fragment {
 
