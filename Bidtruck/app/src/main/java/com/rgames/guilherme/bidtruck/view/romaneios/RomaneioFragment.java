@@ -19,6 +19,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 
@@ -35,6 +36,10 @@ public class RomaneioFragment extends Fragment {
     private Facade mFacade;
     private Empresa empresa;
     private Motorista motoristas;
+    private boolean finishRomaneio = true;
+    private List<Romaneio> romaneioList;
+    private ListaTask mListaTaskRomaneio;
+    private List<Romaneio> romaneioList2;
 
     public RomaneioFragment() {
 
@@ -83,9 +88,32 @@ public class RomaneioFragment extends Fragment {
                 if (!mFacade.isConnected(getActivity())) {
                     Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
                     emptyView(true);
-                } else
+                } else if (finishRomaneio == true) {
                     init();
+                    finishRomaneio = false;
+                }else{
+                   mListaTaskRomaneio = new ListaTask();
+                   mListaTaskRomaneio.execute();
+
+                }
+
+
+
+                    /*if (romaneioList != null) {
+
+                        for (Romaneio mRomaneio : romaneioList) {
+
+                            if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
+                                Toast.makeText(getActivity(), getString(R.string.app_err_input_vazio), Toast.LENGTH_LONG).show();
+                                emptyView(true);
+
+                            }
+
+
+                        }*/
+
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -142,12 +170,31 @@ public class RomaneioFragment extends Fragment {
                 try {
                     if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
-                    else
-                        initRecyclerView(romaneios);
+                    else if (romaneioList == null) {
 
-                    if (msg != null && !msg.equals(""))
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                    finishProgressBar();
+                        romaneioList = romaneios;
+                        if (romaneioList != null) {
+
+                            for (Romaneio mRomaneio : romaneioList) {
+
+                               /* if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
+                                    Toast.makeText(getActivity(), getString(R.string.app_err_input_vazio), Toast.LENGTH_LONG).show();
+                                    // emptyViewRomaneio(true);
+                                    finishProgressBar();*/
+                                if (mRomaneio.getStatus_romaneio().getCodigo() != 4) {
+                                    initRecyclerView(romaneioList);
+                                    finishProgressBar();
+                                }
+
+                            }
+                        }
+                    }
+
+                    if (romaneioList == null) {
+                        if (msg != null && !msg.equals(""))
+                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                        finishProgressBar();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -156,9 +203,79 @@ public class RomaneioFragment extends Fragment {
     }
 
 
+    class ListaTask extends AsyncTask<Void, Void, List<Romaneio>> {
+
+        String msg = "";
+
+            @Override
+            protected void onPreExecute() {
+                try {
+                    initProgressBar();
+                    emptyView(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        @Override
+        protected List<Romaneio> doInBackground(Void... voids) {
+            try {
+
+               // return mFacade.selectRomaneio(empresa, mFacade.isLogged());
+                return mFacade.selectNovo(empresa, mFacade.isLogged());
+            } catch (MotoristaNaoConectadoException e) {
+                msg = e.getMessage();
+                e.printStackTrace();
+            } catch (EmpresaNullException e) {
+                msg = e.getMessage();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Romaneio> romaneios) {
+            try {
+                if (romaneios != null && romaneios.size() == 0)
+                    emptyView(true);
+                else if (romaneioList2 == null) {
+
+                    romaneioList2 = romaneios;
+                    if (romaneioList2 != null) {
+
+                        for (Romaneio mRomaneio : romaneioList2) {
+
+                            if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
+
+                                Toast.makeText(getActivity(), getString(R.string.app_err_input_vazio), Toast.LENGTH_LONG).show();
+                                emptyView(true);
+                                finishProgressBar();
+                            }
+                              //  initRecyclerView(romaneioList);
+                              //  finishProgressBar();
+
+
+                        }
+                    }
+                }
+
+                if (romaneioList == null) {
+                    if (msg != null && !msg.equals(""))
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    finishProgressBar();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
     private void emptyView(boolean isVisible) {
         mView.findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
     }
+
+
 
     private void initRecyclerView(List<Romaneio> list) throws Exception {
         if (mView != null && getActivity() != null) {

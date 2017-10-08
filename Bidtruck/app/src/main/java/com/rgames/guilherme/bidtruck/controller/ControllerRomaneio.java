@@ -35,6 +35,16 @@ public class ControllerRomaneio {
         return httpRomaneio.select(empresa, motorista);
     }
 
+
+    public List<Romaneio> selectNovoRomaneio(Empresa empresa, Motorista motorista) throws MotoristaNaoConectadoException, EmpresaNullException {
+        if (motorista == null || motorista.getCodigo() <= 0)
+            throw new MotoristaNaoConectadoException();
+        if (empresa == null)
+            throw new EmpresaNullException();
+        if (httpRomaneio == null) httpRomaneio = new HttpRomaneio(mContext);
+        return httpRomaneio.selectNovaLista(empresa, motorista);
+    }
+
     public List<Romaneio> selectOffers(Motorista motorista) throws NullPointerException, MotoristaNaoConectadoException {
         if (motorista == null)
             throw new NullPointerException(mContext.getString(R.string.app_err_null_motorista));
