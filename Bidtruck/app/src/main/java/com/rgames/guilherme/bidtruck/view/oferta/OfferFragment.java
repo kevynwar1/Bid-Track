@@ -9,13 +9,10 @@ package com.rgames.guilherme.bidtruck.view.oferta;
 * @author Erick da Costa
 * */
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,22 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.R;
 
-import java.util.ArrayList;
 import java.util.List;
-import com.rgames.guilherme.bidtruck.model.basic.Motorista;
-import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
+
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
-
-import static android.R.attr.author;
 
 public class OfferFragment extends Fragment {
 
@@ -109,7 +101,7 @@ public class OfferFragment extends Fragment {
                 int driverCode = new Facade(getActivity()).isLogged().getCodigo();
                 HttpOferta oferta = new HttpOferta(getActivity());
                 offers = oferta.loadOffers(preferences.getCompanyCode(), driverCode);
-
+                Log.i("Preco", "" + offers.get(0).getValor());
             }catch (Exception e){
                 e.printStackTrace();
             }

@@ -33,14 +33,14 @@ public class AcceptOfferAdapter extends ArrayAdapter<Entrega>{
         View view = null;
         if(deliverys != null){
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.adapter_recycler_entregas, parent, false);
+            view = inflater.inflate(R.layout.list_deliverys, parent, false);
             Entrega delivery = deliverys.get(position);
 
-            TextView razaoSocial = (TextView) view.findViewById(R.id.txtRazao);
-            TextView bairro = (TextView) view.findViewById(R.id.txtBairro);
-            TextView cidade = (TextView) view.findViewById(R.id.txtCidade);
-            TextView uf = (TextView) view.findViewById(R.id.txtUF);
-            TextView status = (TextView) view.findViewById(R.id.txtStatusEntrega);
+            TextView razaoSocial = (TextView) view.findViewById(R.id.txtRazaoOffer);
+            TextView bairro = (TextView) view.findViewById(R.id.txtBairroOffer);
+            TextView cidade = (TextView) view.findViewById(R.id.txtCidadeOffer);
+            TextView uf = (TextView) view.findViewById(R.id.txtUFOffer);
+            TextView status = (TextView) view.findViewById(R.id.txtStatusEntregaOffer);
 
             razaoSocial.setText(delivery.getDestinatario().getRazao_social());
             bairro.setText(delivery.getDestinatario().getBairro());

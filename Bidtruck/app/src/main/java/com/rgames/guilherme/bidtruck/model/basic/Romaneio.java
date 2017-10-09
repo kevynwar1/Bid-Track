@@ -2,7 +2,6 @@ package com.rgames.guilherme.bidtruck.model.basic;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,16 @@ public class Romaneio implements Parcelable {
     private boolean ofertar_viagem;
     private char finalized;
     private boolean situation;
+    private double valor;
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
 
     public Romaneio() {
     }

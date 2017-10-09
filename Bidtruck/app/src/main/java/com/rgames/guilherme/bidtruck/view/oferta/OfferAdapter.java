@@ -32,9 +32,11 @@ public class OfferAdapter extends ArrayAdapter<Romaneio>{
         if(offers != null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_offers, parent, false);
-            TextView code = (TextView) view.findViewById(R.id.offer_code);
+            TextView code = view.findViewById(R.id.offer_code);
+            TextView payment = view.findViewById(R.id.offer_payment);
             Romaneio offer = offers.get(position);
             code.setText(Integer.toString(offer.getCodigo()));
+            payment.setText(Double.toString(offer.getValor()));
         }
         return view;
     }
