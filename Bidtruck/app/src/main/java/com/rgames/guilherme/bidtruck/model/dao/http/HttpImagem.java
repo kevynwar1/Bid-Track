@@ -20,16 +20,16 @@ public class HttpImagem extends HttpBase<ImagemOcorrencia> {
 
     public boolean insert(int ocorrencia, ArrayList<String> list) {
         try {
-            JSONArray jsonArray = new JSONArray(list);
             JSONObject jsonObject = new JSONObject();
+
             jsonObject.accumulate("ocorrencia", ocorrencia);
             // while (i < list.size()) {
-            jsonObject.accumulate("foto", jsonArray);
-            Log.i("teste", jsonObject.toString());
+            jsonObject.accumulate("foto", list);
 
             HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_IMAGEM, HttpMethods.POST, true, true, "");
             return super.insert(connection, jsonObject.toString());
             //}
+
         } catch (Exception e) {
             e.printStackTrace();
 

@@ -160,7 +160,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
                         }
                     }
                 }.execute();
-                // initFoto();
+                initFoto();
             }
         });
     }
@@ -309,7 +309,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             protected Boolean doInBackground(Void... voids) {
                 try {
                     if (listImagem != null) {
-                        return httpImagem.insert(1, listImagem);
+                        return httpImagem.insert(romaneio, listImagem);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
