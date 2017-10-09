@@ -9,6 +9,7 @@ package com.rgames.guilherme.bidtruck.view.oferta;
 * @author Erick da Costa
 * */
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -76,8 +77,12 @@ public class OfferFragment extends Fragment {
         offerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                AcceptOfferFragment fragment = new AcceptOfferFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("romaneio", offers.get(i));
+                fragment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, new AcceptOfferFragment())
+                        .replace(R.id.content_main, fragment)
                         .addToBackStack(null)
                         .commit();
             }

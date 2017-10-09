@@ -114,7 +114,22 @@ public class HttpEntrega extends HttpBase<Entrega> {
         return  retorno;
     }
 
-
+    public List<Entrega> selectByRomaneio(int codRomaneio){
+        List<Entrega> deliverys = new ArrayList<>();
+        try{
+            if(HttpConnection.isConnected(mContext)){
+                String params = String.valueOf(codRomaneio);
+                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY_ROMANEIO, HttpMethods.GET, false, true, params);
+                if(connection.getResponseCode() == connection.HTTP_OK){
+                    deliverys = super.select(connection, Entrega.class);
+                    connection.disconnect();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  deliverys;
+     }
 
     public boolean statusEntregaUltima(int status_entrega, int cod_seq_entrega, int cod_romaneioo) {
         boolean retorno = false;

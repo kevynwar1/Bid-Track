@@ -8,14 +8,25 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.facade.Facade;
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
+import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
+import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,8 +34,16 @@ import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
 public class AcceptOfferFragment extends Fragment {
 
     private Button acceptBtn;
-    private AcceptTask mTask;
+    private acceptOfferTask mTaskAccept;
+    private loadOfferTask mTaskLoad;
+    private List<Entrega> deliverys;
     private boolean success;
+    private ProgressBar progress;
+    private View view;
+    private ArrayAdapter<Entrega> deliveryAdapter;
+    private ListView listView;
+    private Preferences preferences;
+    private Romaneio romaneio;
 
     public AcceptOfferFragment() {
         // Required empty public constructor
@@ -45,9 +64,15 @@ public class AcceptOfferFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_accept_offer, container, false);
-        acceptBtn = (Button) view.findViewById(R.id.accept_btn);
-        mTask = new AcceptTask();
+        view = inflater.inflate(R.layout.fragment_accept_offer, container, false);
+        acceptBtn = view.findViewById(R.id.accept_btn);
+        listView = view.findViewById(R.id.deliveryListOffer);
+        preferences = new Preferences(getActivity());
+        romaneio = getArguments().getParcelable("romaneio");
+
+        mTaskAccept = new acceptOfferTask();
+        mTaskLoad = new loadOfferTask();
+        mTaskLoad.execute();
 
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +85,7 @@ public class AcceptOfferFragment extends Fragment {
                 alertDialog.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        mTask.execute();
+                        mTaskAccept.execute();
                     }
                 });
 
@@ -77,27 +102,64 @@ public class AcceptOfferFragment extends Fragment {
         return view;
     }
 
-    class AcceptTask extends AsyncTask<Void, Void, Void>{
+    class acceptOfferTask extends AsyncTask<Void, Void, Void>{
+
         @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+        protected void onPreExecute() {
+            if(progress == null){
+                progress = view.findViewById(R.id.progress_acceptOffer);
+                progress.setVisibility(View.VISIBLE);
+            }else {
+                progress.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             HttpOferta mHttpOferta = new HttpOferta(getActivity());
-            success = mHttpOferta.acceptOffer(9, 4321, 1, 3);
+            int driverCode = new Facade(getActivity()).isLogged().getCodigo();
+            int companyCode = preferences.getCompanyCode();
+            success = mHttpOferta.acceptOffer(driverCode, romaneio.getCodigo(),companyCode, romaneio.getEstabelecimento().getCodigo());
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            progress.setVisibility(View.INVISIBLE);
             if(success){
                 Toast.makeText(getActivity(), "Confirmado com Sucesso!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getActivity(), "Desculpe, essa oferta não está mais disponível", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    class loadOfferTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected void onPreExecute() {
+            if(progress == null){
+                progress = view.findViewById(R.id.progress_acceptOffer);
+                progress.setVisibility(View.VISIBLE);
+            }else {
+                progress.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
+            deliverys = mHttpEntrega.selectByRomaneio(romaneio.getCodigo());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progress.setVisibility(View.INVISIBLE);
+            deliveryAdapter = new AcceptOfferAdapter(getActivity(), deliverys);
+            listView.setAdapter(deliveryAdapter);
         }
     }
 }

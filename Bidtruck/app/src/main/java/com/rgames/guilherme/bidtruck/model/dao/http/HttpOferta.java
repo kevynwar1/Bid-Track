@@ -8,6 +8,9 @@ import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -63,23 +66,4 @@ public class HttpOferta extends HttpBase<Romaneio>{
         }
         return result;
     }
-
-    public List<Entrega> loadDeliverys(int codRomaneio){
-        List<Entrega> list = new ArrayList<>();
-        try{
-            if(HttpConnection.isConnected(context)){
-                String params = String.valueOf(codRomaneio);
-                HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_DELIVERY_ROMANEIO, HttpMethods.GET, false, true, params);
-                if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                    //list = super.select(connection, Entrega.class);
-                    connection.disconnect();
-                }
-            }
-        }catch (Exception e){
-
-        }
-        return list;
-    }
-
-
 }
