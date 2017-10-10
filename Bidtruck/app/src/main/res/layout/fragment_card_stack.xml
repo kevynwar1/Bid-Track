@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -88,7 +89,9 @@
                 android:id="@+id/chkConectado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/black" />
+                android:layout_marginLeft="10dp"
+                android:backgroundTint="@color/black"
+                app:buttonTint="@color/black" />
 
             <TextView
                 android:id="@+id/tvConectado"
@@ -104,8 +107,6 @@
             style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="130dp"
             android:layout_height="51dp"
-            android:layout_below="@+id/linearConectado"
-            android:layout_centerHorizontal="true"
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
             android:background="@drawable/background_login"
@@ -114,7 +115,9 @@
             android:text="Entrar"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_below="@+id/linearConectado"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/tvSenha"

@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements IGoToEmpresa {
         initProgressBar();
         boolean isLog = verifyIsLogged();
         initViewPager(isLog);
-        if(isLog)
+        if (isLog)
             onGoToNext();
     }
 

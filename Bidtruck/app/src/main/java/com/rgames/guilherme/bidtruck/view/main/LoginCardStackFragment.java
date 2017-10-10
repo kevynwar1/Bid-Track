@@ -87,6 +87,7 @@ public class LoginCardStackFragment extends Fragment {
         tvSenha = (TextView) mView.findViewById(R.id.tvSenha);
         tvConectado = (TextView) mView.findViewById(R.id.tvConectado);
         tvError = (TextView) mView.findViewById(R.id.txtError);
+        btLogin = (Button) mView.findViewById(R.id.btLogin);
         CheckBox check = (CheckBox) mView.findViewById(R.id.chkConectado);
         check.setChecked(false);
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Regular.ttf");
