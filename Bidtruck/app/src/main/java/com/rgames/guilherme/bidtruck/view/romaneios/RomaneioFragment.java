@@ -99,19 +99,6 @@ public class RomaneioFragment extends Fragment {
 
 
 
-                    /*if (romaneioList != null) {
-
-                        for (Romaneio mRomaneio : romaneioList) {
-
-                            if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
-                                Toast.makeText(getActivity(), getString(R.string.app_err_input_vazio), Toast.LENGTH_LONG).show();
-                                emptyView(true);
-
-                            }
-
-
-                        }*/
-
             }
 
         } catch (Exception e) {
@@ -175,16 +162,19 @@ public class RomaneioFragment extends Fragment {
                         romaneioList = romaneios;
                         if (romaneioList != null) {
 
-                            for (Romaneio mRomaneio : romaneioList) {
+                            /*for (Romaneio mRomaneio : romaneioList) {
 
-                               /* if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
+                                if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
                                     Toast.makeText(getActivity(), getString(R.string.app_err_input_vazio), Toast.LENGTH_LONG).show();
                                     // emptyViewRomaneio(true);
-                                    finishProgressBar();*/
+                                    finishProgressBar();
                                 if (mRomaneio.getStatus_romaneio().getCodigo() != 4) {
                                     initRecyclerView(romaneioList);
                                     finishProgressBar();
-                                }
+                                }*/
+								
+								   initRecyclerView(romaneioList);
+                                    finishProgressBar();
 
                             }
                         }
@@ -242,7 +232,7 @@ public class RomaneioFragment extends Fragment {
                     romaneioList2 = romaneios;
                     if (romaneioList2 != null) {
 
-                        for (Romaneio mRomaneio : romaneioList2) {
+                        /*for (Romaneio mRomaneio : romaneioList2) {
 
                             if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
 
@@ -251,7 +241,12 @@ public class RomaneioFragment extends Fragment {
                                 finishProgressBar();
                             }
                               //  initRecyclerView(romaneioList);
-                              //  finishProgressBar();
+                              //  finishProgressBar();*/
+							  
+						      
+								   initRecyclerView(romaneioList);
+                                    finishProgressBar();
+	
 
 
                         }
