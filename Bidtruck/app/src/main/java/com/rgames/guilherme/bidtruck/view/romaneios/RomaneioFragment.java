@@ -87,13 +87,14 @@ public class RomaneioFragment extends Fragment {
                 if (!mFacade.isConnected(getActivity())) {
                     Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
                     emptyView(true);
-                } else if (finishRomaneio == true) {
-                    init();
-                    finishRomaneio = false;
-                } else {
-                    mListaTaskRomaneio = new ListaTask();
-                    mListaTaskRomaneio.execute();
-                }
+                } else init();
+//                    if (finishRomaneio) {
+//                    init();
+//                    finishRomaneio = false;
+//                } else {
+//                    mListaTaskRomaneio = new ListaTask();
+//                    mListaTaskRomaneio.execute();
+//                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,17 +108,6 @@ public class RomaneioFragment extends Fragment {
 
         return mView = inflater.inflate(R.layout.fragment_romaneio, container, false);
     }
-
-    //AQUI O METODO QUE RECEBE OS DADOS DA ACTIVITY
-   /* @Override
-    public void passaInformacao(Empresa informacao) {
-        if (informacao != null) {
-            empresa = informacao;
-
-        }
-
-    }*/
-
 
     private void init() {
         new AsyncTask<Void, Void, List<Romaneio>>() {
@@ -137,13 +127,11 @@ public class RomaneioFragment extends Fragment {
             protected List<Romaneio> doInBackground(Void... voids) {
                 try {
                     return mFacade.selectRomaneio(empresa, mFacade.isLogged());
-                } catch (MotoristaNaoConectadoException e) {
+                } catch (MotoristaNaoConectadoException | EmpresaNullException e) {
                     msg = e.getMessage();
                     e.printStackTrace();
-                } catch (EmpresaNullException e) {
-                    msg = e.getMessage();
+                    return null;
                 }
-                return null;
             }
 
             @Override
@@ -151,10 +139,10 @@ public class RomaneioFragment extends Fragment {
                 try {
                     if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
-                    else if (romaneioList == null) {
-
-                        romaneioList = romaneios;
-                    } else {
+                    else {
+//                        if (romaneioList == null) {
+//                        romaneioList = romaneios;
+//                    } else {
                             /*for (Romaneio mRomaneio : romaneioList) {
 
                                 if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
@@ -165,16 +153,24 @@ public class RomaneioFragment extends Fragment {
                                     initRecyclerView(romaneioList);
                                     finishProgressBar();
                                 }*/
-                        initRecyclerView(romaneioList);
+                        initRecyclerView(romaneios);
                         finishProgressBar();
                     }
-                    if (romaneioList == null) {
-                        if (msg != null && !msg.equals(""))
-                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                        finishProgressBar();
-                    }
+                    if (msg != null && !msg.equals(""))
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+//                    if (romaneioList == null) {
+//                        if (msg != null && !msg.equals(""))
+//                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+//                        finishProgressBar();
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    try {
+                        finishProgressBar();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }.execute();
