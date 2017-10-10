@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,8 @@ public class OfferAdapter extends ArrayAdapter<Romaneio>{
             TextView payment = view.findViewById(R.id.offer_payment);
             Romaneio offer = offers.get(position);
             code.setText(Integer.toString(offer.getCodigo()));
-            payment.setText(Double.toString(offer.getValor()));
+            DecimalFormat df = new DecimalFormat("#.00");
+            payment.setText(df.format(offer.getValor()));
         }
         return view;
     }
