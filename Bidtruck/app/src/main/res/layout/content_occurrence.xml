@@ -85,11 +85,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="@string/app_dlg_foto" />
-    <Button
-        android:id="@+id/testb"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="teste" />
+
 </LinearLayout>
 

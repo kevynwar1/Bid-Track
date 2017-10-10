@@ -52,7 +52,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private MyProgressBar myProgressBar;
     private AdapterRecyclerTipoOcorrencia adapter;
     private Button fab_photo;
-    private Button teste;
     private RecyclerView rv;
     String codado;
     private ArrayList<String> listImagem;
@@ -95,7 +94,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
         clickfloat();
         initList();
         initButton();
-        clickTeste();
     }
 
     @Override
@@ -214,7 +212,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private void initFab() {
         fab_photo = (Button) findViewById(R.id.fab_photo);
         rv = (RecyclerView) findViewById(R.id.rv_photo);
-        teste = (Button) findViewById(R.id.testb);
     }
 
     private void clickfloat() {
@@ -302,7 +299,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             @Override
             protected void onPreExecute() {
-                dialog = ProgressDialog.show(OcorrenciaActivity.this, "fotos", "Enviando Fotos", true);
+                //    dialog = ProgressDialog.show(OcorrenciaActivity.this, "fotos", "Enviando Fotos", true);
             }
 
             @Override
@@ -324,14 +321,12 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 dialog.dismiss();
                 try {
                     if (msg.equals(""))
-                        if (aBoolean) {
-                            Toast.makeText(OcorrenciaActivity.this, "Foto Enviada.", Toast.LENGTH_LONG).show();
-                            onBackPressed();
-                        } else {
+                        if (aBoolean == false) {
+                          /*  Toast.makeText(OcorrenciaActivity.this, "Foto Enviada.", Toast.LENGTH_LONG).show();
+                            onBackPressed();*/
                             Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a foto.", Toast.LENGTH_LONG).show();
-                        }
-                    else
-                        Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -341,12 +336,4 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     }
 
-    private void clickTeste() {
-        teste.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initFoto();
-            }
-        });
-    }
 }

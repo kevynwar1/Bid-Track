@@ -1,6 +1,7 @@
 package com.rgames.guilherme.bidtruck.view.empresa;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,11 +41,13 @@ public class EmpresaAdapter extends ArrayAdapter<Empresa> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = null;
-        if(empresas != null){
+        if (empresas != null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.adapter_empresa, parent, false);
             TextView tvEmpresa = (TextView) view.findViewById(R.id.tvEmpresa);
             Empresa empresa = empresas.get(position);
+            Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Raleway-Regular.ttf");
+            tvEmpresa.setTypeface(font);
             tvEmpresa.setText((empresa.getNome_fantasia()));
         }
         return view;

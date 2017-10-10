@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@drawable/background_card_empresa"
     android:orientation="vertical"
     tools:context="com.rgames.guilherme.bidtruck.view.main.EmpresaCardStackFragment">
 
@@ -14,16 +14,30 @@
         android:visibility="gone" />
 
     <TextView
-        android:visibility="gone"
-        android:id="@+id/txtSemMotorista"
-        android:text="Por favor, certifique de efetuar o login antes de continuar."
-        android:gravity="center"
+        android:id="@+id/tvEmpresas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:gravity="fill_vertical"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:text="Empresas"
+        android:textColor="@color/black"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/txtSemMotorista"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Por favor, certifique de efetuar o login antes de continuar."
+        android:textColor="@color/black"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/lv_empresas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

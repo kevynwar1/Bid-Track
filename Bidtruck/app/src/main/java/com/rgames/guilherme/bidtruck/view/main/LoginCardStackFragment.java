@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -27,6 +28,9 @@ public class LoginCardStackFragment extends Fragment {
 
     private EditText edtSenha, edtEmail;
     private TextView tvSenha;
+    private TextView tvError;
+    private TextView tvConectado;
+    private Button btLogin;
     private MyProgressBar myProgressBar;
     private Facade mFacade;
     private View mView;
@@ -81,9 +85,16 @@ public class LoginCardStackFragment extends Fragment {
         edtEmail = (EditText) mView.findViewById(R.id.edtEmail);
         edtSenha = (EditText) mView.findViewById(R.id.edtSenha);
         tvSenha = (TextView) mView.findViewById(R.id.tvSenha);
+        tvConectado = (TextView) mView.findViewById(R.id.tvConectado);
+        tvError = (TextView) mView.findViewById(R.id.txtError);
         CheckBox check = (CheckBox) mView.findViewById(R.id.chkConectado);
         check.setChecked(false);
-        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/museo500.otf");
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Regular.ttf");
+        edtEmail.setTypeface(font);
+        edtSenha.setTypeface(font);
+        tvConectado.setTypeface(font);
+        btLogin.setTypeface(font);
+        tvError.setTypeface(font);
         tvSenha.setTypeface(font);
         botaoEntrar();
         botaoSenha();
@@ -173,7 +184,7 @@ public class LoginCardStackFragment extends Fragment {
                                         if (progressDialog != null)
                                             if (progressDialog.isShowing())
                                                 progressDialog.dismiss();
-                                    }catch (Exception e){
+                                    } catch (Exception e) {
                                         progressDialog = null;
                                         e.printStackTrace();
                                     }
