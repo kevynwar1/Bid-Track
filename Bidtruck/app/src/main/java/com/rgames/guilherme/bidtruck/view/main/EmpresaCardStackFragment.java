@@ -2,9 +2,9 @@ package com.rgames.guilherme.bidtruck.view.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
@@ -22,6 +21,7 @@ import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
+import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
 import com.rgames.guilherme.bidtruck.view.empresa.EmpresaAdapter;
 
 import java.util.List;
@@ -38,6 +38,7 @@ public class EmpresaCardStackFragment extends Fragment {
     private MyProgressBar myProgressBar;
     private Motorista motorista;
     private View mView;
+    private boolean CRIADO = false;
 
     public EmpresaCardStackFragment() {
         // Required empty public constructor
@@ -63,7 +64,22 @@ public class EmpresaCardStackFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && !CRIADO) {
             init();
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(!CRIADO) {
+            init();
+        }
     }
 
     /**
@@ -85,7 +101,7 @@ public class EmpresaCardStackFragment extends Fragment {
                     initList();
                 } else
                     viewSemMotorista(false);
-            }
+            }else throw new ContextNullException();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,10 +153,16 @@ public class EmpresaCardStackFragment extends Fragment {
                         Toast.makeText(getActivity(), "Você não está vinculado em nenhuma empresa - ERR 2", Toast.LENGTH_LONG).show();
                         deslogar();
                     }
-                    finishProgressBar();
                 } catch (Exception e) {
                     e.printStackTrace();
                     deslogar();
+                }finally {
+                    try {
+                        CRIADO = true;
+                        finishProgressBar();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }.execute();
@@ -191,8 +213,6 @@ public class EmpresaCardStackFragment extends Fragment {
                 //  fragmentManager.beginTransaction().replace(R.id.content,frag).commit();
 
                 startActivity(it.putExtras(b));
-
-
             }
         });
     }
