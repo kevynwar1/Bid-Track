@@ -1,6 +1,5 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -294,12 +293,12 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     private void initFoto() {
         new AsyncTask<Void, Void, Boolean>() {
-            ProgressDialog dialog;
+//            ProgressDialog dialog;
             String msg = "";
 
             @Override
             protected void onPreExecute() {
-                //    dialog = ProgressDialog.show(OcorrenciaActivity.this, "fotos", "Enviando Fotos", true);
+//                    dialog = ProgressDialog.show(OcorrenciaActivity.this, "fotos", "Enviando Fotos", true);
             }
 
             @Override
@@ -318,10 +317,10 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Boolean aBoolean) {
-                dialog.dismiss();
+//                dialog.dismiss();
                 try {
                     if (msg.equals(""))
-                        if (aBoolean == false) {
+                        if (!aBoolean) {
                           /*  Toast.makeText(OcorrenciaActivity.this, "Foto Enviada.", Toast.LENGTH_LONG).show();
                             onBackPressed();*/
                             Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a foto.", Toast.LENGTH_LONG).show();
