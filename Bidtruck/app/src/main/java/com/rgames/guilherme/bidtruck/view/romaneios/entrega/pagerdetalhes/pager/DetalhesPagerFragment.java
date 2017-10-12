@@ -191,9 +191,33 @@ public class DetalhesPagerFragment extends Fragment{
             HttpEntrega httpEntregas = new HttpEntrega(getActivity());
             try {
                 if(mEntregas != null){
-                    for (int i = 0; i < mEntregas.size(); i++) {
+
+                        for (int j = 0; j < mEntregas.size(); j++) {
+
+                            Entrega recebeStatusEntrega = mEntregas.get(j);
+                            if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 1 && recebeStatusEntrega.getSeq_entrega() > 0 ) {
+                                HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
+                                if (recebeStatusEntrega != null) {
+                                    int novo_status = 3;
+                                    int seq_nova_entrega = recebeStatusEntrega.getSeq_entrega();
+                                    int cod_romaneio = mRomaneio.getCodigo();
+                                    entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status,seq_nova_entrega,cod_romaneio);
+                                    break;
+
+                                }
+                              //break;
+                            }
+                        // break;
+                        }
+
+
+                    }
+
+
+                    /*for (int i = 0; i < mEntregas.size(); i++) {
 
                         Entrega atualizaEntrega = mEntregas.get(i);
+
                         if (atualizaEntrega.getStatusEntrega().getCodigo() == 4 && atualizaEntrega.getSeq_entrega() > 0) {
 
                             for (int j = 0; j < mEntregas.size(); j++) {
@@ -217,10 +241,7 @@ public class DetalhesPagerFragment extends Fragment{
                         }
                         break;
 
-                    }
-
-                }
-
+                    }*/
 
             } catch (Exception e) {
                 e.printStackTrace();
