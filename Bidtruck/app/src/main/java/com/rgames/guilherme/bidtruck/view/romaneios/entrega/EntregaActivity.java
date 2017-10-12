@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -68,8 +70,6 @@ public class EntregaActivity extends AppCompatActivity {
                     mRetornaTask = new RetornaListaTask();
                     mRetornaTask.execute();
                     mRomaneioTask.execute();
-
-
             }
 
         }catch (Exception e){
@@ -77,11 +77,6 @@ public class EntregaActivity extends AppCompatActivity {
         }
 
     }
-
-
-
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -227,20 +222,6 @@ public class EntregaActivity extends AppCompatActivity {
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void emptyView(boolean isVisible) {
         findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
     }
@@ -250,6 +231,8 @@ public class EntregaActivity extends AppCompatActivity {
         r.setLayoutManager(new LinearLayoutManager(this));
         mRomaneio.setEntregaList(entregas);
         r.setAdapter(new AdapterRecyclerDelivery(mRomaneio, this));
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(this, R.anim.list_layout);
+        r.setLayoutAnimation(controller);
     }
 
     private void initProgressBar() throws ClassCastException, NullPointerException {

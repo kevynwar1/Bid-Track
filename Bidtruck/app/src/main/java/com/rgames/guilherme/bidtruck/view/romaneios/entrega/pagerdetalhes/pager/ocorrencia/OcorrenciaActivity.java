@@ -294,7 +294,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     private void initFoto() {
         new AsyncTask<Void, Void, Boolean>() {
-            ProgressDialog dialog;
+           // ProgressDialog dialog;
             String msg = "";
 
             @Override
@@ -318,15 +318,15 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Boolean aBoolean) {
-                dialog.dismiss();
+             //   dialog.dismiss();
                 try {
-                    if (msg.equals(""))
+                  //  if (msg.equals(""))
                         if (aBoolean == false) {
                           /*  Toast.makeText(OcorrenciaActivity.this, "Foto Enviada.", Toast.LENGTH_LONG).show();
                             onBackPressed();*/
                             Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a foto.", Toast.LENGTH_LONG).show();
-                        } else
-                            Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
+                        } //else
+//                            Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

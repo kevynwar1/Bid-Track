@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.EntregaNullException;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia.OcorrenciaActivity;
+
 import java.util.List;
 
 public class OcorrenciaPagerFragment extends Fragment {
@@ -128,6 +131,8 @@ public class OcorrenciaPagerFragment extends Fragment {
         RecyclerView recyclerView = mView.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new AdapterRecyclerOcorrencia(ocorrenciaList));
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.list_layout);
+        recyclerView.setLayoutAnimation(controller);
     }
 
     private void initProgressBar() throws ClassCastException, NullPointerException {

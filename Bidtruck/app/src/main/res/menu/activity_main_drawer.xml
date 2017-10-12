@@ -12,19 +12,18 @@
             android:icon="@drawable/ic_cached_black_18dp"
             android:title="@string/menu_drw_sync" />
 
-        <item
+        <!--item
             android:id="@+id/nav_ocorr"
             android:icon="@drawable/ic_import_contacts_black_18dp"
-            android:title="@string/menu_drw_ocorr" />
-
-        <item
-            android:id="@+id/nav_msg"
-            android:icon="@drawable/ic_email_black_18dp"
-            android:title="@string/menu_drw_msg" />
+            android:title="@string/menu_drw_ocorr" /-->
 
         <item
             android:id="@+id/nav_oferta"
             android:icon="@drawable/ic_truck_offer"
             android:title="@string/menu_drw_oferta" />
+        <item
+            android:id="@+id/nav_msg"
+            android:icon="@drawable/ic_highlight_off"
+            android:title="@string/menu_drw_msg" />
     </group>
 </menu>

@@ -7,7 +7,7 @@
     android:padding="0dp">
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout"
+        android:id="@+id/tablayout2"
         app:tabIndicatorColor="#FFF"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="#FFF"
