@@ -130,7 +130,7 @@ public class DetalhesPagerFragment extends Fragment{
 
     class StatusTask extends AsyncTask<Void, Void, Void>{
 
-
+        //finaliza entrega e seta a entrega como finalizada
         @Override
         protected Void doInBackground(Void... voids) {
             HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
@@ -138,7 +138,6 @@ public class DetalhesPagerFragment extends Fragment{
                 if(mEntrega.getStatusEntrega().getCodigo() == 3 && mEntrega.getSeq_entrega() > 0 && mRomaneio.getCodigo() > 0){
 
                     int novo_status = 4;
-                    //int status_entrega = mEntrega.getStatusEntrega().setCodigo(novo_status);
                     int seq_entrega = mEntrega.getSeq_entrega();
                     int cod_romaneio = mRomaneio.getCodigo();
                     tem_entrega = mHttpEntrega.statusEntrega(novo_status,seq_entrega,cod_romaneio);
@@ -163,6 +162,7 @@ public class DetalhesPagerFragment extends Fragment{
         }
     }
 
+    //lista as entregas novamente com o status atualizado
     class ListaTask extends AsyncTask<Void, Void, List<Entrega>>{
 
         @Override
@@ -196,7 +196,7 @@ public class DetalhesPagerFragment extends Fragment{
 
     }
 
-
+    // altera o status da proxima entrega de liberado para em Viagem
     class AtualizaTask extends AsyncTask<Void, Void, Void>{
 
         @Override
@@ -248,21 +248,18 @@ public class DetalhesPagerFragment extends Fragment{
         @Override
         protected void onPostExecute(Void voids) {
             super.onPostExecute(voids);
+              if (entrega_atualizada){
+                  Toast.makeText(getActivity(),"Sua próxima entrega foi iniciada, tenha uma boa viagem!",Toast.LENGTH_LONG).show();
+              }
+              else{
+                  Toast.makeText(getActivity(),"Desculpe, sua próxima entrega não foi iniciada tente novamente!",Toast.LENGTH_LONG).show();
+              }
+
 
 
         }
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -288,6 +285,8 @@ public class DetalhesPagerFragment extends Fragment{
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 mStatus.execute();
                                 mLista.execute();
+                                //iniciar proxima entrega
+                                //finalizar romaneio
                                 mAtualiza.execute();
                                // Toast.makeText(getActivity(), "Finalizado", Toast.LENGTH_SHORT).show();
                                 dialogInterface.dismiss();
@@ -298,7 +297,7 @@ public class DetalhesPagerFragment extends Fragment{
         });
 
         //CANCELAR
-        mView.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+        /*mView.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog alertDialog = newAlertDialog(getString(R.string.app_name), "Deseja cancelar o romaneio?");
@@ -321,7 +320,7 @@ public class DetalhesPagerFragment extends Fragment{
                         });
                 alertDialog.show();
             }
-        });
+        });*/
 
         //OCORRENCIA
 
