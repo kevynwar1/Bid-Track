@@ -1,13 +1,10 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
-import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
-import com.rgames.guilherme.bidtruck.view.romaneios.entrega.AdapterRecyclerDelivery;
-import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia.OcorrenciaActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetalhesPagerFragment extends Fragment{
@@ -42,9 +34,7 @@ public class DetalhesPagerFragment extends Fragment{
 
 
 
-
-    public DetalhesPagerFragment() {
-    }
+    public DetalhesPagerFragment() {}
 
     public static DetalhesPagerFragment newInstance(Romaneio romaneio, Entrega entrega) {
         DetalhesPagerFragment fragment = new DetalhesPagerFragment();
@@ -114,15 +104,11 @@ public class DetalhesPagerFragment extends Fragment{
                 }else Toast.makeText(getActivity(), getString(R.string.app_err_null_destinatario), Toast.LENGTH_SHORT).show();
                // initButtons();
             } else Toast.makeText(getActivity(), getString(R.string.app_err_null_entrega), Toast.LENGTH_SHORT).show();
-                    if(mEntrega != null){
-
+                    /*if(mEntrega != null){
                         if(mEntrega.getStatusEntrega().getCodigo() == 1 || mEntrega.getStatusEntrega().getCodigo() == 4 ){
-
                             mView.findViewById(R.id.btn_finalize).setEnabled(false);
                         }
-
-
-                    }
+                    }*/
 
     }
 
@@ -155,11 +141,13 @@ public class DetalhesPagerFragment extends Fragment{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if(tem_entrega) {
-                Toast.makeText(getActivity(), "Entrega finalizada com Sucesso!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Entrega finalizada com Sucesso!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), "Desculpe, erro ao finalizar a entrega, tente novamente!", Toast.LENGTH_LONG).show();
             }
         }
+
+
     }
 
     //lista as entregas novamente com o status atualizado
@@ -185,9 +173,7 @@ public class DetalhesPagerFragment extends Fragment{
             super.onPostExecute(entregas);
             try {
                 if (entregas == null || entregas.size() > 0) {
-
                     mEntregas = entregas;
-
                 }
             }catch (Exception e) {
                 e.printStackTrace();
@@ -197,10 +183,10 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
     // altera o status da proxima entrega de liberado para em Viagem
-    class AtualizaTask extends AsyncTask<Void, Void, Void>{
+    class AtualizaTask extends AsyncTask<Object, Object, Boolean> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Boolean doInBackground(Object... voids) {
             //Facade facade = new Facade(getActivity());
             HttpEntrega httpEntregas = new HttpEntrega(getActivity());
             try {
@@ -220,20 +206,18 @@ public class DetalhesPagerFragment extends Fragment{
                                         int seq_nova_entrega = recebeStatusEntrega.getSeq_entrega();
                                         int cod_romaneio = mRomaneio.getCodigo();
                                         entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status,seq_nova_entrega,cod_romaneio);
+                                        break;
 
                                     }
-                                    break;
 
                                 }
 
-
                             }
 
-
                         }
+                        break;
 
                     }
-
 
                 }
 
@@ -241,21 +225,19 @@ public class DetalhesPagerFragment extends Fragment{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+            return entrega_atualizada;
         }
 
 
         @Override
-        protected void onPostExecute(Void voids) {
+        protected void onPostExecute(Boolean voids) {
             super.onPostExecute(voids);
-              if (entrega_atualizada){
+              if (entrega_atualizada == true){
                   Toast.makeText(getActivity(),"Sua próxima entrega foi iniciada, tenha uma boa viagem!",Toast.LENGTH_LONG).show();
               }
               else{
                   Toast.makeText(getActivity(),"Desculpe, sua próxima entrega não foi iniciada tente novamente!",Toast.LENGTH_LONG).show();
               }
-
-
 
         }
 
@@ -269,6 +251,7 @@ public class DetalhesPagerFragment extends Fragment{
             @Override
             public void onClick(View view) {
 
+
                 AlertDialog alertDialog = newAlertDialog(getString(R.string.app_name), "Deseja confirmar a entrega?");
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE
                         , getString(R.string.app_dlg_cancel)
@@ -278,6 +261,14 @@ public class DetalhesPagerFragment extends Fragment{
                                 dialogInterface.dismiss();
                             }
                         });
+
+                if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() != 3){
+
+                    Toast.makeText(getActivity(), "Esta entrega não pode ser finalizada, pois não esta em andamento", Toast.LENGTH_LONG).show();
+                    return;
+
+            } else
+
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
                         , getString(R.string.app_dlg_confirm)
                         , new DialogInterface.OnClickListener() {
@@ -293,8 +284,16 @@ public class DetalhesPagerFragment extends Fragment{
                             }
                         });
                 alertDialog.show();
+
+
             }
         });
+
+
+
+
+
+
 
         //CANCELAR
         /*mView.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
