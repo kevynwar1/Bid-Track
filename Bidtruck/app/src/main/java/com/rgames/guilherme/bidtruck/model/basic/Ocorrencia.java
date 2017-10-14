@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.model.basic;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ocorrencia implements Parcelable {
@@ -61,6 +62,10 @@ public class Ocorrencia implements Parcelable {
             return new Ocorrencia[size];
         }
     };
+
+    public Ocorrencia(int idEmpresa, int seq_entrega, int romaneio, int codigoSelecionado, String descrip, ArrayList<String> listImagem) {
+
+    }
 
     @Override
     public int describeContents() {

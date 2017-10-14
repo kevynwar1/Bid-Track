@@ -1,6 +1,5 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,7 +29,9 @@ import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.basic.TipoOcorrencia;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpImagem;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpOcorrencia;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
+import com.rgames.guilherme.bidtruck.view.fotos.adapters.CarregadorDeFoto;
 import com.vlk.multimager.activities.MultiCameraActivity;
 import com.vlk.multimager.adapters.GalleryImagesAdapter;
 import com.vlk.multimager.utils.Constants;
@@ -49,12 +50,15 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private ControllerOcorrencia controllerOcorrencia;
     private ControllerLogin controllerLogin;
     private HttpImagem httpImagem;
+    private HttpOcorrencia httpOcorrencia;
     private MyProgressBar myProgressBar;
     private AdapterRecyclerTipoOcorrencia adapter;
     private Button fab_photo;
     private RecyclerView rv;
+    private int cod_ocorrencia;
     String codado;
     private ArrayList<String> listImagem;
+    private ArrayList<Image> lista;
     private ArrayList<String> test;
 
     @Override
@@ -69,11 +73,12 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 initToolbar();
                 httpImagem = new HttpImagem();
                 listImagem = new ArrayList<>();
+                lista = new ArrayList<>();
            /*     test = new ArrayList<>();
                 test.add("bola");
                 test.add("bobo");
                 test.add("roxao");*/
-
+                httpOcorrencia = new HttpOcorrencia();
                 controllerOcorrencia = new ControllerOcorrencia();
                 controllerLogin = new ControllerLogin(OcorrenciaActivity.this);
             } else {
@@ -110,7 +115,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
         findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AsyncTask<Void, Void, Boolean>() {
+                new AsyncTask<Object, Object, Boolean>() {
                     String descrip;
                     String msg = "";
 
@@ -121,17 +126,18 @@ public class OcorrenciaActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    protected Boolean doInBackground(Void... voids) {
+                    protected Boolean doInBackground(Object... voids) {
                         try {
-                            return controllerOcorrencia.insert(new Ocorrencia(controllerLogin.getIdEmpresa()
+                            return httpOcorrencia.insert(new Ocorrencia(controllerLogin.getIdEmpresa()
                                     , seq_entrega
                                     , romaneio
                                     , adapter.getCodigoSelecionado()
-                                    , descrip));
+                                    , descrip
+                            ), listImagem);
                         } catch (Exception e) {
                             e.printStackTrace();
                             msg = e.getMessage();
-                            return false;
+                            return null;
                         }
                     }
 
@@ -140,6 +146,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
                         try {
                             if (msg.equals(""))
                                 if (aBoolean) {
+                                    //cod_ocorrencia = aBoolean;
                                     Toast.makeText(OcorrenciaActivity.this, "Ocorrência cadastrada.", Toast.LENGTH_LONG).show();
                                     onBackPressed();
                                 } else {
@@ -158,7 +165,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
                         }
                     }
                 }.execute();
-                initFoto();
+                // initFoto();
             }
         });
     }
@@ -254,15 +261,17 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
 
             for (int i = 0; i < imagesList.size(); i++) {
-                String caminho = imagesList.get(0).imagePath;
-                Bitmap bit = BitmapFactory.decodeFile(caminho);
+                String caminho = imagesList.get(i).imagePath;
+                //Bitmap bit = BitmapFactory.decodeFile(caminho);
+                Bitmap bit = CarregadorDeFoto.carrega(caminho);
+                Bitmap bito = Bitmap.createScaledBitmap(bit, 200, 200, true);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bit.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+                bito.compress(Bitmap.CompressFormat.JPEG, 50, stream);
                 byte[] fotoB = stream.toByteArray();
                 codado = Base64.encodeToString(fotoB, Base64.DEFAULT);
                 listImagem.add(codado);
             }
-
+          
             rv.setHasFixedSize(true);
             StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getColumnCount(), GridLayoutManager.VERTICAL);
             mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -292,9 +301,9 @@ public class OcorrenciaActivity extends AppCompatActivity {
         }
     }
 
-    private void initFoto() {
+    /*private void initFoto() {
         new AsyncTask<Void, Void, Boolean>() {
-           // ProgressDialog dialog;
+            // ProgressDialog dialog;
             String msg = "";
 
             @Override
@@ -306,7 +315,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
             protected Boolean doInBackground(Void... voids) {
                 try {
                     if (listImagem != null) {
-                        return httpImagem.insert(romaneio, listImagem);
+                        return httpImagem.insert(cod_ocorrencia, listImagem);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -318,14 +327,14 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Boolean aBoolean) {
-             //   dialog.dismiss();
+                //   dialog.dismiss();
                 try {
-                  //  if (msg.equals(""))
-                        if (aBoolean == false) {
-                          /*  Toast.makeText(OcorrenciaActivity.this, "Foto Enviada.", Toast.LENGTH_LONG).show();
-                            onBackPressed();*/
-                            Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a foto.", Toast.LENGTH_LONG).show();
-                        } //else
+                    //  if (msg.equals(""))
+                    if (aBoolean == false) {
+                            Toast.makeText(OcorrenciaActivity.this, "Foto Enviada.", Toast.LENGTH_LONG).show();
+                            onBackPressed();
+                        Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a foto.", Toast.LENGTH_LONG).show();
+                    } //else
 //                            Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -334,6 +343,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
         }.execute();
 
 
-    }
+    }*/
 
 }

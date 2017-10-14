@@ -74,9 +74,11 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
         final Image entity = list.get(position);
         float height;
         if (entity.isPortraitImage)
-            height = Float.valueOf(activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_portrait));
-        else
             height = Float.valueOf(activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_landscape));
+                //activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_portrait)
+        //240dp
+        else
+            height = Float.valueOf(activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_portrait));
         if(holder.imageView != null) {
             Picasso.with(activity)
                     .load(entity.uri)

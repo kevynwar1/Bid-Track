@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -82,5 +83,35 @@ public abstract class HttpBase<T> {
             connection.disconnect();
             return false;
         }
+    }
+
+    protected Integer insertInteiro(HttpURLConnection connection, String object) throws IOException, JSONException {
+        int valor = 0;
+        int status = 0;
+        String json = "";
+
+        connection.getOutputStream().write(object.getBytes());
+        connection.getOutputStream().flush();
+        connection.getOutputStream().close();
+
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder jsonScanner = new StringBuilder();
+        String line = null;
+        line = scanner.readLine();
+        jsonScanner.append(line);
+        scanner.close();
+       json = jsonScanner.toString();
+        JSONObject bob = new JSONObject(json);
+       status = bob.getInt("status");
+        valor = bob.getInt("id");
+        if (status == 201 && valor > 0) {
+            connection.disconnect();
+            return valor;
+        } else {
+            connection.disconnect();
+            return 0;
+        }
+
+
     }
 }
