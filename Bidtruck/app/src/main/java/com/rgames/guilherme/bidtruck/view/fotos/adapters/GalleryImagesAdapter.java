@@ -2,6 +2,8 @@ package com.rgames.guilherme.bidtruck.view.fotos.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.rgames.guilherme.bidtruck.R;
 import com.squareup.picasso.Picasso;
 import com.vlk.multimager.activities.GalleryActivity;
 import com.vlk.multimager.utils.Image;
@@ -21,6 +24,7 @@ import com.vlk.multimager.utils.Params;
 import com.vlk.multimager.utils.Utils;
 import com.vlk.multimager.views.AutoImageView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -63,7 +67,7 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = mInflater.inflate(com.vlk.multimager.R.layout.image_item, parent, false);
+        View view = mInflater.inflate(R.layout.image_item, parent, false);
         ImageHolder dataObjectHolder = new ImageHolder(view);
         return dataObjectHolder;
     }
@@ -73,13 +77,13 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
         final ImageHolder holder = (ImageHolder) viewHolder;
         final Image entity = list.get(position);
         float height;
-        if (entity.isPortraitImage)
+    //    if (entity.isPortraitImage)
             height = Float.valueOf(activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_landscape));
-                //activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_portrait)
-        //240dp
-        else
+            //activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_portrait)
+            //240dp
+  //      else
             height = Float.valueOf(activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_portrait));
-        if(holder.imageView != null) {
+    /*    if(holder.imageView != null) {
             Picasso.with(activity)
                     .load(entity.uri)
                     .placeholder(com.vlk.multimager.R.drawable.image_processing)
@@ -88,13 +92,20 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
                     .onlyScaleDown()
                     .centerInside()
                     .into(holder.imageView);
+        }*/
+        try {
+            Bitmap bit = CarregadorDeFoto.carrega(entity.imagePath);
+            holder.imageView.setImageBitmap(bit);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if(selectedIDs.contains(entity._id)) {
-            if(params.getLightColor() != 0)
+
+
+        if (selectedIDs.contains(entity._id)) {
+            if (params.getLightColor() != 0)
                 holder.frameLayout.setForeground(new ColorDrawable(params.getLightColor()));
             holder.selectedImageView.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             holder.frameLayout.setForeground(null);
             holder.selectedImageView.setVisibility(View.GONE);
         }
@@ -102,38 +113,38 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.parentLayout.setOnClickListener(onClickListener);
     }
 
-    public void setSelectedItem(View parentView, long imageId){
-        if(selectedIDs.contains(imageId)) {
+    public void setSelectedItem(View parentView, long imageId) {
+        if (selectedIDs.contains(imageId)) {
             selectedIDs.remove(Long.valueOf(imageId));
-            ((FrameLayout)parentView.findViewById(com.vlk.multimager.R.id.frameLayout)).setForeground(null);
-            ((ImageView)parentView.findViewById(com.vlk.multimager.R.id.selectedImageView)).setVisibility(View.GONE);
+            ((FrameLayout) parentView.findViewById(com.vlk.multimager.R.id.frameLayout)).setForeground(null);
+            ((ImageView) parentView.findViewById(com.vlk.multimager.R.id.selectedImageView)).setVisibility(View.GONE);
         } else {
-            if(selectedIDs.size() < params.getPickerLimit()) {
+            if (selectedIDs.size() < params.getPickerLimit()) {
                 selectedIDs.add(Long.valueOf(imageId));
-                if(params.getLightColor() != 0)
+                if (params.getLightColor() != 0)
                     ((FrameLayout) parentView.findViewById(com.vlk.multimager.R.id.frameLayout)).setForeground(new ColorDrawable(params.getLightColor()));
                 ((ImageView) parentView.findViewById(com.vlk.multimager.R.id.selectedImageView)).setVisibility(View.VISIBLE);
-            }
-            else{
-                if(activity instanceof GalleryActivity){
+            } else {
+                if (activity instanceof GalleryActivity) {
                     ((GalleryActivity) activity).showLimitAlert("You can select only " + params.getPickerLimit() + " images at a time.");
                 }
             }
         }
     }
-/*
-    public void scaleView(final View v, float startScale, float endScale, final boolean pad) {
-        Animation anim = new ScaleAnimation(
-                startScale, endScale, // Start and end values for the X axis scaling
-                startScale, endScale, // Start and end values for the Y axis scaling
-                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
-                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
-        anim.setFillAfter(true); // Needed to keep the result of the animation
-        anim.setDuration(200);
-        v.startAnimation(anim);
-    }
-*/
-    public void disableSelection(){
+
+    /*
+        public void scaleView(final View v, float startScale, float endScale, final boolean pad) {
+            Animation anim = new ScaleAnimation(
+                    startScale, endScale, // Start and end values for the X axis scaling
+                    startScale, endScale, // Start and end values for the Y axis scaling
+                    Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                    Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
+            anim.setFillAfter(true); // Needed to keep the result of the animation
+            anim.setDuration(200);
+            v.startAnimation(anim);
+        }
+    */
+    public void disableSelection() {
         selectedIDs.clear();
         notifyDataSetChanged();
     }
@@ -163,7 +174,7 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
             selectedImageView = (ImageView) v.findViewById(com.vlk.multimager.R.id.selectedImageView);
             parentLayout = (RelativeLayout) v.findViewById(com.vlk.multimager.R.id.parentLayout);
             frameLayout = (FrameLayout) v.findViewById(com.vlk.multimager.R.id.frameLayout);
-            if(params.getToolbarColor() != 0)
+            if (params.getToolbarColor() != 0)
                 Utils.setViewBackgroundColor(activity, selectedImageView, params.getToolbarColor());
         }
 

@@ -24,6 +24,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rgames.guilherme.bidtruck.R;
+
+import static com.rgames.guilherme.bidtruck.R.color.amber_primary_dark;
+
 /**
  * Created by vansikrishna on 08/06/2016.
  */
@@ -148,7 +152,7 @@ public class Utils {
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
-        return Color.rgb((int)(red * 0.8), (int)(green * 0.8), (int)(blue * 0.8));
+        return Color.rgb((int)(red * 39), (int)(green * 29), (int)(blue * 102));
     }
 
     public static int getLightColor(int color){

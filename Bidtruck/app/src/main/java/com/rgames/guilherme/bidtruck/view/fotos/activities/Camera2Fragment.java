@@ -76,6 +76,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.squareup.picasso.Picasso;
 import com.vlk.multimager.activities.BaseActivity;
@@ -485,7 +486,7 @@ public class Camera2Fragment extends Fragment
     private void initViews(View view) {
         parentLayout = (RelativeLayout) view.findViewById(com.vlk.multimager.R.id.parentLayout);
         toolbar = (Toolbar) view.findViewById(com.vlk.multimager.R.id.toolbar);
-        toolbar_title = (TextView) view.findViewById(com.vlk.multimager.R.id.toolbar_title);
+      //  toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
         cameraLayout = (RelativeLayout) view.findViewById(com.vlk.multimager.R.id.cameraLayout);
         captureButton = (ImageButton) view.findViewById(com.vlk.multimager.R.id.captureButton);
         doneAllButton = (ImageButton) view.findViewById(com.vlk.multimager.R.id.doneAllButton);
@@ -526,7 +527,9 @@ public class Camera2Fragment extends Fragment
     }
 
     private void setToolbarTitle() {
-        toolbar_title.setText("Images Captured - " + selectedImages.size());
+       // toolbar_title.setText("Imagens capturadas - " + selectedImages.size());
+        toolbar.setTitle("Imagens capturadas - " + selectedImages.size());
+
     }
 
     private void showCameraLayout(boolean flag) {
@@ -546,8 +549,8 @@ public class Camera2Fragment extends Fragment
     private void showPreviewImage() {
         Picasso.with(getActivity())
                 .load(new File(selectedImages.get(selectedImages.size() - 1).getImagePath()))
-                .placeholder(com.vlk.multimager.R.drawable.image_processing_full)
-                .error(com.vlk.multimager.R.drawable.no_image_full)
+                .placeholder(R.drawable.imagem_processada)
+                .error(R.drawable.imagem_indisponivel)
                 .into(previewImageView);
     }
 

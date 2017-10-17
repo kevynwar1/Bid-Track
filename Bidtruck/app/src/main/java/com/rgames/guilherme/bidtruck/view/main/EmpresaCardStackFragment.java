@@ -78,9 +78,9 @@ public class EmpresaCardStackFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (!CRIADO) {
-            init();
-        }
+       // if (!CRIADO) {
+        //    init();
+        //}
     }
 
     /**

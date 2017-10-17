@@ -271,7 +271,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 codado = Base64.encodeToString(fotoB, Base64.DEFAULT);
                 listImagem.add(codado);
             }
-          
+
             rv.setHasFixedSize(true);
             StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getColumnCount(), GridLayoutManager.VERTICAL);
             mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);

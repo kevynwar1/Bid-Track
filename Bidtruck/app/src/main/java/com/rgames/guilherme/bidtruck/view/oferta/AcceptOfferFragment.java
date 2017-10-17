@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
+import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
@@ -45,12 +46,14 @@ public class AcceptOfferFragment extends Fragment {
     private Preferences preferences;
     private Romaneio romaneio;
 
+
     public AcceptOfferFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         try {
             if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.toolbar_offer_details));
@@ -60,6 +63,8 @@ public class AcceptOfferFragment extends Fragment {
         }
         super.onCreate(savedInstanceState);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,14 +107,14 @@ public class AcceptOfferFragment extends Fragment {
         return view;
     }
 
-    class acceptOfferTask extends AsyncTask<Void, Void, Void>{
+    class acceptOfferTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
-            if(progress == null){
+            if (progress == null) {
                 progress = view.findViewById(R.id.progress_acceptOffer);
                 progress.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 progress.setVisibility(View.VISIBLE);
             }
         }
@@ -119,7 +124,7 @@ public class AcceptOfferFragment extends Fragment {
             HttpOferta mHttpOferta = new HttpOferta(getActivity());
             int driverCode = new Facade(getActivity()).isLogged().getCodigo();
             int companyCode = preferences.getCompanyCode();
-            success = mHttpOferta.acceptOffer(driverCode, romaneio.getCodigo(),companyCode, romaneio.getEstabelecimento().getCodigo());
+            success = mHttpOferta.acceptOffer(driverCode, romaneio.getCodigo(), companyCode, romaneio.getEstabelecimento().getCodigo());
             return null;
         }
 
@@ -127,7 +132,7 @@ public class AcceptOfferFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progress.setVisibility(View.INVISIBLE);
-            if(success){
+            if (success) {
                 Toast.makeText(getActivity(), "Confirmado com Sucesso!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getActivity(), "Desculpe, essa oferta não está mais disponível", Toast.LENGTH_LONG).show();
@@ -135,14 +140,14 @@ public class AcceptOfferFragment extends Fragment {
         }
     }
 
-    class loadOfferTask extends AsyncTask<Void, Void, Void>{
+    class loadOfferTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
-            if(progress == null){
+            if (progress == null) {
                 progress = view.findViewById(R.id.progress_acceptOffer);
                 progress.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 progress.setVisibility(View.VISIBLE);
             }
         }
