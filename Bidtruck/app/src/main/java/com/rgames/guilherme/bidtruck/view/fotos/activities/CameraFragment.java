@@ -40,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.squareup.picasso.Picasso;
 import com.vlk.multimager.activities.BaseActivity;
@@ -103,7 +104,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         coordinatorLayout = (CoordinatorLayout) view.findViewById(com.vlk.multimager.R.id.coordinatorLayout);
         parentLayout = (RelativeLayout) view.findViewById(com.vlk.multimager.R.id.parentLayout);
         toolbar = (Toolbar) view.findViewById(com.vlk.multimager.R.id.toolbar);
-        toolbar_title = (TextView) view.findViewById(com.vlk.multimager.R.id.toolbar_title);
+        //toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
         cameraLayout = (RelativeLayout) view.findViewById(com.vlk.multimager.R.id.cameraLayout);
         surfaceView = (SurfaceView) view.findViewById(com.vlk.multimager.R.id.surfaceView);
         captureButton = (ImageButton) view.findViewById(com.vlk.multimager.R.id.captureButton);
@@ -184,7 +185,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setToolbarTitle() {
-        toolbar_title.setText("Images Captured - " + selectedImages.size());
+        //toolbar_title.setText("Imagens Capturadas - " + selectedImages.size());
+        //toolbar_title.setText(getString(R.string.imagem_capturada) + selectedImages.size());
+        toolbar.setTitle("Imagens capturadas - " + selectedImages.size());
     }
 
     private void showCameraLayout(boolean flag) {
@@ -204,8 +207,8 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     private void showPreviewImage() {
         Picasso.with(getActivity())
                 .load(new File(selectedImages.get(selectedImages.size() - 1).getImagePath()))
-                .placeholder(com.vlk.multimager.R.drawable.image_processing_full)
-                .error(com.vlk.multimager.R.drawable.no_image_full)
+                .placeholder(R.drawable.imagem_processada)
+                .error(R.drawable.imagem_indisponivel)
                 .into(previewImageView);
     }
 
@@ -291,12 +294,14 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             toggleFlashState();
         } else if (view.equals(doneButton)) {
             if (selectedImages.size() > 0)
-                collectAllPaths();
+                // collectAllPaths();
+                coletaImagem();
             else
                 setEmptyResult();
         } else if (view.equals(doneAllButton)) {
             if (selectedImages.size() > 0)
-                collectAllPaths();
+                // collectAllPaths();
+                coletaImagem();
             else
                 setEmptyResult();
         } else if (view.equals(retakeButton)) {
@@ -468,10 +473,35 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void collectAllPaths() {
-        Intent intent = new Intent();
-        intent.putParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST, selectedImages);
-        setIntentResult(intent);
+    /*  private void collectAllPaths() {
+          Intent intent = new Intent();
+          intent.putParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST, selectedImages);
+          setIntentResult(intent);
+      }*/
+    private void coletaImagem() {
+        new AsyncTask<Void, Void, Void>() {
+            ProgressDialog dialog;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                dialog = ProgressDialog.show(getActivity(), "Aguarde", "Coletando imagens", true);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Intent intent = new Intent();
+                intent.putParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST, selectedImages);
+                setIntentResult(intent);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                dialog.dismiss();
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
     }
 
     private void initPreview(int width, int height) {
@@ -733,22 +763,18 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         protected void onPostExecute(File file) {
             super.onPostExecute(file);
             if (file != null) {
-              /*  Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(file));
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-                byte[] fotoB = stream.toByteArray();*/
+
                 ImagemOcorrencia image = new ImagemOcorrencia(ContentUris.parseId(fileUri), fileUri, file.getPath(),
-                        (pictureRotation == 90 || pictureRotation == 270));
+                        (pictureRotation == 90 || pictureRotation == 270 || pictureRotation == 180));
                 selectedImages.add(image);
                 showCameraLayout(false);
 
             } else {
-                Toast.makeText(getActivity(), "Sorry. An error occured while capturing image. Please try again.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Desculpe. Ocorreu um erro durante a captura da imagem. Por favor tente de novo.", Toast.LENGTH_LONG).show();
                 showCameraLayout(true);
             }
         }
     }
-
 
 
 }

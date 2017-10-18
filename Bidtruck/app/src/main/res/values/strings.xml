@@ -12,7 +12,7 @@
     <string name="menu_drw_romaneio">Romaneio</string>
     <string name="menu_drw_sync">Sincronização</string>
     <string name="menu_drw_ocorr">Ocorrências</string>
-    <string name="menu_drw_msg">Mensagens</string>
+    <string name="menu_drw_msg">Sair</string>
     <string name="menu_drw_oferta">Ofertas</string>
 
     <!--Titles / SubTitles-->
@@ -57,4 +57,5 @@
     <string name="titulo_romaneio">Romaneios</string>
 
     <string name="app_api_key">AIzaSyCRXIP-xfakNAk8lodv20x4xD6hFWNwD8Y</string>
+    <string name="imagem_capturada">Imagens Capturadas -</string>
 </resources>

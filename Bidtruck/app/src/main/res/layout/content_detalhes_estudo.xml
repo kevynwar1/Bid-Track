@@ -9,7 +9,7 @@
     tools:context=".view.romaneios.entrega.pagerdetalhes.DetalhesEntregaActivity"
     tools:showIn="@layout/activity_detalhes_estudo">
 
-    <include layout="@layout/tablayout" />
+    <!--include layout="@layout/tablayout" /-->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

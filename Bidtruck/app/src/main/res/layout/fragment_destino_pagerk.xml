@@ -4,6 +4,22 @@
     android:layout_height="match_parent"
     tools:context=".view.romaneios.entrega.pagerdetalhes.pager.DetalhesPagerFragment">
 
+    <FrameLayout
+        android:id="@+id/frame_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Carregando próxima viagem..."
+        android:layout_below="@+id/frame_progress"/>
+
+
+
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -436,12 +452,12 @@
             android:layout_weight="1"
             android:text="Finalizar" />
 
-        <Button
+        <!--<Button
             android:id="@+id/btn_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_weight="1"
-            android:text="Cancelar" />
+            android:text="Cancelar" />-->
     </LinearLayout>
 </RelativeLayout>

@@ -30,7 +30,7 @@ public class BusOcorrencia {
         return httpOcorrencia.select(seq_entrega, romaneio);
     }
 
-    public boolean insert(Ocorrencia ocorrencia) throws Exception{
+ /*   public boolean insert(Ocorrencia ocorrencia) throws Exception{
         if(ocorrencia == null || ocorrencia.getEmpresa() == null || ocorrencia.getEntrega() == null || ocorrencia.getRomaneio() == null
                 || ocorrencia.getTipoOcorrencia() == null)
             throw new NullPointerException("Erro ao tentar transmitir os dados ao servidor.");
@@ -39,7 +39,7 @@ public class BusOcorrencia {
         if(ocorrencia.getEntrega().getSeq_entrega() == 0 || ocorrencia.getRomaneio().getCodigo() == 0)
             throw new EntregaNullException();
         return httpOcorrencia.insert(ocorrencia);
-    }
+    }*/
 
     public List<TipoOcorrencia> selectTipo(int empresa) throws EmpresaNullException{
         if (empresa == 0) throw new EmpresaNullException();

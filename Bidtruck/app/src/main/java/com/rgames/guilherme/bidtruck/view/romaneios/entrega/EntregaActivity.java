@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -211,6 +213,8 @@ public class EntregaActivity extends AppCompatActivity {
         r.setLayoutManager(new LinearLayoutManager(this));
         mRomaneio.setEntregaList(entregas);
         r.setAdapter(new AdapterRecyclerDelivery(mRomaneio, this));
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(this, R.anim.list_layout);
+        r.setLayoutAnimation(controller);
     }
 
     private void initProgressBar() throws ClassCastException, NullPointerException {

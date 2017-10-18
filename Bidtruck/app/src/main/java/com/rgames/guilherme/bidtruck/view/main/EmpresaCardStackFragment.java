@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.main;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,8 +29,8 @@ import java.util.List;
 
 public class EmpresaCardStackFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // private static final String ARG_PARAM1 = "param1";
+    //private static final String ARG_PARAM2 = "param2";
 
     private ListView empresaList;
     private Facade facade;
@@ -77,9 +78,9 @@ public class EmpresaCardStackFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(!CRIADO) {
-            init();
-        }
+       // if (!CRIADO) {
+        //    init();
+        //}
     }
 
     /**
@@ -101,7 +102,7 @@ public class EmpresaCardStackFragment extends Fragment {
                     initList();
                 } else
                     viewSemMotorista(false);
-            }else throw new ContextNullException();
+            } else throw new ContextNullException();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,10 +114,14 @@ public class EmpresaCardStackFragment extends Fragment {
 
     private void initList() {
         new AsyncTask<Void, Void, List<Empresa>>() {
+            ProgressDialog dialog;
+
             @Override
             protected void onPreExecute() {
                 try {
-                    initProgressBar();
+                    dialog = ProgressDialog.show(getActivity(), "Aguarde", "Verificando Empresas", true);
+                    //     initProgressBar();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -156,10 +161,11 @@ public class EmpresaCardStackFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                     deslogar();
-                }finally {
+                } finally {
                     try {
                         CRIADO = true;
-                        finishProgressBar();
+                        dialog.dismiss();
+                        // finishProgressBar();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

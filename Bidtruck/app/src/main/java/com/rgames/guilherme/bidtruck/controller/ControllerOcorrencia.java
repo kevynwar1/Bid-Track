@@ -24,9 +24,9 @@ public class ControllerOcorrencia {
         return busOcorrencia.select(seq_entrega, romaneio);
     }
 
-    public boolean insert(Ocorrencia ocorrencia) throws Exception{
+    /*public boolean insert(Ocorrencia ocorrencia) throws Exception{
         return busOcorrencia.insert(ocorrencia);
-    }
+    }*/
 
     public List<TipoOcorrencia> selectTipo(int empresa) throws EmpresaNullException{
         return busOcorrencia.selectTipo(empresa);

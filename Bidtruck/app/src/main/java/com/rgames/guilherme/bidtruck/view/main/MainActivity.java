@@ -89,14 +89,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 try {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle(getString(R.string.app_name));
-                    alertDialog.setMessage("Deseja sair do app?");
+                    alertDialog.setMessage("Deseja Realmente sair ?");
                     alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE
                             , getString(R.string.app_dlg_cancel)
                             , new DialogInterface.OnClickListener() {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
 
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -144,11 +144,44 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_sync:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();
                 return true;
-            case R.id.nav_ocorr:
+         /*   case R.id.nav_ocorr:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, OcorrenciaFragment.newInstance()).commit();
-                return true;
+                return true;*/
             case R.id.nav_msg:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MensagensFragment.newInstance()).commit();
+                try {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle(getString(R.string.app_name));
+                    alertDialog.setMessage("Deseja realmente sair ?");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE
+                            , getString(R.string.app_dlg_cancel)
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
+                            , getString(R.string.app_dlg_confirm)
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    try {
+                                        Facade facade = new Facade(MainActivity.this);
+                                        facade.setLogged(new Motorista(0, ""));
+                                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                        finish();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        dialogInterface.dismiss();
+                                    }
+                                }
+                            });
+                    alertDialog.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MensagensFragment.newInstance()).commit();
                 return true;
             case R.id.nav_oferta:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new OfferFragment()).addToBackStack(null).commit();

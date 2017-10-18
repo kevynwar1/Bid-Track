@@ -72,7 +72,7 @@ public class HttpRomaneio extends HttpBase<Romaneio> {
                     if (input != null) {
                         Scanner scan = new Scanner(input);
                         String json = scan.nextLine();
-                        Integer.parseInt(json);
+                        //Integer.parseInt(json);
                         retorno = true;
 
                     }
