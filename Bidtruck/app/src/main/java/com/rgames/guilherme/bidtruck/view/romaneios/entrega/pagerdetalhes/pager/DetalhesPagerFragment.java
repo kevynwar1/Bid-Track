@@ -96,8 +96,8 @@ public class DetalhesPagerFragment extends Fragment{
                 ((TextView) mView.findViewById(R.id.txtCodRomaneio)).setText(String.valueOf(mRomaneio.getCodigo()));
                 ((TextView) mView.findViewById(R.id.txtNFS)).setText(mEntrega.getNota_fiscal());
                 ((TextView) mView.findViewById(R.id.txtSequencia)).setText(String.valueOf(mEntrega.getSeq_entrega()));
-                ((TextView) mView.findViewById(R.id.txtInicio)).setText(mRomaneio.getDate_create());
-                ((TextView) mView.findViewById(R.id.txtTermino)).setText(mRomaneio.getDate_finalization());
+               //((TextView) mView.findViewById(R.id.txtInicio)).setText(mRomaneio.getDate_create());
+                //((TextView) mView.findViewById(R.id.txtTermino)).setText(mRomaneio.getDate_finalization());
                 ((TextView) mView.findViewById(R.id.txtPeso)).setText(String.valueOf(mEntrega.getPeso()));
                 //Destinatario
                 if (mEntrega.getDestinatario() != null) {
@@ -144,6 +144,7 @@ public class DetalhesPagerFragment extends Fragment{
         }
         else{
             Toast.makeText(getActivity(), "Sem conexão, tente novamente mais tarde", Toast.LENGTH_SHORT).show();
+            return;
         }
 
 
@@ -223,6 +224,7 @@ public class DetalhesPagerFragment extends Fragment{
                                 int seq_nova_entrega = recebeStatusEntrega.getSeq_entrega();
                                 int cod_romaneio = mRomaneio.getCodigo();
                                 entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status, seq_nova_entrega, cod_romaneio);
+                                //entrega_atualizada = false;
                                 break;
 
                             }
@@ -248,13 +250,14 @@ public class DetalhesPagerFragment extends Fragment{
 
                 emptyView(false);
                 finishProgressBar();
+                if (entrega_atualizada == true){
+                    Toast.makeText(getActivity(),"Sua próxima entrega foi iniciada, tenha uma boa viagem!",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getActivity(),"Desculpe, sua próxima entrega não foi iniciada, uma nova tentantiva esta sendo realizada",Toast.LENGTH_LONG).show();
 
-                    if (entrega_atualizada == true){
-                        Toast.makeText(getActivity(),"Sua próxima entrega foi iniciada, tenha uma boa viagem!",Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        Toast.makeText(getActivity(),"Desculpe, sua próxima entrega não foi iniciada tente novamente!",Toast.LENGTH_LONG).show();
-                    }
+                }
+
 
 
             }catch (Exception e) {
@@ -300,7 +303,8 @@ public class DetalhesPagerFragment extends Fragment{
                                iniciarAtualizacao();
                                if(mEntrega != null) {
                                     alteraStatus();
-                                }
+
+                               }
 
                                // Toast.makeText(getActivity(), "Finalizado", Toast.LENGTH_SHORT).show();
                                 dialogInterface.dismiss();
