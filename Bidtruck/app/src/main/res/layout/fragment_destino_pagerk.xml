@@ -384,19 +384,36 @@
             <!--android:text="Gerar ocorrência" />-->
     <!--</LinearLayout>-->
 
+
+
+
     <LinearLayout
         android:id="@+id/linear_4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
+
+        <Button
+            android:id="@+id/btn_iniciar"
+            android:layout_width="169dp"
+            android:layout_height="wrap_content"
+            android:text="Iniciar"
+            android:layout_above="@+id/linear_4"
+            android:layout_toEndOf="@+id/frame_progress"
+            android:layout_weight="0.51" />
+
+
         <Button
             android:id="@+id/btn_finalize"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_weight="1"
+            android:layout_weight="4.33"
             android:text="Finalizar" />
+
+
+
 
         <!--<Button
             android:id="@+id/btn_cancel"
@@ -406,4 +423,6 @@
             android:layout_weight="1"
             android:text="Cancelar" />-->
     </LinearLayout>
+
+
 </RelativeLayout>
