@@ -64,6 +64,10 @@ public class EmpresaCardStackFragment extends Fragment {
 
     @Override
     public void onResume() {
+        facade = new Facade(getActivity());
+        if (!CRIADO) {
+            init();
+        }
         super.onResume();
     }
 
@@ -78,9 +82,10 @@ public class EmpresaCardStackFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-       // if (!CRIADO) {
-        //    init();
-        //}
+       /*  if (!CRIADO) {
+           init();
+        }*/
+
     }
 
     /**
@@ -93,7 +98,7 @@ public class EmpresaCardStackFragment extends Fragment {
                 if (imm != null)
                     if (getView() != null)
                         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                facade = new Facade(getActivity());
+                //   facade = new Facade(getActivity());
                 motorista = facade.isLogged();
                 viewSemMotorista(true);
                 empresaList = (ListView) mView.findViewById(R.id.lv_empresas);

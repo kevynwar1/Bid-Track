@@ -94,7 +94,8 @@ public class LoginCardStackFragment extends Fragment {
         tvError = (TextView) mView.findViewById(R.id.txtError);
         btLogin = (Button) mView.findViewById(R.id.btLogin);
         CheckBox check = (CheckBox) mView.findViewById(R.id.chkConectado);
-        check.setChecked(false);
+        check.setChecked(true);
+        check.setVisibility(View.INVISIBLE);
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Regular.ttf");
         edtEmail.setTypeface(font);
         edtSenha.setTypeface(font);

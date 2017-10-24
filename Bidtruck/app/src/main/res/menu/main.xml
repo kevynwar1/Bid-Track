@@ -2,8 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_logout"
+        android:id="@+id/action_foto"
+        android:icon="@drawable/ic_camera_menu"
         android:orderInCategory="100"
-        android:title="Logout"
-        app:showAsAction="never" />
+        android:title="Tirar Foto"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_enviar"
+        android:icon="@drawable/ic_send"
+        android:orderInCategory="200"
+        android:title="Enviar"
+        app:showAsAction="always" />
 </menu>

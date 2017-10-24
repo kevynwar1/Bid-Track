@@ -20,6 +20,7 @@
 
             <include layout="@layout/toolbar"></include>
 
+
         </android.support.design.widget.AppBarLayout>
         <RelativeLayout
             android:id="@+id/cameraLayout"
@@ -101,6 +102,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="Pronto"
+                    android:textColor="@color/colorAccent"
                     android:textAllCaps="false" />
 
                 <Button
@@ -110,6 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="Repetir"
+                    android:textColor="@color/colorAccent"
                     android:textAllCaps="false"/>
 
                 <Button
@@ -120,6 +123,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="Proxima"
+                    android:textColor="@color/colorAccent"
                     android:textAllCaps="false" />
             </RelativeLayout>
         </RelativeLayout>

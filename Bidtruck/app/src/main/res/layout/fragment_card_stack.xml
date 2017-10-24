@@ -98,6 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mantenha-me conectado."
+                android:visibility="invisible"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>

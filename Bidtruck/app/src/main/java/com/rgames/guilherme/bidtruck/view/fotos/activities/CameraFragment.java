@@ -43,11 +43,11 @@ import android.widget.Toast;
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.squareup.picasso.Picasso;
-import com.vlk.multimager.activities.BaseActivity;
-import com.vlk.multimager.utils.Constants;
+import  com.rgames.guilherme.bidtruck.view.fotos.activities.BaseActivity;
+import  com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
 import com.vlk.multimager.utils.Image;
-import com.vlk.multimager.utils.Params;
-import com.vlk.multimager.utils.Utils;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -95,26 +95,26 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(com.vlk.multimager.R.layout.fragment_camera, container, false);
+        View view = inflater.inflate(R.layout.fragment_camera, container, false);
         initViews(view);
         return view;
     }
 
     private void initViews(View view) {
-        coordinatorLayout = (CoordinatorLayout) view.findViewById(com.vlk.multimager.R.id.coordinatorLayout);
-        parentLayout = (RelativeLayout) view.findViewById(com.vlk.multimager.R.id.parentLayout);
-        toolbar = (Toolbar) view.findViewById(com.vlk.multimager.R.id.toolbar);
-        //toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
-        cameraLayout = (RelativeLayout) view.findViewById(com.vlk.multimager.R.id.cameraLayout);
-        surfaceView = (SurfaceView) view.findViewById(com.vlk.multimager.R.id.surfaceView);
-        captureButton = (ImageButton) view.findViewById(com.vlk.multimager.R.id.captureButton);
-        doneAllButton = (ImageButton) view.findViewById(com.vlk.multimager.R.id.doneAllButton);
-        flashButton = (ImageButton) view.findViewById(com.vlk.multimager.R.id.flashButton);
-        previewLayout = (RelativeLayout) view.findViewById(com.vlk.multimager.R.id.previewLayout);
-        previewImageView = (ImageView) view.findViewById(com.vlk.multimager.R.id.previewImageView);
-        doneButton = (Button) view.findViewById(com.vlk.multimager.R.id.doneButton);
-        retakeButton = (Button) view.findViewById(com.vlk.multimager.R.id.retakeButton);
-        nextButton = (Button) view.findViewById(com.vlk.multimager.R.id.nextButton);
+        coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinatorLayout);
+        parentLayout = (RelativeLayout) view.findViewById(R.id.parentLayout);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
+        cameraLayout = (RelativeLayout) view.findViewById(R.id.cameraLayout);
+        surfaceView = (SurfaceView) view.findViewById(R.id.surfaceView);
+        captureButton = (ImageButton) view.findViewById(R.id.captureButton);
+        doneAllButton = (ImageButton) view.findViewById(R.id.doneAllButton);
+        flashButton = (ImageButton) view.findViewById(R.id.flashButton);
+        previewLayout = (RelativeLayout) view.findViewById(R.id.previewLayout);
+        previewImageView = (ImageView) view.findViewById(R.id.previewImageView);
+        doneButton = (Button) view.findViewById(R.id.doneButton);
+        retakeButton = (Button) view.findViewById(R.id.retakeButton);
+        nextButton = (Button) view.findViewById(R.id.nextButton);
         captureButton.setOnClickListener(this);
         doneButton.setOnClickListener(this);
         retakeButton.setOnClickListener(this);
@@ -130,8 +130,8 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         checkPermissions();
     }
 
-    public static com.vlk.multimager.activities.CameraFragment newInstance(Params params) {
-        com.vlk.multimager.activities.CameraFragment fragment = new com.vlk.multimager.activities.CameraFragment();
+    public static CameraFragment newInstance(Params params) {
+        CameraFragment fragment = new CameraFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, params);
         fragment.setArguments(args);
@@ -174,7 +174,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
                     showCameraLayout(true);
                     initCamera();
                 } else {
-                    Toast.makeText(getActivity(), "Permissions not granted.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Permissão não concedida", Toast.LENGTH_LONG).show();
                     setEmptyResult();
                 }
                 break;
@@ -185,13 +185,13 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setToolbarTitle() {
-        //toolbar_title.setText("Imagens Capturadas - " + selectedImages.size());
+        toolbar_title.setText("Imagens Capturadas - " + selectedImages.size());
         //toolbar_title.setText(getString(R.string.imagem_capturada) + selectedImages.size());
-        toolbar.setTitle("Imagens capturadas - " + selectedImages.size());
+        // toolbar.setTitle("Imagens capturadas - " + selectedImages.size());
     }
 
     private void showCameraLayout(boolean flag) {
-        setToolbarTitle();
+             setToolbarTitle();
         if (flag) {
             toolbar.setVisibility(View.GONE);
             cameraLayout.setVisibility(View.VISIBLE);

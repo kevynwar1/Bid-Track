@@ -1,10 +1,12 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +15,10 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -53,7 +57,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private HttpOcorrencia httpOcorrencia;
     private MyProgressBar myProgressBar;
     private AdapterRecyclerTipoOcorrencia adapter;
-    private Button fab_photo;
     private RecyclerView rv;
     private int cod_ocorrencia;
     String codado;
@@ -96,78 +99,91 @@ public class OcorrenciaActivity extends AppCompatActivity {
         super.onResume();
 
         initFab();
-        clickfloat();
+      //  clickfloat();
         initList();
-        initButton();
+       // initButton();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
+        // int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_foto:
+                clickfloat();
+                return true;
+            case R.id.action_enviar:
+                initButton();
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     private void initButton() {
-        findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
+
+        new AsyncTask<Object, Object, Boolean>() {
+            String descrip;
+            String msg = "";
+
             @Override
-            public void onClick(View view) {
-                new AsyncTask<Object, Object, Boolean>() {
-                    String descrip;
-                    String msg = "";
-
-                    @Override
-                    protected void onPreExecute() {
-                        initProgressBar();
-                        descrip = ((TextView) findViewById(R.id.edit_description)).getText().toString();
-                    }
-
-                    @Override
-                    protected Boolean doInBackground(Object... voids) {
-                        try {
-                            return httpOcorrencia.insert(new Ocorrencia(controllerLogin.getIdEmpresa()
-                                    , seq_entrega
-                                    , romaneio
-                                    , adapter.getCodigoSelecionado()
-                                    , descrip
-                            ), listImagem);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            msg = e.getMessage();
-                            return null;
-                        }
-                    }
-
-                    @Override
-                    protected void onPostExecute(Boolean aBoolean) {
-                        try {
-                            if (msg.equals(""))
-                                if (aBoolean) {
-                                    //cod_ocorrencia = aBoolean;
-                                    Toast.makeText(OcorrenciaActivity.this, "Ocorrência cadastrada.", Toast.LENGTH_LONG).show();
-                                    onBackPressed();
-                                } else {
-                                    Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a ocorrência.", Toast.LENGTH_LONG).show();
-                                }
-                            else
-                                Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            try {
-                                finishProgressBar();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }.execute();
-                // initFoto();
+            protected void onPreExecute() {
+                initProgressBar();
+                descrip = ((TextView) findViewById(R.id.edit_description)).getText().toString();
             }
-        });
+
+            @Override
+            protected Boolean doInBackground(Object... voids) {
+                try {
+                    return httpOcorrencia.insert(new Ocorrencia(controllerLogin.getIdEmpresa()
+                            , seq_entrega
+                            , romaneio
+                            , adapter.getCodigoSelecionado()
+                            , descrip
+                    ), listImagem);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    msg = e.getMessage();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                try {
+                    if (msg.equals(""))
+                        if (aBoolean) {
+                            //cod_ocorrencia = aBoolean;
+                            Toast.makeText(OcorrenciaActivity.this, "Ocorrência cadastrada.", Toast.LENGTH_LONG).show();
+                            onBackPressed();
+                        } else {
+                            Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a ocorrência.", Toast.LENGTH_LONG).show();
+                        }
+                    else
+                        Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        finishProgressBar();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.execute();
+        // initFoto();
+
+
     }
 
     private void initList() {
@@ -217,21 +233,17 @@ public class OcorrenciaActivity extends AppCompatActivity {
     }
 
     private void initFab() {
-        fab_photo = (Button) findViewById(R.id.fab_photo);
         rv = (RecyclerView) findViewById(R.id.rv_photo);
     }
 
     private void clickfloat() {
-        fab_photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
-                Params params = new Params();
-                params.setCaptureLimit(5);
-                intent.putExtra(Constants.KEY_PARAMS, params);
-                startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
-            }
-        });
+
+        Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
+        Params params = new Params();
+        params.setCaptureLimit(5);
+        intent.putExtra(Constants.KEY_PARAMS, params);
+        startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
+
     }
 
     @Override
