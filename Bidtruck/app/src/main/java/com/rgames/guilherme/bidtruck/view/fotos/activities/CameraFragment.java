@@ -43,9 +43,9 @@ import android.widget.Toast;
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.squareup.picasso.Picasso;
-import  com.rgames.guilherme.bidtruck.view.fotos.activities.BaseActivity;
-import  com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
-import com.vlk.multimager.utils.Image;
+import com.rgames.guilherme.bidtruck.view.fotos.activities.BaseActivity;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Utils;
 
@@ -65,8 +65,8 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     CoordinatorLayout coordinatorLayout;
     RelativeLayout parentLayout;
-    Toolbar toolbar;
-    TextView toolbar_title;
+    Toolbar toolbar1;
+    TextView toolbarT;
     RelativeLayout cameraLayout;
     SurfaceView surfaceView;
     private SurfaceHolder previewHolder = null;
@@ -78,7 +78,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     Button doneButton;
     Button retakeButton;
     Button nextButton;
-    ArrayList<ImagemOcorrencia> selectedImages = new ArrayList<>();
+    ArrayList<Image> selectedImages = new ArrayList<>();
     private int mOrientation = -1;
     private static final int ORIENTATION_PORTRAIT_NORMAL = 1;
     private static final int ORIENTATION_PORTRAIT_INVERTED = 2;
@@ -103,8 +103,8 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     private void initViews(View view) {
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinatorLayout);
         parentLayout = (RelativeLayout) view.findViewById(R.id.parentLayout);
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
+        toolbar1 = (Toolbar) view.findViewById(R.id.toolbar1);
+        toolbarT = (TextView) view.findViewById(R.id.toolbarT);
         cameraLayout = (RelativeLayout) view.findViewById(R.id.cameraLayout);
         surfaceView = (SurfaceView) view.findViewById(R.id.surfaceView);
         captureButton = (ImageButton) view.findViewById(R.id.captureButton);
@@ -185,19 +185,19 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setToolbarTitle() {
-        toolbar_title.setText("Imagens Capturadas - " + selectedImages.size());
+        toolbarT.setText("Imagens Capturadas - " + selectedImages.size());
         //toolbar_title.setText(getString(R.string.imagem_capturada) + selectedImages.size());
         // toolbar.setTitle("Imagens capturadas - " + selectedImages.size());
     }
 
     private void showCameraLayout(boolean flag) {
-             setToolbarTitle();
+        setToolbarTitle();
         if (flag) {
-            toolbar.setVisibility(View.GONE);
+            toolbar1.setVisibility(View.GONE);
             cameraLayout.setVisibility(View.VISIBLE);
             previewLayout.setVisibility(View.GONE);
         } else {
-            toolbar.setVisibility(View.VISIBLE);
+            toolbar1.setVisibility(View.VISIBLE);
             cameraLayout.setVisibility(View.GONE);
             previewLayout.setVisibility(View.VISIBLE);
             showPreviewImage();
@@ -206,14 +206,14 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
 
     private void showPreviewImage() {
         Picasso.with(getActivity())
-                .load(new File(selectedImages.get(selectedImages.size() - 1).getImagePath()))
+                .load(new File(selectedImages.get(selectedImages.size() - 1).imagePath))
                 .placeholder(R.drawable.imagem_processada)
                 .error(R.drawable.imagem_indisponivel)
                 .into(previewImageView);
     }
 
     private void init() {
-        Utils.initToolBar((BaseActivity) getActivity(), toolbar, true);
+        Utils.initToolBar((BaseActivity) getActivity(), toolbar1, true);
         handleInputParams();
         initFlashIcon();
     }
@@ -223,7 +223,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             Utils.showLongSnack(parentLayout, "Please mention the capture limit as a parameter.");
             setEmptyResult();
         }
-        Utils.setViewBackgroundColor(getActivity(), toolbar, params.getToolbarColor());
+        Utils.setViewBackgroundColor(getActivity(), toolbar1, params.getToolbarColor());
         Utils.setViewBackgroundColor(getActivity(), captureButton, params.getActionButtonColor());
         Utils.setViewBackgroundColor(getActivity(), doneAllButton, params.getActionButtonColor());
         Utils.setViewBackgroundColor(getActivity(), flashButton, params.getActionButtonColor());
@@ -247,12 +247,12 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
                 Camera.Parameters params = camera.getParameters();
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                 camera.setParameters(params);
-                flashButton.setImageResource(com.vlk.multimager.R.drawable.ic_flash_on);
+                flashButton.setImageResource(R.drawable.ic_flash_on);
             } else {
                 Camera.Parameters params = camera.getParameters();
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 camera.setParameters(params);
-                flashButton.setImageResource(com.vlk.multimager.R.drawable.ic_flash_off);
+                flashButton.setImageResource(R.drawable.ic_flash_off);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -288,20 +288,20 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             if (params.getCaptureLimit() > selectedImages.size())
                 captureImage();
             else {
-                Utils.showShortSnack(parentLayout, "You can capture only " + params.getCaptureLimit() + " images at a time.");
+                Utils.showShortSnack(parentLayout, "Você só pode tirar " + params.getCaptureLimit() + " Fotos.");
             }
         } else if (view.equals(flashButton)) {
             toggleFlashState();
         } else if (view.equals(doneButton)) {
             if (selectedImages.size() > 0)
-                // collectAllPaths();
-                coletaImagem();
+                 collectAllPaths();
+               // coletaImagem();
             else
                 setEmptyResult();
         } else if (view.equals(doneAllButton)) {
             if (selectedImages.size() > 0)
-                // collectAllPaths();
-                coletaImagem();
+                 collectAllPaths();
+                //coletaImagem();
             else
                 setEmptyResult();
         } else if (view.equals(retakeButton)) {
@@ -424,7 +424,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
                 degrees = 270;
                 break;
         }
-        doneAllButton.setImageDrawable(getRotatedImage(com.vlk.multimager.R.drawable.ic_done_all, degrees));
+        doneAllButton.setImageDrawable(getRotatedImage(R.drawable.ic_done_all, degrees));
     }
 
     private Drawable getRotatedImage(int drawableId, int degrees) {
@@ -473,12 +473,12 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /*  private void collectAllPaths() {
+      private void collectAllPaths() {
           Intent intent = new Intent();
           intent.putParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST, selectedImages);
           setIntentResult(intent);
-      }*/
-    private void coletaImagem() {
+      }
+   /* private void coletaImagem() {
         new AsyncTask<Void, Void, Void>() {
             ProgressDialog dialog;
 
@@ -502,7 +502,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
                 super.onPostExecute(aVoid);
             }
         }.execute();
-    }
+    }*/
 
     private void initPreview(int width, int height) {
         if (camera != null && previewHolder.getSurface() != null) {
@@ -764,7 +764,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             super.onPostExecute(file);
             if (file != null) {
 
-                ImagemOcorrencia image = new ImagemOcorrencia(ContentUris.parseId(fileUri), fileUri, file.getPath(),
+                Image image = new Image(ContentUris.parseId(fileUri), fileUri, file.getPath(),
                         (pictureRotation == 90 || pictureRotation == 270 || pictureRotation == 180));
                 selectedImages.add(image);
                 showCameraLayout(false);

@@ -36,11 +36,12 @@ import com.rgames.guilherme.bidtruck.model.dao.http.HttpImagem;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOcorrencia;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.view.fotos.adapters.CarregadorDeFoto;
-import com.vlk.multimager.activities.MultiCameraActivity;
-import com.vlk.multimager.adapters.GalleryImagesAdapter;
-import com.vlk.multimager.utils.Constants;
-import com.vlk.multimager.utils.Image;
-import com.vlk.multimager.utils.Params;
+import com.rgames.guilherme.bidtruck.view.fotos.activities.MultiCameraActivity;
+import com.rgames.guilherme.bidtruck.view.fotos.adapters.GalleryImagesAdapter;
+import com.rgames.guilherme.bidtruck.view.fotos.adapters.ImagemAdapter;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -99,9 +100,9 @@ public class OcorrenciaActivity extends AppCompatActivity {
         super.onResume();
 
         initFab();
-      //  clickfloat();
+        //  clickfloat();
         initList();
-       // initButton();
+        // initButton();
 
     }
 

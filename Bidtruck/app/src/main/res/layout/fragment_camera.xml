@@ -18,60 +18,78 @@
             android:layout_height="wrap_content"
             android:theme="@style/MultimagerTheme.AppBarOverlay">
 
-            <include layout="@layout/toolbar"></include>
+            <!--include layout="@layout/toolbar"></include-->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent">
 
+                <TextView
+                    android:id="@+id/toolbarT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
+
         <RelativeLayout
             android:id="@+id/cameraLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/appBarLayout">
 
-                <SurfaceView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:id="@+id/surfaceView">
-                </SurfaceView>
-                <ImageButton
-                    android:id="@+id/doneAllButton"
-                    android:background="@drawable/action_button_bg"
-                    android:layout_width="@dimen/margin_56"
-                    android:layout_height="@dimen/margin_56"
-                    android:padding="@dimen/margin_10"
-                    android:src="@drawable/ic_done_all"
-                    android:scaleType="fitXY"
-                    android:elevation="@dimen/margin_8"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginRight="@dimen/margin_16"
-                    android:layout_marginBottom="@dimen/margin_16"/>
-                <ImageButton
-                    android:id="@+id/captureButton"
-                    android:background="@drawable/action_button_bg"
-                    android:layout_width="@dimen/margin_56"
-                    android:layout_height="@dimen/margin_56"
-                    android:padding="@dimen/margin_10"
-                    android:src="@drawable/ic_camera"
-                    android:scaleType="fitXY"
-                    android:elevation="@dimen/margin_8"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/margin_16"/>
+            <SurfaceView
+                android:id="@+id/surfaceView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"></SurfaceView>
+
+            <ImageButton
+                android:id="@+id/doneAllButton"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="18dp"
+                android:layout_marginRight="18dp"
+                android:background="@drawable/action_button_bg"
+                android:elevation="8dp"
+                android:padding="12dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_done_all" />
+
+            <ImageButton
+                android:id="@+id/captureButton"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/action_button_bg"
+                android:elevation="8dp"
+                android:padding="12dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_camera" />
+
             <ImageButton
                 android:id="@+id/flashButton"
-                android:background="@drawable/action_button_bg"
-                android:layout_width="@dimen/margin_56"
-                android:layout_height="@dimen/margin_56"
-                android:padding="@dimen/margin_10"
-                android:src="@drawable/ic_flash_on"
-                android:scaleType="fitXY"
-                android:elevation="@dimen/margin_8"
-                android:layout_alignParentLeft="true"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="@dimen/margin_16"
-                android:layout_marginBottom="@dimen/margin_16"/>
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="18dp"
+                android:layout_marginLeft="18dp"
+                android:background="@drawable/action_button_bg"
+                android:elevation="8dp"
+                android:padding="12dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_flash_on" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -85,14 +103,14 @@
                 android:id="@+id/previewImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/optionsLayout"/>
+                android:layout_above="@+id/optionsLayout" />
 
             <RelativeLayout
                 android:id="@+id/optionsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                android:background="@color/white">
 
                 <Button
                     android:id="@+id/doneButton"
@@ -102,8 +120,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="Pronto"
-                    android:textColor="@color/colorAccent"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent" />
 
                 <Button
                     android:id="@+id/retakeButton"
@@ -112,8 +130,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="Repetir"
-                    android:textColor="@color/colorAccent"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent" />
 
                 <Button
                     android:id="@+id/nextButton"
@@ -123,8 +141,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="Proxima"
-                    android:textColor="@color/colorAccent"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent" />
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>

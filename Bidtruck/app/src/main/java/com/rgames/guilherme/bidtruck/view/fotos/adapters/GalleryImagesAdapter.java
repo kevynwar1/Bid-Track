@@ -18,11 +18,11 @@ import android.widget.RelativeLayout;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.squareup.picasso.Picasso;
-import com.vlk.multimager.activities.GalleryActivity;
-import com.vlk.multimager.utils.Image;
-import com.vlk.multimager.utils.Params;
-import com.vlk.multimager.utils.Utils;
-import com.vlk.multimager.views.AutoImageView;
+//import com.vlk.multimager.activities.GalleryActivity;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Utils;
+import com.rgames.guilherme.bidtruck.view.fotos.views.AutoImageView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,57 +77,60 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
         final ImageHolder holder = (ImageHolder) viewHolder;
         final Image entity = list.get(position);
         float height;
-    //    if (entity.isPortraitImage)
-            height = Float.valueOf(activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_landscape));
-            //activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_portrait)
+        if (entity.isPortraitImage)
+            height = Float.valueOf(activity.getResources().getDimension(R.dimen.image_height_landscape));
+            // activity.getResources().getDimension(R.dimen.image_height_portrait);
             //240dp
-  //      else
-            height = Float.valueOf(activity.getResources().getDimension(com.vlk.multimager.R.dimen.image_height_portrait));
-    /*    if(holder.imageView != null) {
+        else
+            height = Float.valueOf(activity.getResources().getDimension(R.dimen.image_height_portrait));
+        if (holder.imageView != null) {
             Picasso.with(activity)
                     .load(entity.uri)
-                    .placeholder(com.vlk.multimager.R.drawable.image_processing)
-                    .error(com.vlk.multimager.R.drawable.no_image)
-                    .resize(screenWidth / columnCount, (int)height)
+                    .placeholder(R.drawable.imagem_processada)
+                    .error(R.drawable.imagem_indisponivel)
+                    .resize(screenWidth / columnCount, (int) height)
                     .onlyScaleDown()
                     .centerInside()
                     .into(holder.imageView);
-        }*/
-        try {
-            Bitmap bit = CarregadorDeFoto.carrega(entity.imagePath);
-            holder.imageView.setImageBitmap(bit);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+       /* try {
+            for (int i = 0; i < list.size(); i++) {
+                Bitmap bit = CarregadorDeFoto.carrega(entity.imagePath);
+                holder.imageView.setImageBitmap(bit);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
 
 
-        if (selectedIDs.contains(entity._id)) {
+
+
+       /* if (selectedIDs.contains(entity._id)) {
             if (params.getLightColor() != 0)
                 holder.frameLayout.setForeground(new ColorDrawable(params.getLightColor()));
             holder.selectedImageView.setVisibility(View.VISIBLE);
         } else {
             holder.frameLayout.setForeground(null);
             holder.selectedImageView.setVisibility(View.GONE);
-        }
-        holder.setTag(com.vlk.multimager.R.id.image_id, entity._id);
+        }*/
+        //  holder.setTag(R.id.image, entity._id);
+
         holder.parentLayout.setOnClickListener(onClickListener);
     }
 
     public void setSelectedItem(View parentView, long imageId) {
         if (selectedIDs.contains(imageId)) {
             selectedIDs.remove(Long.valueOf(imageId));
-            ((FrameLayout) parentView.findViewById(com.vlk.multimager.R.id.frameLayout)).setForeground(null);
-            ((ImageView) parentView.findViewById(com.vlk.multimager.R.id.selectedImageView)).setVisibility(View.GONE);
+            ((FrameLayout) parentView.findViewById(R.id.frameLayout)).setForeground(null);
+            ((ImageView) parentView.findViewById(R.id.selectedImageView)).setVisibility(View.GONE);
         } else {
             if (selectedIDs.size() < params.getPickerLimit()) {
                 selectedIDs.add(Long.valueOf(imageId));
                 if (params.getLightColor() != 0)
-                    ((FrameLayout) parentView.findViewById(com.vlk.multimager.R.id.frameLayout)).setForeground(new ColorDrawable(params.getLightColor()));
-                ((ImageView) parentView.findViewById(com.vlk.multimager.R.id.selectedImageView)).setVisibility(View.VISIBLE);
+                    ((FrameLayout) parentView.findViewById(R.id.frameLayout)).setForeground(new ColorDrawable(params.getLightColor()));
+                ((ImageView) parentView.findViewById(R.id.selectedImageView)).setVisibility(View.VISIBLE);
             } else {
-                if (activity instanceof GalleryActivity) {
-                    ((GalleryActivity) activity).showLimitAlert("You can select only " + params.getPickerLimit() + " images at a time.");
-                }
+
             }
         }
     }
@@ -170,10 +173,10 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public ImageHolder(View v) {
             super(v);
-            imageView = (AutoImageView) v.findViewById(com.vlk.multimager.R.id.imageView);
-            selectedImageView = (ImageView) v.findViewById(com.vlk.multimager.R.id.selectedImageView);
-            parentLayout = (RelativeLayout) v.findViewById(com.vlk.multimager.R.id.parentLayout);
-            frameLayout = (FrameLayout) v.findViewById(com.vlk.multimager.R.id.frameLayout);
+            imageView = (AutoImageView) v.findViewById(R.id.imageView);
+            selectedImageView = (ImageView) v.findViewById(R.id.selectedImageView);
+            parentLayout = (RelativeLayout) v.findViewById(R.id.parentLayout);
+            frameLayout = (FrameLayout) v.findViewById(R.id.frameLayout);
             if (params.getToolbarColor() != 0)
                 Utils.setViewBackgroundColor(activity, selectedImageView, params.getToolbarColor());
         }

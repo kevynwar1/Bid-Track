@@ -8,11 +8,11 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.vlk.multimager.views.AutoImageView
+        <com.rgames.guilherme.bidtruck.view.fotos.views.AutoImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_1"
+            android:layout_margin="1dp"
             android:adjustViewBounds="true"/>
     </FrameLayout>
 

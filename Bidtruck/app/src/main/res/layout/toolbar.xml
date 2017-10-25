@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:text="Home"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_18"
+        android:textSize="20sp"
         android:textStyle="bold" />
 </android.support.v7.widget.Toolbar>

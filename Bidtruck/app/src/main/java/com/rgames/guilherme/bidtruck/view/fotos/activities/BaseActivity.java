@@ -10,8 +10,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.vlk.multimager.views.CustomProgressDialog;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,7 @@ import java.util.List;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    public CustomProgressDialog progressDialog;
+
     public static final int SHOW_PROGRESS = 1;
     public static final int DISMISS_PROGRESS = 2;
 
@@ -29,20 +27,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    public void showProgressDialog(String message){
-        if(progressDialog == null)
-            progressDialog = new CustomProgressDialog(this);
-        progressDialog.setMessage(message);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-    }
 
-    public void dismissProgressDialog(){
-        if(progressDialog != null)
-            if(progressDialog.isShowing())
-                progressDialog.dismiss();
-    }
 
     public boolean hasStoragePermission(Context context) {
         int writePermissionCheck = ContextCompat.checkSelfPermission(context,

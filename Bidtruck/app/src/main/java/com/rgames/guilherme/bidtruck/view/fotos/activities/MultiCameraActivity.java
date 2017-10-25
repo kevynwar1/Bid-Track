@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.view.fotos.activities.BaseActivity;
-//import com.vlk.multimager.activities.Camera2Fragment;
 import com.rgames.guilherme.bidtruck.view.fotos.activities.CameraFragment;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
