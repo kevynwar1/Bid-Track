@@ -28,7 +28,6 @@ public class EntregaActivity extends AppCompatActivity {
 
     private MyProgressBar myProgressBar;
     private Romaneio mRomaneio;
-    private StatusRomaneioTask mRomaneioTask;
     private List<Entrega> mListEntregas;
     private boolean tem_romaneio;
     private boolean finish = true;
@@ -44,7 +43,6 @@ public class EntregaActivity extends AppCompatActivity {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                 initToobal();
                // initList();
-                mRomaneioTask = new StatusRomaneioTask();
 
             } else {
                 Toast.makeText(this, getString(R.string.app_err_null_romaneio), Toast.LENGTH_SHORT).show();
@@ -65,11 +63,11 @@ public class EntregaActivity extends AppCompatActivity {
                 finish = false;
             }
             else {
-
+                    initRecyclerView(null);
                     mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                     mRetornaTask = new RetornaListaTask();
                     mRetornaTask.execute();
-                    mRomaneioTask.execute();
+
             }
 
         }catch (Exception e){
@@ -147,54 +145,21 @@ public class EntregaActivity extends AppCompatActivity {
     }
 
 
-    class StatusRomaneioTask extends AsyncTask<Void, Void, Void>{
-
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            try {
-
-                HttpRomaneio mhttpRomaneio = new HttpRomaneio(EntregaActivity.this);
-                if (mListEntregas != null) {
-
-                    //for(int i = 0; i < mListEntregas.size(); i++){
-                    Entrega mEtrenga = mListEntregas.get(mListEntregas.size() - 1);
-
-
-                    if (mEtrenga.getStatusEntrega().getCodigo() == 4 && mRomaneio.getCodigo() > 0) {
-
-                        int novo_status = 4;
-                        int cod_romaneio = mRomaneio.getCodigo();
-                        tem_romaneio = mhttpRomaneio.statusRomaneioEntrega(novo_status, cod_romaneio);
-
-                    } else {
-                        Toast.makeText(EntregaActivity.this, "Desculpe, este romaneio não pode ser finalizado!", Toast.LENGTH_SHORT).show();
-                    }
-                    //break;
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if(tem_romaneio) {
-                Toast.makeText(EntregaActivity.this, "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
-            } else {
-                //Toast.makeText(EntregaActivity.this, "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
 
 
        class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
+
+           @Override
+           protected void onPreExecute(){
+               try{
+                   super.onPreExecute();
+                   // emptyView(true);
+                   initProgressBar();
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+           }
+
 
 
             @Override
@@ -214,6 +179,7 @@ public class EntregaActivity extends AppCompatActivity {
                     if (entregas == null || entregas.size() == 0)
                         emptyView(true);
                     initRecyclerView(entregas);
+                    finishProgressBar();
                     mListEntregas = entregas;
 
                 } catch (Exception e) {

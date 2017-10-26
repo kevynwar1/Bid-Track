@@ -22,7 +22,6 @@
         android:background="@drawable/card_views">
 
 
-
         <TextView
             android:id="@+id/txtSequencia"
             android:layout_width="20dp"
@@ -101,7 +100,7 @@
             android:id="@+id/txtStatusEntrega"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="aaaaaa"
             android:textColor="#FFEB3B"
             android:textSize="17dp"
             android:layout_below="@+id/txtCidade"

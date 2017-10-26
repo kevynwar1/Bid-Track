@@ -19,6 +19,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
 import java.util.List;
@@ -33,9 +34,13 @@ public class DetalhesPagerFragment extends Fragment{
     private boolean entrega_atualizada;
     private boolean entrega_ativa;
     private boolean sequencia_invalida;
+    private boolean romaneio_inativo;
     private StatusTask mStatusTask;
     private ListaTask mListaTask;
     private List<Entrega> mEntregas;
+    private StatusRomaneioTask mRomaneioTask;
+    private List<Entrega> mListEntregas2;
+    private RetornaTask mFinalTask;
 
 
 
@@ -64,6 +69,7 @@ public class DetalhesPagerFragment extends Fragment{
            // mStatusTask = new StatusTask();
            // mAtualiza = new AtualizaTask();
             //mLista = new ListaTask();
+            //mFinalTask = new RetornaTask();
         } else mEntrega = new Entrega();
     }
 
@@ -134,6 +140,19 @@ public class DetalhesPagerFragment extends Fragment{
         }
         else{
             Toast.makeText(getActivity(), "Sem conexão, tente novamente mais tarde", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+    }
+
+    public void atualizaRomaneio(){
+        if(mRomaneioTask == null || mRomaneioTask.getStatus() != AsyncTask.Status.RUNNING){
+            mRomaneioTask = new StatusRomaneioTask();
+            mRomaneioTask.execute();
+        }
+        else{
+            Toast.makeText(getActivity(), "Sem conexão, tente novamente mais tarde", Toast.LENGTH_SHORT).show();
+            return;
         }
 
     }
@@ -153,6 +172,62 @@ public class DetalhesPagerFragment extends Fragment{
 
 
     }
+
+
+   public void listaFinal(){
+        if(mFinalTask == null  || mFinalTask.getStatus() != AsyncTask.Status.RUNNING){
+            mFinalTask = new RetornaTask();
+            mFinalTask.execute();
+        } else{
+            Toast.makeText(getActivity(), "Sem conexão, tente novamente mais tarde", Toast.LENGTH_SHORT).show();
+            return;
+            }
+
+        }
+
+
+    class RetornaTask extends AsyncTask<Void, Void, List<Entrega>> {
+
+        protected void onPreExecute(){
+            try{
+                super.onPreExecute();
+                //emptyView(true);
+                initProgressBar();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
+        @Override
+        protected List<Entrega> doInBackground(Void... String) {
+            HttpEntrega httpEntrega = new HttpEntrega(getActivity());
+            try {
+                mListEntregas2 = httpEntrega.select();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Entrega> entregas) {
+            try {
+                /*if (entregas == null || entregas.size() == 0)
+
+                    mListEntregas2 = entregas;*/
+                finishProgressBar();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
 
 
 
@@ -184,8 +259,8 @@ public class DetalhesPagerFragment extends Fragment{
                     int seq_entrega = mEntrega.getSeq_entrega();
                     int cod_romaneio = mRomaneio.getCodigo();
                     tem_entrega = mHttpEntrega.statusEntrega(novo_status,seq_entrega,cod_romaneio);
-                }
 
+                }
 
             }
         return null;
@@ -222,7 +297,7 @@ public class DetalhesPagerFragment extends Fragment{
         protected void onPreExecute(){
             try{
                 super.onPreExecute();
-               // emptyView(true);
+                // emptyView(true);
                 initProgressBar();
 
             }catch (Exception e){
@@ -237,7 +312,9 @@ public class DetalhesPagerFragment extends Fragment{
             sequencia_invalida = false;
             HttpEntrega httpEntregas = new HttpEntrega(getActivity());
             try {
-                mEntregas = httpEntregas.select();
+
+                    mEntregas = httpEntregas.select();
+
 
                 if (mEntregas != null) {
                     for (int j = 0; j < mEntregas.size(); j++) {
@@ -267,6 +344,7 @@ public class DetalhesPagerFragment extends Fragment{
                                         int cod_romaneio = mRomaneio.getCodigo();
                                         entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status, seq_nova_entrega, cod_romaneio);
                                         break;
+
                                     //}
                                 }
 
@@ -276,7 +354,7 @@ public class DetalhesPagerFragment extends Fragment{
 
                     }
 
-                }
+                 }
 
                 } catch(Exception e){
                     e.printStackTrace();
@@ -314,6 +392,67 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
 
+    class StatusRomaneioTask extends AsyncTask<Void, Void, Void>{
+
+
+        @Override
+        protected void onPreExecute(){
+            try{
+                super.onPreExecute();
+                // emptyView(true);
+                initProgressBar();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            romaneio_inativo = false;
+            try {
+
+
+                if(mListEntregas2 != null){
+                    HttpRomaneio mhttpRomaneio = new HttpRomaneio(getActivity());
+                    Entrega mEtrenga = mListEntregas2.get(mListEntregas2.size() - 1);
+                    if (mEtrenga.getStatusEntrega().getCodigo() == 4 && mRomaneio.getCodigo() > 0) {
+
+                        int novo_status = 4;
+                        int cod_romaneio = mRomaneio.getCodigo();
+                        int cod_motorista = mRomaneio.getMotorista().getCodigo();
+                        romaneio_inativo = mhttpRomaneio.statusRomaneioEntrega(novo_status, cod_romaneio, cod_motorista);
+
+                    }
+               }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                finishProgressBar();
+                if(romaneio_inativo) {
+                    Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
+                } else if(romaneio_inativo == false){
+                    Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+
 
 
 
@@ -348,10 +487,14 @@ public class DetalhesPagerFragment extends Fragment{
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if(mEntrega != null) {
                                     iniciarAtualizacao();
+                                    listaFinal();
+                                    atualizaRomaneio();
                                 }
 
-                                dialogInterface.dismiss();
-                            }
+                        dialogInterface.dismiss();
+                                }
+
+
                         });
                 alertDialog.show();
 
