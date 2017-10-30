@@ -441,7 +441,7 @@ public class DetalhesPagerFragment extends Fragment{
                 if(romaneio_inativo) {
                     Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
                 } else if(romaneio_inativo == false){
-                    Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
                 }
 
             } catch (Exception e) {

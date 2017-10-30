@@ -124,7 +124,7 @@ public class ScriptSql {
         sqlBuilder.append("foto TEXT NOT NULL, ");
         sqlBuilder.append("situacao INTEGER DEFAULT 0, ");
         sqlBuilder.append("PRIMARY KEY (codigo) ");
-      /*  sqlBuilder.append("FOREIGN KEY (cod_empresa) REFERENCES empresa (codigo), ");
+      /* sqlBuilder.append("FOREIGN KEY (cod_empresa) REFERENCES empresa (codigo), ");
         sqlBuilder.append("FOREIGN KEY (seq_entrega) REFERENCES entrega (seq_entrega), ");
         sqlBuilder.append("FOREIGN KEY (cod_romaneio) REFERENCES romaneio (codigo), ");
         sqlBuilder.append("FOREIGN KEY (cod_tipo_ocorrencia) REFERENCES tipo_ocorrencia (codigo) ");*/
@@ -175,12 +175,12 @@ public class ScriptSql {
         sqlBuilder.append("cod_empresa INTEGER NOT NULL, ");
         sqlBuilder.append("cod_status_romaneio INTEGER NOT NULL, ");
         sqlBuilder.append("cod_estabelecimento INTEGER NOT NULL, ");
-        sqlBuilder.append("cod_tipo_veiculo INTEGER NOT NULL, ");
-        sqlBuilder.append("cod_transportadora INTEGER NOT NULL, ");
+       //sqlBuilder.append("cod_tipo_veiculo INTEGER NOT NULL, ");
+       //sqlBuilder.append("cod_transportadora INTEGER NOT NULL, ");
         sqlBuilder.append("cod_motorista INTEGER NOT NULL, ");
-        sqlBuilder.append("valor NUMERIC(12,2) NOT NULL, ");
-        sqlBuilder.append("data_criacao NUMERIC NOT NULL, ");
-        sqlBuilder.append("data_finalizacao NUMERIC, ");
+      //sqlBuilder.append("valor NUMERIC(12,2) NOT NULL, ");
+      //sqlBuilder.append("data_criacao NUMERIC NOT NULL, ");
+      //sqlBuilder.append("data_finalizacao NUMERIC, ");
         sqlBuilder.append("PRIMARY KEY (codigo) ");
       /* sqlBuilder.append("FOREIGN KEY (cod_empresa) REFERENCES empresa (codigo), ");
         sqlBuilder.append("FOREIGN KEY (cod_status_romaneio) REFERENCES status_romaneio (codigo), ");

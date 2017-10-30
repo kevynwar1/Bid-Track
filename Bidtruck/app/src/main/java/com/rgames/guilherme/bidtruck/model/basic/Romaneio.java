@@ -17,7 +17,7 @@ public class Romaneio implements Parcelable {
     private Veiculo veiculo;
     private String date_create;
     private String date_finalization;
-    private boolean ofertar_viagem;
+    //private boolean ofertar_viagem;
     private char finalized;
     private boolean situation;
     private double valor;
@@ -41,8 +41,8 @@ public class Romaneio implements Parcelable {
                 .append(" Estabelecimento: ").append(getEstabelecimento().getCodigo())
                 .append(" Motorista: ").append(getMotorista().getCodigo())
                 .append(" Qtd de entregas: ").append((entregaList != null) ? entregaList.size() : "null")
-                .append(" Status do romaneio: ").append(getStatus_romaneio().getCodigo())
-                .append(" Ofertar? ").append(isOfertar_viagem()).toString();
+                .append(" Status do romaneio: ").append(getStatus_romaneio().getCodigo()).toString();
+                //.append(" Ofertar? ").append(isOfertar_viagem()).toString();
     }
 
     public Romaneio(int id, Estabelecimento estabelecimento, Motorista motorista, List<Entrega> entregaList, Veiculo veiculo, StatusRomaneio statusRomaneio, String date_create, String date_finalization, boolean ofertar_viagem, char finalized, boolean situation) {
@@ -54,10 +54,14 @@ public class Romaneio implements Parcelable {
         this.status_romaneio = statusRomaneio;
         this.date_create = date_create;
         this.date_finalization = date_finalization;
-        this.ofertar_viagem = ofertar_viagem;
+       // this.ofertar_viagem = ofertar_viagem;
         this.situation = situation;
         this.finalized = finalized;
     }
+
+
+
+
 
     protected Romaneio(Parcel in) {
         codigo = in.readInt();
@@ -69,7 +73,7 @@ public class Romaneio implements Parcelable {
         date_finalization = in.readString();
         setEntregaList(new ArrayList<Entrega>());
         in.readList(getEntregaList(), Entrega.class.getClassLoader());
-        ofertar_viagem = in.readByte() > 0;
+       // ofertar_viagem = in.readByte() > 0;
         //finalized
         situation = in.readByte() > 0;
     }
@@ -101,7 +105,7 @@ public class Romaneio implements Parcelable {
         parcel.writeString(date_create);
         parcel.writeString(date_finalization);
         parcel.writeList(entregaList);
-        parcel.writeByte((byte) (ofertar_viagem ? 1 : 0));
+      //  parcel.writeByte((byte) (ofertar_viagem ? 1 : 0));
         //parcel.writeCharArray(new char[]{finalized});
         parcel.writeByte((byte) (situation ? 1 : 0));
     }
@@ -130,13 +134,13 @@ public class Romaneio implements Parcelable {
         this.motorista = motorista;
     }
 
-    public boolean isOfertar_viagem() {
+   /* public boolean isOfertar_viagem() {
         return ofertar_viagem;
     }
 
     public void setOfertar_viagem(boolean ofertar_viagem) {
         this.ofertar_viagem = ofertar_viagem;
-    }
+    }*/
 
 
     public char getFinalized() {
@@ -194,4 +198,6 @@ public class Romaneio implements Parcelable {
     public void setDate_finalization(String date_finalization) {
         this.date_finalization = date_finalization;
     }
+
+
 }

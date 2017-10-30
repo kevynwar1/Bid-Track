@@ -16,7 +16,7 @@ public class Entrega implements Parcelable, Serializable {
     private int seq_entrega;
     private String nota_fiscal;
     private String titulo;
-    //    private Romaneio romaneio;
+    // private Romaneio romaneio;
     private Destinatario destinatario;
     private StatusEntrega status_entrega;
     private float peso;

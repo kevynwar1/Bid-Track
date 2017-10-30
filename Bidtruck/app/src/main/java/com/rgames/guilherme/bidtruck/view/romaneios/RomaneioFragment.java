@@ -21,6 +21,7 @@ import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
+import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class RomaneioFragment extends Fragment {
     private List<Romaneio> romaneioList;
     private ListaTask mListaTaskRomaneio;
     private List<Romaneio> romaneioList2;
+    public RomaneioRep romaneioRep;
+    private boolean tem_romaneio;
 
     public RomaneioFragment() {
 
@@ -56,6 +59,8 @@ public class RomaneioFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        romaneioRep = new RomaneioRep(getActivity());
+        tem_romaneio = true;
         try {
             if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
@@ -137,22 +142,30 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
-                    if (romaneios != null && romaneios.size() == 0)
-                        emptyView(true);
-                    else {
-//                        if (romaneioList == null) {
-//                        romaneioList = romaneios;
-//                    } else {
-                            /*for (Romaneio mRomaneio : romaneioList) {
+                    if(romaneios == null){
+                        tem_romaneio = false;
 
-                                if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
-                                    Toast.makeText(getActivity(), getString(R.string.app_err_input_vazio), Toast.LENGTH_LONG).show();
-                                    // emptyViewRomaneio(true);
-                                    finishProgressBar();
-                                if (mRomaneio.getStatus_romaneio().getCodigo() != 4) {
-                                    initRecyclerView(romaneioList);
-                                    finishProgressBar();
-                                }*/
+                        //select do romaneio no banco local caso na haja conexao com a internet
+                        romaneioList = romaneioRep.buscarRomaneio();
+                        initRecyclerView(romaneioList);
+                        finishProgressBar();
+                        Toast.makeText(getContext(), "Romaneio encontrado com sucesso!", Toast.LENGTH_LONG).show();
+
+                    }
+                  else if (romaneios != null && romaneios.size() == 0)
+                        emptyView(true);
+                   else {
+
+                          /* for(Romaneio rom : romaneios) {
+
+                            if (rom.getCodigo() != 0) {
+                                //insere romaneio no banco local
+                                romaneioRep.inserir(rom, empresa);
+                                Toast.makeText(getContext(), "Romaneio inserido no banco com sucesso!", Toast.LENGTH_LONG).show();
+                            }
+
+                          }*/
+
                         initRecyclerView(romaneios);
                         finishProgressBar();
                     }

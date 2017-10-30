@@ -7,7 +7,7 @@ import android.os.Parcelable;
 public class Empresa extends Base implements Parcelable {
 
     public static final String PARCEL_EMPRESA = "parcel_empresa";
-   // private int cod_empresa;
+    //private int codigo;
     private String razao_social;
     private String nome_fantasia;
     private String cnpj;
@@ -21,7 +21,7 @@ public class Empresa extends Base implements Parcelable {
 
     protected Empresa(Parcel in) {
         super(in);
-     //   cod_empresa = in.readInt();
+        //codigo = in.readInt();
         razao_social = in.readString();
         nome_fantasia = in.readString();
         cnpj = in.readString();
@@ -78,11 +78,11 @@ public class Empresa extends Base implements Parcelable {
     }
 
 
-  //  public int getCod_empresa() {
-    //    return cod_empresa;
-   // }
+   /* public int getCod_empresa() {
+        return codigo;
+    }
 
-   // public void setCod_empresa(int cod_empresa) {
-     //   this.cod_empresa = cod_empresa;
-   // }
+   public void setCod_empresa(int cod_empresa) {
+        this.codigo = cod_empresa;
+    }*/
 }
