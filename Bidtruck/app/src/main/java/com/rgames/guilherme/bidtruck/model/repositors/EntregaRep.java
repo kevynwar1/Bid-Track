@@ -18,6 +18,7 @@ import com.rgames.guilherme.bidtruck.model.dao.database.DestinatarioTable;
 import com.rgames.guilherme.bidtruck.model.dao.database.EntregaTable;
 import com.rgames.guilherme.bidtruck.model.dao.database.RomaneioTable;
 import com.rgames.guilherme.bidtruck.model.dao.database.StatusEntregaTable;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +36,14 @@ public class EntregaRep {
     private RomaneioTable romaneioTable;
     private StatusEntregaTable statusEntregaTable;
     private DataBase banco;
+    boolean success = false;
 
     public EntregaRep (Context context){
         banco = new DataBase(context);
 
     }
+
+    public EntregaRep(){}
 
     private ContentValues preencheEntrega(Entrega entrega, Romaneio romaneio){
         ContentValues cv = new ContentValues();
@@ -55,28 +59,26 @@ public class EntregaRep {
 
     }
 
-    public String inserirEntrega(Entrega entrega, Romaneio romaneio) {
-
+    public boolean inserirEntrega(Entrega entrega, Romaneio romaneio) {
+              success = false;
         try{
 
-            conn = banco.getReadableDatabase();
+           // SQLiteDatabase database = banco.getWritableDatabase();
             ContentValues cv = preencheEntrega(entrega, romaneio);
             long resultado = conn.insertOrThrow(entregaTable.TABELA, null, cv);
             conn.close();
-            if(resultado == -1){
+            if(resultado != -1){
 
-                return "Erro";
+                success =  true;
             }
-            else{
-                return "Sucesso";
-            }
+
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return success;
 
     }
 

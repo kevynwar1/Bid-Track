@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,8 +21,12 @@ import com.rgames.guilherme.bidtruck.model.basic.Destinatario;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
+import com.rgames.guilherme.bidtruck.model.repositors.DestinatarioRep;
+import com.rgames.guilherme.bidtruck.model.repositors.EntregaRep;
+import com.rgames.guilherme.bidtruck.model.repositors.StatusEntregaRep;
 
 import java.util.List;
 
@@ -34,11 +39,18 @@ public class EntregaActivity extends AppCompatActivity {
     private boolean finish = true;
     private boolean atualizadaEntrega = true;
     private RetornaListaTask mRetornaTask;
+    private Context context;
+    private EntregaRep entregaRep;
+    private DestinatarioRep destinatarioRep;
+    private StatusEntregaRep statusEntregaRep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
+         entregaRep = new EntregaRep(context);
+         destinatarioRep = new DestinatarioRep(context);
+         statusEntregaRep = new StatusEntregaRep();
         try {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
@@ -134,9 +146,50 @@ public class EntregaActivity extends AppCompatActivity {
                 try {
                     if (entregas == null || entregas.size() == 0)
                         emptyView(true);
+                         //inserir banco local
+
+                  /*  for(Entrega ent : entregas) {
+
+                        Entrega delivery = new Entrega();
+                        Destinatario destinatario = new Destinatario();
+                        StatusEntrega statusEntrega = new StatusEntrega();
+
+                       //delivery.setCodigo(ent.getCodigo());
+                        delivery.setNota_fiscal(ent.getNota_fiscal());
+                        delivery.setPeso(ent.getPeso());
+                        delivery.setSeq_entrega(ent.getSeq_entrega());
+
+                        destinatario.setId(ent.getDestinatario().getEmpresa().getCodigo());
+                        destinatario.setBairro(ent.getDestinatario().getBairro());
+                        destinatario.setCEP(ent.getDestinatario().getCEP());
+                        destinatario.setCidade(ent.getDestinatario().getCidade());
+                        destinatario.setNome_fantasia(ent.getDestinatario().getNome_fantasia());
+                        destinatario.setRazao_social(ent.getDestinatario().getRazao_social());
+                        destinatario.setLogradouro(ent.getDestinatario().getLogradouro());
+                        destinatario.setUF(ent.getDestinatario().getUF());
+                        destinatario.setTelefone(ent.getDestinatario().getTelefone());
+                        destinatario.setLatitude(ent.getDestinatario().getLatitude());
+                        destinatario.setLongitude(ent.getDestinatario().getLongitude());
+                        delivery.setDestinatario(destinatario);
 
 
-                    initRecyclerView(entregas);
+                        statusEntrega.setCodigo(ent.getStatusEntrega().getCodigo());
+                        statusEntrega.setDescricao(ent.getStatusEntrega().getDescricao());
+                        delivery.setStatusEntrega(statusEntrega);
+
+
+                        entregaRep.inserirEntrega(delivery, mRomaneio);
+                        destinatarioRep.inserirDestinatario(destinatario);
+                        statusEntregaRep.preencheStatusEntrega();
+
+
+                        Toast.makeText(getBaseContext(), "Entrega inserida no banco com sucesso!", Toast.LENGTH_LONG).show();
+                    }*/
+
+
+
+
+                   initRecyclerView(entregas);
                     finishProgressBar();
                            // mListEntregas = entregas;
 

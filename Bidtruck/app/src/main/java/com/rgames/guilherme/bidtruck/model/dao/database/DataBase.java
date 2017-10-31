@@ -1,8 +1,15 @@
 package com.rgames.guilherme.bidtruck.model.dao.database;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kevyn on 18/10/2017.
@@ -10,8 +17,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBase extends SQLiteOpenHelper {
 
+    private SQLiteDatabase conn;
     private static final String NOME_BANCO = "tecnologia177_4";
-    private static final int VERSAO = 1;
+    private static final int VERSAO = 3;
 
     public DataBase(Context context) {
         super(context, NOME_BANCO, null, VERSAO);
@@ -43,4 +51,8 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(ScriptSql.getDropTableTipoOcorrencia());
         this.onCreate(db);
     }
+
+
+
+
 }
