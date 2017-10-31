@@ -3,7 +3,6 @@ package com.rgames.guilherme.bidtruck.view.fotos.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -41,15 +40,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.model.basic.ImagemOcorrencia;
 import com.squareup.picasso.Picasso;
-import com.rgames.guilherme.bidtruck.view.fotos.activities.BaseActivity;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Utils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;

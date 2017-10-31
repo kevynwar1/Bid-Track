@@ -66,7 +66,16 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             holder.numero.setText(mListEntrega.get(holder.getAdapterPosition()).getDestinatario().getNumero() + " - ");
             String input = mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega().getDescricao();
             input = input.toUpperCase();
-            holder.status_entrega.setText(input);
+            if (input.equals("EM VIAGEM")) {
+                holder.status_entrega.setTextColor(Color.parseColor("#FFC107"));
+                holder.status_entrega.setText(input);
+            }else if (input.equals("FINALIZADO")){
+                holder.status_entrega.setTextColor(Color.parseColor("#D32F2F"));
+                holder.status_entrega.setText(input);
+            }else if (input.equals("LIBERADO")){
+                holder.status_entrega.setTextColor(Color.parseColor("#303F9F"));
+                holder.status_entrega.setText(input);
+            }
 
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {

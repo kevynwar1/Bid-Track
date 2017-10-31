@@ -202,7 +202,6 @@ public class EntregaActivity extends AppCompatActivity {
 
 
 
-
        class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
 
            @Override
