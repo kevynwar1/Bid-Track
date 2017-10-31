@@ -60,6 +60,13 @@ public class DetalhesPagerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        mView = inflater.inflate(R.layout.fragment_destino_pagerk, container, false);
         if (getArguments() != null) {
             mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
             mEntrega = getArguments().getParcelable(Entrega.PARCEL);
@@ -68,12 +75,6 @@ public class DetalhesPagerFragment extends Fragment {
             //mLista = new ListaTask();
             //mFinalTask = new RetornaTask();
         } else mEntrega = new Entrega();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_destino_pagerk, container, false);
         //mProgressBar = (ProgressBar)mView.findViewById(android.R.id.frame_progress);
         //mTexto = (TextView)mView.findViewById(android.R.id.empty);
 

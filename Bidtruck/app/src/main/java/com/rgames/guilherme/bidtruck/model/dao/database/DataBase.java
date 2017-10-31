@@ -5,6 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
 
@@ -36,6 +42,9 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(ScriptSql.getCreateTableStatusEntrega());
         db.execSQL(ScriptSql.getCreateTableStatusRomaneio());
         db.execSQL(ScriptSql.getCreateTableTipoOcorrencia());
+
+        //inserirStatusEntrega(preencheStatusEntrega());
+        //Log.i("Sarah", "" + buscaStatusEntrega().size());
     }
 
     @Override
@@ -51,8 +60,6 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(ScriptSql.getDropTableTipoOcorrencia());
         this.onCreate(db);
     }
-
-
-
-
+    
 }
+
