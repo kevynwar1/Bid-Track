@@ -39,6 +39,7 @@ public class ScriptSql {
         return sqlBuilder.toString();
     }
     // Table: empresa_motorista (CreateTable)
+
     public static String getCreateTableEmpresaMotorista() {
         StringBuilder sqlBuilder = new StringBuilder();
 
@@ -60,6 +61,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: entrega (CreateTable)
     public static String getCreateTableEntrega() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -110,6 +112,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: ocorrencia (CreateTable)
     public static String getCreateTableOcorrencia() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -133,7 +136,6 @@ public class ScriptSql {
         return sqlBuilder.toString();
     }
 
-
     // Table: tipo_ocorrencia (DropTable)
     public static String getDropTableTipoOcorrencia() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -142,6 +144,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: tipo_ocorrencia (CreateTable)
     public static String getCreateTableTipoOcorrencia() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -166,6 +169,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: romaneio (CreateTable)
     public static String getCreateTableRomaneio() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -201,6 +205,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: status_romaneio (CreateTable)
     public static String getCreateTableStatusRomaneio() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -223,6 +228,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: destinatario (CreateTable)
     public static String getCreateTableDestinatario() {
         StringBuilder sqlBuilder = new StringBuilder();

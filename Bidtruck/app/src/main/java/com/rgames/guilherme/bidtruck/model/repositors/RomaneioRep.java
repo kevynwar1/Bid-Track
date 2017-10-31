@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
@@ -36,7 +37,6 @@ public class RomaneioRep {
         banco = new DataBase(context);
     }
 
-
     private ContentValues preencheRomaneio(Romaneio romaneio, Empresa empresa){
         ContentValues cv = new ContentValues();
         cv.put(romaneioTable.CODIGO, romaneio.getCodigo());
@@ -45,84 +45,60 @@ public class RomaneioRep {
         cv.put(romaneioTable.COD_MOTORISTA, romaneio.getMotorista().getCodigo());
         cv.put(romaneioTable.COD_STATUS_ROMANEIO, romaneio.getStatus_romaneio().getCodigo());
 
-
         return cv;
-
     }
 
-    public String inserir(Romaneio romaneio, Empresa empresa) {
-
+    public boolean inserir(Romaneio romaneio, Empresa empresa) {
+        boolean success = false;
         try{
-
-          conn = banco.getReadableDatabase();
+            SQLiteDatabase database = banco.getWritableDatabase();
             ContentValues cv = preencheRomaneio(romaneio, empresa);
-          long resultado = conn.insertOrThrow(romaneioTable.TABELA, null, cv);
-          conn.close();
-          if(resultado == -1){
-
-              return "Sucesso";
-          }
-          else{
-              return "Erro";
-          }
-
-
+            long resultado = database.insertOrThrow(romaneioTable.TABELA, null, cv);
+            database.close();
+            if(resultado != -1){
+                success = true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-           return null;
-
+        return success;
     }
-
-
-
-
-
-
 
     public List<Romaneio> buscarRomaneio() {
         SQLiteDatabase db = banco.getReadableDatabase();
-
         List<Romaneio> romaneios = null;
         try {
-            String sql = "SELECT  codigo, cod_empresa, cod_status_romaneio, cod_estabelecimento, cod_motorista FROM " + romaneioTable.TABELA;
+            String sql = "SELECT codigo, cod_empresa, cod_status_romaneio, cod_estabelecimento, cod_motorista FROM " + romaneioTable.TABELA;
             String[] argumentos = null;
-
-             Cursor cursorRomaneio = db.rawQuery(sql, argumentos);
-
+            Cursor cursorRomaneio = db.rawQuery(sql, argumentos);
+            romaneios = new ArrayList<Romaneio>();
 
             while(cursorRomaneio.moveToNext()) {
-                romaneios = new ArrayList<Romaneio>();
-                {
-                    int codigo = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.CODIGO));
-                    //String codigoEmpresa = cursorRomaneio.getString(cursorRomaneio.getColumnIndex(romaneioTable.COD_EMPRESA));
-                    int codigoEstalecimento = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_ESTABELECIMENTO));
-                    int codigoMotorista = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_MOTORISTA));
-                    int codigoStatus = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_STATUS_ROMANEIO));
-
-                    Romaneio romaneioBanco = new Romaneio();
-                    Motorista motoristaBanco = new Motorista();
-                    Estabelecimento estabelecimentoB = new Estabelecimento();
-                    StatusRomaneio statusBanco = new StatusRomaneio();
+                int codigo = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.CODIGO));
+                //String codigoEmpresa = cursorRomaneio.getString(cursorRomaneio.getColumnIndex(romaneioTable.COD_EMPRESA));
+                int codigoEstalecimento = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_ESTABELECIMENTO));
+                int codigoMotorista = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_MOTORISTA));
+                int codigoStatus = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_STATUS_ROMANEIO));
 
 
-                    romaneioBanco.setCodigo(codigo);
-                    estabelecimentoB.setCodigo(codigoEstalecimento);
-                    romaneioBanco.setEstabelecimento(estabelecimentoB);
-                    motoristaBanco.setCodigo(codigoMotorista);
-                    romaneioBanco.setMotorista(motoristaBanco);
-                    statusBanco.setCodigo(codigoStatus);
-                    romaneioBanco.setStatus_romaneio(statusBanco);
+                Motorista motoristaBanco = new Motorista();
+                Estabelecimento estabelecimentoB = new Estabelecimento();
+                StatusRomaneio statusBanco = new StatusRomaneio();
+                Romaneio romaneioBanco = new Romaneio();
 
+                romaneioBanco.setCodigo(codigo);
+                romaneioBanco.setEstabelecimento(estabelecimentoB);
+                motoristaBanco.setCodigo(codigoMotorista);
+                romaneioBanco.setMotorista(motoristaBanco);
+                statusBanco.setCodigo(codigoStatus);
+                romaneioBanco.setStatus_romaneio(statusBanco);
+                estabelecimentoB.setCodigo(codigoEstalecimento);
+                romaneioBanco.setEstabelecimento(estabelecimentoB);
 
-                    romaneios.add(romaneioBanco);
-
-                    cursorRomaneio.close();
-                    db.close();
-                }
+                romaneios.add(romaneioBanco);
             }
-
+            cursorRomaneio.close();
+            db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,7 @@ public class RomaneioFragment extends Fragment {
         if (getArguments() != null && getArguments().getParcelable(Empresa.PARCEL_EMPRESA) != null) {
             empresa = getArguments().getParcelable(Empresa.PARCEL_EMPRESA);
         } else {
-            Toast.makeText(getContext(), "Empresa não encontrada. - Err 1", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "EmpresaTable não encontrada. - Err 1", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -90,8 +91,13 @@ public class RomaneioFragment extends Fragment {
                 emptyView(true);
             } else {
                 if (!mFacade.isConnected(getActivity())) {
-                    Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
-                    emptyView(true);
+                    this.romaneioList = romaneioRep.buscarRomaneio();
+                    if(romaneioList != null && romaneioList.size() > 0){
+                        initRecyclerView(romaneioList);
+                    }else {
+                        emptyView(true);
+                        Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
+                    }
                 } else init();
 //                    if (finishRomaneio) {
 //                    init();
@@ -143,31 +149,25 @@ public class RomaneioFragment extends Fragment {
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
                     if(romaneios == null){
-                        tem_romaneio = false;
-
-                        //select do romaneio no banco local caso na haja conexao com a internet
-                        romaneioList = romaneioRep.buscarRomaneio();
-                        initRecyclerView(romaneioList);
                         finishProgressBar();
                         Toast.makeText(getContext(), "Romaneio encontrado com sucesso!", Toast.LENGTH_LONG).show();
 
-                    }
-                  else if (romaneios != null && romaneios.size() == 0)
+                    } else if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
-                   else {
-
-                          /* for(Romaneio rom : romaneios) {
-
-                            if (rom.getCodigo() != 0) {
-                                //insere romaneio no banco local
-                                romaneioRep.inserir(rom, empresa);
-                                Toast.makeText(getContext(), "Romaneio inserido no banco com sucesso!", Toast.LENGTH_LONG).show();
-                            }
-
-                          }*/
-
+                    else {
+                        if(romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0){
+                            romaneioRep.inserir(romaneios.get(0), empresa);
+                        }
                         initRecyclerView(romaneios);
                         finishProgressBar();
+                        /* for(Romaneio rom : romaneios) {
+
+                        if (rom.getCodigo() != 0) {
+                            //insere romaneio no banco local
+                            romaneioRep.inserir(rom, empresa);
+                            Toast.makeText(getContext(), "Romaneio inserido no banco com sucesso!", Toast.LENGTH_LONG).show();
+                        }
+                        }*/
                     }
                     if (msg != null && !msg.equals(""))
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();

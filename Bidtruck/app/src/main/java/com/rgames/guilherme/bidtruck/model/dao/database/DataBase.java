@@ -9,8 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class DataBase extends SQLiteOpenHelper {
+
     private static final String NOME_BANCO = "tecnologia177_4";
-    private static final int VERSAO = 2;
+    private static final int VERSAO = 1;
 
     public DataBase(Context context) {
         super(context, NOME_BANCO, null, VERSAO);
@@ -21,8 +22,8 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(ScriptSql.getCreateTableDestinatario());
         db.execSQL(ScriptSql.getCreateTableEmpresa());
         db.execSQL(ScriptSql.getCreateTableEmpresaMotorista());
-       db.execSQL(ScriptSql.getCreateTableEntrega());
-        db.execSQL(ScriptSql.getCreateTableOcorrencia());
+        db.execSQL(ScriptSql.getCreateTableEntrega());
+        //db.execSQL(ScriptSql.getCreateTableOcorrencia());
         db.execSQL(ScriptSql.getCreateTableRomaneio());
         db.execSQL(ScriptSql.getCreateTableStatusEntrega());
         db.execSQL(ScriptSql.getCreateTableStatusRomaneio());
