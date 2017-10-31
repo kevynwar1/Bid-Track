@@ -157,6 +157,7 @@ public class RomaneioFragment extends Fragment {
                     else {
                         if(romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0){
                             romaneioRep.inserir(romaneios.get(0), empresa);
+                            Log.i("Fifa","Salvou o Romaneio");
                         }
                         initRecyclerView(romaneios);
                         finishProgressBar();
