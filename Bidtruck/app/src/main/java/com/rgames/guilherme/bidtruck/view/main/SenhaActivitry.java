@@ -137,10 +137,12 @@ public class SenhaActivitry extends AppCompatActivity {
         protected String doInBackground(String... strings) {
 
             try {
+
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress("kevynh48@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
                 message.setSubject("BID & TRACK");
+
                 message.setContent("Recuperação de Acesso do usuário " + nomes + ", " + "sua senha é: " + stringss, "text/html; charset=utf-8");
                 Transport.send(message);
             } catch (MessagingException e) {

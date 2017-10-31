@@ -53,11 +53,13 @@ public class RomaneioRep {
         try{
             SQLiteDatabase database = banco.getWritableDatabase();
             ContentValues cv = preencheRomaneio(romaneio, empresa);
+
             long resultado = database.insertOrThrow(romaneioTable.TABELA, null, cv);
             database.close();
             if(resultado != -1){
                 success = true;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

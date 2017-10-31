@@ -5,15 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.rgames.guilherme.bidtruck.model.basic.Destinatario;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Estabelecimento;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
 import com.rgames.guilherme.bidtruck.model.basic.StatusRomaneio;
 import com.rgames.guilherme.bidtruck.model.dao.database.DataBase;
 import com.rgames.guilherme.bidtruck.model.dao.database.DestinatarioTable;
 import com.rgames.guilherme.bidtruck.model.dao.database.EntregaTable;
+import com.rgames.guilherme.bidtruck.model.dao.database.RomaneioTable;
+import com.rgames.guilherme.bidtruck.model.dao.database.StatusEntregaTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,9 @@ public class EntregaRep {
 
     private SQLiteDatabase conn;
     private EntregaTable entregaTable;
+    private DestinatarioTable destinatarioTable;
+    private RomaneioTable romaneioTable;
+    private StatusEntregaTable statusEntregaTable;
     private DataBase banco;
 
     public EntregaRep (Context context){
@@ -58,10 +65,10 @@ public class EntregaRep {
             conn.close();
             if(resultado == -1){
 
-                return "Sucesso";
+                return "Erro";
             }
             else{
-                return "Erro";
+                return "Sucesso";
             }
 
 
@@ -74,44 +81,70 @@ public class EntregaRep {
     }
 
 
-    public List<Entrega> buscarEntrega() {
-        SQLiteDatabase db = banco.getReadableDatabase();
+    public List<Entrega> buscarEntrega(int id_motorista) {
+        //SQLiteDatabase db = banco.getReadableDatabase();
+        conn = banco.getReadableDatabase();
 
-        List<Entrega> entregas = null;
+        List<Entrega> entregasList = new ArrayList<Entrega>();
         try {
             String sql = "select e.seq_entrega, e.cod_romaneio, e.cod_destinatario, e.cod_status_entrega,e.peso_carga,e.nota_fiscal " +
-                          " d.bairro,d.cep,d.cidade,d.logradouro, d.nome_fantasia, d.razao_social, d.uf, d.telefone, s.codigo, s.descricao, d.latitude, d.longitude" +
-                          " From entrega as e Inner join romaneio as r on e.cod_romaneio = r.codigo" +
-                          " Inner join destinatario as d on e.cod_destinatario = d.codigo " +
-                          " Inner Join status_entrega as s on e.cod_status_entrega = s.codigo  WHERE e.cod_romaneio = 8541; " + entregaTable.TABELA;
+                          " d.bairro,d.cep,d.cidade,d.logradouro,d.numero, d.nome_fantasia, d.razao_social, d.uf, d.telefone, s.codigo, s.descricao, d.latitude, d.longitude" +
+                          " From " + entregaTable.TABELA + " as e Inner join " + romaneioTable.TABELA + " as r on e.cod_romaneio = r.codigo" +
+                          " Inner join " + destinatarioTable.TABELA + "  as d on e.cod_destinatario = d.codigo " +
+                          " Inner Join" + statusEntregaTable.TABELA + " as s on e.cod_status_entrega = s.codigo  WHERE r.cod_motorista = " + id_motorista;
             String[] argumentos = null;
 
-            Cursor cursorEntrega = db.rawQuery(sql, argumentos);
+            Cursor cursorEntrega = conn.rawQuery(sql, argumentos);
 
 
-            while(cursorEntrega.moveToNext()) {
-                entregas = new ArrayList<Entrega>();
-                {
+            if(cursorEntrega.getCount() > 0) {
 
 
+                cursorEntrega.moveToFirst();
 
-                    int sequencia = cursorEntrega.getInt(cursorEntrega.getColumnIndex(entregaTable.SEQ_ENTREGA));
-                    int codigo_romaneio = cursorEntrega.getInt(cursorEntrega.getColumnIndex((entregaTable.COD_ROMANEIO)));
-                    int cod_destinatario = cursorEntrega.getInt(cursorEntrega.getColumnIndex(entregaTable.COD_DESTINATARIO));
-                    int cod_status = cursorEntrega.getInt(cursorEntrega.getColumnIndex(entregaTable.COD_STATUS_ENTREGA));
-                    int nota_fiscal = cursorEntrega.getInt(cursorEntrega.getColumnIndex(entregaTable.NOTA_FISCAL));
-                    int peso = cursorEntrega.getInt(cursorEntrega.getColumnIndex(entregaTable.PESO_CARGA));
+                do {
+
+                        Entrega entrega = new Entrega();
+                        Destinatario destiny = new Destinatario();
+                        StatusEntrega statusEntrega = new StatusEntrega();
+
+                    entrega.setCodigo(cursorEntrega.getInt(cursorEntrega.getColumnIndex(entregaTable.SEQ_ENTREGA)));
+                    entrega.setNota_fiscal(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.NOTA_FISCAL)));
+                    entrega.setPeso(cursorEntrega.getInt(cursorEntrega.getColumnIndex(entregaTable.PESO_CARGA)));
+                    destiny.setId(cursorEntrega.getInt(cursorEntrega.getColumnIndex(destinatarioTable.CODIGO)));
+                    destiny.setBairro(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.BAIRRO)));
+                    destiny.setCEP(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.CEP)));
+                    destiny.setCidade(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.CIDADE)));
+                    destiny.setNumero(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.NUMERO)));
+                    destiny.setLogradouro(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.LOGRADOURO)));
+                    destiny.setNome_fantasia(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.NOME_FANTASIA)));
+                    destiny.setRazao_social(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.RAZAO_SOCIAL)));
+                    destiny.setUF(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.UF)));
+                    destiny.setTelefone(cursorEntrega.getString(cursorEntrega.getColumnIndex(destinatarioTable.TELEFONE)));
+                    destiny.setLatitude(cursorEntrega.getDouble(cursorEntrega.getColumnIndex(destinatarioTable.LATITUDE)));
+                    destiny.setLongitude(cursorEntrega.getDouble(cursorEntrega.getColumnIndex(destinatarioTable.LONGITUDE)));
+
+                    statusEntrega.setCodigo(cursorEntrega.getInt(cursorEntrega.getColumnIndex(statusEntregaTable.CODIGO)));
+                    statusEntrega.setDescricao(cursorEntrega.getString(cursorEntrega.getColumnIndex(statusEntregaTable.DESCRICAO)));
 
 
-                    db.close();
-                }
+                    entrega.setDestinatario(destiny);
+                    entrega.setStatusEntrega(statusEntrega);
+
+
+                    entregasList.add(entrega);
+
+
+                    } while (cursorEntrega.moveToNext()) ;
+
+                conn.close();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return entregasList;
     }
 
 
