@@ -69,10 +69,28 @@ public class ScriptSql {
         sqlBuilder.append("CREATE TABLE IF NOT EXISTS entrega ( ");
         sqlBuilder.append("seq_entrega INTEGER NOT NULL, ");
         sqlBuilder.append("cod_romaneio INTEGER NOT NULL, ");
-        sqlBuilder.append("cod_destinatario INTEGER NOT NULL, ");
-        sqlBuilder.append("cod_status_entrega INTEGER NOT NULL,");
-        sqlBuilder.append("peso_carga TEXT NOT NULL,");
-        sqlBuilder.append("nota_fiscal INTEGER NOT NULL,");
+
+        sqlBuilder.append("cod_status_entrega INTEGER,");
+        sqlBuilder.append("descricao_status TEXT,");
+
+        sqlBuilder.append("cod_destinatario INTEGER, ");
+        sqlBuilder.append("nome_fantasia_destinatario TEXT,");
+        sqlBuilder.append("razao_social_destinatario TEXT,");
+        sqlBuilder.append("latitude INTEGER,");
+        sqlBuilder.append("longitude INTEGER,");
+
+
+        sqlBuilder.append("telefone TEXT,");
+        sqlBuilder.append("cep TEXT,");
+        sqlBuilder.append("uf TEXT,");
+        sqlBuilder.append("cidade TEXT,");
+        sqlBuilder.append("bairro TEXT,");
+        sqlBuilder.append("logradouro TEXT,");
+        sqlBuilder.append("numero TEXT,");
+        sqlBuilder.append("complemento TEXT,");
+
+        sqlBuilder.append("peso_carga TEXT,");
+        sqlBuilder.append("nota_fiscal INTEGER,");
         sqlBuilder.append("PRIMARY KEY (seq_entrega, cod_romaneio) ");
      /*   sqlBuilder.append("FOREIGN KEY (cod_romaneio) REFERENCES romaneio (codigo), ");
         sqlBuilder.append("FOREIGN KEY (cod_destinatario) REFERENCES destinatario (codigo), ");

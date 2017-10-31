@@ -25,7 +25,7 @@ public class DataBase extends SQLiteOpenHelper {
 
     private SQLiteDatabase conn;
     private static final String NOME_BANCO = "tecnologia177_4";
-    private static final int VERSAO = 3;
+    private static final int VERSAO = 1;
 
     public DataBase(Context context) {
         super(context, NOME_BANCO, null, VERSAO);
@@ -33,15 +33,15 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(ScriptSql.getCreateTableDestinatario());
+        //db.execSQL(ScriptSql.getCreateTableDestinatario());
         db.execSQL(ScriptSql.getCreateTableEmpresa());
         db.execSQL(ScriptSql.getCreateTableEmpresaMotorista());
         db.execSQL(ScriptSql.getCreateTableEntrega());
         //db.execSQL(ScriptSql.getCreateTableOcorrencia());
         db.execSQL(ScriptSql.getCreateTableRomaneio());
-        db.execSQL(ScriptSql.getCreateTableStatusEntrega());
+        //db.execSQL(ScriptSql.getCreateTableStatusEntrega());
         db.execSQL(ScriptSql.getCreateTableStatusRomaneio());
-        db.execSQL(ScriptSql.getCreateTableTipoOcorrencia());
+        //db.execSQL(ScriptSql.getCreateTableTipoOcorrencia());
 
         //inserirStatusEntrega(preencheStatusEntrega());
         //Log.i("Sarah", "" + buscaStatusEntrega().size());
@@ -60,6 +60,6 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(ScriptSql.getDropTableTipoOcorrencia());
         this.onCreate(db);
     }
-    
+
 }
 

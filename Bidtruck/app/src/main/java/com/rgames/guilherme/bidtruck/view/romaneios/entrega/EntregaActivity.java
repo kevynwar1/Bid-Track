@@ -43,6 +43,7 @@ public class EntregaActivity extends AppCompatActivity {
     private EntregaRep entregaRep;
     private DestinatarioRep destinatarioRep;
     private StatusEntregaRep statusEntregaRep;
+    private Facade facade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class EntregaActivity extends AppCompatActivity {
          entregaRep = new EntregaRep(context);
          destinatarioRep = new DestinatarioRep(context);
          statusEntregaRep = new StatusEntregaRep();
+        facade = new Facade(this);
         try {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
@@ -72,8 +74,17 @@ public class EntregaActivity extends AppCompatActivity {
 
         try {
             if(finish == true){
-                initList();
-                finish = false;
+                if(!facade.isConnected(this)){
+                    List<Entrega> entregas = entregaRep.buscarEntrega();
+                     if(entregas != null && entregas.size() > 0){
+                         Log.i("Chaves2", "Inseriu " + entregas.size());
+                         initRecyclerView(entregas);
+                         finish = false;
+                     }
+                }else{
+                    initList();
+                    finish = false;
+                }
             }
             else {
                     initRecyclerView(null);
@@ -144,8 +155,14 @@ public class EntregaActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<Entrega> entregas) {
                 try {
-                    if (entregas == null || entregas.size() == 0)
+                    if (entregas == null || entregas.size() == 0){
                         emptyView(true);
+                        // mListEntregas = entregas;
+                    }else {
+                        entregaRep.inserirEntrega(entregas, mRomaneio);;
+                        initRecyclerView(entregas);
+                        finishProgressBar();
+                    }
                          //inserir banco local
 
                   /*  for(Entrega ent : entregas) {
@@ -185,14 +202,6 @@ public class EntregaActivity extends AppCompatActivity {
 
                         Toast.makeText(getBaseContext(), "Entrega inserida no banco com sucesso!", Toast.LENGTH_LONG).show();
                     }*/
-
-
-
-
-                   initRecyclerView(entregas);
-                    finishProgressBar();
-                           // mListEntregas = entregas;
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -200,49 +209,44 @@ public class EntregaActivity extends AppCompatActivity {
         }.execute();
     }
 
+    class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
 
-
-
-       class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
-
-           @Override
-           protected void onPreExecute(){
-               try{
-                   super.onPreExecute();
-                   // emptyView(true);
-                   initProgressBar();
-               }catch (Exception e){
-                   e.printStackTrace();
-               }
+       @Override
+       protected void onPreExecute(){
+           try{
+               super.onPreExecute();
+               // emptyView(true);
+               initProgressBar();
+           }catch (Exception e){
+               e.printStackTrace();
            }
+       }
 
-
-
-            @Override
-                protected List<Entrega> doInBackground(Void... String) {
-                Facade facade = new Facade(EntregaActivity.this);
-                try {
-                    return facade.selectEntrega();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
+        @Override
+            protected List<Entrega> doInBackground(Void... String) {
+            Facade facade = new Facade(EntregaActivity.this);
+            try {
+                return facade.selectEntrega();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return null;
+        }
 
-            @Override
-            protected void onPostExecute(List<Entrega> entregas) {
-                try {
-                    if (entregas == null || entregas.size() == 0)
-                        emptyView(true);
-                    initRecyclerView(entregas);
-                    finishProgressBar();
-                    mListEntregas = entregas;
+        @Override
+        protected void onPostExecute(List<Entrega> entregas) {
+            try {
+                if (entregas == null || entregas.size() == 0)
+                    emptyView(true);
+                initRecyclerView(entregas);
+                finishProgressBar();
+                mListEntregas = entregas;
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+    }
 
     private void emptyView(boolean isVisible) {
         findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
@@ -267,5 +271,4 @@ public class EntregaActivity extends AppCompatActivity {
             myProgressBar.onFinish();
         }
     }
-
 }

@@ -164,10 +164,7 @@ public class EmpresaCardStackFragment extends Fragment {
                             Intent it = new Intent(getActivity(), MainActivity.class);
                             Bundle b = new Bundle();
                             emp = empresas.get(0);
-                            boolean ok = empresaRep.insertEmpresa(empresas.get(0));
-                            if(ok){
-                                Toast.makeText(getActivity(), "Salvou a empresa", Toast.LENGTH_LONG).show();
-                            }
+                            empresaRep.insertEmpresa(empresas.get(0));
                             b.putParcelable(Empresa.PARCEL_EMPRESA, emp);
                             // b.putParcelable(Motorista.PARCEL_MOTORISTA, motorista);
                             startActivity(it.putExtras(b));
@@ -227,9 +224,6 @@ public class EmpresaCardStackFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Empresa empresa = (Empresa) adapterView.getAdapter().getItem(i);
                 boolean ok = empresaRep.insertEmpresa(empresa);
-                if(ok){
-                    Toast.makeText(getActivity(), "Salvou a empresa", Toast.LENGTH_LONG).show();
-                }
                 Intent it = new Intent(getActivity(), MainActivity.class);
                 //    RomaneioFragment frag = new RomaneioFragment();
 

@@ -150,14 +150,11 @@ public class RomaneioFragment extends Fragment {
                 try {
                     if(romaneios == null){
                         finishProgressBar();
-                        Toast.makeText(getContext(), "Romaneio encontrado com sucesso!", Toast.LENGTH_LONG).show();
-
                     } else if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
                     else {
                         if(romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0){
                             romaneioRep.inserir(romaneios.get(0), empresa);
-                            Log.i("Fifa","Salvou o Romaneio");
                         }
                         initRecyclerView(romaneios);
                         finishProgressBar();
