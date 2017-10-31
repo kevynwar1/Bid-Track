@@ -24,7 +24,7 @@ import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
 import java.util.List;
 
-public class DetalhesPagerFragment extends Fragment{
+public class DetalhesPagerFragment extends Fragment {
 
     private MyProgressBar mProgressBar;
     private Romaneio mRomaneio;
@@ -41,14 +41,11 @@ public class DetalhesPagerFragment extends Fragment{
     private StatusRomaneioTask mRomaneioTask;
     private List<Entrega> mListEntregas2;
     private RetornaTask mFinalTask;
+    private TextView entrega_status;
 
 
-
-
-
-
-
-    public DetalhesPagerFragment() {}
+    public DetalhesPagerFragment() {
+    }
 
     public static DetalhesPagerFragment newInstance(Romaneio romaneio, Entrega entrega) {
         DetalhesPagerFragment fragment = new DetalhesPagerFragment();
@@ -66,8 +63,9 @@ public class DetalhesPagerFragment extends Fragment{
         if (getArguments() != null) {
             mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
             mEntrega = getArguments().getParcelable(Entrega.PARCEL);
-           // mStatusTask = new StatusTask();
-           // mAtualiza = new AtualizaTask();
+            entrega_status = (TextView) mView.findViewById(R.id.txtStatusEntrega);
+            // mStatusTask = new StatusTask();
+            // mAtualiza = new AtualizaTask();
             //mLista = new ListaTask();
             //mFinalTask = new RetornaTask();
         } else mEntrega = new Entrega();
@@ -106,7 +104,7 @@ public class DetalhesPagerFragment extends Fragment{
                 ((TextView) mView.findViewById(R.id.txtCodRomaneio)).setText(String.valueOf(mRomaneio.getCodigo()));
                 ((TextView) mView.findViewById(R.id.txtNFS)).setText(mEntrega.getNota_fiscal());
                 ((TextView) mView.findViewById(R.id.txtSequencia)).setText(String.valueOf(mEntrega.getSeq_entrega()));
-               //((TextView) mView.findViewById(R.id.txtInicio)).setText(mRomaneio.getDate_create());
+                //((TextView) mView.findViewById(R.id.txtInicio)).setText(mRomaneio.getDate_create());
                 //((TextView) mView.findViewById(R.id.txtTermino)).setText(mRomaneio.getDate_finalization());
                 ((TextView) mView.findViewById(R.id.txtPeso)).setText(String.valueOf(mEntrega.getPeso()));
                 //Destinatario
@@ -122,35 +120,33 @@ public class DetalhesPagerFragment extends Fragment{
                     ((TextView) mView.findViewById(R.id.txtDestLogradouro)).setText(mEntrega.getDestinatario().getLogradouro());
                     ((TextView) mView.findViewById(R.id.txtDestNumero)).setText(mEntrega.getDestinatario().getNumero());
                     ((TextView) mView.findViewById(R.id.txtDestComplemento)).setText(mEntrega.getDestinatario().getComplemento());
-                }else Toast.makeText(getActivity(), getString(R.string.app_err_null_destinatario), Toast.LENGTH_SHORT).show();
-               // initButtons();
-            } else Toast.makeText(getActivity(), getString(R.string.app_err_null_entrega), Toast.LENGTH_SHORT).show();
-
+                } else
+                    Toast.makeText(getActivity(), getString(R.string.app_err_null_destinatario), Toast.LENGTH_SHORT).show();
+                // initButtons();
+            } else
+                Toast.makeText(getActivity(), getString(R.string.app_err_null_entrega), Toast.LENGTH_SHORT).show();
 
 
     }
-
 
 
     public void iniciarAtualizacao() {
-        if (mStatusTask == null || mStatusTask.getStatus() != AsyncTask.Status.RUNNING){
+        if (mStatusTask == null || mStatusTask.getStatus() != AsyncTask.Status.RUNNING) {
             mStatusTask = new StatusTask();
             mStatusTask.execute();
 
-        }
-        else{
+        } else {
             Toast.makeText(getActivity(), "Sem conexão, tente novamente mais tarde", Toast.LENGTH_SHORT).show();
             return;
         }
 
     }
 
-    public void atualizaRomaneio(){
-        if(mRomaneioTask == null || mRomaneioTask.getStatus() != AsyncTask.Status.RUNNING){
+    public void atualizaRomaneio() {
+        if (mRomaneioTask == null || mRomaneioTask.getStatus() != AsyncTask.Status.RUNNING) {
             mRomaneioTask = new StatusRomaneioTask();
             mRomaneioTask.execute();
-        }
-        else{
+        } else {
             Toast.makeText(getActivity(), "Sem conexão, tente novamente mais tarde", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -158,14 +154,12 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
 
-
-    public void alteraStatus(){
-        if(mListaTask == null || mListaTask.getStatus() != AsyncTask.Status.RUNNING){
+    public void alteraStatus() {
+        if (mListaTask == null || mListaTask.getStatus() != AsyncTask.Status.RUNNING) {
             mListaTask = new ListaTask();
             mListaTask.execute();
 
-        }
-        else{
+        } else {
             Toast.makeText(getActivity(), "Sem conexão, tente novamente mais tarde", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -174,27 +168,27 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
 
-   public void listaFinal(){
-        if(mFinalTask == null  || mFinalTask.getStatus() != AsyncTask.Status.RUNNING){
+    public void listaFinal() {
+        if (mFinalTask == null || mFinalTask.getStatus() != AsyncTask.Status.RUNNING) {
             mFinalTask = new RetornaTask();
             mFinalTask.execute();
-        } else{
+        } else {
             Toast.makeText(getActivity(), "Sem conexão, tente novamente mais tarde", Toast.LENGTH_SHORT).show();
             return;
-            }
-
         }
+
+    }
 
 
     class RetornaTask extends AsyncTask<Void, Void, List<Entrega>> {
 
-        protected void onPreExecute(){
-            try{
+        protected void onPreExecute() {
+            try {
                 super.onPreExecute();
                 //emptyView(true);
                 initProgressBar();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -226,25 +220,19 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
 
+    class StatusTask extends AsyncTask<Void, Void, Void> {
 
 
-
-
-
-    class StatusTask extends AsyncTask<Void, Void, Void>{
-
-
-        protected void onPreExecute(){
-            try{
+        protected void onPreExecute() {
+            try {
                 super.onPreExecute();
                 //emptyView(true);
                 initProgressBar();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
 
 
         //finaliza entrega e seta a entrega como finalizada
@@ -252,18 +240,18 @@ public class DetalhesPagerFragment extends Fragment{
         protected Void doInBackground(Void... voids) {
 
             HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
-            if(mEntrega != null){
-                if(mEntrega.getStatusEntrega().getCodigo() == 3 && mEntrega.getSeq_entrega() > 0 && mRomaneio.getCodigo() > 0){
+            if (mEntrega != null) {
+                if (mEntrega.getStatusEntrega().getCodigo() == 3 && mEntrega.getSeq_entrega() > 0 && mRomaneio.getCodigo() > 0) {
 
                     int novo_status = 4;
                     int seq_entrega = mEntrega.getSeq_entrega();
                     int cod_romaneio = mRomaneio.getCodigo();
-                    tem_entrega = mHttpEntrega.statusEntrega(novo_status,seq_entrega,cod_romaneio);
+                    tem_entrega = mHttpEntrega.statusEntrega(novo_status, seq_entrega, cod_romaneio);
 
                 }
 
             }
-        return null;
+            return null;
         }
 
 
@@ -274,7 +262,7 @@ public class DetalhesPagerFragment extends Fragment{
 
                 //emptyView(false);
                 finishProgressBar();
-                if(mEntrega !=null) {
+                if (mEntrega != null) {
                     if (tem_entrega) {
                         Toast.makeText(getActivity(), "Entrega finalizada com Sucesso!", Toast.LENGTH_SHORT).show();
                     } else {
@@ -291,16 +279,16 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
     //lista as entregas novamente com o status atualizado
-    class ListaTask extends AsyncTask<Void, Void, Void>{
+    class ListaTask extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected void onPreExecute(){
-            try{
+        protected void onPreExecute() {
+            try {
                 super.onPreExecute();
                 // emptyView(true);
                 initProgressBar();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -313,7 +301,7 @@ public class DetalhesPagerFragment extends Fragment{
             HttpEntrega httpEntregas = new HttpEntrega(getActivity());
             try {
 
-                    mEntregas = httpEntregas.select();
+                mEntregas = httpEntregas.select();
 
 
                 if (mEntregas != null) {
@@ -326,24 +314,23 @@ public class DetalhesPagerFragment extends Fragment{
                             break;
                         }
                         if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 1) {
-                         //verifica se de acordo com a sequencia, a entrega anterior a selecionada, foi finalizada;
+                            //verifica se de acordo com a sequencia, a entrega anterior a selecionada, foi finalizada;
                             for (int y = 0; y < mEntregas.size(); y++) {
                                 //int sequencial_entregaLista = mEntregas.get(y).getSeq_entrega();
                                 //int sequencial_myEntrega = mEntrega.getSeq_entrega();
                                 if (mEntregas.get(y).getSeq_entrega() < mEntrega.getSeq_entrega() && mEntregas.get(y).getStatusEntrega().getCodigo() == 1) {
 
-                                      sequencia_invalida = true;
+                                    sequencia_invalida = true;
                                     break;
-                                }
-                                else if (mEntregas.get(y).getSeq_entrega() == mEntrega.getSeq_entrega() && mEntregas.get(y).getStatusEntrega().getCodigo() == 1){
+                                } else if (mEntregas.get(y).getSeq_entrega() == mEntrega.getSeq_entrega() && mEntregas.get(y).getStatusEntrega().getCodigo() == 1) {
 
                                     //if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() == 1 && mEntrega.getSeq_entrega() > 0) {
-                                        HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
-                                        int novo_status = 3;
-                                        int seq_nova_entrega = mEntrega.getSeq_entrega();
-                                        int cod_romaneio = mRomaneio.getCodigo();
-                                        entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status, seq_nova_entrega, cod_romaneio);
-                                        break;
+                                    HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
+                                    int novo_status = 3;
+                                    int seq_nova_entrega = mEntrega.getSeq_entrega();
+                                    int cod_romaneio = mRomaneio.getCodigo();
+                                    entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status, seq_nova_entrega, cod_romaneio);
+                                    break;
 
                                     //}
                                 }
@@ -354,12 +341,12 @@ public class DetalhesPagerFragment extends Fragment{
 
                     }
 
-                 }
-
-                } catch(Exception e){
-                    e.printStackTrace();
                 }
-                return null;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
 
@@ -369,22 +356,19 @@ public class DetalhesPagerFragment extends Fragment{
             try {
                 //emptyView(false);
                 finishProgressBar();
-                if(sequencia_invalida == true){
+                if (sequencia_invalida == true) {
                     Toast.makeText(getActivity(), "Você esta tentando iniciar uma entrega na sequencia incorreta!", Toast.LENGTH_LONG).show();
 
-                }
-                else if(entrega_ativa == true){
+                } else if (entrega_ativa == true) {
 
                     Toast.makeText(getActivity(), "Você precisa finalizar sua entrega anterior, para iniciar uma nova!", Toast.LENGTH_LONG).show();
-                }
-               else if (entrega_atualizada == true){
-                    Toast.makeText(getActivity(),"Sua próxima entrega foi iniciada, tenha uma boa viagem!",Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(getActivity(),"Desculpe, sua próxima entrega não foi iniciada, tente novamente!",Toast.LENGTH_LONG).show();
+                } else if (entrega_atualizada == true) {
+                    Toast.makeText(getActivity(), "Sua próxima entrega foi iniciada, tenha uma boa viagem!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "Desculpe, sua próxima entrega não foi iniciada, tente novamente!", Toast.LENGTH_LONG).show();
                 }
 
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -392,17 +376,17 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
 
-    class StatusRomaneioTask extends AsyncTask<Void, Void, Void>{
+    class StatusRomaneioTask extends AsyncTask<Void, Void, Void> {
 
 
         @Override
-        protected void onPreExecute(){
-            try{
+        protected void onPreExecute() {
+            try {
                 super.onPreExecute();
                 // emptyView(true);
                 initProgressBar();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -413,7 +397,7 @@ public class DetalhesPagerFragment extends Fragment{
             try {
 
 
-                if(mListEntregas2 != null){
+                if (mListEntregas2 != null) {
                     HttpRomaneio mhttpRomaneio = new HttpRomaneio(getActivity());
                     Entrega mEtrenga = mListEntregas2.get(mListEntregas2.size() - 1);
                     if (mEtrenga.getStatusEntrega().getCodigo() == 4 && mRomaneio.getCodigo() > 0) {
@@ -424,8 +408,8 @@ public class DetalhesPagerFragment extends Fragment{
                         romaneio_inativo = mhttpRomaneio.statusRomaneioEntrega(novo_status, cod_romaneio, cod_motorista);
 
                     }
-               }
-            }catch (Exception e){
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -438,9 +422,9 @@ public class DetalhesPagerFragment extends Fragment{
             super.onPostExecute(aVoid);
             try {
                 finishProgressBar();
-                if(romaneio_inativo) {
+                if (romaneio_inativo) {
                     Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
-                } else if(romaneio_inativo == false){
+                } else if (romaneio_inativo == false) {
                     //Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
                 }
 
@@ -450,10 +434,6 @@ public class DetalhesPagerFragment extends Fragment{
 
         }
     }
-
-
-
-
 
 
     private void initButtons() {
@@ -473,89 +453,85 @@ public class DetalhesPagerFragment extends Fragment{
                             }
                         });
 
-            if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() != 3){
+                if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() != 3) {
 
                     Toast.makeText(getActivity(), "Esta entrega não pode ser finalizada, pois não esta em andamento", Toast.LENGTH_LONG).show();
                     return;
 
-            } else
+                } else
 
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
-                        , getString(R.string.app_dlg_confirm)
-                        , new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if(mEntrega != null) {
-                                    iniciarAtualizacao();
-                                    listaFinal();
-                                    atualizaRomaneio();
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
+                            , getString(R.string.app_dlg_confirm)
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (mEntrega != null) {
+                                        iniciarAtualizacao();
+                                        listaFinal();
+                                        atualizaRomaneio();
+                                    }
+
+                                    dialogInterface.dismiss();
                                 }
 
-                        dialogInterface.dismiss();
-                                }
 
-
-                        });
+                            });
                 alertDialog.show();
 
 
             }
         });
 
-        mView.findViewById(R.id.btn_iniciar).setOnClickListener(new View.OnClickListener(){
+        mView.findViewById(R.id.btn_iniciar).setOnClickListener(new View.OnClickListener() {
 
-             @Override
-            public void onClick(View view){
-                   AlertDialog alertDialog = newAlertDialog("Bid & Track", "Deseja inciar uma nova entrega?");
-                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE
-                 ,"Cancelar"
-                 ,new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                AlertDialog alertDialog = newAlertDialog("Bid & Track", "Deseja inciar uma nova entrega?");
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE
+                        , "Cancelar"
+                        , new DialogInterface.OnClickListener() {
 
-                             @Override
-                             public void onClick(DialogInterface dialogInterface, int i){
-                                 dialogInterface.dismiss();
-                             }
-                         });
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
 
-                 if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() == 3 ) {
+                if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() == 3) {
 
-                     Toast.makeText(getActivity(), "Esta entrega não pode ser iniciada, pois ela ja esta em viagem!", Toast.LENGTH_LONG).show();
-                     return;
-                 }else if( mEntrega.getStatusEntrega().getCodigo() ==  4) {
+                    Toast.makeText(getActivity(), "Esta entrega não pode ser iniciada, pois ela ja esta em viagem!", Toast.LENGTH_LONG).show();
+                    return;
+                } else if (mEntrega.getStatusEntrega().getCodigo() == 4) {
 
-                     Toast.makeText(getActivity(), "Esta entrenga não pode ser inciada, pois ja foi finalizada!", Toast.LENGTH_LONG).show();
-                     return;
+                    Toast.makeText(getActivity(), "Esta entrenga não pode ser inciada, pois ja foi finalizada!", Toast.LENGTH_LONG).show();
+                    return;
 
-                     //refazer validação aqui!
-            }else
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
-                ,"Confirmar"
-                ,new DialogInterface.OnClickListener(){
+                    //refazer validação aqui!
+                } else
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
+                            , "Confirmar"
+                            , new DialogInterface.OnClickListener() {
 
                                 @Override
-                            public void onClick(DialogInterface dialogInterface, int i){
-                                if(mEntrega != null){
-                                    alteraStatus();
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (mEntrega != null) {
+                                        alteraStatus();
+                                    }
+
+                                    dialogInterface.dismiss();
                                 }
 
-                            dialogInterface.dismiss();
-                            }
+                            });
+                alertDialog.show();
 
-                        });
-                 alertDialog.show();
-
-             }
+            }
 
         });
 
     }
 
 
-
-
-
-
-        //CANCELAR
+    //CANCELAR
         /*mView.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -581,7 +557,7 @@ public class DetalhesPagerFragment extends Fragment{
             }
         });*/
 
-        //OCORRENCIA
+    //OCORRENCIA
 
 //        mView.findViewById(R.id.btn_occurrence).setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -642,8 +618,8 @@ public class DetalhesPagerFragment extends Fragment{
     private void initProgressBar() throws ClassCastException, NullPointerException {
         if (mProgressBar == null)
             mProgressBar = new MyProgressBar((FrameLayout) mView.findViewById(R.id.frame_progress));
-           // mTexto.setText("Carregando próxima viagem...");
-           // mTexto.setVisibility(View.VISIBLE);
+        // mTexto.setText("Carregando próxima viagem...");
+        // mTexto.setVisibility(View.VISIBLE);
     }
 
     private void finishProgressBar() throws Exception {
@@ -653,25 +629,12 @@ public class DetalhesPagerFragment extends Fragment{
     }
 
 
-
-
     private AlertDialog newAlertDialog(String titulo, String msg) {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle(titulo);
         alertDialog.setMessage(msg);
         return alertDialog;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
