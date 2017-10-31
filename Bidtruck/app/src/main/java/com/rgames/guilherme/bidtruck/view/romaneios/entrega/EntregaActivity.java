@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
+import com.rgames.guilherme.bidtruck.model.basic.Destinatario;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
@@ -133,6 +134,8 @@ public class EntregaActivity extends AppCompatActivity {
                 try {
                     if (entregas == null || entregas.size() == 0)
                         emptyView(true);
+
+
                     initRecyclerView(entregas);
                     finishProgressBar();
                            // mListEntregas = entregas;

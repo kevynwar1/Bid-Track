@@ -60,10 +60,10 @@ public class RomaneioRep {
           conn.close();
           if(resultado == -1){
 
-              return "Sucesso";
+              return "Erro";
           }
           else{
-              return "Erro";
+              return "Sucesso";
           }
 
 
