@@ -209,7 +209,9 @@ public class EntregaActivity extends AppCompatActivity {
         }.execute();
     }
 
-    class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
+
+
+   class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
 
        @Override
        protected void onPreExecute(){
@@ -220,7 +222,9 @@ public class EntregaActivity extends AppCompatActivity {
            }catch (Exception e){
                e.printStackTrace();
            }
+
        }
+
 
         @Override
             protected List<Entrega> doInBackground(Void... String) {
@@ -246,7 +250,7 @@ public class EntregaActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
+   }
 
     private void emptyView(boolean isVisible) {
         findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);

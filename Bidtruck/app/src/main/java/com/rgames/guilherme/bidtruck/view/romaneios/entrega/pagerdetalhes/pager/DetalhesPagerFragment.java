@@ -41,7 +41,7 @@ public class DetalhesPagerFragment extends Fragment {
     private StatusRomaneioTask mRomaneioTask;
     private List<Entrega> mListEntregas2;
     private RetornaTask mFinalTask;
-    private TextView entrega_status;
+
 
 
     public DetalhesPagerFragment() {
@@ -70,7 +70,6 @@ public class DetalhesPagerFragment extends Fragment {
         if (getArguments() != null) {
             mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
             mEntrega = getArguments().getParcelable(Entrega.PARCEL);
-            entrega_status = (TextView) mView.findViewById(R.id.txtStatusEntrega);
             // mStatusTask = new StatusTask();
             // mAtualiza = new AtualizaTask();
             //mLista = new ListaTask();
