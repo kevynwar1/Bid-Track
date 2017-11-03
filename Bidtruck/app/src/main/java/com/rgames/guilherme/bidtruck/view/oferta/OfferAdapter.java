@@ -38,7 +38,7 @@ public class OfferAdapter extends ArrayAdapter<Romaneio>{
             TextView payment = view.findViewById(R.id.offer_payment);
             Romaneio offer = offers.get(position);
             code.setText(Integer.toString(offer.getCodigo()));
-            DecimalFormat df = new DecimalFormat("#.00");
+            DecimalFormat df = new DecimalFormat("#,##0.00");
             payment.setText(df.format(offer.getValor()));
         }
         return view;

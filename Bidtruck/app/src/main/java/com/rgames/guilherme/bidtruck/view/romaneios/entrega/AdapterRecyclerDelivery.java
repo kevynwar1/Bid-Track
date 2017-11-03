@@ -67,14 +67,17 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             String input = mListEntrega.get(holder.getAdapterPosition()).getStatusEntrega().getDescricao();
             input = input.toUpperCase();
             if (input.equals("EM VIAGEM")) {
-                holder.status_entrega.setTextColor(Color.parseColor("#FFC107"));
+                holder.status_entrega.setTextColor(Color.parseColor("#FF9800"));
                 holder.status_entrega.setText(input);
+                holder.viewLateral.setBackgroundColor(Color.parseColor("#FF9800"));
             }else if (input.equals("FINALIZADO")){
                 holder.status_entrega.setTextColor(Color.parseColor("#D32F2F"));
                 holder.status_entrega.setText(input);
+                holder.viewLateral.setBackgroundColor(Color.parseColor("#D32F2F"));
             }else if (input.equals("LIBERADO")){
                 holder.status_entrega.setTextColor(Color.parseColor("#303F9F"));
                 holder.status_entrega.setText(input);
+                holder.viewLateral.setBackgroundColor(Color.parseColor("#303F9F"));
             }
 
 
@@ -122,6 +125,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView codigo, titulo, seq_entrega, razao_social, logradouro, bairro, numero, status_entrega;
+        public View viewLateral;
         public CardView cardView;
         //final TextView cod_romaneio;
 
@@ -129,6 +133,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
             super(itemView);
             // titulo = itemView.findViewById(R.id.titulo);
             //seq_entrega =  itemView.findViewById(R.id.txtSequencia);
+            viewLateral = (View) itemView.findViewById(R.id.viewLateral);
             codigo = itemView.findViewById(R.id.txtSequencia);
             razao_social = itemView.findViewById(R.id.txtRazao);
             logradouro = itemView.findViewById(R.id.txtLogradouro);
