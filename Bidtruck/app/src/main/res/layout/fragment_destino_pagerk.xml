@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Informações a cerca da entrega." />
+                    android:text="Informações acerca da entrega." />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Informações a cerca do destinatario." />
+                    android:text="Informações acerca do destinatário." />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

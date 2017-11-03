@@ -268,9 +268,9 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 String caminho = imagesList.get(i).imagePath;
                 //Bitmap bit = BitmapFactory.decodeFile(caminho);
                 Bitmap bit = CarregadorDeFoto.carrega(caminho);
-                Bitmap bito = Bitmap.createScaledBitmap(bit, 200, 200, true);
+                Bitmap bito = Bitmap.createScaledBitmap(bit, 300, 300, true);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bito.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                bito.compress(Bitmap.CompressFormat.JPEG, 55, stream);
                 byte[] fotoB = stream.toByteArray();
                 codado = Base64.encodeToString(fotoB, Base64.DEFAULT);
                 listImagem.add(codado);
