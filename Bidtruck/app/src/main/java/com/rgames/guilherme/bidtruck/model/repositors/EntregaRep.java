@@ -37,32 +37,73 @@ public class EntregaRep {
     private StatusEntregaTable statusEntregaTable;
     private DataBase banco;
     boolean success = false;
+    private Context ctx;
+
 
     public EntregaRep (Context context){
+
         banco = new DataBase(context);
+
+
     }
 
-    public EntregaRep(){}
 
-    private ContentValues preencheEntrega(Entrega entrega, Romaneio romaneio){
+
+    private ContentValues preencheEntrega(List<Entrega> entregas, Romaneio romaneio) {
         ContentValues cv = new ContentValues();
-        cv.put(entregaTable.COD_ROMANEIO, romaneio.getCodigo());
+        /*cv.put(entregaTable.COD_ROMANEIO, romaneio.getCodigo());
         cv.put(entregaTable.COD_DESTINATARIO, entrega.getDestinatario().getId());
         cv.put(entregaTable.COD_STATUS_ENTREGA, entrega.getStatusEntrega().getCodigo());
         cv.put(entregaTable.SEQ_ENTREGA,entrega.getSeq_entrega());
         cv.put(entregaTable.PESO_CARGA,entrega.getPeso());
-        cv.put(entregaTable.NOTA_FISCAL,entrega.getNota_fiscal());
+        cv.put(entregaTable.NOTA_FISCAL,entrega.getNota_fiscal());*/
+        // ContentValues cv = new ContentValues();
+
+        for (Entrega entrega : entregas) {
 
 
+            cv.put(entregaTable.SEQ_ENTREGA, entrega.getSeq_entrega());
+            cv.put(entregaTable.COD_ROMANEIO, romaneio.getCodigo());
+            cv.put(entregaTable.NOTA_FISCAL, entrega.getNota_fiscal());
+            cv.put(entregaTable.PESO_CARGA, entrega.getPeso());
+
+            cv.put(entregaTable.RAZAO_SOCIAL_DESTINATARIO, entrega.getDestinatario().getRazao_social());
+            cv.put(entregaTable.NOME_FANTASIA_DESTINATARIO, entrega.getDestinatario().getNome_fantasia());
+            cv.put(entregaTable.COD_DESTINATARIO, entrega.getDestinatario().getId());
+
+            cv.put(entregaTable.COD_STATUS_ENTREGA, entrega.getStatusEntrega().getCodigo());
+            cv.put(entregaTable.DESCRICAO_STATUS, entrega.getStatusEntrega().getDescricao());
+
+            cv.put(entregaTable.TELEFONE, entrega.getDestinatario().getTelefone());
+            cv.put(entregaTable.CEP, entrega.getDestinatario().getCEP());
+            cv.put(entregaTable.UF, entrega.getDestinatario().getUF());
+            cv.put(entregaTable.CIDADE, entrega.getDestinatario().getCidade());
+            cv.put(entregaTable.BAIRRO, entrega.getDestinatario().getBairro());
+            cv.put(entregaTable.LOGRADOURO, entrega.getDestinatario().getLogradouro());
+            cv.put(entregaTable.NUMERO, entrega.getDestinatario().getNumero());
+            cv.put(entregaTable.COMPLEMENTO, entrega.getDestinatario().getComplemento());
+
+
+        }
         return cv;
-
     }
 
     public void inserirEntrega(List<Entrega> entregas, Romaneio romaneio) {
-        //success = false;
+        success = false;
+
+
         try{
-            SQLiteDatabase database = banco.getWritableDatabase();
-            for(Entrega entrega : entregas){
+
+           SQLiteDatabase database = banco.getWritableDatabase();
+            ContentValues cv = preencheEntrega(entregas, romaneio);
+            long resultado = database.insertOrThrow(entregaTable.TABELA, null, cv);
+            database.close();
+            if(resultado != -1){
+                success = true;
+            }
+
+
+            /*for(Entrega entrega : entregas){
                 ContentValues cv = new ContentValues();
                 cv.put(entregaTable.SEQ_ENTREGA,entrega.getSeq_entrega());
                 cv.put(entregaTable.COD_ROMANEIO, romaneio.getCodigo());
@@ -86,7 +127,7 @@ public class EntregaRep {
                 cv.put(entregaTable.COMPLEMENTO, entrega.getDestinatario().getComplemento());
 
                 conn.insertOrThrow(entregaTable.TABELA, null, cv);
-            }
+            }*/
             database.close();
             Log.i("Jesus", "Obrigado meu Pai");
         } catch (Exception e) {

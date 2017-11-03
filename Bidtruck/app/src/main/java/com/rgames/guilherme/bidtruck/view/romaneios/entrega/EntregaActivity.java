@@ -1,6 +1,8 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +24,8 @@ import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
+import com.rgames.guilherme.bidtruck.model.dao.database.DataBase;
+import com.rgames.guilherme.bidtruck.model.dao.database.EntregaTable;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 import com.rgames.guilherme.bidtruck.model.repositors.DestinatarioRep;
@@ -39,19 +43,22 @@ public class EntregaActivity extends AppCompatActivity {
     private boolean finish = true;
     private boolean atualizadaEntrega = true;
     private RetornaListaTask mRetornaTask;
+    private DataBase banco;
+    boolean success = false;
     private Context context;
     private EntregaRep entregaRep;
     private DestinatarioRep destinatarioRep;
     private StatusEntregaRep statusEntregaRep;
     private Facade facade;
+    private EntregaTable entregaTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
          entregaRep = new EntregaRep(context);
-         destinatarioRep = new DestinatarioRep(context);
-         statusEntregaRep = new StatusEntregaRep();
+        // destinatarioRep = new DestinatarioRep(context);
+        statusEntregaRep = new StatusEntregaRep(context);
         facade = new Facade(this);
         try {
             if (getIntent().getExtras() != null) {
@@ -160,48 +167,49 @@ public class EntregaActivity extends AppCompatActivity {
                         // mListEntregas = entregas;
                     }else {
                         entregaRep.inserirEntrega(entregas, mRomaneio);;
+
+                        //inserir banco local
+
+                        /*for(Entrega ent : entregas) {
+
+                            Entrega delivery = new Entrega();
+                            Destinatario destinatario = new Destinatario();
+                            StatusEntrega statusEntrega = new StatusEntrega();
+
+                            //delivery.setCodigo(ent.getCodigo());
+                            delivery.setNota_fiscal(ent.getNota_fiscal());
+                            delivery.setPeso(ent.getPeso());
+                            delivery.setSeq_entrega(ent.getSeq_entrega());
+
+                            destinatario.setId(ent.getDestinatario().getEmpresa().getCodigo());
+                            destinatario.setBairro(ent.getDestinatario().getBairro());
+                            destinatario.setCEP(ent.getDestinatario().getCEP());
+                            destinatario.setCidade(ent.getDestinatario().getCidade());
+                            destinatario.setNome_fantasia(ent.getDestinatario().getNome_fantasia());
+                            destinatario.setRazao_social(ent.getDestinatario().getRazao_social());
+                            destinatario.setLogradouro(ent.getDestinatario().getLogradouro());
+                            destinatario.setUF(ent.getDestinatario().getUF());
+                            destinatario.setTelefone(ent.getDestinatario().getTelefone());
+                            destinatario.setLatitude(ent.getDestinatario().getLatitude());
+                            destinatario.setLongitude(ent.getDestinatario().getLongitude());
+                            delivery.setDestinatario(destinatario);
+
+                            statusEntrega.setCodigo(ent.getStatusEntrega().getCodigo());
+                            statusEntrega.setDescricao(ent.getStatusEntrega().getDescricao());
+                            delivery.setStatusEntrega(statusEntrega);
+
+
+                              // entregaRep.inserirEntrega(delivery, mRomaneio);
+                            //destinatarioRep.inserirDestinatario(destinatario);
+
+                    }
+                        entregaRep.inserirEntrega(delivery, mRomaneio);
+                        //statusEntregaRep.inserirStatusEntrega();*/
+                        Toast.makeText(getBaseContext(), "Entrega inserida no banco com sucesso!", Toast.LENGTH_LONG).show();
                         initRecyclerView(entregas);
                         finishProgressBar();
+
                     }
-                         //inserir banco local
-
-                  /*  for(Entrega ent : entregas) {
-
-                        Entrega delivery = new Entrega();
-                        Destinatario destinatario = new Destinatario();
-                        StatusEntrega statusEntrega = new StatusEntrega();
-
-                       //delivery.setCodigo(ent.getCodigo());
-                        delivery.setNota_fiscal(ent.getNota_fiscal());
-                        delivery.setPeso(ent.getPeso());
-                        delivery.setSeq_entrega(ent.getSeq_entrega());
-
-                        destinatario.setId(ent.getDestinatario().getEmpresa().getCodigo());
-                        destinatario.setBairro(ent.getDestinatario().getBairro());
-                        destinatario.setCEP(ent.getDestinatario().getCEP());
-                        destinatario.setCidade(ent.getDestinatario().getCidade());
-                        destinatario.setNome_fantasia(ent.getDestinatario().getNome_fantasia());
-                        destinatario.setRazao_social(ent.getDestinatario().getRazao_social());
-                        destinatario.setLogradouro(ent.getDestinatario().getLogradouro());
-                        destinatario.setUF(ent.getDestinatario().getUF());
-                        destinatario.setTelefone(ent.getDestinatario().getTelefone());
-                        destinatario.setLatitude(ent.getDestinatario().getLatitude());
-                        destinatario.setLongitude(ent.getDestinatario().getLongitude());
-                        delivery.setDestinatario(destinatario);
-
-
-                        statusEntrega.setCodigo(ent.getStatusEntrega().getCodigo());
-                        statusEntrega.setDescricao(ent.getStatusEntrega().getDescricao());
-                        delivery.setStatusEntrega(statusEntrega);
-
-
-                        entregaRep.inserirEntrega(delivery, mRomaneio);
-                        destinatarioRep.inserirDestinatario(destinatario);
-                        statusEntregaRep.preencheStatusEntrega();
-
-
-                        Toast.makeText(getBaseContext(), "Entrega inserida no banco com sucesso!", Toast.LENGTH_LONG).show();
-                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -211,7 +219,10 @@ public class EntregaActivity extends AppCompatActivity {
 
 
 
-   class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
+
+
+
+    class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
 
        @Override
        protected void onPreExecute(){

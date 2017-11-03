@@ -27,6 +27,8 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String NOME_BANCO = "tecnologia177_4";
     private static final int VERSAO = 1;
 
+
+
     public DataBase(Context context) {
         super(context, NOME_BANCO, null, VERSAO);
     }
@@ -45,6 +47,7 @@ public class DataBase extends SQLiteOpenHelper {
 
         //inserirStatusEntrega(preencheStatusEntrega());
         //Log.i("Sarah", "" + buscaStatusEntrega().size());
+
     }
 
     @Override
@@ -60,6 +63,8 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(ScriptSql.getDropTableTipoOcorrencia());
         this.onCreate(db);
     }
+
+
 
 }
 

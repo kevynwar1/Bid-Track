@@ -1,6 +1,7 @@
 package com.rgames.guilherme.bidtruck.model.repositors;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -19,10 +20,16 @@ public class StatusEntregaRep {
 
     private DataBase banco;
     private SQLiteDatabase connection;
+    private boolean sucess;
+
+    public StatusEntregaRep(Context context){
+
+        banco = new DataBase(context);
+    }
 
 
 
-    public List<ContentValues> preencheStatusEntrega() {
+   /* public List<ContentValues> preencheStatusEntrega() {
         List<ContentValues> values = new ArrayList<>();
         ContentValues cv = new ContentValues();
 
@@ -43,19 +50,52 @@ public class StatusEntregaRep {
         values.add(cv);
 
         return values;
-    }
+    }*/
 
-    public void inserirStatusEntrega(List<ContentValues> list) {
+    public void inserirStatusEntrega() {
+        sucess = false;
         try {
-            if (buscaStatusEntrega() == null || buscaStatusEntrega().size() <= 0) {
+
+            List<ContentValues> values = new ArrayList<>();
+            ContentValues cv1 = new ContentValues();
+            ContentValues cv2 = new ContentValues();
+            ContentValues cv3 = new ContentValues();
+            ContentValues cv4 = new ContentValues();
+
+            cv1.put(StatusEntregaTable.CODIGO, 1);
+            cv1.put(StatusEntregaTable.DESCRICAO, "Liberado");
+            values.add(cv1);
+
+            cv2.put(StatusEntregaTable.CODIGO, 2);
+            cv2.put(StatusEntregaTable.DESCRICAO, "Pendente");
+            values.add(cv2);
+
+            cv3.put(StatusEntregaTable.CODIGO, 3);
+            cv3.put(StatusEntregaTable.DESCRICAO, "Em Viagem");
+            values.add(cv3);
+
+            cv4.put(StatusEntregaTable.CODIGO, 4);
+            cv4.put(StatusEntregaTable.DESCRICAO, "Finalizado");
+            values.add(cv4);
+
+            //if (buscaStatusEntrega() == null || buscaStatusEntrega().size() <= 0) {
                 connection = banco.getWritableDatabase();
-                for (ContentValues cv : list) {
-                    connection.insertOrThrow(StatusEntregaTable.TABELA, null, cv);
-                }
+                for (ContentValues content : values) {
+                   long resultado = connection.insertOrThrow(StatusEntregaTable.TABELA, null, content);
+                    if(resultado != -1){
+                        sucess = true;
+                    }
+
+                //}
+
+               connection.close();
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
 
