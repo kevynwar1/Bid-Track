@@ -153,11 +153,21 @@ public class RomaneioFragment extends Fragment {
                     } else if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
                     else {
-                        if(romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0){
-                            romaneioRep.inserir(romaneios.get(0), empresa);
-                        }
-                        initRecyclerView(romaneios);
-                        finishProgressBar();
+
+                         for(Romaneio rom : romaneios) {
+
+                             if(rom.getStatus_romaneio().getCodigo() == 1 || rom.getStatus_romaneio().getCodigo() == 3) {
+
+
+                                 if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
+                                     romaneioRep.inserir(romaneios.get(0), empresa);
+                                 }
+
+                                 initRecyclerView(romaneios);
+                                 finishProgressBar();
+                             }
+                         }
+
                         /* for(Romaneio rom : romaneios) {
 
                         if (rom.getCodigo() != 0) {

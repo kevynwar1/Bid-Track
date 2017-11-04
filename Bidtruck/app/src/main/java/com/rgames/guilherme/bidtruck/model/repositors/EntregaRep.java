@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.rgames.guilherme.bidtruck.model.basic.Destinatario;
@@ -18,6 +19,7 @@ import com.rgames.guilherme.bidtruck.model.dao.database.DataBase;
 import com.rgames.guilherme.bidtruck.model.dao.database.DestinatarioTable;
 import com.rgames.guilherme.bidtruck.model.dao.database.EntregaTable;
 import com.rgames.guilherme.bidtruck.model.dao.database.RomaneioTable;
+import com.rgames.guilherme.bidtruck.model.dao.database.ScriptSql;
 import com.rgames.guilherme.bidtruck.model.dao.database.StatusEntregaTable;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
@@ -28,7 +30,13 @@ import java.util.List;
  * Created by C. Eduardo on 30/10/2017.
  */
 
-public class EntregaRep {
+public class EntregaRep {//extends SQLiteOpenHelper {
+
+
+    //private static final String NOME_BANCO = "tecnologia177_4";
+    //private static final int VERSAO = 1;
+    //private static final String TABELA = "entraga";
+
 
     private SQLiteDatabase conn;
     private EntregaTable entregaTable;
@@ -37,19 +45,32 @@ public class EntregaRep {
     private StatusEntregaTable statusEntregaTable;
     private DataBase banco;
     boolean success = false;
-    private Context ctx;
+
 
 
     public EntregaRep (Context context){
-
-        banco = new DataBase(context);
-
-
+        //super(context, NOME_BANCO, null, VERSAO);
+           banco = new DataBase(context);
     }
 
 
 
-    private ContentValues preencheEntrega(List<Entrega> entregas, Romaneio romaneio) {
+    /*@Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(ScriptSql.getCreateTableEntrega());
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(ScriptSql.getCreateTableEntrega());
+        this.onCreate(db);
+
+    }*/
+
+
+
+    private ContentValues preencheEntrega( Entrega entrega, Romaneio romaneio) {
         ContentValues cv = new ContentValues();
         /*cv.put(entregaTable.COD_ROMANEIO, romaneio.getCodigo());
         cv.put(entregaTable.COD_DESTINATARIO, entrega.getDestinatario().getId());
@@ -58,9 +79,6 @@ public class EntregaRep {
         cv.put(entregaTable.PESO_CARGA,entrega.getPeso());
         cv.put(entregaTable.NOTA_FISCAL,entrega.getNota_fiscal());*/
         // ContentValues cv = new ContentValues();
-
-        for (Entrega entrega : entregas) {
-
 
             cv.put(entregaTable.SEQ_ENTREGA, entrega.getSeq_entrega());
             cv.put(entregaTable.COD_ROMANEIO, romaneio.getCodigo());
@@ -83,19 +101,17 @@ public class EntregaRep {
             cv.put(entregaTable.NUMERO, entrega.getDestinatario().getNumero());
             cv.put(entregaTable.COMPLEMENTO, entrega.getDestinatario().getComplemento());
 
-
-        }
         return cv;
     }
 
-    public void inserirEntrega(List<Entrega> entregas, Romaneio romaneio) {
+    public void inserirEntrega(Entrega entrega, Romaneio romaneio) {
         success = false;
-
 
         try{
 
-           SQLiteDatabase database = banco.getWritableDatabase();
-            ContentValues cv = preencheEntrega(entregas, romaneio);
+           //SQLiteDatabase database = getWritableDatabase();
+            SQLiteDatabase database = banco.getWritableDatabase();
+              ContentValues cv = preencheEntrega(entrega, romaneio);
             long resultado = database.insertOrThrow(entregaTable.TABELA, null, cv);
             database.close();
             if(resultado != -1){
@@ -191,4 +207,6 @@ public class EntregaRep {
         }
         return entregasList;
     }
+
+
 }

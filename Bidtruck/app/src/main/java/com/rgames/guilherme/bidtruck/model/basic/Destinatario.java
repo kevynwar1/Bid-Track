@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Destinatario implements Parcelable {
 
-    private int id;
+    private int codigo;
     private List<Entrega> entrega;
     private Empresa empresa;
     private String razao_social;
@@ -36,7 +36,7 @@ public class Destinatario implements Parcelable {
     }
 
     public Destinatario(int id, List<Entrega> entrega, Empresa empresa, String razao_social, String nome_fantasia, char tipo_pessoa, String cpf_cnpj, String email, String telefone, String contato, String CEP, String UF, String cidade, String bairro, String logradouro, String numero, String complemento, double latitude, double longitude, boolean situacao) {
-        this.id = id;
+        this.codigo = id;
         this.entrega = entrega;
         this.empresa = empresa;
         this.razao_social = razao_social;
@@ -59,7 +59,7 @@ public class Destinatario implements Parcelable {
     }
 
     protected Destinatario(Parcel in) {
-        id = in.readInt();
+        codigo = in.readInt();
         setEntrega(new ArrayList<Entrega>());
         in.readList(getEntrega(), Entrega.class.getClassLoader());
         empresa = in.readParcelable(Empresa.class.getClassLoader());
@@ -101,7 +101,7 @@ public class Destinatario implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeInt(codigo);
         parcel.writeList(entrega);
         parcel.writeParcelable(empresa, i);
         parcel.writeString(razao_social);
@@ -124,11 +124,11 @@ public class Destinatario implements Parcelable {
     }
 
     public int getId() {
-        return id;
+        return codigo;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.codigo = id;
     }
 
     public List<Entrega> getEntrega() {
