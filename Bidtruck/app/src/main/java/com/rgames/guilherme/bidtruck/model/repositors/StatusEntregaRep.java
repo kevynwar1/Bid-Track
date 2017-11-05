@@ -78,7 +78,7 @@ public class StatusEntregaRep {
             cv4.put(StatusEntregaTable.DESCRICAO, "Finalizado");
             values.add(cv4);
 
-            //if (buscaStatusEntrega() == null || buscaStatusEntrega().size() <= 0) {
+            if (buscaStatusEntrega() == null || buscaStatusEntrega().size() <= 0) {
                 connection = banco.getWritableDatabase();
                 for (ContentValues content : values) {
                    long resultado = connection.insertOrThrow(StatusEntregaTable.TABELA, null, content);
@@ -86,7 +86,7 @@ public class StatusEntregaRep {
                         sucess = true;
                     }
 
-                //}
+                }
 
                connection.close();
 

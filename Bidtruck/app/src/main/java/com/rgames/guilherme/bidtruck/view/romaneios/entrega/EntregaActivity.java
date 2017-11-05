@@ -48,7 +48,6 @@ public class EntregaActivity extends AppCompatActivity {
     boolean success = false;
     private Context context;
     private EntregaRep entregaRep;
-    private DestinatarioRep destinatarioRep;
     private StatusEntregaRep statusEntregaRep;
     private Facade facade;
     private EntregaTable entregaTable;
@@ -58,8 +57,8 @@ public class EntregaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
 
-        // destinatarioRep = new DestinatarioRep(context);
-        statusEntregaRep = new StatusEntregaRep(context);
+        entregaRep = new EntregaRep(EntregaActivity.this);
+        statusEntregaRep = new StatusEntregaRep(EntregaActivity.this);
         facade = new Facade(this);
         try {
             if (getIntent().getExtras() != null) {
@@ -83,16 +82,16 @@ public class EntregaActivity extends AppCompatActivity {
 
         try {
             if(finish == true){
-                if(!facade.isConnected(this)){
+                if(facade.isConnected(this)) {
                     List<Entrega> entregas = entregaRep.buscarEntrega();
-                     if(entregas != null && entregas.size() > 0){
-                         Log.i("Chaves2", "Inseriu " + entregas.size());
-                         initRecyclerView(entregas);
-                         finish = false;
-                     }
-                }else{
-                    initList();
-                    finish = false;
+                    if (entregas != null && entregas.size() > 0) {
+                        Log.i("Chaves2", "Inseriu " + entregas.size());
+                        initRecyclerView(entregas);
+                        finish = false;
+                    } else {
+                        initList();
+                        finish = false;
+                    }
                 }
             }
             else {
@@ -100,6 +99,8 @@ public class EntregaActivity extends AppCompatActivity {
                     mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                     mRetornaTask = new RetornaListaTask();
                     mRetornaTask.execute();
+
+
 
             }
 
@@ -168,46 +169,49 @@ public class EntregaActivity extends AppCompatActivity {
                         emptyView(true);
                         // mListEntregas = entregas;
                     }else {
-                       // entregaRep.inserirEntrega(entregas, mRomaneio);;
-                        entregaRep = new EntregaRep(EntregaActivity.this);
-                        //inserir banco local
 
-                        for(Entrega ent : entregas) {
+                            if(entregaRep.buscarEntrega() == null || entregaRep.buscarEntrega().size() <=0){
 
 
-                                Entrega delivery = new Entrega();
-                                Destinatario destinatario = new Destinatario();
-                                StatusEntrega statusEntrega = new StatusEntrega();
+                                //inserir banco local
 
-                                //delivery.setCodigo(ent.getCodigo());
-                                delivery.setNota_fiscal(ent.getNota_fiscal());
-                                delivery.setPeso(ent.getPeso());
-                                delivery.setSeq_entrega(ent.getSeq_entrega());
+                                for(Entrega ent : entregas) {
 
-                                destinatario.setId(ent.getDestinatario().getEmpresa().getCodigo());
-                                destinatario.setBairro(ent.getDestinatario().getBairro());
-                                destinatario.setCEP(ent.getDestinatario().getCEP());
-                                destinatario.setCidade(ent.getDestinatario().getCidade());
-                                destinatario.setNome_fantasia(ent.getDestinatario().getNome_fantasia());
-                                destinatario.setRazao_social(ent.getDestinatario().getRazao_social());
-                                destinatario.setLogradouro(ent.getDestinatario().getLogradouro());
-                                destinatario.setUF(ent.getDestinatario().getUF());
-                                destinatario.setTelefone(ent.getDestinatario().getTelefone());
-                                destinatario.setLatitude(ent.getDestinatario().getLatitude());
-                                destinatario.setLongitude(ent.getDestinatario().getLongitude());
-                                delivery.setDestinatario(destinatario);
+                                    Entrega delivery = new Entrega();
+                                    Destinatario destinatario = new Destinatario();
+                                    StatusEntrega statusEntrega = new StatusEntrega();
+                                    //delivery.setCodigo(ent.getCodigo());
+                                    delivery.setNota_fiscal(ent.getNota_fiscal());
+                                    delivery.setPeso(ent.getPeso());
+                                    delivery.setSeq_entrega(ent.getSeq_entrega());
 
-                                statusEntrega.setCodigo(ent.getStatusEntrega().getCodigo());
-                                statusEntrega.setDescricao(ent.getStatusEntrega().getDescricao());
-                                delivery.setStatusEntrega(statusEntrega);
-                               //destinatarioRep.inserirDestinatario(destinatario);
-                                 entregaRep.inserirEntrega(delivery, mRomaneio);
+                                    destinatario.setId(ent.getDestinatario().getId());
+                                    destinatario.setBairro(ent.getDestinatario().getBairro());
+                                    destinatario.setCEP(ent.getDestinatario().getCEP());
+                                    destinatario.setCidade(ent.getDestinatario().getCidade());
+                                    destinatario.setCpf_cnpj(ent.getDestinatario().getCpf_cnpj());
+                                    destinatario.setNumero(ent.getDestinatario().getNumero());
+                                    destinatario.setEmail(ent.getDestinatario().getEmail());
+                                    destinatario.setNome_fantasia(ent.getDestinatario().getNome_fantasia());
+                                    destinatario.setRazao_social(ent.getDestinatario().getRazao_social());
+                                    destinatario.setLogradouro(ent.getDestinatario().getLogradouro());
+                                    destinatario.setUF(ent.getDestinatario().getUF());
+                                    destinatario.setTelefone(ent.getDestinatario().getTelefone());
+                                    destinatario.setLatitude(ent.getDestinatario().getLatitude());
+                                    destinatario.setLongitude(ent.getDestinatario().getLongitude());
+                                    destinatario.setComplemento(ent.getDestinatario().getComplemento());
+                                    delivery.setDestinatario(destinatario);
+
+                                    statusEntrega.setCodigo(ent.getStatusEntrega().getCodigo());
+                                    statusEntrega.setDescricao(ent.getStatusEntrega().getDescricao());
+                                    delivery.setStatusEntrega(statusEntrega);
+                                    entregaRep.inserirEntrega(delivery, mRomaneio);
+                                   }
+
+                                statusEntregaRep.inserirStatusEntrega();
+                             }
 
 
-
-                    }
-                        //entregaRep.inserirEntrega(delivery, mRomaneio);
-                        //statusEntregaRep.inserirStatusEntrega();*/
                         Toast.makeText(getBaseContext(), "Entrega inserida no banco com sucesso!", Toast.LENGTH_LONG).show();
                         initRecyclerView(entregas);
                         finishProgressBar();
@@ -219,8 +223,6 @@ public class EntregaActivity extends AppCompatActivity {
             }
         }.execute();
     }
-
-
 
 
 
@@ -254,11 +256,22 @@ public class EntregaActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Entrega> entregas) {
             try {
-                if (entregas == null || entregas.size() == 0)
-                    emptyView(true);
+                if (entregas != null || entregas.size() > 0){
+
+                   mListEntregas = entregaRep.buscarEntrega();
+                    if(mListEntregas != null || mListEntregas.size() > 0){
+                        initRecyclerView(mListEntregas);
+                        finishProgressBar();
+                    }
+                    else{
+                        emptyView(true);
+                     }
+
+            }else{
                 initRecyclerView(entregas);
                 finishProgressBar();
-                mListEntregas = entregas;
+                //mListEntregas = entregas;
+            }
 
             } catch (Exception e) {
                 e.printStackTrace();

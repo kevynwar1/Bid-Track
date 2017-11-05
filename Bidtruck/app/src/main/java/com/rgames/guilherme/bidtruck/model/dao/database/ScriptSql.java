@@ -76,10 +76,11 @@ public class ScriptSql {
         sqlBuilder.append("cod_destinatario INTEGER, ");
         sqlBuilder.append("nome_fantasia_destinatario TEXT,");
         sqlBuilder.append("razao_social_destinatario TEXT,");
-        sqlBuilder.append("latitude INTEGER,");
-        sqlBuilder.append("longitude INTEGER,");
+        sqlBuilder.append("latitude REAL,");
+        sqlBuilder.append("longitude REAL,");
 
-
+        sqlBuilder.append("cnpj TEXT,");
+        sqlBuilder.append("email TEXT,");
         sqlBuilder.append("telefone TEXT,");
         sqlBuilder.append("cep TEXT,");
         sqlBuilder.append("uf TEXT,");

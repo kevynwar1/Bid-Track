@@ -19,14 +19,14 @@ public class Entrega implements Parcelable, Serializable {
     // private Romaneio romaneio;
     private Destinatario destinatario;
     private StatusEntrega status_entrega;
-    private float peso;
+    private String peso_carga;
     private Bitmap image;
     private boolean situacao;
 
     public Entrega() {
     }
 
-    public Entrega(int codigo, int seq_entrega, String nota_fiscal, String titulo, Destinatario destinatario, StatusEntrega status_entrega, float peso, Bitmap image, boolean situacao) {
+    public Entrega(int codigo, int seq_entrega, String nota_fiscal, String titulo, Destinatario destinatario, StatusEntrega status_entrega, String peso_carga, Bitmap image, boolean situacao) {
         this.codigo = codigo;
         this.seq_entrega = seq_entrega;
         this.nota_fiscal = nota_fiscal;
@@ -34,7 +34,7 @@ public class Entrega implements Parcelable, Serializable {
 //        this.romaneio = romaneio;
         this.destinatario = destinatario;
         this.status_entrega = status_entrega;
-        this.peso = peso;
+        this.peso_carga = peso_carga;
         this.image = image;
         this.situacao = situacao;
     }
@@ -47,7 +47,7 @@ public class Entrega implements Parcelable, Serializable {
 //        romaneio = in.readParcelable(Romaneio.class.getClassLoader());
         destinatario = in.readParcelable(Destinatario.class.getClassLoader());
         status_entrega = in.readParcelable(StatusEntrega.class.getClassLoader());
-        peso = in.readFloat();
+        peso_carga = in.readString();
         situacao = in.readByte() > 0;
     }
 
@@ -60,7 +60,7 @@ public class Entrega implements Parcelable, Serializable {
 //        dest.writeParcelable(romaneio, flags);
         dest.writeParcelable(destinatario, flags);
         dest.writeParcelable(status_entrega, flags);
-        dest.writeFloat(peso);
+        dest.writeString(peso_carga);
         dest.writeByte((byte) (situacao ? 1 : 0));
     }
 
@@ -137,12 +137,12 @@ public class Entrega implements Parcelable, Serializable {
         this.status_entrega = status_entrega;
     }
 
-    public float getPeso() {
-        return peso;
+    public String getPeso() {
+        return peso_carga;
     }
 
-    public void setPeso(float peso) {
-        this.peso = peso;
+    public void setPeso(String peso_carga) {
+        this.peso_carga = peso_carga;
     }
 
     public Bitmap getImage() {

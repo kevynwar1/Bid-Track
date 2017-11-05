@@ -52,15 +52,15 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(ScriptSql.getDropTableDestinatario());
-        db.execSQL(ScriptSql.getDropTableEmpresa());
-        db.execSQL(ScriptSql.getDropTableEmpresaMotorista());
+       // db.execSQL(ScriptSql.getDropTableDestinatario());
+       // db.execSQL(ScriptSql.getDropTableEmpresa());
+      //  db.execSQL(ScriptSql.getDropTableEmpresaMotorista());
         db.execSQL(ScriptSql.getDropTableEntrega());
-        db.execSQL(ScriptSql.getDropTableOcorrencia());
+       // db.execSQL(ScriptSql.getDropTableOcorrencia());
         db.execSQL(ScriptSql.getDropTableRomaneio());
-        db.execSQL(ScriptSql.getDropTableStatusEntrega());
-        db.execSQL(ScriptSql.getDropTableStatusRomaneio());
-        db.execSQL(ScriptSql.getDropTableTipoOcorrencia());
+       // db.execSQL(ScriptSql.getDropTableStatusEntrega());
+       // db.execSQL(ScriptSql.getDropTableStatusRomaneio());
+       // db.execSQL(ScriptSql.getDropTableTipoOcorrencia());
         this.onCreate(db);
     }
 
