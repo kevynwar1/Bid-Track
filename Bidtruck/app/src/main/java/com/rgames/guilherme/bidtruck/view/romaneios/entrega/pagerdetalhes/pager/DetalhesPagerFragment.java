@@ -26,6 +26,7 @@ import com.rgames.guilherme.bidtruck.model.repositors.EntregaRep;
 import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetalhesPagerFragment extends Fragment {
@@ -46,7 +47,8 @@ public class DetalhesPagerFragment extends Fragment {
     private StatusRomaneioTask mRomaneioTask;
     private List<Entrega> mListEntregas2;
     private RetornaTask mFinalTask;
-    boolean tem_entrega_nova;
+    private boolean tem_entrega_nova;
+    private boolean atualiza_status;
 
 
 
@@ -258,49 +260,54 @@ public class DetalhesPagerFragment extends Fragment {
                     int novo_status = 4;
                     int seq_entrega = mEntrega.getSeq_entrega();
                     int cod_romaneio = mRomaneio.getCodigo();
-                    //tem_entrega = mHttpEntrega.statusEntrega(novo_status, seq_entrega, cod_romaneio);
+                    tem_entrega = mHttpEntrega.statusEntrega(novo_status, seq_entrega, cod_romaneio);
 
-                    tem_entrega_nova = true;
+                    //as atualizacoes devem ser feitas em ambas plataformas, web e mobile.
+                    tem_entrega_nova = false;
+                    EntregaRep entregaRep = new EntregaRep(getActivity());
+                    if(entregaRep.buscarEntrega() != null || entregaRep.buscarEntrega().size() > 0){
 
-                    if(tem_entrega_nova){
-                        EntregaRep entregaRep = new EntregaRep(getActivity());
-                        if(entregaRep.buscarEntrega() != null || entregaRep.buscarEntrega().size() > 0){
+                        int novo_statuss = 4;
+                        Entrega newEntrega = new Entrega();
+                        Destinatario newDestinatario = new Destinatario();
+                        StatusEntrega newstatusEntrega = new StatusEntrega();
 
-                            Entrega newEntrega = new Entrega();
-                            Destinatario newDestinatario = new Destinatario();
-                            StatusEntrega newstatusEntrega = new StatusEntrega();
+                        newEntrega.setNota_fiscal(mEntrega.getNota_fiscal());
+                        newEntrega.setPeso(mEntrega.getPeso());
+                        newEntrega.setSeq_entrega(mEntrega.getSeq_entrega());
 
-                            newEntrega.setNota_fiscal(mEntrega.getNota_fiscal());
-                            newEntrega.setPeso(mEntrega.getPeso());
-                            newEntrega.setSeq_entrega(mEntrega.getSeq_entrega());
+                        newDestinatario.setId(mEntrega.getDestinatario().getId());
+                        newDestinatario.setBairro(mEntrega.getDestinatario().getBairro());
+                        newDestinatario.setCEP(mEntrega.getDestinatario().getCEP());
+                        newDestinatario.setEmail(mEntrega.getDestinatario().getEmail());
+                        newDestinatario.setCpf_cnpj(mEntrega.getDestinatario().getCpf_cnpj());
+                        newDestinatario.setCidade(mEntrega.getDestinatario().getCidade());
+                        newDestinatario.setNome_fantasia(mEntrega.getDestinatario().getNome_fantasia());
+                        newDestinatario.setRazao_social(mEntrega.getDestinatario().getRazao_social());
+                        newDestinatario.setLogradouro(mEntrega.getDestinatario().getLogradouro());
+                        newDestinatario.setUF(mEntrega.getDestinatario().getUF());
+                        newDestinatario.setTelefone(mEntrega.getDestinatario().getTelefone());
+                        newDestinatario.setLatitude(mEntrega.getDestinatario().getLatitude());
+                        newDestinatario.setLongitude(mEntrega.getDestinatario().getLongitude());
+                        newEntrega.setDestinatario(newDestinatario);
 
-                            newDestinatario.setId(mEntrega.getDestinatario().getId());
-                            newDestinatario.setBairro(mEntrega.getDestinatario().getBairro());
-                            newDestinatario.setCEP(mEntrega.getDestinatario().getCEP());
-                            newDestinatario.setEmail(mEntrega.getDestinatario().getEmail());
-                            newDestinatario.setCpf_cnpj(mEntrega.getDestinatario().getCpf_cnpj());
-                            newDestinatario.setCidade(mEntrega.getDestinatario().getCidade());
-                            newDestinatario.setNome_fantasia(mEntrega.getDestinatario().getNome_fantasia());
-                            newDestinatario.setRazao_social(mEntrega.getDestinatario().getRazao_social());
-                            newDestinatario.setLogradouro(mEntrega.getDestinatario().getLogradouro());
-                            newDestinatario.setUF(mEntrega.getDestinatario().getUF());
-                            newDestinatario.setTelefone(mEntrega.getDestinatario().getTelefone());
-                            newDestinatario.setLatitude(mEntrega.getDestinatario().getLatitude());
-                            newDestinatario.setLongitude(mEntrega.getDestinatario().getLongitude());
-                            newEntrega.setDestinatario(newDestinatario);
+                        newstatusEntrega.setCodigo(novo_statuss);
+                        newstatusEntrega.setDescricao("Finalizado");
+                        newEntrega.setStatusEntrega(newstatusEntrega);
 
-                            newstatusEntrega.setCodigo(novo_status);
-                            newstatusEntrega.setDescricao("Finalizado");
-                            newEntrega.setStatusEntrega(newstatusEntrega);
+                        entregaRep.atualizaEntrega(newEntrega, mRomaneio);
+                        tem_entrega_nova = true;
 
-                             entregaRep.atualizaEntrega(newEntrega, mRomaneio);
-                        }
 
                     }
+
+
+
 
                 }
 
             }
+
             return null;
         }
 
@@ -313,12 +320,10 @@ public class DetalhesPagerFragment extends Fragment {
                 //emptyView(false);
                 finishProgressBar();
                 if (mEntrega != null) {
-                    if(tem_entrega_nova){
-                        Toast.makeText(getActivity(), "Entrega do banco local finalizada com Sucesso!", Toast.LENGTH_SHORT).show();
-                    }
-                    if (tem_entrega) {
+                    if (tem_entrega || tem_entrega_nova) {
                         Toast.makeText(getActivity(), "Entrega finalizada com Sucesso!", Toast.LENGTH_SHORT).show();
-                    } else {
+                    }
+                    else {
                         Toast.makeText(getActivity(), "Desculpe, erro ao finalizar a entrega, tente novamente!", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -361,12 +366,32 @@ public class DetalhesPagerFragment extends Fragment {
                     for (int j = 0; j < mEntregas.size(); j++) {
 
                         Entrega recebeStatusEntrega = mEntregas.get(j);
-                        if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 3 && recebeStatusEntrega.getSeq_entrega() < mEntrega.getSeq_entrega()) {
+                        if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 1 && recebeStatusEntrega.getSeq_entrega() > 0) {
+                            HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
+                            if (recebeStatusEntrega != null) {
+                                int novo_status = 3;
+                                int seq_nova_entrega = recebeStatusEntrega.getSeq_entrega();
+                                int cod_romaneio = mRomaneio.getCodigo();
+                                entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status, seq_nova_entrega, cod_romaneio);
+                                //entrega_atualizada = false;
+                                break;
+
+                            }
+                            //break;
+                        }
+                        // break;
+
+                    }
+
+
+                }
+
+                        /*if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 3 && recebeStatusEntrega.getSeq_entrega() < mEntrega.getSeq_entrega()) {
 
                             entrega_ativa = true;
                             break;
-                        }
-                        if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 1) {
+                        }*/
+                        /*if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 1) {
                             //verifica se de acordo com a sequencia, a entrega anterior a selecionada, foi finalizada;
                             for (int y = 0; y < mEntregas.size(); y++) {
                                 //int sequencial_entregaLista = mEntregas.get(y).getSeq_entrega();
@@ -386,15 +411,16 @@ public class DetalhesPagerFragment extends Fragment {
                                     break;
 
                                     //}
+
                                 }
 
                             }
                             break;
-                        }
+                        }*/
 
-                    }
 
-                }
+
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -408,17 +434,78 @@ public class DetalhesPagerFragment extends Fragment {
             super.onPostExecute(aVoid);
             try {
                 //emptyView(false);
+                EntregaRep entregaRep = new EntregaRep(getActivity());
+                List<Entrega> novaEnterega = entregaRep.buscarEntrega();
+
+                if(novaEnterega != null || novaEnterega.size() > 0){
+                    atualiza_status = false;
+
+                    for(int i = 0; i < novaEnterega.size(); i++){
+
+                        Entrega novoStatusEntrega = novaEnterega.get(i);
+                        if(novoStatusEntrega.getStatusEntrega().getCodigo() == 1 && novoStatusEntrega.getSeq_entrega() > 0){
+                            if(novoStatusEntrega != null){
+
+                                int novo_status_entrega = 3;
+
+                                Entrega newEntrega = new Entrega();
+                                Destinatario newDestinatario = new Destinatario();
+                                StatusEntrega newstatusEntrega = new StatusEntrega();
+
+                                newEntrega.setNota_fiscal(novoStatusEntrega.getNota_fiscal());
+                                newEntrega.setPeso(novoStatusEntrega.getPeso());
+                                newEntrega.setSeq_entrega(novoStatusEntrega.getSeq_entrega());
+
+                                newDestinatario.setId(novoStatusEntrega.getDestinatario().getId());
+                                newDestinatario.setBairro(novoStatusEntrega.getDestinatario().getBairro());
+                                newDestinatario.setCEP(novoStatusEntrega.getDestinatario().getCEP());
+                                newDestinatario.setEmail(novoStatusEntrega.getDestinatario().getEmail());
+                                newDestinatario.setCpf_cnpj(novoStatusEntrega.getDestinatario().getCpf_cnpj());
+                                newDestinatario.setCidade(novoStatusEntrega.getDestinatario().getCidade());
+                                newDestinatario.setNome_fantasia(novoStatusEntrega.getDestinatario().getNome_fantasia());
+                                newDestinatario.setRazao_social(novoStatusEntrega.getDestinatario().getRazao_social());
+                                newDestinatario.setLogradouro(novoStatusEntrega.getDestinatario().getLogradouro());
+                                newDestinatario.setUF(novoStatusEntrega.getDestinatario().getUF());
+                                newDestinatario.setTelefone(novoStatusEntrega.getDestinatario().getTelefone());
+                                newDestinatario.setLatitude(novoStatusEntrega.getDestinatario().getLatitude());
+                                newDestinatario.setLongitude(novoStatusEntrega.getDestinatario().getLongitude());
+                                newEntrega.setDestinatario(newDestinatario);
+
+                                newstatusEntrega.setCodigo(novo_status_entrega);
+                                newstatusEntrega.setDescricao("Em Viagem");
+                                newEntrega.setStatusEntrega(newstatusEntrega);
+                                entregaRep.atualizaEntrega(newEntrega, mRomaneio);
+                                atualiza_status = true;
+                                break;
+
+
+                            }
+
+
+
+                        }
+
+
+
+                    }
+
+
+                }
+
                 finishProgressBar();
-                if (sequencia_invalida == true) {
+                /*if (sequencia_invalida == true) {
                     Toast.makeText(getActivity(), "Você esta tentando iniciar uma entrega na sequencia incorreta!", Toast.LENGTH_LONG).show();
 
                 } else if (entrega_ativa == true) {
 
                     Toast.makeText(getActivity(), "Você precisa finalizar sua entrega anterior, para iniciar uma nova!", Toast.LENGTH_LONG).show();
-                } else if (entrega_atualizada == true) {
+                } */
+                if(atualiza_status || entrega_atualizada){
+
                     Toast.makeText(getActivity(), "Sua próxima entrega foi iniciada, tenha uma boa viagem!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), "Desculpe, sua próxima entrega não foi iniciada, tente novamente!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Desculpe, sua entrega não pode iniciada, tente novamente!", Toast.LENGTH_LONG).show();
                 }
 
             } catch (Exception e) {
@@ -518,10 +605,12 @@ public class DetalhesPagerFragment extends Fragment {
                             , new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+
                                     if (mEntrega != null) {
                                         iniciarAtualizacao();
-                                        listaFinal();
-                                        atualizaRomaneio();
+                                        alteraStatus();
+                                       // listaFinal();
+                                       // atualizaRomaneio();
                                     }
 
                                     dialogInterface.dismiss();
@@ -535,7 +624,7 @@ public class DetalhesPagerFragment extends Fragment {
             }
         });
 
-        mView.findViewById(R.id.btn_iniciar).setOnClickListener(new View.OnClickListener() {
+       /* mView.findViewById(R.id.btn_iniciar).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -579,7 +668,7 @@ public class DetalhesPagerFragment extends Fragment {
 
             }
 
-        });
+        });*/
 
     }
 

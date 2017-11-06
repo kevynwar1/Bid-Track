@@ -213,7 +213,7 @@ public class EntregaRep {//extends SQLiteOpenHelper {
         List<Entrega> entregasList = new ArrayList<Entrega>();
         //conn = banco.getReadableDatabase();
         try {
-            String sql = "SELECT seq_entrega, nota_fiscal, peso_carga, telefone, cep, uf, cidade, bairro, cnpj, email, logradouro, numero, cod_destinatario, latitude, longitude, complemento, " +
+            String sql = "SELECT seq_entrega, nota_fiscal, peso_carga, cnpj, email, telefone, cep, uf, cidade, bairro, logradouro, numero, complemento, cod_destinatario, latitude, longitude,  " +
                     "  nome_fantasia_destinatario, razao_social_destinatario, cod_status_entrega, descricao_status FROM " + entregaTable.TABELA;
             String[] argumentos = null;
             Cursor cursorEntrega = db.rawQuery(sql, argumentos);
@@ -229,8 +229,8 @@ public class EntregaRep {//extends SQLiteOpenHelper {
 
                 destiny.setId(cursorEntrega.getInt(cursorEntrega.getColumnIndex(entregaTable.COD_DESTINATARIO)));
                 destiny.setBairro(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.BAIRRO)));
-                destiny.setCEP(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.CNPJ)));
-                destiny.setCEP(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.EMAIL)));
+                destiny.setCpf_cnpj(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.CNPJ)));
+                destiny.setEmail(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.EMAIL)));
                 destiny.setCEP(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.CEP)));
                 destiny.setCidade(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.CIDADE)));
                 destiny.setNumero(cursorEntrega.getString(cursorEntrega.getColumnIndex(entregaTable.NUMERO)));

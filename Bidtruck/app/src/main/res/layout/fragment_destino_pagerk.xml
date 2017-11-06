@@ -433,14 +433,14 @@
         android:layout_alignParentBottom="true">
 
 
-        <Button
+        <!--<Button
             android:id="@+id/btn_iniciar"
             android:layout_width="169dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/linear_4"
             android:layout_toEndOf="@+id/btn_finalize"
             android:layout_weight="2.94"
-            android:text="Iniciar" />
+            android:text="Iniciar" />-->
 
 
         <Button

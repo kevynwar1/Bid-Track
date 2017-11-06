@@ -96,9 +96,15 @@ public class EntregaActivity extends AppCompatActivity {
             }
             else {
                     initRecyclerView(null);
-                    mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
-                    mRetornaTask = new RetornaListaTask();
-                    mRetornaTask.execute();
+                    if(finish == false) {
+                        mListEntregas = entregaRep.buscarEntrega();
+                        if (mListEntregas != null || mListEntregas.size() > 0) {
+                            initRecyclerView(mListEntregas);
+                        }
+                    }
+                   // mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
+                   // mRetornaTask = new RetornaListaTask();
+                   // mRetornaTask.execute();
 
 
 
