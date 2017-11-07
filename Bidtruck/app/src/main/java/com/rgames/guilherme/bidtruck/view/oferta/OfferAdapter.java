@@ -16,12 +16,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OfferAdapter extends ArrayAdapter<Romaneio>{
+public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
     private Context context;
     private List<Romaneio> offers;
 
-    public OfferAdapter(Context c, List<Romaneio> list){
+    public OfferAdapter(Context c, List<Romaneio> list) {
         super(c, 0, list);
         this.context = c;
         this.offers = list;
@@ -31,7 +31,7 @@ public class OfferAdapter extends ArrayAdapter<Romaneio>{
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = null;
-        if(offers != null){
+        if (offers != null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_offers, parent, false);
             TextView code = view.findViewById(R.id.offer_code);

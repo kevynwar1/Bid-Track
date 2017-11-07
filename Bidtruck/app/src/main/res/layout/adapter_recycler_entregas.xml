@@ -101,7 +101,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
             android:fontFamily="sans-serif"
-            android:text="aaaaaaaaaa"
+            android:text=""
             android:textColor="@color/app_red"
             android:textSize="15dp" />
 

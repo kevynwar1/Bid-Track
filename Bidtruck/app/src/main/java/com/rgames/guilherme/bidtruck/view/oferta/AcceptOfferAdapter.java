@@ -42,7 +42,7 @@ public class AcceptOfferAdapter extends ArrayAdapter<Entrega> {
             TextView bairro = (TextView) view.findViewById(R.id.txtBairro);
             TextView logradouro = (TextView) view.findViewById(R.id.txtLogradouro);
             TextView numero = (TextView) view.findViewById(R.id.txtNumero);
-            //    TextView status = (TextView) view.findViewById(R.id.txtStatusEntrega);
+            TextView status = (TextView) view.findViewById(R.id.txtStatusEntrega);
             //   View viewLateral = (View) view.findViewById(R.id.viewLateral);
 
 
@@ -50,7 +50,9 @@ public class AcceptOfferAdapter extends ArrayAdapter<Entrega> {
             bairro.setText(delivery.getDestinatario().getBairro());
             logradouro.setText(delivery.getDestinatario().getLogradouro() + ", ");
             numero.setText(delivery.getDestinatario().getNumero() + " - ");
-                      /*  String input = delivery.getStatusEntrega().getDescricao();
+
+            status.setText(delivery.getPeso().toString().toUpperCase());
+            /*  String input = delivery.getStatusEntrega().getDescricao();
             input = input.toUpperCase();
 
             if (input.equals("EM VIAGEM")) {

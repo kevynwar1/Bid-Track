@@ -14,16 +14,22 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class SenhaActivitry extends AppCompatActivity {
     Session session = null;
@@ -62,7 +68,7 @@ public class SenhaActivitry extends AppCompatActivity {
 
                 session = Session.getDefaultInstance(props, new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("kevynh48@gmail.com", "s1ec009178");
+                        return new PasswordAuthentication("bidtrack7@gmail.com", "34848461");
                     }
                 });
 
@@ -75,18 +81,6 @@ public class SenhaActivitry extends AppCompatActivity {
 
                 @Override
                 protected Motorista doInBackground(Object... params) {
-                   /* try {
-                        Message message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress("kevynh48@gmail.com"));
-                        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
-                        message.setSubject(subject);
-                        message.setContent(textMessage, "text/html; charset=utf-8");
-                        Transport.send(message);
-                    } catch (MessagingException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
 
                     try {
                         return mFacade.senha(rec);
@@ -104,7 +98,7 @@ public class SenhaActivitry extends AppCompatActivity {
                     try {
                         if (result.getSenha() != null) {
                             dialog = ProgressDialog.show(SenhaActivitry.this, "", "Enviando Email...", true);
-                            EnviarM envia = new EnviarM(result.getSenha().toString(), result.getNome().toString());
+                            EnviarM envia = new EnviarM(result.getSenha().toString(), result.getNome().toString(), result.getEmail().toString());
                             envia.execute();
 
                         } else {
@@ -125,11 +119,12 @@ public class SenhaActivitry extends AppCompatActivity {
 
         private String stringss;
         private String nomes;
+        private String email;
 
-        public EnviarM(String s, String nome) {
+        public EnviarM(String s, String nome, String email) {
             stringss = s;
             nomes = nome;
-
+            this.email = email;
 
         }
 
@@ -139,11 +134,15 @@ public class SenhaActivitry extends AppCompatActivity {
             try {
 
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress("kevynh48@gmail.com"));
+                message.setFrom(new InternetAddress("bidtrack7@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
-                message.setSubject("BID & TRACK");
-
-                message.setContent("Recuperação de Acesso do usuário " + nomes + ", " + "sua senha é: " + stringss, "text/html; charset=utf-8");
+                message.setSubject("Recuperação de Senha");
+                MimeBodyPart textPart = new MimeBodyPart();
+                textPart.setContent(htmlMessage(nomes, stringss, email), "text/html");
+                Multipart mps = new MimeMultipart();
+                mps.addBodyPart(textPart);
+                //message.setContent("Recuperação de Acesso do usuário " + nomes + ", " + "sua senha é: " + stringss, "text/html; charset=utf-8");
+                message.setContent(mps);
                 Transport.send(message);
             } catch (MessagingException e) {
                 e.printStackTrace();
@@ -156,37 +155,13 @@ public class SenhaActivitry extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             dialog.dismiss();
-                 /*   if (result.getSenha() != null) {
-                        enviar(result.getSenha().toString());
-                        Toast.makeText(getApplicationContext(), "Mensagem Enviada", Toast.LENGTH_LONG).show();
-                        edtEsqueceu.setText("");
-                    }*/
 
-            //msg.setText("");
-            //sub.setText("");
             Toast.makeText(getApplicationContext(), "Mensagem Enviada", Toast.LENGTH_LONG).show();
             finish();
         }
 
     }
 
-
-    /*  private Message enviar(String senha) {
-          try {
-              Message message = new MimeMessage(session);
-              message.setFrom(new InternetAddress("kevynh48@gmail.com"));
-              message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
-              message.setSubject("Recuperar Senha");
-              message.setContent(senha, "text/plain; charset=utf-8");
-              Transport.send(message);
-              return message;
-          } catch (MessagingException e) {
-              e.printStackTrace();
-          } catch (Exception e) {
-              e.printStackTrace();
-          }
-          return null;
-      }*/
     private boolean validaCampos() {
         if (!isValidEmail(edtEsqueceu.getText().toString())) {
             edtEsqueceu.setError("Informe um e-mail valido");
@@ -199,6 +174,51 @@ public class SenhaActivitry extends AppCompatActivity {
 
     public final static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    private static String htmlMessage(String nome, String senha, String email) {
+        String maria = "Olá " + "<b>" + nome + "</b>" + "<br>" +
+                "Bem-vindo à <em>Bid & Track.</em><br>" +
+                "Agradecemos o seu cadastro em nossa plataforma.<br><br>" +
+                "<b>Os dados de acesso da sua conta ao sistema estão logo abaixo:</b><br><br>" +
+                "E-mail: " + email + "<br>" +
+                "Senha: " + senha;
+
+        SimpleDateFormat dateFormat_hora = new SimpleDateFormat("HH:mm");
+        Date data = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data);
+        Date data_atual = cal.getTime();
+
+        String hora_atual = dateFormat_hora.format(data_atual);
+        String traço = "—";
+
+        return "<html>" +
+                " <meta charset=UTF-8>" +
+                "<div style='padding: 50px 70px 50px 70px; color: #FFF; background: #F1F1F1'>" +
+                "<table width='100%' border='0' cellpadding='0' cellspacing='0' style='box-shadow: 0 0 30px rgba(204,204,204, 0.57);'>" +
+                "<tr>" +
+                "<td align='center' width='20%' style='background: #FFF; padding: 10px'>" +
+                "<img src='http://coopera.pe.hu/assets/img/bid-track-solid-ico.png' alt='Bid & Track'>" +
+                "</td>" +
+                "<td style='background: #FFF; color: #000; padding-left: 50px; padding: 20px;'>" +
+                "<span style='font-size: 27px'>Acesso Bid & Track</span><br><br>" +
+                maria + "<br>" +
+                "<br><br>" +
+                "<hr style='border: 0; height: 1px; background-color: #EAEAEA;'>" +
+                "<span style='color: #CCC'>" + hora_atual + " contato@coopera.pe.hu</span>" +
+                "<hr style='border: 0; height: 1px; background-color: #EAEAEA;'>" +
+                "Abraço,<br>" +
+                "Equipe Bid & Track." +
+                "</td>" +
+                "</tr>" +
+                "</table>" +
+                "<br>" +
+                "<span style='color:#999'>" +
+                "<a href='\".base_url().\"' style='color:#999'>Bid & Track</a>" +
+                "</span>" +
+                "</div>" +
+                "</html>";
     }
 
 
