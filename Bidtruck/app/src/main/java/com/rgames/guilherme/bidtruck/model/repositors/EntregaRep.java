@@ -115,7 +115,7 @@ public class EntregaRep {//extends SQLiteOpenHelper {
 
            //SQLiteDatabase database = getWritableDatabase();
             SQLiteDatabase database = banco.getWritableDatabase();
-              ContentValues cv = preencheEntrega(entrega, romaneio);
+            ContentValues cv = preencheEntrega(entrega, romaneio);
             long resultado = database.insertOrThrow(entregaTable.TABELA, null, cv);
             database.close();
             if(resultado != -1){
