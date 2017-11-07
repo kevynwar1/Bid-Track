@@ -32,6 +32,7 @@ public class RomaneioRep {
     private DataBase banco;
     private SQLiteDatabase conn;
     private RomaneioTable romaneioTable;
+    private boolean success;
 
     public RomaneioRep(Context context) {
         banco = new DataBase(context);
@@ -49,7 +50,7 @@ public class RomaneioRep {
     }
 
     public boolean inserir(Romaneio romaneio, Empresa empresa) {
-        boolean success = false;
+        success = false;
         try{
             SQLiteDatabase database = banco.getWritableDatabase();
             ContentValues cv = preencheRomaneio(romaneio, empresa);
@@ -65,6 +66,54 @@ public class RomaneioRep {
         }
         return success;
     }
+
+
+    public long atualizaEntrega(Romaneio romaneio) {
+        long resultado = 0;
+        success = false;
+        ContentValues cv = new ContentValues();
+        cv.put(romaneioTable.CODIGO, romaneio.getCodigo());
+        cv.put(romaneioTable.COD_STATUS_ROMANEIO, romaneio.getStatus_romaneio().getCodigo());
+
+
+        try {
+
+            String[] args = {String.valueOf(romaneio.getCodigo())};
+            SQLiteDatabase data = banco.getWritableDatabase();
+            resultado = data.update(romaneioTable.TABELA, cv, romaneioTable.CODIGO + " = ? " , args);
+            data.close();
+
+            if (resultado != -1) {
+                success = true;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public List<Romaneio> buscarRomaneio() {
         SQLiteDatabase db = banco.getReadableDatabase();

@@ -165,25 +165,25 @@ public class EntregaRep {//extends SQLiteOpenHelper {
         cv.put(entregaTable.NOTA_FISCAL, entrega.getNota_fiscal());
         cv.put(entregaTable.PESO_CARGA, entrega.getPeso());
 
-        cv.put(entregaTable.RAZAO_SOCIAL_DESTINATARIO, entrega.getDestinatario().getRazao_social());
-        cv.put(entregaTable.NOME_FANTASIA_DESTINATARIO, entrega.getDestinatario().getNome_fantasia());
-        cv.put(entregaTable.COD_DESTINATARIO, entrega.getDestinatario().getId());
+        //cv.put(entregaTable.RAZAO_SOCIAL_DESTINATARIO, entrega.getDestinatario().getRazao_social());
+        //cv.put(entregaTable.NOME_FANTASIA_DESTINATARIO, entrega.getDestinatario().getNome_fantasia());
+        //cv.put(entregaTable.COD_DESTINATARIO, entrega.getDestinatario().getId());
 
         cv.put(entregaTable.COD_STATUS_ENTREGA, entrega.getStatusEntrega().getCodigo());
         cv.put(entregaTable.DESCRICAO_STATUS, entrega.getStatusEntrega().getDescricao());
 
-        cv.put(entregaTable.CNPJ, entrega.getDestinatario().getCpf_cnpj());
-        cv.put(entregaTable.EMAIL, entrega.getDestinatario().getEmail());
-        cv.put(entregaTable.TELEFONE, entrega.getDestinatario().getTelefone());
-        cv.put(entregaTable.CEP, entrega.getDestinatario().getCEP());
-        cv.put(entregaTable.UF, entrega.getDestinatario().getUF());
-        cv.put(entregaTable.CIDADE, entrega.getDestinatario().getCidade());
-        cv.put(entregaTable.BAIRRO, entrega.getDestinatario().getBairro());
-        cv.put(entregaTable.LOGRADOURO, entrega.getDestinatario().getLogradouro());
-        cv.put(entregaTable.NUMERO, entrega.getDestinatario().getNumero());
-        cv.put(entregaTable.COMPLEMENTO, entrega.getDestinatario().getComplemento());
-        cv.put(entregaTable.LATITUDE,entrega.getDestinatario().getLatitude());
-        cv.put(entregaTable.LONGITUDE,entrega.getDestinatario().getLongitude());
+        //cv.put(entregaTable.CNPJ, entrega.getDestinatario().getCpf_cnpj());
+        //cv.put(entregaTable.EMAIL, entrega.getDestinatario().getEmail());
+        //cv.put(entregaTable.TELEFONE, entrega.getDestinatario().getTelefone());
+        //cv.put(entregaTable.CEP, entrega.getDestinatario().getCEP());
+        //cv.put(entregaTable.UF, entrega.getDestinatario().getUF());
+        //cv.put(entregaTable.CIDADE, entrega.getDestinatario().getCidade());
+        //cv.put(entregaTable.BAIRRO, entrega.getDestinatario().getBairro());
+        //cv.put(entregaTable.LOGRADOURO, entrega.getDestinatario().getLogradouro());
+        //cv.put(entregaTable.NUMERO, entrega.getDestinatario().getNumero());
+        //cv.put(entregaTable.COMPLEMENTO, entrega.getDestinatario().getComplemento());
+       //cv.put(entregaTable.LATITUDE,entrega.getDestinatario().getLatitude());
+        //cv.put(entregaTable.LONGITUDE,entrega.getDestinatario().getLongitude());
 
 
         try {

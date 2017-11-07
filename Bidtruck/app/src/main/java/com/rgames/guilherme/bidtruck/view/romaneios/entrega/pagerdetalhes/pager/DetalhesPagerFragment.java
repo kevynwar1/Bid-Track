@@ -20,6 +20,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
+import com.rgames.guilherme.bidtruck.model.basic.StatusRomaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 import com.rgames.guilherme.bidtruck.model.repositors.EntregaRep;
@@ -78,17 +79,9 @@ public class DetalhesPagerFragment extends Fragment {
         if (getArguments() != null) {
             mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
             mEntrega = getArguments().getParcelable(Entrega.PARCEL);
-
-
-            // mStatusTask = new StatusTask();
-            // mAtualiza = new AtualizaTask();
-            //mLista = new ListaTask();
-            //mFinalTask = new RetornaTask();
-
-            RomaneioRep romaneioRep = new RomaneioRep(getActivity());
+           //RomaneioRep romaneioRep = new RomaneioRep(getActivity());
         } else mEntrega = new Entrega();
-        //mProgressBar = (ProgressBar)mView.findViewById(android.R.id.frame_progress);
-        //mTexto = (TextView)mView.findViewById(android.R.id.empty);
+
 
 
         return mView;
@@ -276,20 +269,20 @@ public class DetalhesPagerFragment extends Fragment {
                         newEntrega.setPeso(mEntrega.getPeso());
                         newEntrega.setSeq_entrega(mEntrega.getSeq_entrega());
 
-                        newDestinatario.setId(mEntrega.getDestinatario().getId());
-                        newDestinatario.setBairro(mEntrega.getDestinatario().getBairro());
-                        newDestinatario.setCEP(mEntrega.getDestinatario().getCEP());
-                        newDestinatario.setEmail(mEntrega.getDestinatario().getEmail());
-                        newDestinatario.setCpf_cnpj(mEntrega.getDestinatario().getCpf_cnpj());
-                        newDestinatario.setCidade(mEntrega.getDestinatario().getCidade());
-                        newDestinatario.setNome_fantasia(mEntrega.getDestinatario().getNome_fantasia());
-                        newDestinatario.setRazao_social(mEntrega.getDestinatario().getRazao_social());
-                        newDestinatario.setLogradouro(mEntrega.getDestinatario().getLogradouro());
-                        newDestinatario.setUF(mEntrega.getDestinatario().getUF());
-                        newDestinatario.setTelefone(mEntrega.getDestinatario().getTelefone());
-                        newDestinatario.setLatitude(mEntrega.getDestinatario().getLatitude());
-                        newDestinatario.setLongitude(mEntrega.getDestinatario().getLongitude());
-                        newEntrega.setDestinatario(newDestinatario);
+                       // newDestinatario.setId(mEntrega.getDestinatario().getId());
+                       // newDestinatario.setBairro(mEntrega.getDestinatario().getBairro());
+                       // newDestinatario.setCEP(mEntrega.getDestinatario().getCEP());
+                        //newDestinatario.setEmail(mEntrega.getDestinatario().getEmail());
+                       // newDestinatario.setCpf_cnpj(mEntrega.getDestinatario().getCpf_cnpj());
+                       // newDestinatario.setCidade(mEntrega.getDestinatario().getCidade());
+                       // newDestinatario.setNome_fantasia(mEntrega.getDestinatario().getNome_fantasia());
+                        //newDestinatario.setRazao_social(mEntrega.getDestinatario().getRazao_social());
+                        //newDestinatario.setLogradouro(mEntrega.getDestinatario().getLogradouro());
+                       // newDestinatario.setUF(mEntrega.getDestinatario().getUF());
+                       //newDestinatario.setTelefone(mEntrega.getDestinatario().getTelefone());
+                        //newDestinatario.setLatitude(mEntrega.getDestinatario().getLatitude());
+                        //newDestinatario.setLongitude(mEntrega.getDestinatario().getLongitude());
+                        //newEntrega.setDestinatario(newDestinatario);
 
                         newstatusEntrega.setCodigo(novo_statuss);
                         newstatusEntrega.setDescricao("Finalizado");
@@ -377,50 +370,14 @@ public class DetalhesPagerFragment extends Fragment {
                                 break;
 
                             }
-                            //break;
+
                         }
-                        // break;
+
 
                     }
 
 
                 }
-
-                        /*if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 3 && recebeStatusEntrega.getSeq_entrega() < mEntrega.getSeq_entrega()) {
-
-                            entrega_ativa = true;
-                            break;
-                        }*/
-                        /*if (recebeStatusEntrega.getStatusEntrega().getCodigo() == 1) {
-                            //verifica se de acordo com a sequencia, a entrega anterior a selecionada, foi finalizada;
-                            for (int y = 0; y < mEntregas.size(); y++) {
-                                //int sequencial_entregaLista = mEntregas.get(y).getSeq_entrega();
-                                //int sequencial_myEntrega = mEntrega.getSeq_entrega();
-                                if (mEntregas.get(y).getSeq_entrega() < mEntrega.getSeq_entrega() && mEntregas.get(y).getStatusEntrega().getCodigo() == 1) {
-
-                                    sequencia_invalida = true;
-                                    break;
-                                } else if (mEntregas.get(y).getSeq_entrega() == mEntrega.getSeq_entrega() && mEntregas.get(y).getStatusEntrega().getCodigo() == 1) {
-
-                                    //if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() == 1 && mEntrega.getSeq_entrega() > 0) {
-                                    HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
-                                    int novo_status = 3;
-                                    int seq_nova_entrega = mEntrega.getSeq_entrega();
-                                    int cod_romaneio = mRomaneio.getCodigo();
-                                    entrega_atualizada = mHttpEntrega.statusEntregaUltima(novo_status, seq_nova_entrega, cod_romaneio);
-                                    break;
-
-                                    //}
-
-                                }
-
-                            }
-                            break;
-                        }*/
-
-
-
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -456,34 +413,30 @@ public class DetalhesPagerFragment extends Fragment {
                                 newEntrega.setPeso(novoStatusEntrega.getPeso());
                                 newEntrega.setSeq_entrega(novoStatusEntrega.getSeq_entrega());
 
-                                newDestinatario.setId(novoStatusEntrega.getDestinatario().getId());
-                                newDestinatario.setBairro(novoStatusEntrega.getDestinatario().getBairro());
-                                newDestinatario.setCEP(novoStatusEntrega.getDestinatario().getCEP());
-                                newDestinatario.setEmail(novoStatusEntrega.getDestinatario().getEmail());
-                                newDestinatario.setCpf_cnpj(novoStatusEntrega.getDestinatario().getCpf_cnpj());
-                                newDestinatario.setCidade(novoStatusEntrega.getDestinatario().getCidade());
-                                newDestinatario.setNome_fantasia(novoStatusEntrega.getDestinatario().getNome_fantasia());
-                                newDestinatario.setRazao_social(novoStatusEntrega.getDestinatario().getRazao_social());
-                                newDestinatario.setLogradouro(novoStatusEntrega.getDestinatario().getLogradouro());
-                                newDestinatario.setUF(novoStatusEntrega.getDestinatario().getUF());
-                                newDestinatario.setTelefone(novoStatusEntrega.getDestinatario().getTelefone());
-                                newDestinatario.setLatitude(novoStatusEntrega.getDestinatario().getLatitude());
-                                newDestinatario.setLongitude(novoStatusEntrega.getDestinatario().getLongitude());
-                                newEntrega.setDestinatario(newDestinatario);
-
                                 newstatusEntrega.setCodigo(novo_status_entrega);
                                 newstatusEntrega.setDescricao("Em Viagem");
                                 newEntrega.setStatusEntrega(newstatusEntrega);
                                 entregaRep.atualizaEntrega(newEntrega, mRomaneio);
                                 atualiza_status = true;
+
+
+                                finishProgressBar();
+                                if(atualiza_status || entrega_atualizada){
+
+                                    Toast.makeText(getActivity(), "Sua próxima entrega foi iniciada, tenha uma boa viagem!", Toast.LENGTH_LONG).show();
+                                }
+                                else {
+                                    Toast.makeText(getActivity(), "Desculpe, sua entrega não pode iniciada, tente novamente!", Toast.LENGTH_LONG).show();
+                                }
                                 break;
+
 
 
                             }
 
 
 
-                        }
+                    }
 
 
 
@@ -492,21 +445,6 @@ public class DetalhesPagerFragment extends Fragment {
 
                 }
 
-                finishProgressBar();
-                /*if (sequencia_invalida == true) {
-                    Toast.makeText(getActivity(), "Você esta tentando iniciar uma entrega na sequencia incorreta!", Toast.LENGTH_LONG).show();
-
-                } else if (entrega_ativa == true) {
-
-                    Toast.makeText(getActivity(), "Você precisa finalizar sua entrega anterior, para iniciar uma nova!", Toast.LENGTH_LONG).show();
-                } */
-                if(atualiza_status || entrega_atualizada){
-
-                    Toast.makeText(getActivity(), "Sua próxima entrega foi iniciada, tenha uma boa viagem!", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(getActivity(), "Desculpe, sua entrega não pode iniciada, tente novamente!", Toast.LENGTH_LONG).show();
-                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -517,7 +455,7 @@ public class DetalhesPagerFragment extends Fragment {
 
 
     class StatusRomaneioTask extends AsyncTask<Void, Void, Void> {
-
+        boolean romaneio_finalizado = false;
 
         @Override
         protected void onPreExecute() {
@@ -561,12 +499,40 @@ public class DetalhesPagerFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {
-                finishProgressBar();
-                if (romaneio_inativo) {
-                    Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
-                } else if (romaneio_inativo == false) {
-                    //Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
-                }
+                    //finaliza o romaneio atual
+                   EntregaRep entregaRep = new EntregaRep(getActivity());
+                   RomaneioRep romaneioRep = new RomaneioRep(getActivity());
+                   List<Entrega> entregasRomaneio = entregaRep.buscarEntrega();
+
+                   if(entregasRomaneio !=  null){
+
+                       Entrega entregaFinal = entregasRomaneio.get(entregasRomaneio.size() -1);
+                       if(entregaFinal.getStatusEntrega().getCodigo() == 4 && mRomaneio.getCodigo() > 0) {
+
+
+                           Romaneio romaneioFinal = new Romaneio();
+                           StatusRomaneio statusRomaneio = new StatusRomaneio();
+
+                           int novo_status_romaneio = 4;
+
+                           statusRomaneio.setCodigo(novo_status_romaneio);
+                           statusRomaneio.setDescricao("Finalizado");
+                           romaneioFinal.setCodigo(mRomaneio.getCodigo());
+                           romaneioFinal.setStatus_romaneio(statusRomaneio);
+                           romaneioRep.atualizaEntrega(romaneioFinal);
+                           romaneio_finalizado = true;
+
+
+                           finishProgressBar();
+                           if (romaneio_inativo || romaneio_finalizado) {
+                               Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
+                           } else{
+
+                               Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
+                           }
+                       }
+
+                   }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -593,9 +559,13 @@ public class DetalhesPagerFragment extends Fragment {
                             }
                         });
 
-                if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() != 3) {
+                if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo()  == 1) {
 
                     Toast.makeText(getActivity(), "Esta entrega não pode ser finalizada, pois não esta em andamento", Toast.LENGTH_LONG).show();
+                    return;
+
+                } else if(mEntrega.getStatusEntrega().getCodigo() == 4) {
+                    Toast.makeText(getActivity(), "Esta entrenga não pode ser inciada, pois ja foi finalizada!", Toast.LENGTH_LONG).show();
                     return;
 
                 } else
@@ -609,8 +579,8 @@ public class DetalhesPagerFragment extends Fragment {
                                     if (mEntrega != null) {
                                         iniciarAtualizacao();
                                         alteraStatus();
-                                       // listaFinal();
-                                       // atualizaRomaneio();
+                                        listaFinal();
+                                       atualizaRomaneio();
                                     }
 
                                     dialogInterface.dismiss();

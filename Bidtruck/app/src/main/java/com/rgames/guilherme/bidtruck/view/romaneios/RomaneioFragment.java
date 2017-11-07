@@ -98,7 +98,14 @@ public class RomaneioFragment extends Fragment {
                         emptyView(true);
                         Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
                     }
-                } else init();
+                }
+                //else if(empresa != null){
+                  //  this.romaneioList = romaneioRep.buscarRomaneio();
+                   // if(romaneioList != null && romaneioList.size() > 0){
+                    //    initRecyclerView(romaneioList);
+                   // }
+                //}
+                else init();
 //                    if (finishRomaneio) {
 //                    init();
 //                    finishRomaneio = false;
@@ -156,12 +163,15 @@ public class RomaneioFragment extends Fragment {
 
                          for(Romaneio rom : romaneios) {
 
-                             if(rom.getStatus_romaneio().getCodigo() == 1 || rom.getStatus_romaneio().getCodigo() == 3) {
+                             if(rom.getStatus_romaneio().getCodigo() == 3) {
 
 
                                  if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
                                      romaneioRep.inserir(romaneios.get(0), empresa);
                                  }
+
+                             }
+                             if(rom.getStatus_romaneio().getCodigo() == 3 || rom.getStatus_romaneio().getCodigo() == 1) {
 
                                  initRecyclerView(romaneios);
                                  finishProgressBar();

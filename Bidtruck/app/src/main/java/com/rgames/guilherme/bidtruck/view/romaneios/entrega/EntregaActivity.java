@@ -82,18 +82,29 @@ public class EntregaActivity extends AppCompatActivity {
 
         try {
             if(finish == true){
-                if(facade.isConnected(this)) {
+                if(!facade.isConnected(EntregaActivity.this)) {
                     List<Entrega> entregas = entregaRep.buscarEntrega();
                     if (entregas != null && entregas.size() > 0) {
                         Log.i("Chaves2", "Inseriu " + entregas.size());
                         initRecyclerView(entregas);
                         finish = false;
-                    } else {
-                        initList();
-                        finish = false;
+                    }
+                    //else {
+                      //  initList();
+                      //  finish = false;
+                   // }
+                }
+                else if(finish == true){
+                    //List<Entrega> entregasOffline = entregaRep.buscarEntrega();
+                    //if (entregasOffline != null && entregasOffline.size() > 0) {
+                      //  Log.i("Chaves2", "Inseriu " + entregasOffline.size());
+                       // initRecyclerView(entregasOffline);
+                    initList();
+                    finish = false;
+
                     }
                 }
-            }
+
             else {
                     initRecyclerView(null);
                     if(finish == false) {
@@ -102,13 +113,7 @@ public class EntregaActivity extends AppCompatActivity {
                             initRecyclerView(mListEntregas);
                         }
                     }
-                   // mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
-                   // mRetornaTask = new RetornaListaTask();
-                   // mRetornaTask.execute();
-
-
-
-            }
+                }
 
         }catch (Exception e){
             e.printStackTrace();
