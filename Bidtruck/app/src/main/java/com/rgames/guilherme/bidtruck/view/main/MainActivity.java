@@ -4,15 +4,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,14 +22,10 @@ import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
+import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
 import com.rgames.guilherme.bidtruck.view.oferta.Preferences;
 import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
-import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
-import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
-import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,6 +59,7 @@ public class MainActivity extends AppCompatActivity
                 controllerLogin.setIdEmpresa(mEmpresa);
                 getSupportFragmentManager().beginTransaction().add(R.id.content_main
                         , RomaneioFragment.newInstance(mEmpresa)).commit();
+//                startActivity(new Intent(MainActivity.this, EntregaActivity.class));
             } catch (EmpresaNullException e) {
                 e.printStackTrace();
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

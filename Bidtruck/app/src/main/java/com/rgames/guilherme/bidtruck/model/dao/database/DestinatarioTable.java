@@ -8,7 +8,6 @@ import android.provider.BaseColumns;
 
 public interface DestinatarioTable extends BaseColumns {
     public static String TABELA = "destinatario";
-
     public static String CODIGO = "codigo";
     public static String COD_EMPRESA = "cod_empresa";
     public static String RAZAO_SOCIAL = "razao_social";

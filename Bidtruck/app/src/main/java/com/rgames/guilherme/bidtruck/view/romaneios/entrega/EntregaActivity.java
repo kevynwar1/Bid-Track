@@ -53,7 +53,6 @@ public class EntregaActivity extends AppCompatActivity {
         }
     }
 
-
     public void onResume() {
         super.onResume();
 
@@ -82,18 +81,6 @@ public class EntregaActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    private void initViewPager() {
-//        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-//        mViewPager.setAdapter(new AdapterViewPager(getSupportFragmentManager(), this, mEntrega));
-//        mTabLayout = (TabLayout) findViewById(R.id.tablayout);
-//        mTabLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mTabLayout.setupWithViewPager(mViewPager);
-//            }
-//        });
-//    }
 
     private void initToobal() throws Exception {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -141,7 +128,6 @@ public class EntregaActivity extends AppCompatActivity {
         }.execute();
     }
 
-
     class StatusRomaneioTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
@@ -165,7 +151,6 @@ public class EntregaActivity extends AppCompatActivity {
             }
             return null;
         }
-
 
         @Override
         protected void onPostExecute(Void aVoid) {

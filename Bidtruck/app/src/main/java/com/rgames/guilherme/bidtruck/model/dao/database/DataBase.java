@@ -22,11 +22,23 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(ScriptSql.getCreateTableEmpresa());
         db.execSQL(ScriptSql.getCreateTableEmpresaMotorista());
         db.execSQL(ScriptSql.getCreateTableEntrega());
-        db.execSQL(ScriptSql.getCreateTableOcorrencia());
+//        db.execSQL(ScriptSql.getCreateTableOcorrencia());
         db.execSQL(ScriptSql.getCreateTableRomaneio());
         db.execSQL(ScriptSql.getCreateTableStatusEntrega());
         db.execSQL(ScriptSql.getCreateTableStatusRomaneio());
         db.execSQL(ScriptSql.getCreateTableTipoOcorrencia());
+
+        SQLTable table = new SQLTable();
+        db.execSQL(new StringBuilder("CREATE TABLE IF NOT EXISTS ").append(table.TB_OCORRENCIA).append(" (")
+                .append(table.TB_OCORRENCIA_COL_CODIGO).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append(table.TB_OCORRENCIA_COL_COD_EMPRESA).append(" INTEGER NOT NULL, ")
+                .append(table.TB_OCORRENCIA_COL_SEQ_ENTREGA).append(" INTEGER NOT NULL, ")
+                .append(table.TB_OCORRENCIA_COL_COD_ROMANEIO).append(" INTEGER NOT NULL, ")
+                .append(table.TB_OCORRENCIA_COL_COD_TIPO_OCORRENCIA).append(" INTEGER NOT NULL, ")
+                .append(table.TB_OCORRENCIA_COL_DESCRICAO).append(" TEXT NOT NULL, ")
+                .append(table.TB_OCORRENCIA_COL_FOTO).append(" BLOB NOT NULL, ")
+                .append(table.TB_OCORRENCIA_COL_SITUACAO).append(" CHAR NOT NULL); ")
+                .toString());
     }
 
     @Override
