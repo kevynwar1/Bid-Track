@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view23"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/thumbnail2"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/mapteste" />
+
+        <TextView
+            android:id="@+id/cod_oferta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/thumbnail2"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="codigo"
+            android:textColor="#999999"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/peso_oferta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/cod_oferta"
+            android:layout_below="@+id/thumbnail2"
+            android:layout_centerHorizontal="true"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="oh yeah"
+            android:textColor="#999999"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/dinheiro_oferta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/thumbnail2"
+            android:background="@color/gray_deep"
+            android:padding="8dp"
+            android:text="money"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
