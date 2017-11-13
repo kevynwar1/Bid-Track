@@ -1,7 +1,6 @@
 package com.rgames.guilherme.bidtruck.facade;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.rgames.guilherme.bidtruck.controller.ControllerEmpresa;
 import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
@@ -12,10 +11,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.model.basic.Usuario;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpConnection;
-import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
-import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 
@@ -69,10 +65,10 @@ public class Facade implements IFacade {
     }
 
 
-    public List<Entrega> selectEntrega() {
+    public List<Entrega> selectEntrega(int codigo) {
         if (controllerEntregas == null)
             controllerEntregas = new ControllerEntregas(mContext);
-        return controllerEntregas.select();
+        return controllerEntregas.select(codigo);
 
     }
 

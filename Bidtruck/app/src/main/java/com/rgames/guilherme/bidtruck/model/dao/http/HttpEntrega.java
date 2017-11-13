@@ -42,7 +42,7 @@ public class HttpEntrega extends HttpBase<Entrega> {
 
 
 
-    public List<Entrega> select() {
+    public List<Entrega> select(int codigo_romaneio) {
         List<Entrega> list = new ArrayList<>();
         if (HttpConnection.isConnected(mContext)) {
 
@@ -55,9 +55,10 @@ public class HttpEntrega extends HttpBase<Entrega> {
                 //Motorista driver = mFacade.isLogged();
                 Motorista driver = controlLogin.isLogged();
                 this.id_motorista_entrega = driver.getCodigo();
+                String parms = codigo_romaneio + "/" + id_motorista_entrega;
 
                 if (id_motorista_entrega > 0 && !id_motorista_entrega.equals("")) {
-                    HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ENTREGA_ROMANEIO, HttpMethods.GET, false, true, String.valueOf(id_motorista_entrega));
+                    HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ENTREGA_ROMANEIO, HttpMethods.GET, false, true, String.valueOf(parms));
                     list = super.select(connection, Entrega.class);
                     //pode ser redundante, se houver erro tira :3
                     connection.disconnect();

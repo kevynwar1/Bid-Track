@@ -17,13 +17,16 @@ import android.widget.Toast;
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
+import com.rgames.guilherme.bidtruck.model.basic.Estabelecimento;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.basic.StatusRomaneio;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -161,31 +164,26 @@ public class RomaneioFragment extends Fragment {
                         emptyView(true);
                     else {
 
-                         for(Romaneio rom : romaneios) {
+                         for(int i = 0; i < romaneios.size(); i++) {
 
-                             if(rom.getStatus_romaneio().getCodigo() == 3) {
+                             if(romaneios.get(i).getStatus_romaneio().getCodigo() == 3) {
 
 
                                  if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
-                                     romaneioRep.inserir(romaneios.get(0), empresa);
+                                     romaneioRep.inserir(romaneios.get(i), empresa);
                                  }
+                                 List<Romaneio> romaneioList = new ArrayList<Romaneio>();
+                                 romaneioList.add(romaneios.get(i));
 
-                             }
-                             if(rom.getStatus_romaneio().getCodigo() == 3 || rom.getStatus_romaneio().getCodigo() == 1) {
 
-                                 initRecyclerView(romaneios);
+
+                                 initRecyclerView(romaneioList);
                                  finishProgressBar();
+
                              }
+
                          }
 
-                        /* for(Romaneio rom : romaneios) {
-
-                        if (rom.getCodigo() != 0) {
-                            //insere romaneio no banco local
-                            romaneioRep.inserir(rom, empresa);
-                            Toast.makeText(getContext(), "Romaneio inserido no banco com sucesso!", Toast.LENGTH_LONG).show();
-                        }
-                        }*/
                     }
                     if (msg != null && !msg.equals(""))
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
