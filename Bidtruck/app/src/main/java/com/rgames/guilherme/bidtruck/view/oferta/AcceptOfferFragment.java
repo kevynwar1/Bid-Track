@@ -53,7 +53,12 @@ public class AcceptOfferFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         try {
             if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.toolbar_offer_details));
@@ -61,10 +66,7 @@ public class AcceptOfferFragment extends Fragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        super.onCreate(savedInstanceState);
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
