@@ -159,6 +159,8 @@ public class RomaneioFragment extends Fragment {
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
                     if(romaneios == null){
+
+                        emptyView(true);
                         finishProgressBar();
                     } else if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
@@ -180,9 +182,14 @@ public class RomaneioFragment extends Fragment {
                                  initRecyclerView(romaneioList);
                                  finishProgressBar();
 
+                             }else{
+
+                                 Toast.makeText(getActivity(), "No momento, você não possui romaneio em viagem para esta empresa!", Toast.LENGTH_LONG).show();
+                                 emptyView(true);
                              }
 
                          }
+
 
                     }
                     if (msg != null && !msg.equals(""))

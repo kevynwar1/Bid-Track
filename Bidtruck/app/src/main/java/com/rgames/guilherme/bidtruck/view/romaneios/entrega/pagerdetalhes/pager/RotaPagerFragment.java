@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.Html;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.DirectionFinder;
 import com.rgames.guilherme.bidtruck.model.basic.DirectionFinderListener;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
@@ -43,6 +45,7 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
     private double latEmpresa, longEmpresa;
+    ImageButton botaoLocalizar;
 
     public RotaPagerFragment() {
     }
@@ -65,6 +68,7 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
             mEntrega = getArguments().getParcelable(ARG_1);
             latEmpresa = getArguments().getDouble(ARG_2);
             longEmpresa = getArguments().getDouble(ARG_3);
+
         }
     }
 
@@ -81,9 +85,11 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
             // for ActivityCompat#requestPermissions for more details.
             requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+
             return;
         }
-        mMap.setMyLocationEnabled(true);
+        //mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 //        mMap = googleMap;
 //        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 //        addMarker(new LatLng(-23.564224, -46.653156), "Primeiro", "Marcador 1");
