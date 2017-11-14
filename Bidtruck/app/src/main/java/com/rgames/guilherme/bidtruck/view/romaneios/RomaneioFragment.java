@@ -65,14 +65,6 @@ public class RomaneioFragment extends Fragment {
         super.onCreate(savedInstanceState);
         romaneioRep = new RomaneioRep(getActivity());
         tem_romaneio = true;
-        try {
-            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
-                        getActivity().getResources().getString(R.string.menu_drw_romaneio));
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
         pegarEmpresa();
     }
 
@@ -88,6 +80,12 @@ public class RomaneioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         try {
+
+            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
+                        getActivity().getResources().getString(R.string.menu_drw_romaneio));
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+
             mFacade = new Facade(getActivity());
             if (empresa == null) {
                 pegarEmpresa();
