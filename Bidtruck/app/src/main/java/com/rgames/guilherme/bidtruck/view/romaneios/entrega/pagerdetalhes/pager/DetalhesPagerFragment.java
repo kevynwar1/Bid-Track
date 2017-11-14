@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Destinatario;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
@@ -25,9 +23,7 @@ import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 import com.rgames.guilherme.bidtruck.model.repositors.EntregaRep;
 import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
-import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetalhesPagerFragment extends Fragment {
@@ -79,7 +75,6 @@ public class DetalhesPagerFragment extends Fragment {
         if (getArguments() != null) {
             mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
             mEntrega = getArguments().getParcelable(Entrega.PARCEL);
-           //RomaneioRep romaneioRep = new RomaneioRep(getActivity());
         } else mEntrega = new Entrega();
 
 
@@ -205,7 +200,7 @@ public class DetalhesPagerFragment extends Fragment {
         protected List<Entrega> doInBackground(Void... String) {
             HttpEntrega httpEntrega = new HttpEntrega(getActivity());
             try {
-                mListEntregas2 = httpEntrega.select();
+                mListEntregas2 = httpEntrega.select(mRomaneio.getCodigo());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -262,27 +257,11 @@ public class DetalhesPagerFragment extends Fragment {
 
                         int novo_statuss = 4;
                         Entrega newEntrega = new Entrega();
-                        Destinatario newDestinatario = new Destinatario();
                         StatusEntrega newstatusEntrega = new StatusEntrega();
 
                         newEntrega.setNota_fiscal(mEntrega.getNota_fiscal());
                         newEntrega.setPeso(mEntrega.getPeso());
                         newEntrega.setSeq_entrega(mEntrega.getSeq_entrega());
-
-                       // newDestinatario.setId(mEntrega.getDestinatario().getId());
-                       // newDestinatario.setBairro(mEntrega.getDestinatario().getBairro());
-                       // newDestinatario.setCEP(mEntrega.getDestinatario().getCEP());
-                        //newDestinatario.setEmail(mEntrega.getDestinatario().getEmail());
-                       // newDestinatario.setCpf_cnpj(mEntrega.getDestinatario().getCpf_cnpj());
-                       // newDestinatario.setCidade(mEntrega.getDestinatario().getCidade());
-                       // newDestinatario.setNome_fantasia(mEntrega.getDestinatario().getNome_fantasia());
-                        //newDestinatario.setRazao_social(mEntrega.getDestinatario().getRazao_social());
-                        //newDestinatario.setLogradouro(mEntrega.getDestinatario().getLogradouro());
-                       // newDestinatario.setUF(mEntrega.getDestinatario().getUF());
-                       //newDestinatario.setTelefone(mEntrega.getDestinatario().getTelefone());
-                        //newDestinatario.setLatitude(mEntrega.getDestinatario().getLatitude());
-                        //newDestinatario.setLongitude(mEntrega.getDestinatario().getLongitude());
-                        //newEntrega.setDestinatario(newDestinatario);
 
                         newstatusEntrega.setCodigo(novo_statuss);
                         newstatusEntrega.setDescricao("Finalizado");
@@ -352,7 +331,7 @@ public class DetalhesPagerFragment extends Fragment {
             HttpEntrega httpEntregas = new HttpEntrega(getActivity());
             try {
 
-                mEntregas = httpEntregas.select();
+                mEntregas = httpEntregas.select(mRomaneio.getCodigo());
 
 
                 if (mEntregas != null) {
@@ -406,7 +385,6 @@ public class DetalhesPagerFragment extends Fragment {
                                 int novo_status_entrega = 3;
 
                                 Entrega newEntrega = new Entrega();
-                                Destinatario newDestinatario = new Destinatario();
                                 StatusEntrega newstatusEntrega = new StatusEntrega();
 
                                 newEntrega.setNota_fiscal(novoStatusEntrega.getNota_fiscal());
@@ -565,7 +543,7 @@ public class DetalhesPagerFragment extends Fragment {
                     return;
 
                 } else if(mEntrega.getStatusEntrega().getCodigo() == 4) {
-                    Toast.makeText(getActivity(), "Esta entrenga não pode ser inciada, pois ja foi finalizada!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Você não pode finalizar a mesma entrega duas vezes!", Toast.LENGTH_LONG).show();
                     return;
 
                 } else

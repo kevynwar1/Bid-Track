@@ -97,24 +97,6 @@ public class RomaneioRep {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public List<Romaneio> buscarRomaneio() {
         SQLiteDatabase db = banco.getReadableDatabase();
         List<Romaneio> romaneios = null;

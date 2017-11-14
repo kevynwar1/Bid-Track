@@ -30,7 +30,7 @@ public interface IFacade {
 
 
     /*Controller entrega*/
-    List<Entrega> selectEntrega() throws Exception;
+    List<Entrega> selectEntrega(int codigo) throws Exception;
 
     //Entrega atualiza(Entrega entrega) throws Exception;
 

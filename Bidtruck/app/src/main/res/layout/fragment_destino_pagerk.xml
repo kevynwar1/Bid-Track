@@ -458,18 +458,21 @@
             android:layout_weight="2.94"
             android:text="Iniciar" />-->
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btn_finalize"
-            android:layout_width="169dp"
-            android:layout_above="@+id/linear_4"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="2.94"
-            android:background="@drawable/background_login"
-            android:textColor="@color/white"
-            android:text="Finalizar" />
-
+    <Button
+        android:id="@+id/btn_finalize"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+       android:layout_marginBottom="5dp"
+        android:background="@drawable/background_login"
+        android:text="Finalizar"
+        android:textColor="@color/white" />
+</RelativeLayout>
 
 
 

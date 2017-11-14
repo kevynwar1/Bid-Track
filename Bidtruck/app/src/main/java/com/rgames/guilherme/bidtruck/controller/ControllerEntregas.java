@@ -28,9 +28,9 @@ public class ControllerEntregas {
     }
 
 
-    public List<Entrega> select(){
+    public List<Entrega> select(int codigo){
         if (httpEntrega == null) httpEntrega = new HttpEntrega(mContext);
-        return httpEntrega.select();
+        return httpEntrega.select(codigo);
     }
 
 
