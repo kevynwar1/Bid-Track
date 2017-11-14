@@ -48,17 +48,19 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
             ImageView imagem = view.findViewById(R.id.thumbnail2);
             Context contextx = imagem.getContext();
             Romaneio offer = offers.get(position);
+
             String test = offer.getEstabelecimento().getLogradouro();
             String maria = offer.getEstabelecimento().getBairro();
-            String fof = maria.replace(" ","+");
+            String fof = maria.replace(" ", "+");
             String bob = test.replace(" ", "+");
-            String urlimagem = "https://maps.googleapis.com/maps/api/staticmap?center="+bob+fof+"&size=640x400&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
+            String urlimagem = "https://maps.googleapis.com/maps/api/staticmap?center=" + bob + fof + "&markers=color:red%7C" + bob + fof + "&size=640x400&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
             Picasso.with(contextx)
                     .load(urlimagem)
                     .into(imagem);
 
+
             code.setText(Integer.toString(offer.getCodigo()));
-            peso.setText("32,00 Kg");
+            peso.setText("2745 KG");
             DecimalFormat df = new DecimalFormat("#,##0.00");
             payment.setText("R$ " + df.format(offer.getValor()));
         }
