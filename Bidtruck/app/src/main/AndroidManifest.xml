@@ -64,6 +64,12 @@
             android:name=".view.empresa.EmpresasActivity"
             android:label="@string/title_empresa"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.fotos.activities.MultiCameraActivity"
+            android:theme="@style/FullScreen"
+            android:screenOrientation="portrait">
+        </activity>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

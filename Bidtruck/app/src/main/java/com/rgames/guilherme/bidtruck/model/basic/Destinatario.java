@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class Destinatario implements Parcelable {
 
-    private int id;
+    private int codigo;
     private List<Entrega> entrega;
     private Empresa empresa;
     private String razao_social;
     private String nome_fantasia;
     private char tipo_pessoa;
-    private String cpf_cnpj;
+    private String cnpj_cpf;
     private String email;
     private String telefone;
     private String contato;
@@ -35,14 +35,14 @@ public class Destinatario implements Parcelable {
     public Destinatario() {
     }
 
-    public Destinatario(int id, List<Entrega> entrega, Empresa empresa, String razao_social, String nome_fantasia, char tipo_pessoa, String cpf_cnpj, String email, String telefone, String contato, String CEP, String UF, String cidade, String bairro, String logradouro, String numero, String complemento, double latitude, double longitude, boolean situacao) {
-        this.id = id;
+    public Destinatario(int id, List<Entrega> entrega, Empresa empresa, String razao_social, String nome_fantasia, char tipo_pessoa, String cnpj_cpf, String email, String telefone, String contato, String CEP, String UF, String cidade, String bairro, String logradouro, String numero, String complemento, double latitude, double longitude, boolean situacao) {
+        this.codigo = id;
         this.entrega = entrega;
         this.empresa = empresa;
         this.razao_social = razao_social;
         this.nome_fantasia = nome_fantasia;
         this.tipo_pessoa = tipo_pessoa;
-        this.cpf_cnpj = cpf_cnpj;
+        this.cnpj_cpf = cnpj_cpf;
         this.email = email;
         this.telefone = telefone;
         this.contato = contato;
@@ -59,14 +59,14 @@ public class Destinatario implements Parcelable {
     }
 
     protected Destinatario(Parcel in) {
-        id = in.readInt();
+        codigo = in.readInt();
         setEntrega(new ArrayList<Entrega>());
         in.readList(getEntrega(), Entrega.class.getClassLoader());
         empresa = in.readParcelable(Empresa.class.getClassLoader());
         razao_social = in.readString();
         nome_fantasia = in.readString();
 //        tipo_pessoa = in.readCharArray();
-        cpf_cnpj = in.readString();
+        cnpj_cpf = in.readString();
         email = in.readString();
         telefone = in.readString();
         contato = in.readString();
@@ -101,13 +101,13 @@ public class Destinatario implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeInt(codigo);
         parcel.writeList(entrega);
         parcel.writeParcelable(empresa, i);
         parcel.writeString(razao_social);
         parcel.writeString(nome_fantasia);
 //        tipo
-        parcel.writeString(cpf_cnpj);
+        parcel.writeString(cnpj_cpf);
         parcel.writeString(email);
         parcel.writeString(telefone);
         parcel.writeString(contato);
@@ -124,11 +124,11 @@ public class Destinatario implements Parcelable {
     }
 
     public int getId() {
-        return id;
+        return codigo;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.codigo = id;
     }
 
     public List<Entrega> getEntrega() {
@@ -172,11 +172,11 @@ public class Destinatario implements Parcelable {
     }
 
     public String getCpf_cnpj() {
-        return cpf_cnpj;
+        return cnpj_cpf;
     }
 
-    public void setCpf_cnpj(String cpf_cnpj) {
-        this.cpf_cnpj = cpf_cnpj;
+    public void setCpf_cnpj(String cnpj_cpf) {
+        this.cnpj_cpf = cnpj_cpf;
     }
 
     public String getEmail() {

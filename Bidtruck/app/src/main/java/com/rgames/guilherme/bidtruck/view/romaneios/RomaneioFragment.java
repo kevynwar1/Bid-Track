@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
+import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
 
 import java.util.List;
 
@@ -39,6 +41,8 @@ public class RomaneioFragment extends Fragment {
     private List<Romaneio> romaneioList;
     private ListaTask mListaTaskRomaneio;
     private List<Romaneio> romaneioList2;
+    public RomaneioRep romaneioRep;
+    private boolean tem_romaneio;
 
     public RomaneioFragment() {
 
@@ -56,6 +60,8 @@ public class RomaneioFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        romaneioRep = new RomaneioRep(getActivity());
+        tem_romaneio = true;
         try {
             if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
@@ -71,7 +77,7 @@ public class RomaneioFragment extends Fragment {
         if (getArguments() != null && getArguments().getParcelable(Empresa.PARCEL_EMPRESA) != null) {
             empresa = getArguments().getParcelable(Empresa.PARCEL_EMPRESA);
         } else {
-            Toast.makeText(getContext(), "Empresa não encontrada. - Err 1", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "EmpresaTable não encontrada. - Err 1", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -85,9 +91,21 @@ public class RomaneioFragment extends Fragment {
                 emptyView(true);
             } else {
                 if (!mFacade.isConnected(getActivity())) {
-                    Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
-                    emptyView(true);
-                } else init();
+                    this.romaneioList = romaneioRep.buscarRomaneio();
+                    if(romaneioList != null && romaneioList.size() > 0){
+                        initRecyclerView(romaneioList);
+                    }else {
+                        emptyView(true);
+                        Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
+                    }
+                }
+                //else if(empresa != null){
+                  //  this.romaneioList = romaneioRep.buscarRomaneio();
+                   // if(romaneioList != null && romaneioList.size() > 0){
+                    //    initRecyclerView(romaneioList);
+                   // }
+                //}
+                else init();
 //                    if (finishRomaneio) {
 //                    init();
 //                    finishRomaneio = false;
@@ -137,24 +155,37 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
-                    if (romaneios != null && romaneios.size() == 0)
+                    if(romaneios == null){
+                        finishProgressBar();
+                    } else if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
                     else {
-//                        if (romaneioList == null) {
-//                        romaneioList = romaneios;
-//                    } else {
-                            /*for (Romaneio mRomaneio : romaneioList) {
 
-                                if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
-                                    Toast.makeText(getActivity(), getString(R.string.app_err_input_vazio), Toast.LENGTH_LONG).show();
-                                    // emptyViewRomaneio(true);
-                                    finishProgressBar();
-                                if (mRomaneio.getStatus_romaneio().getCodigo() != 4) {
-                                    initRecyclerView(romaneioList);
-                                    finishProgressBar();
-                                }*/
-                        initRecyclerView(romaneios);
-                        finishProgressBar();
+                         for(Romaneio rom : romaneios) {
+
+                             if(rom.getStatus_romaneio().getCodigo() == 3) {
+
+
+                                 if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
+                                     romaneioRep.inserir(romaneios.get(0), empresa);
+                                 }
+
+                             }
+                             if(rom.getStatus_romaneio().getCodigo() == 3 || rom.getStatus_romaneio().getCodigo() == 1) {
+
+                                 initRecyclerView(romaneios);
+                                 finishProgressBar();
+                             }
+                         }
+
+                        /* for(Romaneio rom : romaneios) {
+
+                        if (rom.getCodigo() != 0) {
+                            //insere romaneio no banco local
+                            romaneioRep.inserir(rom, empresa);
+                            Toast.makeText(getContext(), "Romaneio inserido no banco com sucesso!", Toast.LENGTH_LONG).show();
+                        }
+                        }*/
                     }
                     if (msg != null && !msg.equals(""))
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();

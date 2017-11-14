@@ -55,7 +55,7 @@ public class OcorrenciaPagerFragment extends Fragment {
             seq_entrega = getArguments().getInt(ARG_PARAM1);
             romaneio = getArguments().getInt(ARG_PARAM12);
         }
-        controllerOcorrencia = new ControllerOcorrencia();
+        controllerOcorrencia = new ControllerOcorrencia(getActivity());
     }
 
     @Override
@@ -86,8 +86,6 @@ public class OcorrenciaPagerFragment extends Fragment {
 
     private void initList() {
         new AsyncTask<Void, Void, List<Ocorrencia>>() {
-            String msg = "";
-
             @Override
             protected void onPreExecute() {
                 initProgressBar();
@@ -98,9 +96,19 @@ public class OcorrenciaPagerFragment extends Fragment {
             protected List<Ocorrencia> doInBackground(Void... voids) {
                 try {
                     return controllerOcorrencia.select(seq_entrega, romaneio);
-                } catch (EntregaNullException e) {
+                } catch (final EntregaNullException e) {
                     e.printStackTrace();
-                    msg = e.getMessage();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                finishProgressBar();
+                            } catch (Exception e1) {
+                                e1.printStackTrace();
+                            }
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
                     return null;
                 }
             }
@@ -114,8 +122,6 @@ public class OcorrenciaPagerFragment extends Fragment {
                         initEmpty(true);
                     }
                     finishProgressBar();
-                    if (!msg.isEmpty())
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

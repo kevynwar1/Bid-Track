@@ -7,11 +7,11 @@ import android.support.annotation.RequiresApi;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.vlk.multimager.activities.BaseActivity;
-import com.vlk.multimager.activities.Camera2Fragment;
-import com.vlk.multimager.activities.CameraFragment;
-import com.vlk.multimager.utils.Constants;
-import com.vlk.multimager.utils.Params;
+import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.view.fotos.activities.BaseActivity;
+import com.rgames.guilherme.bidtruck.view.fotos.activities.CameraFragment;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
 
 /**
  * Created by vansikrishna on 6/14/2016.
@@ -25,7 +25,7 @@ public class MultiCameraActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.vlk.multimager.R.layout.activity_multi_capture);
+        setContentView(R.layout.activity_multi_capture);
         init();
         initFragment();
     }
@@ -50,15 +50,12 @@ public class MultiCameraActivity extends BaseActivity {
         if(fragment instanceof CameraFragment){
             ((CameraFragment) fragment).onBackPressed();
         }
-        else{
-            ((Camera2Fragment) fragment).onBackPressed();
-        }
     }
 
     private void initFragment(){
         fragment = CameraFragment.newInstance(params);
         getFragmentManager().beginTransaction()
-                .replace(com.vlk.multimager.R.id.container, fragment)
+                .replace(R.id.container, fragment)
                 .commit();
 //        if(Build.VERSION.SDK_INT >= 21){
 //            fragment = Camera2Fragment.newInstance(params);

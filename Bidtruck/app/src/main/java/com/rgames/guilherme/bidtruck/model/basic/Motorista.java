@@ -23,6 +23,8 @@ public class Motorista extends Base {
         setNome(nome);
     }
 
+    public Motorista(){}
+
     protected Motorista(Parcel in) {
         super(in);
         //  empresa = in.readParcelable(Empresa.class.getClassLoader());

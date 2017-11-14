@@ -1,6 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.fotos.utils;
 
-import com.vlk.multimager.utils.Utils;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Utils;
 
 import java.io.Serializable;
 

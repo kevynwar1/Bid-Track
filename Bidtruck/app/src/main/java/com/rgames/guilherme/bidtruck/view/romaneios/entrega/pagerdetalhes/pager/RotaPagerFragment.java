@@ -6,9 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.text.Html;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,37 +19,30 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.rgames.guilherme.bidtruck.model.basic.DirectionFinder;
 import com.rgames.guilherme.bidtruck.model.basic.DirectionFinderListener;
-import com.rgames.guilherme.bidtruck.model.basic.Entrega;
-import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.basic.Route;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyCallback, DirectionFinderListener {
 
-    private final static String ARG_1 = "arg_1";
     private final static String ARG_2 = "arg_2";
     private final static String ARG_3 = "arg_3";
-    private View mView;
-    private Entrega mEntrega;
     private GoogleMap mMap;
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
-    private double latEmpresa, longEmpresa;
+    private double[] mInicio, mFim;
 
     public RotaPagerFragment() {
     }
 
-    public static RotaPagerFragment newInstance(double latEmpresa, double longEmpresa, Entrega entrega) {
+    public static RotaPagerFragment newInstance(double[] inicio, double[] fim) {
         RotaPagerFragment fragment = new RotaPagerFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(ARG_1, entrega);
-        bundle.putDouble(ARG_2, latEmpresa);
-        bundle.putDouble(ARG_3, longEmpresa);
+        bundle.putDoubleArray(ARG_2, inicio);
+        bundle.putDoubleArray(ARG_3, fim);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -62,9 +52,8 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
         super.onCreate(savedInstanceState);
         getMapAsync(this);
         if (getArguments() != null) {
-            mEntrega = getArguments().getParcelable(ARG_1);
-            latEmpresa = getArguments().getDouble(ARG_2);
-            longEmpresa = getArguments().getDouble(ARG_3);
+            mInicio = getArguments().getDoubleArray(ARG_2);
+            mFim = getArguments().getDoubleArray(ARG_3);
         }
     }
 
@@ -139,10 +128,8 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
     private void sendRequest() {
         try {
             //vou deixar esses valores pq eles sao proximos e qualquer coisa eu testo com eles.
-            String origin = "-23.564224, -46.653156";
-            origin = latEmpresa + ", " + longEmpresa;
-            String destination = "-23.654500, -46.653500";
-            destination = mEntrega.getDestinatario().getLatitude() + ", " + mEntrega.getDestinatario().getLongitude();
+            String origin = mInicio[0] + ", " + mInicio[1];
+            String destination = mFim[0] + ", " + mFim[1];
             if (origin.isEmpty()) {
                 Toast.makeText(getActivity(), "Please enter origin address!", Toast.LENGTH_SHORT).show();
                 return;
@@ -153,8 +140,6 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
             }
 
             new DirectionFinder(this, origin, destination).execute();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

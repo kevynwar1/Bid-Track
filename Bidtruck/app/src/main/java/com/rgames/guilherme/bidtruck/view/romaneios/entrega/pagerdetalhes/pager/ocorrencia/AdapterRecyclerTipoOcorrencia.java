@@ -2,7 +2,6 @@ package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,6 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.TipoOcorrencia;
 
 import java.util.List;
-
-/**
- * Created by Guilherme on 07/10/2017.
- */
 
 class AdapterRecyclerTipoOcorrencia extends RecyclerView.Adapter<AdapterRecyclerTipoOcorrencia.MyViewHolder> {
 
@@ -34,17 +29,17 @@ class AdapterRecyclerTipoOcorrencia extends RecyclerView.Adapter<AdapterRecycler
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txt_tipo.setText(mList.get(position).getDescription());
-        if (pos == position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        holder.txt_tipo.setText(mList.get(holder.getAdapterPosition()).getDescription());
+        if (pos == holder.getAdapterPosition()) {
             holder.lay.setBackgroundColor(Color.argb(255, 153, 153, 153));
-            idTipo = mList.get(position).getCodigo();
+            idTipo = mList.get(holder.getAdapterPosition()).getCodigo();
         }else
             holder.lay.setBackgroundColor(Color.WHITE);
         holder.lay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pos = position;
+                pos = holder.getAdapterPosition();
                 notifyDataSetChanged();
             }
         });

@@ -58,12 +58,12 @@ public class HttpRomaneio extends HttpBase<Romaneio> {
     }
 
 
-    public boolean statusRomaneioEntrega(int cod_status_romaneio, int codigo) {
+    public boolean statusRomaneioEntrega(int cod_status_romaneio, int codigo, int cod_motorista) {
         boolean retorno = false;
 
         try {
             if (HttpConnection.isConnected(mContext)) {
-                String parms = cod_status_romaneio + "/" + codigo;
+                String parms = cod_status_romaneio + "/" + codigo + "/" + cod_motorista;
                 HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_STATUS_ROMANEIO, HttpMethods.GET, false, true, parms);
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     int id = connection.getResponseCode();

@@ -4,6 +4,6 @@
     android:useLevel="false">
     <!--<solid android:color="?attr/colorAccent" />-->
     <size
-        android:width="@dimen/margin_56"
-        android:height="@dimen/margin_56" />
+        android:width="58dp"
+        android:height="58dp" />
 </shape>

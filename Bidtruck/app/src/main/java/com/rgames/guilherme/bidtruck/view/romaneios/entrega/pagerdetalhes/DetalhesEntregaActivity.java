@@ -13,8 +13,6 @@ import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 
-import java.util.ArrayList;
-
 public class DetalhesEntregaActivity extends AppCompatActivity {
 
 
@@ -22,7 +20,7 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private Entrega mEntrega;
     private Romaneio mRomaneio;
-    private double mLat, mLong;
+    private double[] mInicio, mFim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +30,10 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
                 mEntrega = (Entrega) getIntent().getExtras().getSerializable(Entrega.PARCEL);
-                mLat = getIntent().getExtras().getDouble("arg1");
-                mLong = getIntent().getExtras().getDouble("arg2");
+                mInicio = getIntent().getExtras().getDoubleArray("arg1");
+                mFim = getIntent().getExtras().getDoubleArray("arg2");
+                Log.i("teste", "inicio " + mInicio[0]+", "+mInicio[1]);
+                Log.i("teste", "fim " + mFim[0]+", "+mFim[1]);
                 init();
                 initViewPager();
             } else {
@@ -58,7 +58,7 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
     private void initViewPager() throws Exception {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(new AdapterViewPager(getSupportFragmentManager(), this, mRomaneio
-                , mEntrega, mLat, mLong));
+                , mEntrega, mInicio, mFim));
         mTabLayout = (TabLayout) findViewById(R.id.tablayout);
         mTabLayout.post(new Runnable() {
             @Override

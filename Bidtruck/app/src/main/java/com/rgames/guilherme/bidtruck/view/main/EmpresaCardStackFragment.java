@@ -23,6 +23,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
+import com.rgames.guilherme.bidtruck.model.repositors.EmpresaRep;
 import com.rgames.guilherme.bidtruck.view.empresa.EmpresaAdapter;
 
 import java.util.List;
@@ -41,6 +42,8 @@ public class EmpresaCardStackFragment extends Fragment {
     private View mView;
     private boolean CRIADO = false;
 
+    private EmpresaRep empresaRep;
+
     public EmpresaCardStackFragment() {
         // Required empty public constructor
     }
@@ -52,6 +55,7 @@ public class EmpresaCardStackFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        empresaRep = new EmpresaRep(getActivity());
         super.onCreate(savedInstanceState);
     }
 
@@ -64,6 +68,10 @@ public class EmpresaCardStackFragment extends Fragment {
 
     @Override
     public void onResume() {
+        facade = new Facade(getActivity());
+        if (!CRIADO) {
+            init();
+        }
         super.onResume();
     }
 
@@ -78,9 +86,10 @@ public class EmpresaCardStackFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-       // if (!CRIADO) {
-        //    init();
-        //}
+       /*  if (!CRIADO) {
+           init();
+        }*/
+
     }
 
     /**
@@ -93,13 +102,23 @@ public class EmpresaCardStackFragment extends Fragment {
                 if (imm != null)
                     if (getView() != null)
                         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                facade = new Facade(getActivity());
+                //   facade = new Facade(getActivity());
                 motorista = facade.isLogged();
                 viewSemMotorista(true);
                 empresaList = (ListView) mView.findViewById(R.id.lv_empresas);
                 if (motorista.getCodigo() > 0) {
                     empresaList.setDivider(null);
-                    initList();
+                    if(!facade.isConnected(getActivity())){
+                        Empresa company = empresaRep.buscarEmpresa();
+                        if(company != null){
+                            Intent it = new Intent(getActivity(), MainActivity.class);
+                            Bundle b = new Bundle();
+                            b.putParcelable(Empresa.PARCEL_EMPRESA, company);
+                            startActivity(it.putExtras(b));
+                        }
+                    }else {
+                        initList();
+                    }
                 } else
                     viewSemMotorista(false);
             } else throw new ContextNullException();
@@ -145,6 +164,7 @@ public class EmpresaCardStackFragment extends Fragment {
                             Intent it = new Intent(getActivity(), MainActivity.class);
                             Bundle b = new Bundle();
                             emp = empresas.get(0);
+                            empresaRep.insertEmpresa(empresas.get(0));
                             b.putParcelable(Empresa.PARCEL_EMPRESA, emp);
                             // b.putParcelable(Motorista.PARCEL_MOTORISTA, motorista);
                             startActivity(it.putExtras(b));
@@ -203,6 +223,7 @@ public class EmpresaCardStackFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Empresa empresa = (Empresa) adapterView.getAdapter().getItem(i);
+                boolean ok = empresaRep.insertEmpresa(empresa);
                 Intent it = new Intent(getActivity(), MainActivity.class);
                 //    RomaneioFragment frag = new RomaneioFragment();
 

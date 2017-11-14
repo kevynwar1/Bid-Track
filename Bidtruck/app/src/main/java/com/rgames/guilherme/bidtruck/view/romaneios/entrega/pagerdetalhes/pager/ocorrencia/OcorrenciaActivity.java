@@ -12,9 +12,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,15 +27,14 @@ import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.basic.TipoOcorrencia;
-import com.rgames.guilherme.bidtruck.model.dao.http.HttpImagem;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOcorrencia;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.view.fotos.adapters.CarregadorDeFoto;
-import com.vlk.multimager.activities.MultiCameraActivity;
-import com.vlk.multimager.adapters.GalleryImagesAdapter;
-import com.vlk.multimager.utils.Constants;
-import com.vlk.multimager.utils.Image;
-import com.vlk.multimager.utils.Params;
+import com.rgames.guilherme.bidtruck.view.fotos.activities.MultiCameraActivity;
+import com.rgames.guilherme.bidtruck.view.fotos.adapters.GalleryImagesAdapter;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -48,15 +47,13 @@ public class OcorrenciaActivity extends AppCompatActivity {
     //    private Entrega entrega;
     private ControllerOcorrencia controllerOcorrencia;
     private ControllerLogin controllerLogin;
-    private HttpImagem httpImagem;
     private HttpOcorrencia httpOcorrencia;
     private MyProgressBar myProgressBar;
     private AdapterRecyclerTipoOcorrencia adapter;
-    private Button fab_photo;
     private RecyclerView rv;
     private int cod_ocorrencia;
     String codado;
-    private ArrayList<String> listImagem;
+    private ArrayList<Image> listImagem;
     private ArrayList<Image> lista;
     private ArrayList<String> test;
 
@@ -70,7 +67,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
 //                entrega = getIntent().getExtras().getParcelable(Entrega.PARCEL);
                 romaneio = getIntent().getExtras().getInt(Romaneio.PARCEL);
                 initToolbar();
-                httpImagem = new HttpImagem();
                 listImagem = new ArrayList<>();
                 lista = new ArrayList<>();
            /*     test = new ArrayList<>();
@@ -78,7 +74,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 test.add("bobo");
                 test.add("roxao");*/
                 httpOcorrencia = new HttpOcorrencia();
-                controllerOcorrencia = new ControllerOcorrencia();
+                controllerOcorrencia = new ControllerOcorrencia(this);
                 controllerLogin = new ControllerLogin(OcorrenciaActivity.this);
             } else {
                 onBackPressed();
@@ -95,78 +91,92 @@ public class OcorrenciaActivity extends AppCompatActivity {
         super.onResume();
 
         initFab();
-        clickfloat();
+        //  clickfloat();
         initList();
-        initButton();
+        // initButton();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
+        // int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_foto:
+                clickfloat();
+                return true;
+            case R.id.action_enviar:
+                initButton();
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     private void initButton() {
-        findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
+
+        new AsyncTask<Object, Object, Boolean>() {
+            String descrip;
+
             @Override
-            public void onClick(View view) {
-                new AsyncTask<Object, Object, Boolean>() {
-                    String descrip;
-                    String msg = "";
+            protected void onPreExecute() {
+                initProgressBar();
+                descrip = ((TextView) findViewById(R.id.edit_description)).getText().toString();
+            }
 
-                    @Override
-                    protected void onPreExecute() {
-                        initProgressBar();
-                        descrip = ((TextView) findViewById(R.id.edit_description)).getText().toString();
-                    }
-
-                    @Override
-                    protected Boolean doInBackground(Object... voids) {
-                        try {
-                            return httpOcorrencia.insert(new Ocorrencia(controllerLogin.getIdEmpresa()
+            @Override
+            protected Boolean doInBackground(Object... voids) {
+                try {
+                    return controllerOcorrencia.insert(new Ocorrencia(controllerLogin.getIdEmpresa()
                                     , seq_entrega
                                     , romaneio
                                     , adapter.getCodigoSelecionado()
-                                    , descrip
-                            ), listImagem);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            msg = e.getMessage();
-                            return null;
+                                    , descrip)
+                            , listImagem);
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                    OcorrenciaActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(OcorrenciaActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                         }
-                    }
-
-                    @Override
-                    protected void onPostExecute(Boolean aBoolean) {
-                        try {
-                            if (msg.equals(""))
-                                if (aBoolean) {
-                                    //cod_ocorrencia = aBoolean;
-                                    Toast.makeText(OcorrenciaActivity.this, "Ocorrência cadastrada.", Toast.LENGTH_LONG).show();
-                                    onBackPressed();
-                                } else {
-                                    Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a ocorrência.", Toast.LENGTH_LONG).show();
-                                }
-                            else
-                                Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            try {
-                                finishProgressBar();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }.execute();
-                // initFoto();
+                    });
+                    return null;
+                }
             }
-        });
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                try {
+                    if (aBoolean) {
+                        //cod_ocorrencia = aBoolean;
+                        Toast.makeText(OcorrenciaActivity.this, "Ocorrência cadastrada.", Toast.LENGTH_LONG).show();
+                        onBackPressed();
+                    } else {
+                        Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a ocorrência.", Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        finishProgressBar();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.execute();
+        // initFoto();
+
+
     }
 
     private void initList() {
@@ -216,21 +226,17 @@ public class OcorrenciaActivity extends AppCompatActivity {
     }
 
     private void initFab() {
-        fab_photo = (Button) findViewById(R.id.fab_photo);
         rv = (RecyclerView) findViewById(R.id.rv_photo);
     }
 
     private void clickfloat() {
-        fab_photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
-                Params params = new Params();
-                params.setCaptureLimit(5);
-                intent.putExtra(Constants.KEY_PARAMS, params);
-                startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
-            }
-        });
+
+        Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
+        Params params = new Params();
+        params.setCaptureLimit(5);
+        intent.putExtra(Constants.KEY_PARAMS, params);
+        startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
+
     }
 
     @Override
@@ -263,12 +269,12 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 String caminho = imagesList.get(i).imagePath;
                 //Bitmap bit = BitmapFactory.decodeFile(caminho);
                 Bitmap bit = CarregadorDeFoto.carrega(caminho);
-                Bitmap bito = Bitmap.createScaledBitmap(bit, 200, 200, true);
+                Bitmap bito = Bitmap.createScaledBitmap(bit, 300, 300, true);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bito.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                bito.compress(Bitmap.CompressFormat.JPEG, 55, stream);
                 byte[] fotoB = stream.toByteArray();
                 codado = Base64.encodeToString(fotoB, Base64.DEFAULT);
-                listImagem.add(codado);
+                listImagem.add(new Image(imagesList.get(i)._id, imagesList.get(i).uri, codado, imagesList.get(i).isPortraitImage));
             }
 
             rv.setHasFixedSize(true);

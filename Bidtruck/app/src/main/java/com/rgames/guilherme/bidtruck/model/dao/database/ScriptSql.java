@@ -39,6 +39,7 @@ public class ScriptSql {
         return sqlBuilder.toString();
     }
     // Table: empresa_motorista (CreateTable)
+
     public static String getCreateTableEmpresaMotorista() {
         StringBuilder sqlBuilder = new StringBuilder();
 
@@ -60,6 +61,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: entrega (CreateTable)
     public static String getCreateTableEntrega() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -67,10 +69,29 @@ public class ScriptSql {
         sqlBuilder.append("CREATE TABLE IF NOT EXISTS entrega ( ");
         sqlBuilder.append("seq_entrega INTEGER NOT NULL, ");
         sqlBuilder.append("cod_romaneio INTEGER NOT NULL, ");
-        sqlBuilder.append("cod_destinatario INTEGER NOT NULL, ");
-        sqlBuilder.append("cod_status_entrega INTEGER NOT NULL,");
-        sqlBuilder.append("peso_carga TEXT NOT NULL,");
-        sqlBuilder.append("nota_fiscal INTEGER NOT NULL,");
+
+        sqlBuilder.append("cod_status_entrega INTEGER,");
+        sqlBuilder.append("descricao_status TEXT,");
+
+        sqlBuilder.append("cod_destinatario INTEGER, ");
+        sqlBuilder.append("nome_fantasia_destinatario TEXT,");
+        sqlBuilder.append("razao_social_destinatario TEXT,");
+        sqlBuilder.append("latitude REAL,");
+        sqlBuilder.append("longitude REAL,");
+
+        sqlBuilder.append("cnpj TEXT,");
+        sqlBuilder.append("email TEXT,");
+        sqlBuilder.append("telefone TEXT,");
+        sqlBuilder.append("cep TEXT,");
+        sqlBuilder.append("uf TEXT,");
+        sqlBuilder.append("cidade TEXT,");
+        sqlBuilder.append("bairro TEXT,");
+        sqlBuilder.append("logradouro TEXT,");
+        sqlBuilder.append("numero TEXT,");
+        sqlBuilder.append("complemento TEXT,");
+
+        sqlBuilder.append("peso_carga TEXT,");
+        sqlBuilder.append("nota_fiscal INTEGER,");
         sqlBuilder.append("PRIMARY KEY (seq_entrega, cod_romaneio) ");
      /*   sqlBuilder.append("FOREIGN KEY (cod_romaneio) REFERENCES romaneio (codigo), ");
         sqlBuilder.append("FOREIGN KEY (cod_destinatario) REFERENCES destinatario (codigo), ");
@@ -110,6 +131,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: ocorrencia (CreateTable)
     public static String getCreateTableOcorrencia() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -124,7 +146,7 @@ public class ScriptSql {
         sqlBuilder.append("foto TEXT NOT NULL, ");
         sqlBuilder.append("situacao INTEGER DEFAULT 0, ");
         sqlBuilder.append("PRIMARY KEY (codigo) ");
-      /*  sqlBuilder.append("FOREIGN KEY (cod_empresa) REFERENCES empresa (codigo), ");
+      /* sqlBuilder.append("FOREIGN KEY (cod_empresa) REFERENCES empresa (codigo), ");
         sqlBuilder.append("FOREIGN KEY (seq_entrega) REFERENCES entrega (seq_entrega), ");
         sqlBuilder.append("FOREIGN KEY (cod_romaneio) REFERENCES romaneio (codigo), ");
         sqlBuilder.append("FOREIGN KEY (cod_tipo_ocorrencia) REFERENCES tipo_ocorrencia (codigo) ");*/
@@ -132,7 +154,6 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
-
 
     // Table: tipo_ocorrencia (DropTable)
     public static String getDropTableTipoOcorrencia() {
@@ -142,6 +163,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: tipo_ocorrencia (CreateTable)
     public static String getCreateTableTipoOcorrencia() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -166,6 +188,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: romaneio (CreateTable)
     public static String getCreateTableRomaneio() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -175,12 +198,12 @@ public class ScriptSql {
         sqlBuilder.append("cod_empresa INTEGER NOT NULL, ");
         sqlBuilder.append("cod_status_romaneio INTEGER NOT NULL, ");
         sqlBuilder.append("cod_estabelecimento INTEGER NOT NULL, ");
-        sqlBuilder.append("cod_tipo_veiculo INTEGER NOT NULL, ");
-        sqlBuilder.append("cod_transportadora INTEGER NOT NULL, ");
+       //sqlBuilder.append("cod_tipo_veiculo INTEGER NOT NULL, ");
+       //sqlBuilder.append("cod_transportadora INTEGER NOT NULL, ");
         sqlBuilder.append("cod_motorista INTEGER NOT NULL, ");
-        sqlBuilder.append("valor NUMERIC(12,2) NOT NULL, ");
-        sqlBuilder.append("data_criacao NUMERIC NOT NULL, ");
-        sqlBuilder.append("data_finalizacao NUMERIC, ");
+      //sqlBuilder.append("valor NUMERIC(12,2) NOT NULL, ");
+      //sqlBuilder.append("data_criacao NUMERIC NOT NULL, ");
+      //sqlBuilder.append("data_finalizacao NUMERIC, ");
         sqlBuilder.append("PRIMARY KEY (codigo) ");
       /* sqlBuilder.append("FOREIGN KEY (cod_empresa) REFERENCES empresa (codigo), ");
         sqlBuilder.append("FOREIGN KEY (cod_status_romaneio) REFERENCES status_romaneio (codigo), ");
@@ -201,6 +224,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: status_romaneio (CreateTable)
     public static String getCreateTableStatusRomaneio() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -223,6 +247,7 @@ public class ScriptSql {
 
         return sqlBuilder.toString();
     }
+
     // Table: destinatario (CreateTable)
     public static String getCreateTableDestinatario() {
         StringBuilder sqlBuilder = new StringBuilder();

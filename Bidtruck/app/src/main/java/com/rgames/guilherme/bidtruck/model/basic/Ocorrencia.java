@@ -3,6 +3,8 @@ package com.rgames.guilherme.bidtruck.model.basic;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,9 @@ public class Ocorrencia implements Parcelable {
     private String descricao;
     private String data;
     private char situation;
+    private List<Image> fotos;
+
+    public Ocorrencia(){}
 
     public Ocorrencia(int empresa, int entrega, int romaneio, int tipo, String descricao) {
         setEmpresa(new Empresa());
@@ -29,6 +34,7 @@ public class Ocorrencia implements Parcelable {
         setTipoOcorrencia(new TipoOcorrencia());
         getTipoOcorrencia().setCodigo(tipo);
         setDescricao(descricao);
+        fotos = new ArrayList<>();
     }
 
     public Ocorrencia(int codigo, List<StatusEntrega> statusEntregaList, TipoOcorrencia tipoOcorrencia, String description, char situation) {
@@ -85,7 +91,7 @@ public class Ocorrencia implements Parcelable {
 //        parcel.writeCharArray(new char[]{situation});
     }
 
-    public int getcodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
@@ -155,5 +161,13 @@ public class Ocorrencia implements Parcelable {
 
     public void setStatusEntregaList(List<StatusEntrega> statusEntregaList) {
         this.statusEntregaList = statusEntregaList;
+    }
+
+    public List<Image> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<Image> fotos) {
+        this.fotos = fotos;
     }
 }

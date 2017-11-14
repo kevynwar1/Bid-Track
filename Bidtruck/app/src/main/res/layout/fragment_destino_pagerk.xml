@@ -10,13 +10,13 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <TextView
+  <!-- <TextView
         android:id="@+id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Carregando próxima viagem..."
-        android:layout_below="@+id/frame_progress"/>
+        android:layout_below="@+id/frame_progress"/>-->
 
 
 
@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Informações a cerca da entrega." />
+                    android:text="Informações acerca da entrega." />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -53,6 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Sequência: " />
 
                     <TextView
@@ -91,6 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Código da romaneio: " />
 
                     <TextView
@@ -110,6 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="NFS: " />
 
                     <TextView
@@ -120,24 +123,6 @@
                         android:layout_gravity="end" />
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:text="Ínicio: " />
-
-                    <TextView
-                        android:id="@+id/txtInicio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_gravity="end" />
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -148,25 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:text="Termíno: " />
-
-                    <TextView
-                        android:id="@+id/txtTermino"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_gravity="end" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Peso da carga: " />
 
                     <TextView
@@ -177,24 +144,7 @@
                         android:layout_gravity="end" />
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:text="Ocorrência atual: " />
-
-                    <TextView
-                        android:id="@+id/txtOcorrencia"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_gravity="end" />
-                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -210,9 +160,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Informações a cerca do destinatario." />
+                    android:text="Informações acerca do destinatário." />
 
-                <RelativeLayout
+                <!--<RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -229,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_gravity="end" />
-                </RelativeLayout>
+                </RelativeLayout>-->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -240,6 +190,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Razão Social: " />
 
                     <TextView
@@ -259,6 +210,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Nome fantasia: " />
 
                     <TextView
@@ -278,6 +230,48 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
+                        android:text="CNPJ : " />
+
+                    <TextView
+                        android:id="@+id/txtCNPJ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="end" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:textStyle="bold"
+                        android:text="Email: " />
+
+                    <TextView
+                        android:id="@+id/txtEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="end" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Telefone: " />
 
                     <TextView
@@ -297,6 +291,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="CEP: " />
 
                     <TextView
@@ -316,6 +311,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="UF: " />
 
                     <TextView
@@ -335,6 +331,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Cidade: " />
 
                     <TextView
@@ -354,6 +351,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Bairro: " />
 
                     <TextView
@@ -373,6 +371,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Logradouro: " />
 
                     <TextView
@@ -392,6 +391,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Número: " />
 
                     <TextView
@@ -411,6 +411,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:textStyle="bold"
                         android:text="Complemento: " />
 
                     <TextView
@@ -438,19 +439,39 @@
             <!--android:text="Gerar ocorrência" />-->
     <!--</LinearLayout>-->
 
+
+
+
     <LinearLayout
         android:id="@+id/linear_4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
+
+        <!--<Button
+            android:id="@+id/btn_iniciar"
+            android:layout_width="169dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linear_4"
+            android:layout_toEndOf="@+id/btn_finalize"
+            android:layout_weight="2.94"
+            android:text="Iniciar" />-->
+
+
         <Button
             android:id="@+id/btn_finalize"
-            android:layout_width="0dp"
+            android:layout_width="169dp"
+            android:layout_above="@+id/linear_4"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_weight="1"
+            android:layout_weight="2.94"
+            android:background="@drawable/background_login"
+            android:textColor="@color/white"
             android:text="Finalizar" />
+
+
+
 
         <!--<Button
             android:id="@+id/btn_cancel"
@@ -460,4 +481,6 @@
             android:layout_weight="1"
             android:text="Cancelar" />-->
     </LinearLayout>
+
+
 </RelativeLayout>

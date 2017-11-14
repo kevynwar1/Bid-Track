@@ -1,11 +1,7 @@
 package com.rgames.guilherme.bidtruck.model.dao.http;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.rgames.guilherme.bidtruck.controller.ControllerEntregas;
 import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
@@ -13,14 +9,10 @@ import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +47,6 @@ public class HttpEntrega extends HttpBase<Entrega> {
                 //Motorista driver = mFacade.isLogged();
                 Motorista driver = controlLogin.isLogged();
                 this.id_motorista_entrega = driver.getCodigo();
-
                 if (id_motorista_entrega > 0 && !id_motorista_entrega.equals("")) {
                     HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_ENTREGA_ROMANEIO, HttpMethods.GET, false, true, String.valueOf(id_motorista_entrega));
                     list = super.select(connection, Entrega.class);
@@ -84,14 +75,6 @@ public class HttpEntrega extends HttpBase<Entrega> {
                 HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_STATUS_ENTREGA, HttpMethods.GET, false, true, parms);
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     int id = connection.getResponseCode();
-                    /*BufferedReader scanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    StringBuilder jsonScanner = new StringBuilder();
-                    String line = null;
-                    while ((line = scanner.readLine()) != null) {
-                        jsonScanner.append(line).append("\n");
-                        Integer.parseInt(line);
-                        retorno = true;
-                    }*/
 
 
                     InputStream input = connection.getInputStream();
@@ -140,7 +123,7 @@ public class HttpEntrega extends HttpBase<Entrega> {
                 String parms = status_entrega + "/" + cod_seq_entrega + "/" + cod_romaneioo;
                 HttpURLConnection connection = HttpConnection.newInstance(URLDictionary.URL_NOVO_STATUS_ENTREGA, HttpMethods.GET, false, true, parms);
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    int id = connection.getResponseCode();
+                    int idStatus = connection.getResponseCode();
 
                     InputStream input = connection.getInputStream();
                     if (input != null) {

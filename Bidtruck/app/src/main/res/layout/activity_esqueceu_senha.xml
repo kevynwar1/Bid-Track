@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/login"
     tools:context="com.rgames.guilherme.bidtruck.view.main.SenhaActivitry"
     android:orientation="vertical">
 
@@ -32,7 +32,7 @@
         android:id="@+id/viewEsqueceu"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="390dp"
+        android:layout_marginTop="440dp"
         android:background="#f9d7db" />
 
     <TextView

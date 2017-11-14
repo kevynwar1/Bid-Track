@@ -1,11 +1,13 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -15,10 +17,15 @@ import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.facade.Facade;
+import com.rgames.guilherme.bidtruck.model.basic.Destinatario;
 import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
+import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
+import com.rgames.guilherme.bidtruck.model.dao.database.DataBase;
+import com.rgames.guilherme.bidtruck.model.dao.database.EntregaTable;
+import com.rgames.guilherme.bidtruck.model.repositors.EntregaRep;
+import com.rgames.guilherme.bidtruck.model.repositors.StatusEntregaRep;
 
 import java.util.List;
 
@@ -26,23 +33,32 @@ public class EntregaActivity extends AppCompatActivity {
 
     private MyProgressBar myProgressBar;
     private Romaneio mRomaneio;
-    private StatusRomaneioTask mRomaneioTask;
     private List<Entrega> mListEntregas;
     private boolean tem_romaneio;
     private boolean finish = true;
     private boolean atualizadaEntrega = true;
     private RetornaListaTask mRetornaTask;
-
+    private DataBase banco;
+    boolean success = false;
+    private Context context;
+    private EntregaRep entregaRep;
+    private StatusEntregaRep statusEntregaRep;
+    private Facade facade;
+    private EntregaTable entregaTable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
+
+        entregaRep = new EntregaRep(EntregaActivity.this);
+        statusEntregaRep = new StatusEntregaRep(EntregaActivity.this);
+        facade = new Facade(this);
         try {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
+
                 initToobal();
                 // initList();
-                mRomaneioTask = new StatusRomaneioTask();
 
             } else {
                 Toast.makeText(this, getString(R.string.app_err_null_romaneio), Toast.LENGTH_SHORT).show();
@@ -53,23 +69,42 @@ public class EntregaActivity extends AppCompatActivity {
         }
     }
 
-    public void onResume() {
+    public void onResume(){
         super.onResume();
 
         try {
-            if (finish) {
-                initList();
-                finish = false;
+            if(finish == true){
+                if(!facade.isConnected(EntregaActivity.this)) {
+                    List<Entrega> entregas = entregaRep.buscarEntrega();
+                    if (entregas != null && entregas.size() > 0) {
+                        Log.i("Chaves2", "Inseriu " + entregas.size());
+                        initRecyclerView(entregas);
+                        finish = false;
+                    }
+                    //else {
+                    //  initList();
+                    //  finish = false;
+                    // }
+                } else if(finish == true){
+                    //List<Entrega> entregasOffline = entregaRep.buscarEntrega();
+                    //if (entregasOffline != null && entregasOffline.size() > 0) {
+                    //  Log.i("Chaves2", "Inseriu " + entregasOffline.size());
+                    // initRecyclerView(entregasOffline);
+                    initList();
+                    finish = false;
+                }
             } else {
-                mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);
-                mRetornaTask = new RetornaListaTask();
-                mRetornaTask.execute();
-                mRomaneioTask.execute();
+                initRecyclerView(null);
+                if(finish == false) {
+                    mListEntregas = entregaRep.buscarEntrega();
+                    if (mListEntregas != null || mListEntregas.size() > 0) {
+                        initRecyclerView(mListEntregas);
+                    }
+                }
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -81,6 +116,18 @@ public class EntregaActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+//    private void initViewPager() {
+//        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+//        mViewPager.setAdapter(new AdapterViewPager(getSupportFragmentManager(), this, mEntrega));
+//        mTabLayout = (TabLayout) findViewById(R.id.tablayout);
+//        mTabLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                mTabLayout.setupWithViewPager(mViewPager);
+//            }
+//        });
+//    }
 
     private void initToobal() throws Exception {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -115,12 +162,52 @@ public class EntregaActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<Entrega> entregas) {
                 try {
-                    if (entregas == null || entregas.size() == 0)
+                    if (entregas == null || entregas.size() == 0){
                         emptyView(true);
-                    initRecyclerView(entregas);
-                    finishProgressBar();
-                    // mListEntregas = entregas;
+                        // mListEntregas = entregas;
+                    }else {
+                        if(entregaRep.buscarEntrega() == null || entregaRep.buscarEntrega().size() <=0){
 
+                            //inserir banco local
+                            for(Entrega ent : entregas) {
+
+                                Entrega delivery = new Entrega();
+                                Destinatario destinatario = new Destinatario();
+                                StatusEntrega statusEntrega = new StatusEntrega();
+                                //delivery.setCodigo(ent.getCodigo());
+                                delivery.setNota_fiscal(ent.getNota_fiscal());
+                                delivery.setPeso(ent.getPeso());
+                                delivery.setSeq_entrega(ent.getSeq_entrega());
+
+                                destinatario.setId(ent.getDestinatario().getId());
+                                destinatario.setBairro(ent.getDestinatario().getBairro());
+                                destinatario.setCEP(ent.getDestinatario().getCEP());
+                                destinatario.setCidade(ent.getDestinatario().getCidade());
+                                destinatario.setCpf_cnpj(ent.getDestinatario().getCpf_cnpj());
+                                destinatario.setNumero(ent.getDestinatario().getNumero());
+                                destinatario.setEmail(ent.getDestinatario().getEmail());
+                                destinatario.setNome_fantasia(ent.getDestinatario().getNome_fantasia());
+                                destinatario.setRazao_social(ent.getDestinatario().getRazao_social());
+                                destinatario.setLogradouro(ent.getDestinatario().getLogradouro());
+                                destinatario.setUF(ent.getDestinatario().getUF());
+                                destinatario.setTelefone(ent.getDestinatario().getTelefone());
+                                destinatario.setLatitude(ent.getDestinatario().getLatitude());
+                                destinatario.setLongitude(ent.getDestinatario().getLongitude());
+                                destinatario.setComplemento(ent.getDestinatario().getComplemento());
+                                delivery.setDestinatario(destinatario);
+
+                                statusEntrega.setCodigo(ent.getStatusEntrega().getCodigo());
+                                statusEntrega.setDescricao(ent.getStatusEntrega().getDescricao());
+                                delivery.setStatusEntrega(statusEntrega);
+                                entregaRep.inserirEntrega(delivery, mRomaneio);
+                            }
+                            statusEntregaRep.inserirStatusEntrega();
+                        }
+
+                        //Toast.makeText(getBaseContext(), "Entrega inserida no banco com sucesso!", Toast.LENGTH_LONG).show();
+                        initRecyclerView(entregas);
+                        finishProgressBar();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -128,41 +215,20 @@ public class EntregaActivity extends AppCompatActivity {
         }.execute();
     }
 
-    class StatusRomaneioTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                HttpRomaneio mhttpRomaneio = new HttpRomaneio(EntregaActivity.this);
-                if (mListEntregas != null) {
+    class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
 
-                    //for(int i = 0; i < mListEntregas.size(); i++){
-                    Entrega mEtrenga = mListEntregas.get(mListEntregas.size() - 1);
-                    if (mEtrenga.getStatusEntrega().getCodigo() == 4 && mRomaneio.getCodigo() > 0) {
-                        int novo_status = 4;
-                        int cod_romaneio = mRomaneio.getCodigo();
-                        tem_romaneio = mhttpRomaneio.statusRomaneioEntrega(novo_status, cod_romaneio);
-                    } else {
-                        Toast.makeText(EntregaActivity.this, "Desculpe, este romaneio não pode ser finalizado!", Toast.LENGTH_SHORT).show();
-                    }
-                    //break;
-                }
-            } catch (Exception e) {
+        @Override
+        protected void onPreExecute(){
+            try{
+                super.onPreExecute();
+                // emptyView(true);
+                initProgressBar();
+            }catch (Exception e){
                 e.printStackTrace();
             }
-            return null;
+
         }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Toast.makeText(EntregaActivity.this
-                    , (tem_romaneio) ? "Romaneio finalizado com Sucesso!"
-                            : "Desculpe, erro ao finalizar o romaneio atual, tente novamente!"
-                    , Toast.LENGTH_LONG).show();
-        }
-    }
-
-    class RetornaListaTask extends AsyncTask<Void, Void, List<Entrega>> {
 
         @Override
         protected List<Entrega> doInBackground(Void... String) {
@@ -178,10 +244,22 @@ public class EntregaActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Entrega> entregas) {
             try {
-                if (entregas == null || entregas.size() == 0)
-                    emptyView(true);
-                initRecyclerView(entregas);
-                mListEntregas = entregas;
+                if (entregas != null || entregas.size() > 0){
+
+                    mListEntregas = entregaRep.buscarEntrega();
+                    if(mListEntregas != null || mListEntregas.size() > 0){
+                        initRecyclerView(mListEntregas);
+                        finishProgressBar();
+                    }
+                    else{
+                        emptyView(true);
+                    }
+
+                }else{
+                    initRecyclerView(entregas);
+                    finishProgressBar();
+                    //mListEntregas = entregas;
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -212,5 +290,4 @@ public class EntregaActivity extends AppCompatActivity {
             myProgressBar.onFinish();
         }
     }
-
 }
