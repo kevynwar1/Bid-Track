@@ -182,7 +182,7 @@ public class RomaneioFragment extends Fragment {
 
                              }else{
 
-                                 Toast.makeText(getActivity(), "No momento, você não possui romaneio em viagem para esta empresa!", Toast.LENGTH_LONG).show();
+                                 Toast.makeText(getActivity(), "Opa!", Toast.LENGTH_LONG).show();
                                  emptyView(true);
                              }
 
