@@ -56,6 +56,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private ArrayList<Image> listImagem;
     private ArrayList<Image> lista;
     private ArrayList<String> test;
+    private List<TipoOcorrencia> mListTipoOcorrencia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +205,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
                     if (tipoOcorrencia != null && tipoOcorrencia.size() > 0 && msg.equals("")) {
                         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
                         recyclerView.setLayoutManager(new LinearLayoutManager(OcorrenciaActivity.this));
+                        mListTipoOcorrencia = tipoOcorrencia;
                         adapter = new AdapterRecyclerTipoOcorrencia(tipoOcorrencia);
                         recyclerView.setAdapter(adapter);
                     } else

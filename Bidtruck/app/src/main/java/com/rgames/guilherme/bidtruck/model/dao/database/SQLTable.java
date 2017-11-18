@@ -7,6 +7,7 @@ class SQLTable {
     final String TB_OCORRENCIA_COL_SEQ_ENTREGA = "seq_entrega";
     final String TB_OCORRENCIA_COL_COD_ROMANEIO = "cod_romaneio";
     final String TB_OCORRENCIA_COL_COD_TIPO_OCORRENCIA = "cod_tipo_ocorrencia";
+    final String TB_OCORRENCIA_COL_NOME_TIPO_OCORRENCIA = "nome_tipo_ocorrencia";
     final String TB_OCORRENCIA_COL_DESCRICAO = "descricao";
     final String TB_OCORRENCIA_COL_SITUACAO = "situacao";
 
@@ -20,6 +21,6 @@ class SQLTable {
     final String TB_TIPOCORRENCIA = "tb_tipo_ocorrencia";
     final String TB_TIPOCORRENCIA_COL_CODIGO = "codigo";
     final String TB_TIPOCORRENCIA_COL_COD_EMPRESA = "cod_empresa";
-    final String TB_TIPOCORRENCIA_COL_COD_DESCRICAO = "descricao";
+    final String TB_TIPOCORRENCIA_COL_DESCRICAO = "descricao";
     final String TB_TIPOCORRENCIA_COL_COD_SITUACAO = "situacao";
 }

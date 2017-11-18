@@ -42,7 +42,6 @@ public class DAOOcorrencia extends DAOGeneric {
                 super.insert(table.TB_FOTO, SQLContentValues.image(foto, table));
             }
             db.setTransactionSuccessful();
-            Log.i("teste", "insertListaDeFotos antes do return true");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,7 +49,6 @@ public class DAOOcorrencia extends DAOGeneric {
             if (db != null) {
                 db.endTransaction();
                 db.close();
-                Log.i("teste", "insertListaDeFotos passou pelo retorn e ainda veio pro finally, caso n tenha caido em catch sera estranho.");
             }
         }
         return false;
@@ -120,6 +118,16 @@ public class DAOOcorrencia extends DAOGeneric {
         return affec;
     }
 
+    public int deleteTipoOcorrenciaTodos() {
+        db = base.getWritableDatabase();
+        int aff = db.delete(table.TB_TIPOCORRENCIA, null, null);
+        db.close();
+        return aff;
+    }
+
+    /**
+     * CAGA PRO CODIGO!!!!!! FAZ!!!
+     */
     public List<Ocorrencia> select(int seq_entrega, int romaneio) {
         db = super.base.getReadableDatabase();
         List<Image> listaFotos = new ArrayList<>();
@@ -136,14 +144,25 @@ public class DAOOcorrencia extends DAOGeneric {
                 ocorrencia = SQLCursor.ocorrencia(cursor, table);
                 objs = super.select(
                         "SELECT * FROM " + table.TB_FOTO +
-                                " WHERE " + table.TB_FOTO_COL_COD_OCORRENCIA + " = ? " + ";"
+                                " WHERE " + table.TB_FOTO_COL_COD_OCORRENCIA + " = ?;"
                         , new Image()
                         , table
                         , new String[]{String.valueOf(ocorrencia.getCodigo())});
+
                 for (Object o : objs)
                     if (o instanceof Image)
                         listaFotos.add((Image) o);
                 ocorrencia.setFotos(listaFotos);
+
+                Cursor cursorTipo = db.rawQuery("SELECT * FROM " + table.TB_TIPOCORRENCIA + " WHERE "
+                                + table.TB_TIPOCORRENCIA_COL_CODIGO + " = ?"
+                        , new String[]{String.valueOf(ocorrencia.getTipoOcorrencia().getCodigo())
+                        });
+                if (cursorTipo.moveToNext()) {
+                    TipoOcorrencia tipoOcorrencia = SQLCursor.tipoOcorrencia(cursorTipo, table);
+                    ocorrencia.setTipoOcorrencia(tipoOcorrencia);
+                    cursorTipo.close();
+                } else Log.i("teste", "n existe");
                 listaOcorrencia.add(ocorrencia);
             }
         } catch (Exception e) {
@@ -155,12 +174,13 @@ public class DAOOcorrencia extends DAOGeneric {
         return listaOcorrencia;
     }
 
+
     public List<TipoOcorrencia> selectTipoOcorrencia(int idEntrega) {
         List<TipoOcorrencia> tipoOcorrenciaList = new ArrayList<>();
         db = base.getReadableDatabase();
         List<Object> list = super.select(
                 "SELECT * FROM " + table.TB_TIPOCORRENCIA
-                        + " WHERE " + table.TB_TIPOCORRENCIA_COL_COD_EMPRESA
+                        + " WHERE " + table.TB_TIPOCORRENCIA_COL_COD_EMPRESA + " = ?"
                 , new TipoOcorrencia()
                 , table
                 , new String[]{String.valueOf(idEntrega)});

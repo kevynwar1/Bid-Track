@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +14,14 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
+import com.rgames.guilherme.bidtruck.controller.ControllerOcorrencia;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
-import com.rgames.guilherme.bidtruck.model.basic.Estabelecimento;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.model.basic.StatusRomaneio;
+import com.rgames.guilherme.bidtruck.model.basic.TipoOcorrencia;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
@@ -95,20 +95,23 @@ public class RomaneioFragment extends Fragment {
             } else {
                 if (!mFacade.isConnected(getActivity())) {
                     this.romaneioList = romaneioRep.buscarRomaneio();
-                    if(romaneioList != null && romaneioList.size() > 0){
+                    if (romaneioList != null && romaneioList.size() > 0) {
                         initRecyclerView(romaneioList);
-                    }else {
+                    } else {
                         emptyView(true);
                         Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
                     }
                 }
                 //else if(empresa != null){
-                  //  this.romaneioList = romaneioRep.buscarRomaneio();
-                   // if(romaneioList != null && romaneioList.size() > 0){
-                    //    initRecyclerView(romaneioList);
-                   // }
+                //  this.romaneioList = romaneioRep.buscarRomaneio();
+                // if(romaneioList != null && romaneioList.size() > 0){
+                //    initRecyclerView(romaneioList);
+                // }
                 //}
-                else init();
+                else {
+                    buscarTiposOcorrencia();
+                    init();
+                }
 //                    if (finishRomaneio) {
 //                    init();
 //                    finishRomaneio = false;
@@ -120,6 +123,30 @@ public class RomaneioFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void buscarTiposOcorrencia() {
+        new AsyncTask<Void, Void, List<TipoOcorrencia>>() {
+            ControllerOcorrencia controllerOcorrencia = new ControllerOcorrencia(getActivity());
+
+            @Override
+            protected List<TipoOcorrencia> doInBackground(Void... voids) {
+                ControllerLogin controllerLogin = new ControllerLogin(getActivity());
+                controllerOcorrencia.deleteTipoOcorrenciaTodos();
+                try {
+                    return controllerOcorrencia.selectTipo(controllerLogin.getIdEmpresa());
+                } catch (EmpresaNullException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(List<TipoOcorrencia> tipoOcorrencias) {
+                for (TipoOcorrencia tipoOcorrencia : tipoOcorrencias)
+                    controllerOcorrencia.insertTipoOcorrencia(tipoOcorrencia);
+            }
+        }.execute();
     }
 
     @Nullable
@@ -158,31 +185,30 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
-                    if(romaneios == null){
+                    if (romaneios == null) {
                         finishProgressBar();
                     } else if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
                     else {
 
-                         for(int i = 0; i < romaneios.size(); i++) {
+                        for (int i = 0; i < romaneios.size(); i++) {
 
-                             if(romaneios.get(i).getStatus_romaneio().getCodigo() == 3) {
-
-
-                                 if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
-                                     romaneioRep.inserir(romaneios.get(i), empresa);
-                                 }
-                                 List<Romaneio> romaneioList = new ArrayList<Romaneio>();
-                                 romaneioList.add(romaneios.get(i));
+                            if (romaneios.get(i).getStatus_romaneio().getCodigo() == 3) {
 
 
+                                if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
+                                    romaneioRep.inserir(romaneios.get(i), empresa);
+                                }
+                                List<Romaneio> romaneioList = new ArrayList<Romaneio>();
+                                romaneioList.add(romaneios.get(i));
 
-                                 initRecyclerView(romaneioList);
-                                 finishProgressBar();
 
-                             }
+                                initRecyclerView(romaneioList);
+                                finishProgressBar();
 
-                         }
+                            }
+
+                        }
 
                     }
                     if (msg != null && !msg.equals(""))

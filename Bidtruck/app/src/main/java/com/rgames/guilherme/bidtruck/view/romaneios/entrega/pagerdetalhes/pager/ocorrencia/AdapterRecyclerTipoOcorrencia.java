@@ -18,6 +18,7 @@ class AdapterRecyclerTipoOcorrencia extends RecyclerView.Adapter<AdapterRecycler
     private List<TipoOcorrencia> mList;
     private static int pos;
     private static int idTipo;
+    private static String mTipo = "";
 
     public AdapterRecyclerTipoOcorrencia(List<TipoOcorrencia> tipoOcorrencia) {
         mList = tipoOcorrencia;
@@ -34,6 +35,7 @@ class AdapterRecyclerTipoOcorrencia extends RecyclerView.Adapter<AdapterRecycler
         if (pos == holder.getAdapterPosition()) {
             holder.lay.setBackgroundColor(Color.argb(255, 153, 153, 153));
             idTipo = mList.get(holder.getAdapterPosition()).getCodigo();
+            mTipo = mList.get(holder.getAdapterPosition()).getDescription();
         }else
             holder.lay.setBackgroundColor(Color.WHITE);
         holder.lay.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +50,8 @@ class AdapterRecyclerTipoOcorrencia extends RecyclerView.Adapter<AdapterRecycler
     public int getCodigoSelecionado(){
         return idTipo;
     }
+
+    String getTipoSelecionado(){return mTipo;}
 
     @Override
     public int getItemCount() {

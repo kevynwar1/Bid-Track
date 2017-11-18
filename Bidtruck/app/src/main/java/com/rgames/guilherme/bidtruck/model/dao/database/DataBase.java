@@ -81,9 +81,9 @@ public class DataBase extends SQLiteOpenHelper {
                 .toString());
 
         db.execSQL(new StringBuilder(CREATE).append(table.TB_TIPOCORRENCIA).append(" (")
-                .append(table.TB_TIPOCORRENCIA_COL_CODIGO).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append(table.TB_TIPOCORRENCIA_COL_CODIGO).append(" INTEGER UNIQUE NOT NULL, ")
                 .append(table.TB_TIPOCORRENCIA_COL_COD_EMPRESA).append(" INTEGER NOT NULL, ")
-                .append(table.TB_TIPOCORRENCIA_COL_COD_DESCRICAO).append(" TEXT NOT NULL, ")
+                .append(table.TB_TIPOCORRENCIA_COL_DESCRICAO).append(" TEXT NOT NULL, ")
                 .append(table.TB_TIPOCORRENCIA_COL_COD_SITUACAO).append(" CHAR); ")
                 .toString());
         //inserirStatusEntrega(preencheStatusEntrega());

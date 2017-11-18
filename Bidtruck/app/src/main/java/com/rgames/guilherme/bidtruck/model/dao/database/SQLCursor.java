@@ -39,11 +39,11 @@ class SQLCursor {
 
     public static TipoOcorrencia tipoOcorrencia(Cursor cursor, SQLTable table) {
         TipoOcorrencia tipoOcorrencia = new TipoOcorrencia();
-        tipoOcorrencia.setCodigo(cursor.getInt(cursor.getColumnIndex(table.TB_TIPOCORRENCIA_COL_COD_EMPRESA)));
+        tipoOcorrencia.setCodigo(cursor.getInt(cursor.getColumnIndex(table.TB_TIPOCORRENCIA_COL_CODIGO)));
         Empresa empresa = new Empresa();
         empresa.setCodigo(cursor.getInt(cursor.getColumnIndex(table.TB_TIPOCORRENCIA_COL_COD_EMPRESA)));
         tipoOcorrencia.setEmpresa(empresa);
-        tipoOcorrencia.setDescription(cursor.getString(cursor.getColumnIndex(table.TB_TIPOCORRENCIA_COL_COD_DESCRICAO)));
+        tipoOcorrencia.setDescription(cursor.getString(cursor.getColumnIndex(table.TB_TIPOCORRENCIA_COL_DESCRICAO)));
         tipoOcorrencia.setSituation((char) cursor.getInt(cursor.getColumnIndex(table.TB_TIPOCORRENCIA_COL_COD_SITUACAO)));
         return tipoOcorrencia;
     }

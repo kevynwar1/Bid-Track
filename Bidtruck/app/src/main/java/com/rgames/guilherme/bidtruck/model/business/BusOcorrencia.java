@@ -30,7 +30,7 @@ public class BusOcorrencia {
     }
 
     public List<Ocorrencia> select(int seq_entrega, int romaneio) throws EntregaNullException {
-        if (!HttpConnection.isConnected(mContext))
+        if (HttpConnection.isConnected(mContext))
             if (seq_entrega == 0 || romaneio == 0) {
                 throw new EntregaNullException();
             } else return httpOcorrencia.select(seq_entrega, romaneio);
@@ -57,7 +57,7 @@ public class BusOcorrencia {
     }
 
     public boolean insert(Ocorrencia ocorrencia, ArrayList<Image> fotos) {
-        if (!HttpConnection.isConnected(mContext)) {
+        if (HttpConnection.isConnected(mContext)) {
             ArrayList<String> fotoString = new ArrayList<>();
             for (Image img : fotos) {
                 fotoString.add(img.imagePath);
@@ -108,6 +108,10 @@ public class BusOcorrencia {
 
     public int deleteTipoOcorrencia(TipoOcorrencia tipoOcorrencia) {
         return daoOcorrencia.deleteTipoOcorrencia(tipoOcorrencia);
+    }
+
+    public int deleteTipoOcorrenciaTodos(){
+        return daoOcorrencia.deleteTipoOcorrenciaTodos();
     }
 
 }

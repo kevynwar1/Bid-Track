@@ -37,8 +37,9 @@ class SQLContentValues {
 
     static ContentValues tipoOcorrencia(TipoOcorrencia tipoOcorrencia, SQLTable table) {
         ContentValues contentValues = new ContentValues();
+        contentValues.put(table.TB_TIPOCORRENCIA_COL_CODIGO, tipoOcorrencia.getCodigo());
         contentValues.put(table.TB_TIPOCORRENCIA_COL_COD_EMPRESA, tipoOcorrencia.getEmpresa().getCodigo());
-        contentValues.put(table.TB_TIPOCORRENCIA_COL_COD_DESCRICAO, tipoOcorrencia.getDescription());
+        contentValues.put(table.TB_TIPOCORRENCIA_COL_DESCRICAO, tipoOcorrencia.getDescription());
         contentValues.put(table.TB_TIPOCORRENCIA_COL_COD_SITUACAO, (int) tipoOcorrencia.getSituation());
         return contentValues;
     }

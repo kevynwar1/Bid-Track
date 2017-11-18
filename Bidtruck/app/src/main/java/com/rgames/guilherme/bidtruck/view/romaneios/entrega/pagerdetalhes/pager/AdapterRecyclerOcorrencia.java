@@ -11,15 +11,11 @@ import com.rgames.guilherme.bidtruck.model.basic.Ocorrencia;
 
 import java.util.List;
 
-/**
- * Created by Guilherme on 05/09/2017.
- */
-
-public class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyclerOcorrencia.MyViewPager> {
+class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyclerOcorrencia.MyViewPager> {
 
     private List<Ocorrencia> mList;
 
-    public AdapterRecyclerOcorrencia(List<Ocorrencia> ocorrencias) {
+    AdapterRecyclerOcorrencia(List<Ocorrencia> ocorrencias) {
         mList = ocorrencias;
     }
 
@@ -31,7 +27,10 @@ public class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyc
     @Override
     public void onBindViewHolder(MyViewPager holder, int position) {
         holder.txtTipo.setText(String.valueOf(mList.get(position).getTipoOcorrencia().getDescription()));
-        holder.txtData.setText(String.valueOf(mList.get(position).getData()));
+        if (mList.get(holder.getAdapterPosition()).getData() == null)
+            holder.txtData.setText(String.valueOf("A data será atualizada com a sincronização."));
+        else
+            holder.txtData.setText(String.valueOf(mList.get(position).getData()));
         holder.txtDesc.setText(String.valueOf(mList.get(position).getDescricao()));
     }
 
@@ -40,11 +39,11 @@ public class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyc
         return mList.size();
     }
 
-    public class MyViewPager extends RecyclerView.ViewHolder {
+    class MyViewPager extends RecyclerView.ViewHolder {
 
-        public TextView txtData, txtDesc, txtTipo;
+        TextView txtData, txtDesc, txtTipo;
 
-        public MyViewPager(View itemView) {
+        MyViewPager(View itemView) {
             super(itemView);
             txtData = itemView.findViewById(R.id.txt_data);
             txtTipo = itemView.findViewById(R.id.txt_tipo);

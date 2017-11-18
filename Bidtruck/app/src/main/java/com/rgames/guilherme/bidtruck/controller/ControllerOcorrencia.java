@@ -60,4 +60,8 @@ public class ControllerOcorrencia {
     public int deleteTipoOcorrencia(TipoOcorrencia tipoOcorrencia) {
         return busOcorrencia.deleteTipoOcorrencia(tipoOcorrencia);
     }
+
+    public int deleteTipoOcorrenciaTodos() {
+        return busOcorrencia.deleteTipoOcorrenciaTodos();
+    }
 }
