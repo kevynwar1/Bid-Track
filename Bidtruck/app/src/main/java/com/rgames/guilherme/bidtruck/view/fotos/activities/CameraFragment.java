@@ -483,7 +483,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 dialog = ProgressDialog.show(getActivity(), "Aguarde", "Coletando imagens", true);
             }
 
