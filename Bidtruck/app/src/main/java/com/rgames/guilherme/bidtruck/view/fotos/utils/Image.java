@@ -7,11 +7,11 @@ import android.os.Parcelable;
 /**
  * Created by vansikrishna on 08/06/2016.
  */
-public class Image implements Parcelable{
+public class Image implements Parcelable {
 
     public long _id;
     public Uri uri;
-    public String imagePath;
+    private String imagePath;
     public boolean isPortraitImage;
 
     public Image(long _id, Uri uri, String imagePath, boolean isPortraitImage) {
@@ -52,4 +52,12 @@ public class Image implements Parcelable{
             return new Image[size];
         }
     };
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

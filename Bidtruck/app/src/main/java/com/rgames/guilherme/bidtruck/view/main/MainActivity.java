@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.main;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,8 @@ import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
 import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
 import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.w3c.dom.Text;
 
@@ -78,9 +83,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -211,8 +216,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
         Facade facade = new Facade(this);
-        ((TextView) header.findViewById(R.id.tvNomeMotorista)).setText(facade.isLogged().getNome());
+        ImageView ivEmpresa = (ImageView) header.findViewById(R.id.ivEmpresa2);
+        String urlimage = "http://coopera.pe.hu/assets/img/foto/" + mEmpresa.getFoto();
+        Context contextx = ivEmpresa.getContext();
+        Picasso.with(contextx).load(urlimage).into(ivEmpresa);
+
+
+        ((TextView) header.findViewById(R.id.tvMotorista2)).setText(facade.isLogged().getNome());
         if (mEmpresa != null)
-            ((TextView) header.findViewById(R.id.tvNomeEmpresa)).setText(mEmpresa.getNome_fantasia());
+            ((TextView) header.findViewById(R.id.tvEmpresa2)).setText(mEmpresa.getNome_fantasia());
     }
 }

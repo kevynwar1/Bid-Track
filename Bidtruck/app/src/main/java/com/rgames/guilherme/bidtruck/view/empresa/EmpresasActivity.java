@@ -68,7 +68,7 @@ public class EmpresasActivity extends AppCompatActivity {
             } else {
                 motorista = facade.isLogged();
             }
-            initList();
+           // initList();
             empresaList = (ListView) findViewById(R.id.lv_empresas);
             empresaList.setDivider(null);
             initList();
@@ -118,7 +118,7 @@ public class EmpresasActivity extends AppCompatActivity {
                             b.putParcelable(Empresa.PARCEL_EMPRESA, emp);
                             // b.putParcelable(Motorista.PARCEL_MOTORISTA, motorista);
                             startActivity(it.putExtras(b));
-                            finish();
+                            //finish();
                         } else if (empresas.size() == 0) {
                             Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa - ERR 1", Toast.LENGTH_LONG).show();
                             deslogar();
@@ -162,45 +162,20 @@ public class EmpresasActivity extends AppCompatActivity {
             myProgressBar.onFinish();
         }
     }
-
-    public void enviaMensagemParaOFragment(Empresa message, PassadorDeInformacao fragment) {
-        fragment.passaInformacao(message);
-    }
-
+    
     private void clickLista() {
         empresaList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Empresa empresa = (Empresa) adapterView.getAdapter().getItem(i);
                 Intent it = new Intent(EmpresasActivity.this, MainActivity.class);
-                //    RomaneioFragment frag = new RomaneioFragment();
-
-                //  enviaMensagemParaOFragment(empresa, frag);
-
                 Bundle b = new Bundle();
                 b.putParcelable(Empresa.PARCEL_EMPRESA, empresa);
-
-                // RomaneioFragment frag = new RomaneioFragment();
-                // frag.setArguments(b);
-
-
-                //    FragmentManager fragmentManager = getSupportFragmentManager();
-                //  fragmentManager.beginTransaction().replace(R.id.content,frag).commit();
-
                 startActivity(it.putExtras(b));
 
 
             }
         });
     }
-
-
-  /*  public static RomaneioFragment newInstance(Empresa empresa) {
-        RomaneioFragment frag = new RomaneioFragment();
-        Bundle b = new Bundle();
-        b.putParcelable(Empresa.PARCEL, empresa);
-        frag.setArguments(b);
-        return frag;
-    }*/
 
 }

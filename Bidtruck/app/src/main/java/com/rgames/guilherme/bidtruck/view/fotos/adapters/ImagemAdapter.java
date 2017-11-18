@@ -1,16 +1,12 @@
 package com.rgames.guilherme.bidtruck.view.fotos.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
@@ -38,9 +34,13 @@ public class ImagemAdapter extends RecyclerView.Adapter<ImagemAdapter.MyViewHold
     @Override
     public void onBindViewHolder(final ImagemAdapter.MyViewHolder holder, int position) {
         try {
-            final Image entity = mRomaneioList.get(position);
-            Bitmap bit = CarregadorDeFoto.carrega(entity.imagePath);
-            holder.imageView.setImageBitmap(bit);
+
+            for (int i = 0; i< mRomaneioList.size(); i++){
+                String entity = mRomaneioList.get(i).getImagePath();
+                Bitmap bit = CarregadorDeFoto.carrega(entity);
+                holder.imageView.setImageBitmap(bit);
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

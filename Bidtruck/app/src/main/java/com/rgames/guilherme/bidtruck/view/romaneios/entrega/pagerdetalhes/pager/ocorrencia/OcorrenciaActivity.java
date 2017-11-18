@@ -32,6 +32,7 @@ import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.view.fotos.adapters.CarregadorDeFoto;
 import com.rgames.guilherme.bidtruck.view.fotos.activities.MultiCameraActivity;
 import com.rgames.guilherme.bidtruck.view.fotos.adapters.GalleryImagesAdapter;
+import com.rgames.guilherme.bidtruck.view.fotos.adapters.ImagemAdapter;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Params;
@@ -232,7 +233,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
         Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
         Params params = new Params();
-        params.setCaptureLimit(5);
+        params.setCaptureLimit(10);
         intent.putExtra(Constants.KEY_PARAMS, params);
         startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
 
@@ -265,7 +266,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
 
             for (int i = 0; i < imagesList.size(); i++) {
-                String caminho = imagesList.get(i).imagePath;
+                String caminho = imagesList.get(i).getImagePath();
                 //Bitmap bit = BitmapFactory.decodeFile(caminho);
                 Bitmap bit = CarregadorDeFoto.carrega(caminho);
                 Bitmap bito = Bitmap.createScaledBitmap(bit, 300, 300, true);
@@ -304,49 +305,5 @@ public class OcorrenciaActivity extends AppCompatActivity {
             myProgressBar.onFinish();
         }
     }
-
-    /*private void initFoto() {
-        new AsyncTask<Void, Void, Boolean>() {
-            // ProgressDialog dialog;
-            String msg = "";
-
-            @Override
-            protected void onPreExecute() {
-                //    dialog = ProgressDialog.show(OcorrenciaActivity.this, "fotos", "Enviando Fotos", true);
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                try {
-                    if (listImagem != null) {
-                        return httpImagem.insert(cod_ocorrencia, listImagem);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    msg = e.getMessage();
-                }
-
-                return false;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                //   dialog.dismiss();
-                try {
-                    //  if (msg.equals(""))
-                    if (aBoolean == false) {
-                            Toast.makeText(OcorrenciaActivity.this, "Foto Enviada.", Toast.LENGTH_LONG).show();
-                            onBackPressed();
-                        Toast.makeText(OcorrenciaActivity.this, "Falha ao tentar cadastrar a foto.", Toast.LENGTH_LONG).show();
-                    } //else
-//                            Toast.makeText(OcorrenciaActivity.this, msg, Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }.execute();
-
-
-    }*/
 
 }
