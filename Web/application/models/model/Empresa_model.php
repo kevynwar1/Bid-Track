@@ -9,6 +9,30 @@ class Empresa_model extends CI_Model {
 		$this->load->model('basic/Empresa_basic');
 	}
 
+	public function cadastrar($empresa) {
+		$data = array(
+			'razao_social' 	=> $empresa->getRazaoSocial(),
+			'cnpj' 		 	=> $empresa->getCnpj(),
+			'logradouro' 	=> $empresa->getLogradouro(),
+			'numero' 		=> $empresa->getNumero(),
+			'nome_fantasia' => $empresa->getNomeFantasia(),
+			'complemento' 	=> $empresa->getComplemento(),
+			'bairro' 		=> $empresa->getBairro(),
+			'cidade' 		=> $empresa->getCidade(),
+			'uf' 			=> $empresa->getUf(),
+			'cep' 			=> $empresa->getCep(),
+			'latitude' 		=> $empresa->getLatitude(),
+			'longitude' 	=> $empresa->getLongitude(),
+			'situacao'		=> $empresa->getSituacao()
+		);
+
+		$this->db->insert($this->table, $data);
+		if(!$this->db->affected_rows()) {
+			return false;
+		}
+		return $this->db->insert_id();
+	}
+
 	public function listar() {
 		$this->db->select('*')->from($this->table);
 		$query = $this->db->get();
@@ -58,6 +82,7 @@ class Empresa_model extends CI_Model {
 			empresa.cep AS cep, 
 			empresa.latitude AS latitude, 
 			empresa.longitude AS longitude, 
+			empresa.foto AS foto, 
 			empresa.situacao AS situacao
 		')->from($this->table);
 		$this->db->join('empresa_motorista', 'empresa_motorista.cod_empresa = '.$this->table.'.codigo');
@@ -85,6 +110,7 @@ class Empresa_model extends CI_Model {
 				$empresa->setCep($row->cep);
 				$empresa->setLatitude($row->latitude);
 				$empresa->setLongitude($row->longitude);
+				$empresa->setFoto($row->foto);
 				$empresa->setSituacao($row->situacao);
 
 				$empresas[] = $empresa;

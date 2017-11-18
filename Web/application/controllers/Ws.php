@@ -5,6 +5,7 @@ require APPPATH.'libraries/REST_Controller.php';
 class Ws extends REST_Controller {
 	function __construct() {
 		parent::__construct();
+        date_default_timezone_set('America/Sao_Paulo');
 
 		$this->methods['entrega_get']['limit'] = 500;
 		$this->methods['entrega_motorista_get']['limit'] = 500;
@@ -262,11 +263,14 @@ class Ws extends REST_Controller {
     public function romaneio_status_get() {
         $status = $this->uri->segment(3);
         $romaneio = $this->uri->segment(4);
+        $motorista = $this->uri->segment(5);
 
         $this->load->model('model/Romaneio_model');
-        $romaneios = $this->Romaneio_model->romaneio_status($status, $romaneio);
+        $romaneios = $this->Romaneio_model->romaneio_status($status, $romaneio, $motorista);
 
         if($romaneios) {
+            $this->load->model('model/Motorista_model');
+            $this->Motorista_model->disponibilidade(TRUE, $motorista);
             $this->response($romaneios, REST_Controller::HTTP_OK);
         } else {
             $this->response([
@@ -367,7 +371,7 @@ class Ws extends REST_Controller {
 
     public function entrega_romaneio_get() {
         $this->load->model('model/Entrega_model');
-        $entregas = $this->Entrega_model->entrega_romaneio($this->uri->segment(3));
+        $entregas = $this->Entrega_model->entrega_romaneio($this->uri->segment(3), $this->uri->segment(4));
 
         if($entregas) {
             $this->response($entregas, REST_Controller::HTTP_OK);
@@ -544,7 +548,7 @@ class Ws extends REST_Controller {
     /* Usuário */
     public function usuario_get() {
         $this->load->model('model/Usuario_model');
-        $usuarios = $this->Usuario_model->listar();
+        $usuarios = $this->Usuario_model->listar(null, '1');
         $id = $this->get('id');
 
         if($id === NULL) {
@@ -601,11 +605,15 @@ class Ws extends REST_Controller {
         $ocorrencia->getRomaneio()->setCodigo($data['romaneio']);
         $ocorrencia->getTipoOcorrencia()->setCodigo($data['tipo_ocorrencia']);
         $ocorrencia->setDescricao($data['descricao']);
-        $ocorrencia->setData(date("Y-m-d"));
+        $ocorrencia->setFoto($data['foto']);
+        $ocorrencia->setData(date("Y-m-d G:i:s"));
 
         $result = $this->Ocorrencia_model->cadastrar($ocorrencia);
-        if($result) {
-            $this->response("201", REST_Controller::HTTP_OK);
+        if($result != FALSE) {
+            $this->response([
+                'status' => 201,
+                'id' => $result
+            ], REST_Controller::HTTP_OK);
         } else {
             $this->response([
                 'status' => FALSE,
@@ -673,7 +681,7 @@ class Ws extends REST_Controller {
 
     public function tipo_ocorrencia_get() {
         $this->load->model('model/TipoOcorrencia_model');
-        $tipo_ocorrencia = $this->TipoOcorrencia_model->listar($this->uri->segment(3));
+        $tipo_ocorrencia = $this->TipoOcorrencia_model->listar_mb($this->uri->segment(3));
 
         if($tipo_ocorrencia) {
             $this->response($tipo_ocorrencia, REST_Controller::HTTP_OK);

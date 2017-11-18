@@ -15,7 +15,7 @@
 	}
 
 	@page {
-		size: A4;
+		size: A3;
 		margin: 0;
 	}
 	@media print {
@@ -153,7 +153,7 @@
 </div>
 
 <script type="text/javascript">
-	/* function initMap() {
+	function initMap() {
 		var directionsService = new google.maps.DirectionsService;
 		var directionsDisplay = new google.maps.DirectionsRenderer;
 		directionsDisplay.setPanel(document.getElementById('trajeto'));
@@ -193,7 +193,7 @@
 				window.alert('Directions request failed due to ' + status);
 			}
 		});
-	} */
+	}
 
 	$(document).ready(function() {
 		window.print();

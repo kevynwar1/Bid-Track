@@ -9,18 +9,68 @@ class Usuario_model extends CI_Model {
 		$this->load->model('basic/Usuario_basic');
 	}
 
+	public function cadastrar($usuario) {
+		$data = array(
+			'cod_empresa' 	=> $usuario->getEmpresa()->getCodigo(),
+			'nome' 			=> $usuario->getNome(),
+			'email' 		=> $usuario->getEmail(),
+			'senha' 		=> $usuario->getSenha(),
+			'perfil' 		=> $usuario->getPerfil(),
+			'situacao'		=> $usuario->getSituacao()
+		);
+
+		$this->db->insert($this->table, $data);
+		if(!$this->db->affected_rows()) {
+			return false;
+		}
+		return true;
+	}
+
+	public function editar($usuario) {
+		$this->db->where($this->table.'.codigo', $this->session->userdata('codigo'));
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->update($this->table, $usuario);
+
+		return $this->db->affected_rows();
+	}
+
+	public function editar_usuario($codigo, $usuario) {
+		$this->db->where($this->table.'.codigo', $codigo);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->update($this->table, $usuario);
+
+		return $this->db->affected_rows();
+	}
+
+	public function senha($senha, $codigo) {
+		$this->db->set($this->table.'.senha', $senha);
+		$this->db->where($this->table.'.codigo', $codigo);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->update($this->table);
+
+		return $this->db->affected_rows();
+	}
+
 	public function login($usuario) {
 		$this->db->select('
-			usuario.codigo, 
-			usuario.cod_empresa, 
-			usuario.nome, 
-			usuario.telefone, 
-			usuario.email, 
-			usuario.senha,
-			usuario.perfil, 
-			usuario.situacao, 
-			empresa.cnpj, 
-			empresa.nome_fantasia
+			usuario.codigo AS codigo,
+			usuario.cod_empresa AS cod_empresa,
+			empresa.cnpj AS cnpj,
+			empresa.nome_fantasia AS nome_fantasia,
+			empresa.foto AS foto, 
+			usuario.nome AS nome,
+			usuario.email AS email,
+			usuario.cep AS cep,
+			usuario.logradouro AS logradouro,
+			usuario.numero AS numero,
+			usuario.complemento AS complemento,
+			usuario.bairro AS bairro,
+			usuario.cidade AS cidade,
+			usuario.uf AS uf,
+			usuario.telefone AS telefone,
+			usuario.senha AS senha,
+			usuario.perfil AS perfil,
+			usuario.situacao AS situacao
 		')->from($this->table);
 		$this->db->join('empresa', 'empresa.codigo = '.$this->table.'.cod_empresa');
 		$this->db->where($this->table.'.email', $usuario->getEmail());
@@ -36,8 +86,15 @@ class Usuario_model extends CI_Model {
 				$usuario->getEmpresa()->setCodigo($row->cod_empresa);
 				$usuario->getEmpresa()->setCnpj($row->cnpj);
 				$usuario->getEmpresa()->setNomeFantasia($row->nome_fantasia);
+				$usuario->getEmpresa()->setFoto($row->foto);
 				$usuario->setNome($row->nome);
 				$usuario->setEmail($row->email);
+				$usuario->setLogradouro($row->logradouro);
+				$usuario->setNumero($row->numero);
+				$usuario->setComplemento($row->complemento);
+				$usuario->setBairro($row->bairro);
+				$usuario->setCidade($row->cidade);
+				$usuario->setUf($row->uf);
 				$usuario->setTelefone($row->telefone);
 				$usuario->setSenha($row->senha);
 				$usuario->setPerfil($row->perfil);
@@ -50,9 +107,35 @@ class Usuario_model extends CI_Model {
 		}
 	}
 
-	public function listar() {
-		$this->db->select('*')->from($this->table);
+	public function listar($codigo = NULL, $situacao) {
+		$this->db->select('
+			usuario.codigo AS codigo,
+			usuario.cod_empresa AS cod_empresa,
+			empresa.cnpj AS cnpj,
+			empresa.nome_fantasia AS nome_fantasia,
+			usuario.nome AS nome,
+			usuario.email AS email,
+			usuario.cep AS cep,
+			usuario.logradouro AS logradouro,
+			usuario.numero AS numero,
+			usuario.complemento AS complemento,
+			usuario.bairro AS bairro,
+			usuario.cidade AS cidade,
+			usuario.uf AS uf,
+			usuario.telefone AS telefone,
+			usuario.senha AS senha,
+			usuario.perfil AS perfil,
+			usuario.situacao AS situacao
+		')->from($this->table);
 		$this->db->join('empresa', 'empresa.codigo = '.$this->table.'.cod_empresa');
+		if(!is_null($codigo)) {
+			$this->db->where($this->table.'.codigo', $codigo);
+		} else {
+			$this->db->where_not_in($this->table.'.codigo', $this->session->userdata('codigo')); // VERIFICAR
+		}
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where($this->table.'.situacao', $situacao);
+		$this->db->order_by($this->table.'.nome', 'ASC');
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0) {
@@ -67,6 +150,13 @@ class Usuario_model extends CI_Model {
 				$usuario->getEmpresa()->setNomeFantasia($row->nome_fantasia);
 				$usuario->setNome($row->nome);
 				$usuario->setEmail($row->email);
+				$usuario->setCep($row->cep);
+				$usuario->setLogradouro($row->logradouro);
+				$usuario->setNumero($row->numero);
+				$usuario->setComplemento($row->complemento);
+				$usuario->setBairro($row->bairro);
+				$usuario->setCidade($row->cidade);
+				$usuario->setUf($row->uf);
 				$usuario->setTelefone($row->telefone);
 				$usuario->setSenha($row->senha);
 				$usuario->setPerfil($row->perfil);
@@ -79,5 +169,14 @@ class Usuario_model extends CI_Model {
 		} else {
 			return false;
 		}
+	}
+
+	public function status($status, $codigo) {
+		$this->db->set($this->table.'.situacao', $status);
+		$this->db->where($this->table.'.codigo', $codigo);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->update($this->table);
+
+		return $this->db->affected_rows();
 	}
 }

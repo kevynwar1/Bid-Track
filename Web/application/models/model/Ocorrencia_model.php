@@ -16,14 +16,15 @@ class Ocorrencia_model extends CI_Model {
 			'cod_romaneio' 			=> $ocorrencia->getRomaneio()->getCodigo(),
 			'cod_tipo_ocorrencia'	=> $ocorrencia->getTipoOcorrencia()->getCodigo(),
 			'descricao'				=> $ocorrencia->getDescricao(),
-			'data'					=> $ocorrencia->getData()
+			'data'					=> $ocorrencia->getData(),
+			'foto'					=> $ocorrencia->getFoto()
 		);
 
 		$this->db->insert($this->table, $data);
 		if(!$this->db->affected_rows()) {
 			return false;
 		}
-		return true;
+		return $this->db->insert_id();
 	}
 
 	public function excluir($romaneio) { // Excluir todas Ocorrências de um Romaneio
@@ -43,9 +44,61 @@ class Ocorrencia_model extends CI_Model {
 
 	public function total() {
 		$this->db->select('*')->from($this->table);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
 		$query = $this->db->get();
 
 		return $query->num_rows();
+	}
+
+	public function listar($romaneio) {
+		$this->db->select('
+			ocorrencia.codigo AS codigo, 
+			ocorrencia.cod_empresa AS cod_empresa, 
+			empresa.razao_social AS razao_social, 
+			empresa.nome_fantasia AS nome_fantasia, 
+			ocorrencia.seq_entrega AS seq_entrega, 
+			lpad(ocorrencia.cod_romaneio, 4, 0) AS cod_romaneio, 
+			ocorrencia.cod_tipo_ocorrencia AS cod_tipo_ocorrencia, 
+			tipo_ocorrencia.descricao AS tip_descricao, 
+			ocorrencia.descricao AS descricao, 
+			ocorrencia.foto AS foto, 
+			ocorrencia.data AS data, 
+			ocorrencia.situacao AS situacao
+		')->from($this->table);
+		$this->db->join('empresa', 'empresa.codigo = '.$this->table.'.cod_empresa');
+		$this->db->join('romaneio', 'romaneio.codigo = '.$this->table.'.cod_romaneio');
+		$this->db->join('tipo_ocorrencia', 'tipo_ocorrencia.codigo = '.$this->table.'.cod_tipo_ocorrencia');
+		$this->db->where('ocorrencia.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where('romaneio.codigo', $romaneio);
+		$this->db->order_by("DATE(ocorrencia.data)", "ASC");
+		$query = $this->db->get();
+
+		if($query->num_rows() > 0) {
+			$result = $query->result();
+			$ocorrencias = array();
+			foreach($result as $row) {
+				$ocorrencia = new Ocorrencia_basic();
+
+				$ocorrencia->setCodigo($row->codigo);
+				$ocorrencia->getEmpresa()->setCodigo($row->cod_empresa);
+				$ocorrencia->getEmpresa()->setRazaoSocial($row->razao_social);
+				$ocorrencia->getEmpresa()->setNomeFantasia($row->nome_fantasia);
+				$ocorrencia->getEntrega()->setSeqEntrega($row->seq_entrega);
+				$ocorrencia->getRomaneio()->setCodigo($row->cod_romaneio);
+				$ocorrencia->getTipoOcorrencia()->setCodigo($row->cod_tipo_ocorrencia);
+				$ocorrencia->getTipoOcorrencia()->setDescricao($row->tip_descricao);
+				$ocorrencia->setDescricao($row->descricao);
+				$ocorrencia->setFoto($row->foto);
+				$ocorrencia->setData($row->data);
+				$ocorrencia->setSituacao($row->situacao);
+
+				$ocorrencias[] = $ocorrencia;
+			}
+
+			return $ocorrencias;
+		} else {
+			return false;
+		}
 	}
 
 	public function ocorrencia_entrega($entrega, $romaneio) {
@@ -59,7 +112,8 @@ class Ocorrencia_model extends CI_Model {
 			ocorrencia.cod_tipo_ocorrencia AS cod_tipo_ocorrencia, 
 			tipo_ocorrencia.descricao AS tip_descricao, 
 			ocorrencia.descricao AS descricao, 
-			ocorrencia.data AS data, 
+			ocorrencia.foto AS foto, 
+			DATE_FORMAT(ocorrencia.data, "%d/%m/%Y") AS data, 
 			ocorrencia.situacao AS situacao
 		')->from($this->table);
 		$this->db->join('empresa', 'empresa.codigo = '.$this->table.'.cod_empresa');
@@ -84,6 +138,7 @@ class Ocorrencia_model extends CI_Model {
 				$ocorrencia->getTipoOcorrencia()->setCodigo($row->cod_tipo_ocorrencia);
 				$ocorrencia->getTipoOcorrencia()->setDescricao($row->tip_descricao);
 				$ocorrencia->setDescricao($row->descricao);
+				$ocorrencia->setFoto($row->foto);
 				$ocorrencia->setData($row->data);
 				$ocorrencia->setSituacao($row->situacao);
 

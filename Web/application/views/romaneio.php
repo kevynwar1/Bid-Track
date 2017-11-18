@@ -1,4 +1,21 @@
 <link href="<?= base_url(); ?>assets/css/pop-up.css" rel="stylesheet" />
+<style type="text/css">
+	.btn-option {
+		border: none;
+		border-radius: 3px;
+		cursor: pointer;
+		color: #000;
+		box-shadow: none;
+	}
+
+	.btn-option:hover {
+		border: none;
+		border-radius: 3px;
+		cursor: pointer;
+		color: #000;
+		background: #CCC;
+	}
+</style>
 <script src="<?= base_url(); ?>assets/js/konami.min.js"></script>
 <script>
 $(document).on('keyup', Konami.code(function() {
@@ -6,7 +23,7 @@ $(document).on('keyup', Konami.code(function() {
 }));
 
 function exclusao(romaneio, motorista) {
-	$('.cd-popup').addClass('is-visible');
+	$('.excluir').addClass('is-visible');
 	$('.btn-confirm-yes').on('click', function(event){
 		event.preventDefault();
 		window.location.replace("<?= base_url() ?>romaneio/excluir/"+romaneio+"/"+motorista);
@@ -14,11 +31,74 @@ function exclusao(romaneio, motorista) {
 	});
 	$('.btn-confirm-no').on('click', function(event){
 		event.preventDefault();
-		$('.cd-popup').removeClass('is-visible');
+		$('.excluir').removeClass('is-visible');
 		return false;
 	});
-	$('.cd-popup').on('click', function(event){
-		if($(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup')) {
+	$('.excluir').on('click', function(event){
+		if($(event.target).is('.cd-popup-close') || $(event.target).is('.excluir')) {
+			event.preventDefault();
+			$(this).removeClass('is-visible');
+		}
+	});
+	return false;
+}
+
+function ofertar(romaneio) {
+	$('.ofertar').addClass('is-visible');
+	$('.btn-confirm-yes').on('click', function(event){
+		event.preventDefault();
+		window.location.replace("<?= base_url() ?>romaneio/ofertar/"+romaneio);
+		return true;
+	});
+	$('.btn-confirm-no').on('click', function(event){
+		event.preventDefault();
+		$('.ofertar').removeClass('is-visible');
+		return false;
+	});
+	$('.ofertar').on('click', function(event){
+		if($(event.target).is('.cd-popup-close') || $(event.target).is('.ofertar')) {
+			event.preventDefault();
+			$(this).removeClass('is-visible');
+		}
+	});
+	return false;
+}
+
+function cancelar_ofertar(romaneio) {
+	$('.cancelar-ofertar').addClass('is-visible');
+	$('.btn-confirm-yes').on('click', function(event){
+		event.preventDefault();
+		window.location.replace("<?= base_url() ?>romaneio/cancelar_ofertar/"+romaneio);
+		return true;
+	});
+	$('.btn-confirm-no').on('click', function(event){
+		event.preventDefault();
+		$('.cancelar-ofertar').removeClass('is-visible');
+		return false;
+	});
+	$('.cancelar-ofertar').on('click', function(event){
+		if($(event.target).is('.cd-popup-close') || $(event.target).is('.cancelar-ofertar')) {
+			event.preventDefault();
+			$(this).removeClass('is-visible');
+		}
+	});
+	return false;
+}
+
+function iniciar_viagem(romaneio) {
+	$('.iniciar').addClass('is-visible');
+	$('.btn-confirm-yes').on('click', function(event){
+		event.preventDefault();
+		window.location.replace("<?= base_url() ?>romaneio/iniciar/"+romaneio);
+		return true;
+	});
+	$('.btn-confirm-no').on('click', function(event){
+		event.preventDefault();
+		$('.iniciar').removeClass('is-visible');
+		return false;
+	});
+	$('.iniciar').on('click', function(event){
+		if($(event.target).is('.cd-popup-close') || $(event.target).is('.iniciar')) {
 			event.preventDefault();
 			$(this).removeClass('is-visible');
 		}
@@ -26,8 +106,8 @@ function exclusao(romaneio, motorista) {
 	return false;
 }
 </script>
-
-<div class="cd-popup" role="alert">
+<!-- Card Excluir -->
+<div class="cd-popup excluir" role="alert">
 	<div class="cd-popup-container">
 		<p><?= $this->session->userdata('nome') ?>, tem certeza que quer<br> excluir este Romaneio ?</p>
 		<ul class="cd-buttons">
@@ -38,6 +118,45 @@ function exclusao(romaneio, motorista) {
 	</div>
 </div>
 
+<!-- Card Ofertar -->
+<div class="cd-popup ofertar" role="alert">
+	<div class="cd-popup-container">
+		<p><small style="color: #999">Ao Ofertar o Romaneio, esse Romaneio ficará disponível para os motoristas autônomos da sua empresa, podendo assim, um deles aceitar a oferta e realizar as entregas.</small><br>
+		<br><?= $this->session->userdata('nome') ?>, tem certeza que quer<br> ofertar este Romaneio ?
+		</p>
+		<ul class="cd-buttons">
+			<li><a href="#" class="btn-confirm-yes">Sim</a></li>
+			<li><a href="#" class="btn-confirm-no">Não</a></li>
+		</ul>
+		<a href="#" class="cd-popup-close img-replace"></a>
+	</div>
+</div>
+
+<!-- Card Iniciar Viagem -->
+<div class="cd-popup iniciar" role="alert">
+	<div class="cd-popup-container">
+		<p><?= $this->session->userdata('nome') ?>, tem certeza que quer<br> iniciar a viagem deste Romaneio ?</p>
+		<ul class="cd-buttons">
+			<li><a href="#" class="btn-confirm-yes">Sim</a></li>
+			<li><a href="#" class="btn-confirm-no">Não</a></li>
+		</ul>
+		<a href="#" class="cd-popup-close img-replace"></a>
+	</div>
+</div>
+
+<!-- Card Cancelar Oferta -->
+<div class="cd-popup cancelar-ofertar" role="alert">
+	<div class="cd-popup-container">
+		<p><?= $this->session->userdata('nome') ?>, tem certeza que quer<br> cancelar o ofertar deste Romaneio ?</p>
+		<ul class="cd-buttons">
+			<li><a href="#" class="btn-confirm-yes">Sim</a></li>
+			<li><a href="#" class="btn-confirm-no">Não</a></li>
+		</ul>
+		<a href="#" class="cd-popup-close img-replace"></a>
+	</div>
+</div>
+
+<!-- Content -->
 <div class="content">
 	<div class="container-fluid">
 		<div class="row">
@@ -52,23 +171,33 @@ function exclusao(romaneio, motorista) {
 							<thead class="text-primary">
 								<th class="th-desc">
 									Romaneio
-									<i class="fa fa-sort" aria-hidden="true"></i>
+									<span style="opacity: 0.7;">
+										<i class="fa fa-sort" aria-hidden="true"></i>
+									</span>
 								</th>
 								<th class="th-desc">
 									Estabelecimento
-									<i class="fa fa-sort" aria-hidden="true"></i>
+									<span style="opacity: 0.7;">
+										<i class="fa fa-sort" aria-hidden="true"></i>
+									</span>
 								</th>
 								<th class="th-desc">
 									Transportador
-									<i class="fa fa-sort" aria-hidden="true"></i>
+									<span style="opacity: 0.7;">
+										<i class="fa fa-sort" aria-hidden="true"></i>
+									</span>
 								</th>
 								<th class="th-desc">
 									Motorista
-									<i class="fa fa-sort" aria-hidden="true"></i>
+									<span style="opacity: 0.7;">
+										<i class="fa fa-sort" aria-hidden="true"></i>
+									</span>
 								</th>
 								<th class="th-desc">
-									Data Criação
-									<i class="fa fa-sort" aria-hidden="true"></i>
+									Data
+									<span style="opacity: 0.7;">
+										<i class="fa fa-sort" aria-hidden="true"></i>
+									</span>
 								</th>
 								<th></th>
 								<th></th>
@@ -94,7 +223,7 @@ function exclusao(romaneio, motorista) {
 								<tr>
 									<td align="center"><?= $romaneio->codigo; ?></td>
 									<td>
-										<a href="<?= base_url().'home/mapa?endereco='.str_replace(" ", "+", $logradouro).','.$numero ?>" rel="tooltip" title="<?= $logradouro ?>, <?= $numero ?> — <?= $bairro ?>, <?= $cidade ?>" data-placement="right">
+										<a href="<?= base_url().'home/mapa?endereco='.str_replace(" ", "+", acentuacao($logradouro)).','.$numero.'-'.str_replace(" ", "+", acentuacao($bairro)); ?>" rel="tooltip" title="<?= $logradouro ?>, <?= $numero ?> — <?= $bairro ?>, <?= $cidade ?>" data-placement="right">
 											<?= $razao_social; ?> — <?= $bairro; ?>
 										</a>
 									</td>
@@ -111,13 +240,13 @@ function exclusao(romaneio, motorista) {
 									<td>
 										<?php
 											$color = NULL;
-											if($cod_status == 1) { // Liberado
+											if($cod_status == 5) { // Aceito
 												$color = "success";
 											} else if($cod_status == 2) { // Pendente
 												$color = "danger";
-											} else if($cod_status == 3) { // Em Processo
+											} else if($cod_status == 3 || $cod_status == 6) { // Em Processo ou Ofertado
 												$color = "warning";
-											} else if($cod_status == 5) { // Aceito
+											} else if($cod_status == 1) { // Liberado
 												$color = "primary";
 											}
 										?>
@@ -125,13 +254,26 @@ function exclusao(romaneio, motorista) {
 											<?= $status_romaneio; ?>
 										</span>
 									</td>
-									<td>
+									<td align="left">
 										<a href="<?= base_url().'romaneio/visualizar/'.$codigo ?>">
 											<button type="button" rel="tooltip" data-placement="left" title="Visualizar" class="btn-pattern">
 												<i class="fa fa-eye" aria-hidden="true"></i>
 											</button>
 										</a>
-										<?php if($cod_status != 3): ?>
+										<?php if($cod_status == 5): // Aceito ?>
+											<a href="<?= base_url().'romaneio/editar/'.$codigo ?>">
+												<button type="button" rel="tooltip" data-placement="left" title="Editar" class="btn-pattern">
+													<i class="fa fa-edit"></i>
+												</button>
+											</a>
+											<button class="btn-pattern" style="opacity:0" disabled><i class="fa fa-times"></i></button>
+											<a href="#">
+												<button type="button" rel="tooltip" class="btn-xs btn-option status" rel="tooltip" data-placement="left" title="Iniciar Romaneio" onclick="return iniciar_viagem('<?= $codigo ?>')">
+													Iniciar
+												</button>
+											</a>
+										<?php endif; ?>
+										<?php if($cod_status != 3 && $cod_status != 5): // Em Processo e Aceito ?>
 											<?php if($this->session->userdata('perfil') == 'A'): ?>
 												<a href="<?= base_url().'romaneio/editar/'.$codigo ?>">
 													<button type="button" rel="tooltip" data-placement="left" title="Editar" class="btn-pattern">
@@ -143,6 +285,25 @@ function exclusao(romaneio, motorista) {
 														<i class="fa fa-times"></i>
 													</button>
 												</a>
+												<?php if($cod_status == 1): // Liberado ?>
+													<button type="button" rel="tooltip" class="btn-xs btn-option status" rel="tooltip" data-placement="left" title="Iniciar Romaneio" onclick="return iniciar_viagem('<?= $codigo ?>')">
+														Iniciar
+													</button>
+												<?php endif; ?>
+												<?php if($cod_status == 2): // Pendente ?>
+													<a href="<?= base_url().'romaneio/ofertar/'.$codigo ?>">
+														<button type="button" rel="tooltip" data-placement="left" title="Ofertar Romaneio" class="btn-xs btn-option status"onclick="return ofertar('<?= $codigo ?>')">
+															Ofertar
+														</button>
+													</a>
+												<?php endif; ?>
+												<?php if($cod_status == 6): // Ofertado ?>
+													<a href="<?= base_url().'romaneio/cancelar_ofertar/'.$codigo ?>">
+														<button type="button" rel="tooltip" data-placement="left" title="Cancelar Ofertar Romaneio" class="btn-xs status" style="border:none; border-radius:3px; cursor:pointer; color:#000; box-shadow:none; background: #F9F9F9;" onclick="return cancelar_ofertar('<?= $codigo ?>')">
+															Cancelar
+														</button>
+													</a>
+												<?php endif; ?>
 											<?php endif; ?>
 										<?php endif; ?>
 									</td>
@@ -164,18 +325,22 @@ function exclusao(romaneio, motorista) {
 												if($this->uri->segment(2) == 's') {
 													echo count($romaneios).' Romaneio(s) — '.$this->input->get('filtro').': '.$this->input->get('procurar');
 												} else {
-													echo $total.' Romaneio(s) totais';
+													$count = ($total != FALSE)? $total : '0';
+													echo $count.' Romaneio(s) totais';
 												}
 											?>
 										</span>
 									</td>
-									<td colspan="3" align="left">
+									<td colspan="2" align="left">
 										<?= ($this->uri->segment(2) == 's') ? "<small class='desc'><a href='".base_url()."romaneio'>voltar</a></small> " : $pagination; ?>
 									</td>
-									<td colspan="2" align="right">
+									<td colspan="3" align="right">
 										<?php if($this->session->userdata('perfil') == 'A'): ?>
 											<a href="<?= base_url().'romaneio/add' ?>">
 												<button type="submit" class="btn btn-danger btn-simple btn-fill pull-right f12 upper">Adicionar</button>
+											</a>
+											<a href="<?= base_url().'romaneio/integracao' ?>">
+												<button type="submit" class="btn btn-danger btn-simple btn-fill pull-right f12 upper">Integração</button>
 											</a>
 										<?php endif; ?>
 									</td>
