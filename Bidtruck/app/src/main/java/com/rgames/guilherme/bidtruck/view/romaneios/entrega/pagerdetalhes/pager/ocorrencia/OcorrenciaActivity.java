@@ -29,8 +29,8 @@ import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.basic.TipoOcorrencia;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOcorrencia;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
-import com.rgames.guilherme.bidtruck.view.fotos.adapters.CarregadorDeFoto;
 import com.rgames.guilherme.bidtruck.view.fotos.activities.MultiCameraActivity;
+import com.rgames.guilherme.bidtruck.view.fotos.adapters.CarregadorDeFoto;
 import com.rgames.guilherme.bidtruck.view.fotos.adapters.GalleryImagesAdapter;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Constants;
 import com.rgames.guilherme.bidtruck.view.fotos.utils.Image;
@@ -235,7 +235,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
         Intent intent = new Intent(OcorrenciaActivity.this, MultiCameraActivity.class);
         Params params = new Params();
-        params.setCaptureLimit(5);
+        params.setCaptureLimit(10);
         intent.putExtra(Constants.KEY_PARAMS, params);
         startActivityForResult(intent, Constants.TYPE_MULTI_CAPTURE);
 
@@ -268,7 +268,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
 
             for (int i = 0; i < imagesList.size(); i++) {
-                String caminho = imagesList.get(i).imagePath;
+                String caminho = imagesList.get(i).getImagePath();
                 //Bitmap bit = BitmapFactory.decodeFile(caminho);
                 Bitmap bit = CarregadorDeFoto.carrega(caminho);
                 Bitmap bito = Bitmap.createScaledBitmap(bit, 300, 300, true);
@@ -367,5 +367,4 @@ public class OcorrenciaActivity extends AppCompatActivity {
 //
 //
 //    }*/
-
 }

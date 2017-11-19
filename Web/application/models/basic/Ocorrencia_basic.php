@@ -8,6 +8,7 @@ class Ocorrencia_basic extends CI_Model {
 	public $romaneio;
 	public $tipo_ocorrencia;
 	public $descricao;
+	public $foto;
 	public $data;
 	public $situacao;
 
@@ -41,6 +42,9 @@ class Ocorrencia_basic extends CI_Model {
 
 	public function getDescricao() { return $this->descricao; }
 	public function setDescricao($descricao) { $this->descricao = $descricao; }
+
+	public function getFoto() { return $this->foto; }
+	public function setFoto($foto) { $this->foto = $foto; }
 
 	public function getData() { return $this->data; }
 	public function setData($data) { $this->data = $data; }

@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
 import com.rgames.guilherme.bidtruck.model.repositors.EmpresaRep;
 import com.rgames.guilherme.bidtruck.view.empresa.EmpresaAdapter;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
 import java.util.List;
 
@@ -68,10 +70,12 @@ public class EmpresaCardStackFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Toast.makeText(getActivity(), "Estou no card empresa", Toast.LENGTH_LONG).show();
         facade = new Facade(getActivity());
         if (!CRIADO) {
             init();
         }
+
         super.onResume();
     }
 
@@ -86,9 +90,6 @@ public class EmpresaCardStackFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-       /*  if (!CRIADO) {
-           init();
-        }*/
 
     }
 
@@ -108,15 +109,15 @@ public class EmpresaCardStackFragment extends Fragment {
                 empresaList = (ListView) mView.findViewById(R.id.lv_empresas);
                 if (motorista.getCodigo() > 0) {
                     empresaList.setDivider(null);
-                    if(!facade.isConnected(getActivity())){
+                    if (!facade.isConnected(getActivity())) {
                         Empresa company = empresaRep.buscarEmpresa();
-                        if(company != null){
+                        if (company != null) {
                             Intent it = new Intent(getActivity(), MainActivity.class);
                             Bundle b = new Bundle();
                             b.putParcelable(Empresa.PARCEL_EMPRESA, company);
                             startActivity(it.putExtras(b));
                         }
-                    }else {
+                    } else {
                         initList();
                     }
                 } else
@@ -168,16 +169,17 @@ public class EmpresaCardStackFragment extends Fragment {
                             b.putParcelable(Empresa.PARCEL_EMPRESA, emp);
                             // b.putParcelable(Motorista.PARCEL_MOTORISTA, motorista);
                             startActivity(it.putExtras(b));
+                            getActivity().finish();
                         } else if (empresas.size() == 0) {
                             Toast.makeText(getActivity(), "Você não está vinculado em nenhuma empresa - ERR 1", Toast.LENGTH_LONG).show();
                             deslogar();
                         } else {
                             initView(empresas);
                         }
-                    } else {
-                        Toast.makeText(getActivity(), "Você não está vinculado em nenhuma empresa - ERR 2", Toast.LENGTH_LONG).show();
-                        deslogar();
-                    }
+                    }// else {
+                    // Toast.makeText(getActivity(), "Você não está vinculado em nenhuma empresa - ERR 2", Toast.LENGTH_LONG).show();
+                    // deslogar();
+                    //}
                 } catch (Exception e) {
                     e.printStackTrace();
                     deslogar();
@@ -196,7 +198,6 @@ public class EmpresaCardStackFragment extends Fragment {
 
     private void deslogar() {
         facade.setLogged(new Motorista(0, ""));
-//        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     private void initView(List<Empresa> empresas) throws Exception {
@@ -225,20 +226,8 @@ public class EmpresaCardStackFragment extends Fragment {
                 Empresa empresa = (Empresa) adapterView.getAdapter().getItem(i);
                 boolean ok = empresaRep.insertEmpresa(empresa);
                 Intent it = new Intent(getActivity(), MainActivity.class);
-                //    RomaneioFragment frag = new RomaneioFragment();
-
-                //  enviaMensagemParaOFragment(empresa, frag);
-
                 Bundle b = new Bundle();
                 b.putParcelable(Empresa.PARCEL_EMPRESA, empresa);
-
-                // RomaneioFragment frag = new RomaneioFragment();
-                // frag.setArguments(b);
-
-
-                //    FragmentManager fragmentManager = getSupportFragmentManager();
-                //  fragmentManager.beginTransaction().replace(R.id.content,frag).commit();
-
                 startActivity(it.putExtras(b));
             }
         });

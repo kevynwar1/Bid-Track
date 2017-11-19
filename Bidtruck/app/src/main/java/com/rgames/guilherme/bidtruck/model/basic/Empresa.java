@@ -11,6 +11,7 @@ public class Empresa extends Base implements Parcelable {
     private String razao_social;
     private String nome_fantasia;
     private String cnpj;
+    private String foto;
 
     public Empresa() {
     }
@@ -25,6 +26,7 @@ public class Empresa extends Base implements Parcelable {
         razao_social = in.readString();
         nome_fantasia = in.readString();
         cnpj = in.readString();
+        foto = in.readString();
     }
 
     public static final Creator<Empresa> CREATOR = new Creator<Empresa>() {
@@ -51,6 +53,7 @@ public class Empresa extends Base implements Parcelable {
         parcel.writeString(razao_social);
         parcel.writeString(nome_fantasia);
         parcel.writeString(cnpj);
+        parcel.writeString(foto);
     }
 
     public String getRazao_social() {
@@ -75,6 +78,14 @@ public class Empresa extends Base implements Parcelable {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
 

@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.main;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +11,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,14 +25,16 @@ import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
 import com.rgames.guilherme.bidtruck.view.oferta.Preferences;
-import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Empresa mEmpresa;
     private Preferences preferences;
+    private EntregaFragment entregaFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +60,14 @@ public class MainActivity extends AppCompatActivity
             ControllerLogin controllerLogin = new ControllerLogin(MainActivity.this);
             try {
                 controllerLogin.setIdEmpresa(mEmpresa);
-                getSupportFragmentManager().beginTransaction().add(R.id.content_main
-                        , RomaneioFragment.newInstance(mEmpresa)).commit();
-//                startActivity(new Intent(MainActivity.this, EntregaActivity.class));
+                //getSupportFragmentManager().beginTransaction().add(R.id.content_main, RomaneioFragment.newInstance(mEmpresa)).commit();
+
+                entregaFragment = new EntregaFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Empresa.PARCEL_EMPRESA, mEmpresa);
+                entregaFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().add(R.id.content_main, entregaFragment).commit();
+
             } catch (EmpresaNullException e) {
                 e.printStackTrace();
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -72,9 +80,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -126,7 +134,6 @@ public class MainActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -135,7 +142,10 @@ public class MainActivity extends AppCompatActivity
         onCloseDrawer();
         switch (item.getItemId()) {
             case R.id.nav_entrega:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, RomaneioFragment.newInstance(mEmpresa)).commit();
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, entregaFragment).commit();
                 return true;
             case R.id.nav_sync:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();
@@ -205,8 +215,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
         Facade facade = new Facade(this);
-        ((TextView) header.findViewById(R.id.tvNomeMotorista)).setText(facade.isLogged().getNome());
+        ImageView ivEmpresa = (ImageView) header.findViewById(R.id.ivEmpresa2);
+        String urlimage = "http://coopera.pe.hu/assets/img/foto/" + mEmpresa.getFoto();
+        Context contextx = ivEmpresa.getContext();
+        Picasso.with(contextx).load(urlimage).into(ivEmpresa);
+
+
+        ((TextView) header.findViewById(R.id.tvMotorista2)).setText(facade.isLogged().getNome());
         if (mEmpresa != null)
-            ((TextView) header.findViewById(R.id.tvNomeEmpresa)).setText(mEmpresa.getNome_fantasia());
+            ((TextView) header.findViewById(R.id.tvEmpresa2)).setText(mEmpresa.getNome_fantasia());
     }
 }

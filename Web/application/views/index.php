@@ -44,6 +44,7 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto|Work+Sans" rel="stylesheet">
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" rel="stylesheet">
+	<style type="text/css"> body { background: #F3F3F3 !important; } </style>
 </head>
 <body>
 	<script>
@@ -234,11 +235,11 @@
 								</div>
 							</div>
 						</div>
-						<div class="row">
+						<!-- div class="row">
 							<div class="col-md-12">
 								<label><?= $this->session->flashdata('error'); ?></label>
 							</div>
-						</div><br>
+						</div --><br>
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
@@ -252,11 +253,12 @@
 		</div>
 	</div>
 
-	<div class="ct-video" data-vide-bg="<?= base_url() ?>assets/video/bid_track" data-vide-options="position: 70%, muted: true"></div>
+	<div class="ct-linear"></div>
+	<div class="ct-video" data-vide-bg="<?= base_url() ?>assets/video/bid_track" data-vide-options="position:70%, muted:true"></div>
 	<header class="ct-home"></header>
-	<div class="ct-scroll animated fadeInDown" align="center">
+	<!-- div class="ct-scroll animated fadeInDown" align="center">
 		<img src="<?= base_url(); ?>assets/img/mouse.png" width="35">
-	</div>
+	</div -->
 	<nav class="ct-nav col-md-10 col-md-offset-1 animated fadeInDown">
 		<div class="row">
 			<div class="col-md-3 animated fadeInUp" align="center">
@@ -270,8 +272,10 @@
 				<span class="menu-item"><a href="#contato">Contato</a></span>
 			</div>
 			<div class="col-md-3 animated fadeInUp" align="center" style="padding-top: 14px;">
+				<span class="alert-login" style="font-family: Work Sans; color: #F00;">
+					<?= $this->session->flashdata('error'); ?>
+				</span>
 				<span class="menu-cadastrar"><a id="btEntrar">Entrar</a></span>
-
 				<span class="menu-cadastrar" style="display: none"><a id="btCadastrar">Cadastrar</a></span>
 				<!-- span class="menu-entrar"><a id="btEntrar">Entrar</a></span -->
 			</div>
@@ -334,7 +338,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="ct-phone animated fadeInUp">
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
@@ -369,7 +373,7 @@
 		</div>
 	</div>
 
-	<div class="bg-footer"></div>
+	<!-- div class="bg-footer"></div -->
 	<footer>
 		<div class="row">
 			<div class="ct-footer col-md-10 col-md-offset-1 animated fadeInUp" align="center">
@@ -404,6 +408,19 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			AppShowcase.init();
+
+			<?php if(!is_null($this->session->flashdata('error'))): ?>
+				$("#btEntrar").fadeOut("fast");
+				var loaded = false;
+				window.setTimeout(function(){
+					if(loaded == false) {
+						$(".alert-login").fadeOut("slow");
+						window.setTimeout(function(){ $("#btEntrar").fadeIn("slow"); }, 1000);
+					}
+				}, 5000);
+			<?php else: ?>
+				$(".alert-login").fadeOut("fast");
+			<?php endif; ?>
 
 			$('.ct-video').parallax("20%", 0.7);
 			$('[data-toggle="tooltip"]').tooltip();
@@ -479,6 +496,8 @@
 				modal_entrar.style.display = "none";
 			}
 		}
+
+		
 	</script>
 </body>
 </html>

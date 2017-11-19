@@ -8,11 +8,11 @@
 					</div>
 					<div class="card-content">
 						<p class="category">Entregas</p>
-						<h3 class="title">42/50<small></small></h3>
+						<h3 class="title"><?= $entrega ?><small></small></h3>
 					</div>
 					<div class="card-footer">
 						<div class="stats">
-							<i class="material-icons">date_range</i> Atualizado há 8 horas
+							<i class="material-icons">assessment</i> Entregas não finalizadas
 						</div>
 					</div>
 				</div>
@@ -25,7 +25,7 @@
 					</div>
 					<div class="card-content">
 						<p class="category">Faturamento</p>
-						<h3 class="title"><span id="valor"><?= $faturamento[0]->valor ?></span></h3>
+						<h3 class="title"><span id="valor"><?= ($faturamento[0]->valor != FALSE)? $faturamento[0]->valor:'0,00'; ?></span></h3>
 					</div>
 					<div class="card-footer">
 						<div class="stats">
@@ -53,7 +53,7 @@
 					</div>
 					<div class="card-content">
 						<p class="category">Seguidores</p>
-						<h3 class="title">247</h3>
+						<h3 class="title">705</h3>
 					</div>
 				</div>
 			</div>
@@ -67,11 +67,17 @@
 					</div>
 					<div class="card-content">
 						<h4 class="title">Entregas Diárias</h4>
-						<p class="category"><span class="text-success"><i class="fa fa-long-arrow-up"></i> 55%  </span> Aumento nas entregas de hoje.</p>
+						<?php if($entrega != '0'): ?>
+							<p class="category"><span class="text-success"><i class="fa fa-long-arrow-up"></i> 10%  </span> Aumento nas entregas de hoje.</p>
+						<?php else: ?>
+							<p class="category">
+								Dados ainda não disponíveis
+							</p>
+						<?php endif; ?>
 					</div>
 					<div class="card-footer">
 						<div class="stats">
-							<i class="material-icons">access_time</i> Atualizado há 4 minutos
+							<i class="material-icons">access_time</i> Atualizado
 						</div>
 					</div>
 				</div>

@@ -12,7 +12,7 @@ class Romaneio_basic extends CI_Model {
 	public $valor;
 	public $data_criacao;
 	public $data_finalizacao;
-	public $ofertar_viagem;
+	// public $ofertar_viagem;
 
 	function __construct() {
 		parent::__construct();
@@ -61,7 +61,7 @@ class Romaneio_basic extends CI_Model {
 	public function getDataFinalizacao() { return $this->data_finalizacao; }
 	public function setDataFinalizacao($data_finalizacao) { $this->data_finalizacao = $data_finalizacao; }
 
-	public function getOfertarViagem() { return $this->ofertar_viagem; }
-	public function setOfertarViagem($ofertar_viagem) { $this->ofertar_viagem = $ofertar_viagem; }
+	// public function getOfertarViagem() { return $this->ofertar_viagem; }
+	// public function setOfertarViagem($ofertar_viagem) { $this->ofertar_viagem = $ofertar_viagem; }
 }
 ?>

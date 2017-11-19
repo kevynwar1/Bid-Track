@@ -1,3 +1,23 @@
+.sidebar .user .photo,
+.bootstrap-navbar .user .photo {
+	width: 90px;
+	height: 90px;
+	overflow: hidden;
+	border-radius: 50%;
+	border: 4px solid rgba(255, 255, 255, 0.3);
+	margin: 0 auto;
+}
+.sidebar .user .photo img,
+.bootstrap-navbar .user .photo img {
+	width: 100%;
+}
+
+.fill {
+	color: #999;
+	padding: 15px;
+	text-align: center;
+}
+
 select {
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -26,13 +46,17 @@ select {
 
 .option { padding: 3px; }
 .option-undefined { padding: 3px; color: #999 !important; }
+.lm10 { margin-top: -10px; }
 .lm15 { margin-top: -15px; }
 .lm20 { margin-top: -20px; }
+.p10 { padding: 10px; }
+.p15 { padding: 15px; }
 .desc { color: rgb(154, 154, 154); text-transform: uppercase; }
 .th-desc { cursor: pointer; transition: 0.3s; }
 .f10 { font-size: 10px; }
 .f11 { font-size: 11px; }
 .f12 { font-size: 12px; }
+.f13 { font-size: 13px; }
 .upper { text-transform: uppercase; }
 .collapse-menu {
 	background: none !important;

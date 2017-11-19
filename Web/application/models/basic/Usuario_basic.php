@@ -7,6 +7,13 @@ class Usuario_basic extends CI_Model {
 	public $nome;
 	public $email;
 	public $telefone;
+	public $cep;
+	public $logradouro;
+	public $numero;
+	public $complemento;
+	public $bairro;
+	public $cidade;
+	public $uf;
 	public $senha;
 	public $perfil;
 	public $situacao;
@@ -29,6 +36,27 @@ class Usuario_basic extends CI_Model {
 
 	public function getEmail() { return $this->email; }
 	public function setEmail($email) { $this->email = $email; }
+
+	public function getLogradouro() { return $this->logradouro; }
+	public function setLogradouro($logradouro) { $this->logradouro = $logradouro; }
+
+	public function getNumero() { return $this->numero; }
+	public function setNumero($numero) { $this->numero = $numero; }
+
+	public function getComplemento() { return $this->complemento; }
+	public function setComplemento($complemento) { $this->complemento = $complemento; }
+
+	public function getBairro() { return $this->bairro; }
+	public function setBairro($bairro) { $this->bairro = $bairro; }
+
+	public function getCidade() { return $this->cidade; }
+	public function setCidade($cidade) { $this->cidade = $cidade; }
+
+	public function getUf() { return $this->uf; }
+	public function setUf($uf) { $this->uf = $uf; }
+
+	public function getCep() { return $this->cep; }
+	public function setCep($cep) { $this->cep = $cep; }
 
 	public function getTelefone() { return $this->telefone; }
 	public function setTelefone($telefone) { $this->telefone = $telefone; }

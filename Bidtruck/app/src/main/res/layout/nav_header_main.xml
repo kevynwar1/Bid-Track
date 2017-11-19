@@ -12,12 +12,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="@dimen/app_limit_icon"
-        android:layout_height="@dimen/app_limit_icon"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/icon_frete" />
 
     <TextView
         android:id="@+id/tvNomeMotorista"

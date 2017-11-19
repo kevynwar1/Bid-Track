@@ -1,10 +1,13 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -26,6 +29,7 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes_estudo);
+
         try {
             if (getIntent().getExtras() != null) {
                 mRomaneio = getIntent().getExtras().getParcelable(Romaneio.PARCEL);

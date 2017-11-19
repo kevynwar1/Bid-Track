@@ -1,3 +1,38 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+
+<style type="text/css">
+	.select2-container--default .select2-selection--single {
+		border-top: none !important;
+		border-left: none !important;
+		border-right: none !important;
+		border-bottom: 1px solid #D2D2D2 !important;
+		border-radius: 0 !important;
+		margin-top: 7px !important;
+		cursor: text !important;
+	}
+	
+	.select2-container--default .select2-selection--single .select2-selection__rendered {
+		color: #555 !important;
+		font-weight: 400 !important;
+		line-height: 22px !important;
+	}
+	.select2-container .select2-selection--single .select2-selection__rendered {
+		padding-left: 0 !important;
+		padding-bottom: 15px !important;
+	}
+	.select2-container--default.select2-container--disabled .select2-selection--single {
+		border-top: none !important;
+		border-left: none !important;
+		border-right: none !important;
+		background-color: #FFF !important;
+		border-bottom: 1px dotted #CCC !important;
+	}
+
+	b { display: none !important; }
+</style>
+
+<?php if($destinatario != FALSE && $estabelecimento != FALSE && $transportadora != FALSE && $motorista != FALSE && $tipoveiculo != FALSE): ?>
 <div class="content" style="width: 55%; float: left">
 	<div class="container-fluid">
 	<form action="<?= base_url().'romaneio/cadastrar' ?>" method="post">
@@ -19,7 +54,7 @@
 							<div class="col-md-7 lm15">
 								<div class="form-group label-floating">
 									<label class="control-label">Estabelecimento</label>
-									<select class="form-control estabelecimento" name="estabelecimento" ng-model="estabelecimento">
+									<select class="form-control estabelecimento js-data-example-ajax" name="estabelecimento" ng-model="estabelecimento">
 										<option value="" class="option_none" disabled selected></option>
 										<?php foreach($estabelecimento as $row): ?>
 											<option class="option" value="<?= $row->codigo ?>|<?= $row->logradouro.", ".$row->numero." - ".$row->bairro ?>" <?= (!is_null($this->session->flashdata('estabelecimento')) && $row->codigo == $this->session->flashdata('estabelecimento'))? 'selected' : ''; ?>>
@@ -57,13 +92,13 @@
 									<label class="control-label">Motorista</label>
 									<select class="form-control motorista" name="motorista" ng-model="motorista">
 										<option value="" class="option_none" disabled selected></option>
-										<option class="option-undefined undefined" style="display: none" value="0">Indefinido</option>
+										<option class="option-undefined undefined" style="display: none !important" value="0">Indefinido</option>
 										<?php
 											foreach($motorista as $row):
 												$nome = explode(" ", $row->nome);
 										?>
 											<option class="option" value="<?= $row->codigo ?>" <?= (!is_null($this->session->flashdata('motorista')) && $row->codigo == $this->session->flashdata('motorista'))? 'selected' : ''; ?>>
-												<?= $nome[0]." ".end($nome); ?>
+												<?= (count($nome) > 1)? $nome[0]." ".end($nome) : $nome[0]; ?>
 											</option>
 										<?php endforeach; ?>
 									</select>
@@ -72,7 +107,7 @@
 							<div class="col-md-4 lm15">
 								<div class="form-group label-floating">
 									<label class="control-label">Tipo do Veículo</label>
-									<select class="form-control" name="tipoveiculo" ng-model="tipoveiculo">
+									<select class="form-control tipoveiculo" name="tipoveiculo" ng-model="tipoveiculo">
 										<option value="" class="option_none" disabled selected></option>
 										<?php foreach($tipoveiculo as $row): ?>
 											<option class="option" value="<?= $row->codigo ?>" <?= (!is_null($this->session->flashdata('tipoveiculo')) && $row->codigo == $this->session->flashdata('tipoveiculo'))? 'selected' : ''; ?>>
@@ -100,7 +135,7 @@
 				<div class="card">
 					<div class="card-header" data-background-color="blue-center">
 						<h4 class="title">Entrega</h4>
-						<p class="category">Cadastre as Entrega do Romaneio {{codigo}}</p>
+						<p class="category">Cadastre a(s) Entrega(s) do Romaneio {{codigo}}</p>
 					</div>
 					<div class="card-content">
 						<div class="row">
@@ -168,8 +203,32 @@
 	</div>
 </div>
 <div id="map" style="width: 45%;"></div>
+<?php else: ?>
+	<div class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12" align="center">
+					<span style="font-size: 48px; font-family: arial;">
+						:(
+						<br><br>
+						<span style="font-size: 30px">Cadastre as Dependências</span>
+					</span>
+					<br><br>
 
-
+					Para realizar o Cadastro do Romaneio é necessário que<br> a sua Empresa tenha cadastrada as seguintes dependências: <br><br>
+						<table style="color: #999; text-transform: uppercase;" border="0">
+							<tr><td><?= ($destinatario == FALSE)? '• Destinatário<br>':''; ?></td></tr>
+							<tr><td><?= ($estabelecimento == FALSE)? '• Estabelecimento<br>':''; ?></td></tr>
+							<tr><td><?= ($motorista == FALSE)? '• Motorista<br>':''; ?></td></tr>
+							<tr><td><?= ($tipoveiculo == FALSE)? '• Tipo de Veículo<br>':''; ?></td></tr>
+							<tr><td><?= ($transportadora == FALSE)? '• Transportadora<br>':''; ?></td></tr>
+						</table>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
 <script type="text/javascript">
@@ -188,7 +247,7 @@
 						++count;
 						$(".btn-remove").hide();
 						var wrapper = document.querySelector('#card-entrega');
-						var html = '<div class="row" id="card-entrega'+count+'"><div class="col-md-12"><div class="card"><div class="card-header card-header-text" data-background-color="blue-center"><h4 class="card-title">Entrega '+count+'<span class="pull-right btn-remove btn-remove-'+count+'" onclick="remove('+count+')" rel="tooltip" title="Excluir"><i class="material-icons">delete</i></span></h4></div><div class="card-content"><div class="row"><div class="col-md-12 lm15"><input type="hidden" name="entrega'+count+'" value="entrega'+count+'"><div class="form-group label-floating"><label class="control-label">Destinatário</label><select class="form-control destinatario'+count+'" name="destinatario'+count+'" ng-disabled="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista" required><option value="" class="option_none" disabled selected></option><?php foreach($destinatario as $row): ?><option class="option" value="<?= $row->codigo ?>|<?= $row->logradouro.", ".$row->numero." - ".$row->bairro ?>"><?= $row->razao_social." — ".$row->bairro.", ".$row->cidade; ?></option><?php endforeach; ?></select></div></div></div><div class="row"><div class="col-md-3 lm15"><div class="form-group label-floating"><label class="control-label">Peso da Carga</label><input type="number" pattern="[0-9]+$" class="form-control peso_carga'+count+'" ng-model="peso_carga'+count+'" name="peso_carga'+count+'" required></div></div><div class="col-md-3 lm15"><div class="form-group label-floating"><label class="control-label">Medida</label><select class="form-control medida'+count+'" name="medida'+count+'" required><option value="" class="option_none" disabled selected></option><option value="kg">Quilograma</option><option value="t">Tonelada</option><option value="hg">Hectograma</option></select></div></div><div class="col-md-6 lm15"><div class="form-group label-floating"><label class="control-label">Nota Fiscal</label><input type="text" pattern="[0-9]+$" class="form-control nota_fiscal" name="nota_fiscal'+count+'" minlength="7" maxlength="7"></div></div></div></div></div></div></div>';
+						var html = '<div class="row" id="card-entrega'+count+'"><div class="col-md-12"><div class="card"><div class="card-header card-header-text" data-background-color="blue-center"><h4 class="card-title">Entrega '+count+'<span class="pull-right btn-remove btn-remove-'+count+'" onclick="remove('+count+')" rel="tooltip" title="Excluir"><i class="material-icons">delete</i></span></h4></div><div class="card-content"><div class="row"><div class="col-md-12 lm15"><input type="hidden" name="entrega'+count+'" value="entrega'+count+'"><div class="form-group label-floating"><label class="control-label">Destinatário</label><select class="form-control destinatario'+count+'" name="destinatario'+count+'" ng-disabled="!codigo || !estabelecimento || !transportadora || !tipoveiculo || !motorista" required><option value="" class="option_none" disabled selected></option><?php foreach($destinatario as $row): ?><option class="option" value="<?= $row->codigo ?>|<?= $row->logradouro.", ".$row->numero." - ".$row->bairro ?>"><?= $row->razao_social." — ".$row->bairro.", ".$row->cidade; ?></option><?php endforeach; ?></select></div></div></div><div class="row"><div class="col-md-3 lm15"><div class="form-group label-floating"><label class="control-label">Peso da Carga</label><input type="number" pattern="[0-9]+$" class="form-control peso_carga'+count+'" ng-model="peso_carga'+count+'" name="peso_carga'+count+'" required></div></div><div class="col-md-3 lm15"><div class="form-group label-floating"><label class="control-label">Medida</label><select class="form-control medida'+count+'" name="medida'+count+'" required><option value="kg" selected>Quilograma</option></select></div></div><div class="col-md-6 lm15"><div class="form-group label-floating"><label class="control-label">Nota Fiscal</label><input type="text" pattern="[0-9]+$" class="form-control nota_fiscal" name="nota_fiscal'+count+'" minlength="7" maxlength="7"></div></div></div></div></div></div></div>';
 
 						wrapper.insertAdjacentHTML('beforeend', html);
 						/*if(count == total) {
@@ -321,8 +380,12 @@
 			$(".undefined").css("display", "none");
 		}
 	});
-
+	
 	$(document).ready(function(){
 		$('#valor').mask('000.000.000.000.000,00', {reverse: true});
+		$('.estabelecimento').select2({ placeholder: "Estabelecimento", maximumInputLength: 7 });
+		$('.transportadora').select2({ placeholder: "Transportadora", maximumInputLength: 7 });
+		$('.motorista').select2({ placeholder: "Motorista", maximumInputLength: 7 });
+		$('.tipoveiculo').select2({ placeholder: "Tipo Veículo", maximumInputLength: 7 });
 	});
 </script>

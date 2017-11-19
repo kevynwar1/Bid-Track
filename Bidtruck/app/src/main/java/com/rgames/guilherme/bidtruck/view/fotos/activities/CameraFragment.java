@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.view.fotos.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -202,7 +203,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
 
     private void showPreviewImage() {
         Picasso.with(getActivity())
-                .load(new File(selectedImages.get(selectedImages.size() - 1).imagePath))
+                .load(new File(selectedImages.get(selectedImages.size() - 1).getImagePath()))
                 .placeholder(R.drawable.imagem_processada)
                 .error(R.drawable.imagem_indisponivel)
                 .into(previewImageView);
@@ -290,14 +291,14 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             toggleFlashState();
         } else if (view.equals(doneButton)) {
             if (selectedImages.size() > 0)
-                 collectAllPaths();
-               // coletaImagem();
+                // collectAllPaths();
+                coletaImagem();
             else
                 setEmptyResult();
         } else if (view.equals(doneAllButton)) {
             if (selectedImages.size() > 0)
-                 collectAllPaths();
-                //coletaImagem();
+                //  collectAllPaths();
+                coletaImagem();
             else
                 setEmptyResult();
         } else if (view.equals(retakeButton)) {
@@ -469,12 +470,13 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-      private void collectAllPaths() {
-          Intent intent = new Intent();
-          intent.putParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST, selectedImages);
-          setIntentResult(intent);
-      }
-   /* private void coletaImagem() {
+    private void collectAllPaths() {
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra(Constants.KEY_BUNDLE_LIST, selectedImages);
+        setIntentResult(intent);
+    }
+
+    private void coletaImagem() {
         new AsyncTask<Void, Void, Void>() {
             ProgressDialog dialog;
 
@@ -498,7 +500,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
                 super.onPostExecute(aVoid);
             }
         }.execute();
-    }*/
+    }
 
     private void initPreview(int width, int height) {
         if (camera != null && previewHolder.getSurface() != null) {

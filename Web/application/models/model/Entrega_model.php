@@ -26,6 +26,16 @@ class Entrega_model extends CI_Model {
 		return true;
 	}
 
+	public function total() {
+		$this->db->select('*')->from($this->table);
+		$this->db->join('romaneio', 'romaneio.codigo = '.$this->table.'.cod_romaneio');
+		$this->db->where('romaneio.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where_not_in($this->table.'.cod_status_entrega', 4); // Finalizado
+		$query = $this->db->get();
+
+		return $query->num_rows();
+	}
+
 	public function excluir($romaneio) { // Excluir todas entrega(s) do Romaneio
 		$this->db->where($this->table.'.cod_romaneio', $romaneio->codigo);
 		$this->db->delete($this->table);
@@ -62,6 +72,21 @@ class Entrega_model extends CI_Model {
 			return false;
 		} else {
 			return true;
+		}
+	}
+
+	public function primeira_entrega($romaneio) {
+		$this->db->select("
+			MIN(".$this->table.".seq_entrega) as primeira_entrega, 
+			".$this->table.".cod_status_entrega
+		")->from($this->table);
+		$this->db->where($this->table.'.cod_romaneio', $romaneio);
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1) {
+			return $query->result();
+		} else {
+			return false;
 		}
 	}
 
@@ -174,7 +199,7 @@ class Entrega_model extends CI_Model {
 		}
 	}
 
-	public function entrega_romaneio($motorista) {
+	public function entrega_romaneio($romaneio, $motorista) {
 		$this->db->select('
 			lpad(entrega.cod_romaneio, 4, 0) AS cod_romaneio, 
 			romaneio.cod_status_romaneio AS cod_status_romaneio, 
@@ -185,10 +210,14 @@ class Entrega_model extends CI_Model {
 			entrega.seq_entrega AS seq_entrega, 
 			entrega.nota_fiscal AS nota_fiscal, 
 			entrega.peso_carga AS peso_carga, 
+			destinatario.codigo AS cod_destinatario, 
+			destinatario.cnpj_cpf AS cnpj_cpf, 
 			destinatario.razao_social AS razao_social, 
 			destinatario.nome_fantasia AS nome_fantasia, 
+			destinatario.email AS email, 
 			destinatario.telefone AS telefone, 
 			destinatario.logradouro AS logradouro, 
+			destinatario.complemento AS complemento,  
 			destinatario.numero AS numero, 
 			destinatario.bairro AS bairro, 
 			destinatario.cidade AS cidade,
@@ -208,8 +237,13 @@ class Entrega_model extends CI_Model {
 		$this->db->join('destinatario', 'destinatario.codigo = '.$this->table.'.cod_destinatario');
 		$this->db->join('motorista', 'motorista.codigo = romaneio.cod_motorista', 'left');
 		$this->db->join('status_entrega', 'status_entrega.codigo = '.$this->table.'.cod_status_entrega');
+		$this->db->where('romaneio.codigo', $romaneio);
 		$this->db->where('romaneio.cod_motorista', $motorista);
+		/*
 		$this->db->where('romaneio.cod_status_romaneio', '1');
+		$this->db->or_where('romaneio.cod_status_romaneio', '2');
+		$this->db->or_where('romaneio.cod_status_romaneio', '3');
+		*/
 		$this->db->order_by($this->table.'.seq_entrega', 'ASC');
 		$query = $this->db->get();
 
@@ -222,10 +256,14 @@ class Entrega_model extends CI_Model {
 				$entrega->setSeqEntrega($row->seq_entrega);
 				$entrega->setNotaFiscal($row->nota_fiscal);
 				$entrega->setPesoCarga($row->peso_carga);
+				$entrega->getDestinatario()->setCodigo($row->cod_destinatario);
+				$entrega->getDestinatario()->setCnpjCpf($row->cnpj_cpf);
 				$entrega->getDestinatario()->setRazaoSocial($row->razao_social);
+				$entrega->getDestinatario()->setEmail($row->email);
 				$entrega->getDestinatario()->setNomeFantasia($row->nome_fantasia);
 				$entrega->getDestinatario()->setTelefone($row->telefone);
 				$entrega->getDestinatario()->setLogradouro($row->logradouro);
+				$entrega->getDestinatario()->setComplemento($row->complemento);
 				$entrega->getDestinatario()->setNumero($row->numero);
 				$entrega->getDestinatario()->setBairro($row->bairro);
 				$entrega->getDestinatario()->setCidade($row->cidade);
