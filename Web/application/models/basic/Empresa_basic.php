@@ -15,6 +15,7 @@ class Empresa_basic extends CI_Model {
 	public $cep;
 	public $latitude;
 	public $longitude;
+	public $foto;
 	public $situacao;
 	
 	public function getCodigo() { return $this->codigo; }
@@ -55,6 +56,9 @@ class Empresa_basic extends CI_Model {
 
 	public function getLongitude() { return $this->longitude; }
 	public function setLongitude($longitude) { $this->longitude = $longitude; }
+
+	public function getFoto() { return $this->foto; }
+	public function setFoto($foto) { $this->foto = $foto; }
 
 	public function getSituacao() { return $this->situacao; }
 	public function setSituacao($situacao) { $this->situacao = $situacao; }

@@ -5,7 +5,7 @@
 	height: 100%;
 	width: 100%;
 	z-index: 999999;
-	background-color: rgba(94, 110, 141, 0.7);
+	background-color: rgba(0,0,0, 0.7);
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
@@ -72,7 +72,7 @@
 }
 
 .cd-popup-container .cd-buttons li:first-child a {
-	background: #fc7169;
+	background: #f44336;
 	border-radius: 0 0 0 .25em;
 }
 

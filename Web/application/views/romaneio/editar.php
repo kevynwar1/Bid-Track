@@ -12,6 +12,25 @@
 	.panel-group .panel .panel-heading { cursor: grab; }
 	.panel-group .panel .panel-heading h2 { cursor: grab; }
 	.panel-group .panel .panel-heading:hover .seq-icon { color: #999; }
+	#ocorrencias img {
+		width: 147px !important;
+		transition: 0.3s;
+		border: 4px solid #FFF;
+		box-shadow: 0 10px 10px rgba(0,0,0, 0.2);
+		margin: 3px;
+		/*-webkit-transform:rotate(90deg);
+		-moz-transform:rotate(90deg);
+		-o-transform: rotate(90deg);*/
+	}
+
+	#ocorrencias img:hover {
+		-o-transform: scale(1.07, 1.07);
+		-ms-transform: scale(1.07, 1.07);
+		-moz-transform: scale(1.07, 1.07);
+		-webkit-transform: scale(1.07, 1.07);
+		transform: scale(1.07, 1.07);
+		box-shadow: 0 5px 10px rgba(0,0,0, 0.5);
+	}
 </style>
 <link href="<?= base_url(); ?>assets/css/pop-up.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -45,11 +64,43 @@ function exclusao(entrega, romaneio) {
 	});
 	return false;
 }
+
+function ofertar(romaneio) {
+	$('.ofertar').addClass('is-visible');
+	$('.btn-confirm-yes').on('click', function(event){
+		event.preventDefault();
+		window.location.replace("<?= base_url() ?>romaneio/ofertar/"+romaneio);
+		return true;
+	});
+	$('.btn-confirm-no').on('click', function(event){
+		event.preventDefault();
+		$('.ofertar').removeClass('is-visible');
+		return false;
+	});
+	$('.ofertar').on('click', function(event){
+		if($(event.target).is('.cd-popup-close') || $(event.target).is('.ofertar')) {
+			event.preventDefault();
+			$(this).removeClass('is-visible');
+		}
+	});
+	return false;
+}
 </script>
 
-<div class="cd-popup" role="alert">
+<div class="cd-popup excluir" role="alert">
 	<div class="cd-popup-container">
 		<p><?= $this->session->userdata('nome') ?>, tem certeza que quer<br> excluir esta Entrega ?</p>
+		<ul class="cd-buttons">
+			<li><a href="#" class="btn-confirm-yes">Sim</a></li>
+			<li><a href="#" class="btn-confirm-no">Não</a></li>
+		</ul>
+		<a href="#" class="cd-popup-close img-replace"></a>
+	</div>
+</div>
+
+<div class="cd-popup ofertar" role="alert">
+	<div class="cd-popup-container">
+		<p><?= $this->session->userdata('nome') ?>, tem certeza que quer<br> ofertar este Romaneio ?</p>
 		<ul class="cd-buttons">
 			<li><a href="#" class="btn-confirm-yes">Sim</a></li>
 			<li><a href="#" class="btn-confirm-no">Não</a></li>
@@ -79,16 +130,25 @@ function exclusao(entrega, romaneio) {
                                             <div class="ripple-container"></div>
                                         </a>
                                     </li>
+									<?php if($ocorrencia != FALSE): ?>
+									<li>
+										<a data-toggle="tab" href="#ocorrencias" aria-expanded="true">
+											<i class="material-icons">info_outline</i> Ocorrências
+											<div class="ripple-container"></div>
+										</a>
+									</li>
+									<?php endif; ?>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="card-content">
+                    <div class="card-content card-content-ocorrencia">
                         <div class="tab-content">
                             <div class="tab-pane <?= (!is_null($this->session->flashdata('entrega')))? '' : 'active' ?>" id="profile">
                         		<form action="<?= base_url().'romaneio/editar' ?>" method="post">
                     			<input type="hidden" name="codigo" value="<?= $romaneio[0]->codigo; ?>">
                     			<input type="hidden" name="codigo_motorista" value="<?= $romaneio[0]->motorista->codigo; ?>">
+                    			<input type="hidden" name="status_romaneio" value="<?= $romaneio[0]->status_romaneio->codigo ?>">
                             	<div class="row">
 									<div class="col-md-2 lm15">
 										<div class="form-group label-floating">
@@ -99,7 +159,7 @@ function exclusao(entrega, romaneio) {
 									<div class="col-md-7 lm15">
 										<div class="form-group label-floating">
 											<label class="control-label">Estabelecimento</label>
-											<select class="form-control estabelecimento" name="estabelecimento">
+											<select class="form-control estabelecimento" name="estabelecimento" <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 												<?php foreach($estabelecimento as $row): ?>
 													<option class="option" value="<?= $row->codigo ?>|<?= $row->logradouro.", ".$row->numero." - ".$row->bairro ?>" <?= ($row->codigo == $romaneio[0]->estabelecimento->codigo) ? 'selected' : '' ?>>
 														<?= $row->razao_social." — ".$row->bairro; ?>
@@ -111,7 +171,7 @@ function exclusao(entrega, romaneio) {
 									<div class="col-md-3 lm15">
 										<div class="form-group label-floating">
 											<label class="control-label">Preço</label>
-											<input type="text" id="valor" class="form-control" name="valor" autocomplete="off" value="<?= $romaneio[0]->valor ?>">
+											<input type="text" id="valor" class="form-control" name="valor" autocomplete="off" value="<?= $romaneio[0]->valor ?>" <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 										</div>
 									</div>
 								</div>
@@ -119,7 +179,7 @@ function exclusao(entrega, romaneio) {
 									<div class="col-md-4 lm15">
 										<div class="form-group">
 											<label>Transportadora</label>
-											<select class="form-control transportadora" name="transportadora">
+											<select class="form-control transportadora" name="transportadora" <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 												<option class="option-undefined" value="0" <?= ($romaneio[0]->estabelecimento->codigo == NULL) ? 'selected' : '' ?>>Estabelecimento</option>
 												<?php foreach($transportadora as $row): ?>
 													<option class="option" value="<?= $row->codigo ?>" <?= ($row->codigo == $romaneio[0]->transportadora->codigo) ? 'selected' : '' ?>>
@@ -132,7 +192,7 @@ function exclusao(entrega, romaneio) {
 									<div class="col-md-4 lm15">
 										<div class="form-group">
 											<label>Motorista</label>
-											<select class="form-control motorista" name="motorista">
+											<select class="form-control motorista" name="motorista" <?= ($romaneio[0]->status_romaneio->codigo == 6)? 'disabled' : ''; ?> <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 												<option class="option-undefined undefined" value="0" <?= ($romaneio[0]->motorista->codigo == NULL) ? 'selected' : '' ?>>Indefinido</option>
 												<?php if(!is_null($romaneio[0]->motorista->codigo)): ?>
 													<optgroup label="Atual">
@@ -162,7 +222,7 @@ function exclusao(entrega, romaneio) {
 									<div class="col-md-4 lm15">
 										<div class="form-group">
 											<label>Tipo do Veículo</label>
-											<select class="form-control" name="tipoveiculo">
+											<select class="form-control" name="tipoveiculo" <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 												<?php foreach($tipoveiculo as $row): ?>
 													<option class="option" value="<?= $row->codigo ?>" <?= ($row->codigo == $romaneio[0]->tipo_veiculo->codigo) ? 'selected' : '' ?>>
 														<?= $row->descricao; ?>
@@ -175,11 +235,17 @@ function exclusao(entrega, romaneio) {
 								<div class="row">
 									<div class="col-md-12">
 										<a href="<?= base_url().'romaneio/imprimir/'.$romaneio[0]->codigo ?>">
-										<span type="submit" class="btn btn-danger btn-simple btn-fill pull-left f12 upper">
-											Imprimir
-										</span>
+											<span type="submit" class="btn <?= ($romaneio[0]->status_romaneio->codigo == 5)? '':'btn-simple' ?> btn-danger btn-fill pull-left f12 upper">
+												Imprimir
+											</span>
 										</a>
-										<button type="submit" name="editar" class="btn btn-danger btn-fill pull-right f12 upper">Salvar</button>
+										<?php if($romaneio[0]->status_romaneio->codigo != 5) { ?>
+											<button type="submit" name="editar" class="btn btn-danger btn-fill pull-right f12 upper">Salvar</button>
+										<?php } else if($romaneio[0]->status_romaneio->codigo == 5) { ?>
+											<span class="btn btn-danger btn-simple upper pull-right" style="cursor: default;">
+												Só é possível editar a Nota Fiscal da(s) entrega(s).
+											</span>
+										<?php } ?>
 									</div>
 								</div>
                             	</form>
@@ -197,6 +263,12 @@ function exclusao(entrega, romaneio) {
 									?>
 									<input type="hidden" name="i-<?= $i ?>" value="<?= $i; ?>">
 									<input type="hidden" name="seq-entrega-<?= $i; ?>" value="<?= $row->seq_entrega; ?>">
+
+						<?php if($romaneio[0]->status_romaneio->codigo == 5): ?>
+							<input type="hidden" name="destinatario-<?= $i; ?>" value="<?= $row->destinatario->codigo ?>">
+							<input type="hidden" name="peso_carga-<?= $i; ?>" value="<?= $row->peso_carga; ?>">
+						<?php endif; ?>
+
 									<div aria-multiselectable="true" class="panel-group" id="set_<?= $i; ?>" role="tablist"><!-- id="accordion"   invés de   id="set_<?= $i; ?>" -->
 										<div class="panel panel-default">
 											<div class="panel-heading" id="headingOne" role="tab" >
@@ -222,7 +294,7 @@ function exclusao(entrega, romaneio) {
 														<div class="col-md-12 lm15">
 															<div class="form-group">
 																<label>Destinatário <?= $i; ?> <!-- ?= $row->seq_entrega; ? --></label>
-																<select class="form-control" name="destinatario-<?= $i; ?>">
+																<select class="form-control" name="destinatario-<?= $i; ?>" <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 																	<?php foreach($destinatario as $raw): ?>
 																		<option class="option" value="<?= $row->destinatario->codigo ?>" <?= ($row->destinatario->codigo == $raw->codigo)? 'selected' : '' ?>><?= $raw->razao_social." — ".$raw->bairro.", ".$raw->cidade; ?></option>
 																	<?php endforeach; ?>
@@ -235,13 +307,13 @@ function exclusao(entrega, romaneio) {
 														<div class="col-md-3 lm15">
 															<div class="form-group">
 																<label>Peso da Carga</label>
-																<input type="number" min="1" pattern="[0-9]+$" name="peso_carga-<?= $i; ?>" value="<?= $peso_carga[0]; ?>" class="form-control" autocomplete="off">
+																<input type="number" min="1" pattern="[0-9]+$" name="peso_carga-<?= $i; ?>" value="<?= $peso_carga[0]; ?>" class="form-control" autocomplete="off" <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 															</div>
 														</div>
 														<div class="col-md-3 lm15">
 															<div class="form-group">
 																<label>Medida</label>
-																<select class="form-control" name="medida-<?= $i; ?>">
+																<select class="form-control" name="medida-<?= $i; ?>" <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 																	<option class="option" value="kg" selected>Quilograma</option>
 																</select>
 															</div>
@@ -286,9 +358,11 @@ function exclusao(entrega, romaneio) {
 								</div>
 								<div class="row btn-footer">
 									<div class="col-md-12">
-										<span class="btn btn-danger btn-round btn-fab btn-simple btn-add pull-right f12 upper pull-left" rel="tooltip" title="Adicionar" data-placement="right">
-											<i class="material-icons" style="font-size: 25px;">add</i>
-										</span>
+										<?php if($romaneio[0]->status_romaneio->codigo != 5): ?>
+											<span class="btn btn-danger btn-round btn-fab btn-simple btn-add pull-right f12 upper pull-left" rel="tooltip" title="Adicionar" data-placement="right">
+												<i class="material-icons" style="font-size: 25px;">add</i>
+											</span>
+										<?php endif; ?>
 										<button type="submit" name="editar" class="btn btn-danger btn-fill btn-salvar pull-right f12 upper">Salvar</button>
 									</div>
 								</div>
@@ -353,6 +427,58 @@ function exclusao(entrega, romaneio) {
 									</form>
 								</div>
 							</div>
+							<?php if($ocorrencia != FALSE): ?>
+							<div class="tab-pane" id="ocorrencias">
+								<?php
+									$item = 0;
+									foreach($ocorrencia as $row):
+										++$item;
+										$foto = explode(",", str_replace("[", "", str_replace("]", "", $row->foto)));
+								?>
+									<div aria-multiselectable="true" class="panel-group" id="set_<?= $i; ?>" role="tablist">
+										<div class="panel panel-default">
+											<div class="panel-heading" id="headingOne" role="tab" >
+												<a aria-controls="collapseOne" aria-expanded="true" data-parent="#accordion" data-toggle="collapse" href="#c_<?= $item; ?>" role="button" class="">
+													<h2 class="panel-title">
+														<?= $row->tipo_ocorrencia->descricao; ?>
+														<span class="pull-right">
+															<span class="seq">
+																<?php
+																	$data = explode(" ", $row->data);
+																	$dia = explode("-", $data[0]);
+																	$horario = explode(":", $data[1]);
+																?>
+
+																<?= $dia[2]."/".$dia[1]; ?>
+																<?= (date("Y-m-d")==$data[0])? 'Hoje' : diasemana($data[0], 'curto'); ?> ás 
+																<?= $horario[0].":".$horario[1]."h"; ?>
+															</span>
+														</span>
+													</h2>
+												</a>
+											</div>
+											<div aria-labelledby="headingOne" class="panel-collapse collapse" id="c_<?= $item; ?>" role="tabpanel" aria-expanded="true" style="">
+												<div class="panel-body">
+													<div class="row">
+														<div class="col-md-12">
+															<h4 class="gray upper f12">Descrição</h4>
+															<p>
+																<?= ($row->descricao != '')? $row->descricao : 'Não há descrição.'; ?>
+															</p>
+															<h4 class="gray upper f12"><?= (count($foto) >= 2)? 'Fotos':'Foto'; ?></h4>
+															<?php for($i = 0; $i < count($foto); $i++): ?>
+																<img src="data:image/jpg;base64,<?= $foto[$i] ?>" rel="tooltip">
+															<?php endfor; ?>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+											<!-- img width="150" src="data:image/jpg;base64,<?= $foto[$i] ?>" rel="tooltip" style="border-radius: 10px; padding: 5px;" class="ocorrencia" -->
+								<?php endforeach; ?>
+							</div>
+							<?php endif; ?>
                         </div>
                     </div>
                 </div>

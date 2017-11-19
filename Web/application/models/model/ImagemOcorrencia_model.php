@@ -21,5 +21,34 @@ class ImagemOcorrencia_model extends CI_Model {
 		}
 		return true;
 	}
+
+	public function listar() {
+		$this->db->select('
+			imagem_ocorrencia.codigo AS codigo, 
+			imagem_ocorrencia.cod_ocorrencia AS cod_ocorrencia, 
+			imagem_ocorrencia.foto AS foto
+		')->from($this->table);
+		$this->db->join('ocorrencia', 'ocorrencia.codigo = '.$this->table.'.cod_ocorrencia');
+		$this->db->where('ocorrencia.cod_empresa', $this->session->userdata('empresa'));
+		$query = $this->db->get();
+
+		if($query->num_rows() > 0) {
+			$result = $query->result();
+			$img_ocorrencias = array();
+			foreach($result as $row) {
+				$img_ocorrencia = new ImagemOcorrencia_basic();
+
+				$img_ocorrencia->setCodigo($row->codigo);
+				$img_ocorrencia->getOcorrencia()->setCodigo($row->cod_ocorrencia);
+				$img_ocorrencia->setFoto($row->foto);
+
+				$img_ocorrencias[] = $img_ocorrencia;
+			}
+
+			return $img_ocorrencias;
+		} else {
+			return false;
+		}
+	}
 }
 ?>

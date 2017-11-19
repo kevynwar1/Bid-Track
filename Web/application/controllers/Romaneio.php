@@ -9,6 +9,7 @@ class Romaneio extends CI_Controller {
 
 		$this->load->model('basic/Entrega_basic');
 		$this->load->model('model/Entrega_model');
+		
 		date_default_timezone_set('America/Sao_Paulo');
 		setlocale(LC_ALL, 'pt_BR');
 	}
@@ -36,8 +37,8 @@ class Romaneio extends CI_Controller {
 
 		$data['middle'] = 'romaneio';
 		$data['pagination'] = $this->pagination->create_links();
-		$data['romaneios'] = $this->Romaneio_model->listar($config['per_page'], $offset);
 		$data['total'] = $this->Romaneio_model->total();
+		$data['romaneios'] = $this->Romaneio_model->listar($config['per_page'], $offset);
 		$this->load->view('pattern/layout', $data);
 	}
 
@@ -49,7 +50,7 @@ class Romaneio extends CI_Controller {
 
 		$romaneio = new Romaneio_basic();
 		$romaneio->setCodigo(strip_tags(trim($this->input->post('codigo'))));
-		$romaneio->getEmpresa()->setCodigo("1");
+		$romaneio->getEmpresa()->setCodigo($this->session->userdata('empresa'));
 		$romaneio->getEstabelecimento()->setCodigo(strip_tags(trim($estabelecimento[0])));
 		$romaneio->getTipoVeiculo()->setCodigo(strip_tags(trim($this->input->post('tipoveiculo'))));
 		$romaneio->setValor($valor);
@@ -59,17 +60,21 @@ class Romaneio extends CI_Controller {
 			$romaneio->getTransportadora()->setCodigo(strip_tags(trim($this->input->post('transportadora'))));
 			$romaneio->getMotorista()->setCodigo(strip_tags(trim($this->input->post('motorista'))));
 			$romaneio->getStatusRomaneio()->setCodigo("1"); // Liberado
-			$romaneio->setOfertarViagem("0"); // Não Ofertar
+			// $romaneio->setOfertarViagem("0"); // Não Ofertar
 		} else if($this->input->post('transportadora') == "0" && $this->input->post('motorista') == "0") {
 			$romaneio->getTransportadora()->setCodigo(NULL);
 			$romaneio->getMotorista()->setCodigo(NULL);
 			$romaneio->getStatusRomaneio()->setCodigo("2"); // Pendente
-			$romaneio->setOfertarViagem("0"); // Não Ofertar
+			// $romaneio->setOfertarViagem("1"); // Ofertar
 		} else if($this->input->post('transportadora') == "0" && $this->input->post('motorista') != "0") {
 			$romaneio->getTransportadora()->setCodigo(NULL);
 			$romaneio->getMotorista()->setCodigo(strip_tags(trim($this->input->post('motorista'))));
 			$romaneio->getStatusRomaneio()->setCodigo("1"); // Liberado
-			$romaneio->setOfertarViagem("1"); // Ofertar
+			// $romaneio->setOfertarViagem("0"); // Não Ofertar
+		} else if($this->input->post('motorista') == "0") {
+			$romaneio->getMotorista()->setCodigo(NULL);
+			$romaneio->getStatusRomaneio()->setCodigo("2"); // Pendente
+			// $romaneio->setOfertarViagem("1"); // Ofertar
 		}
 
 		if($this->Romaneio_model->verificar_romaneio($romaneio->getCodigo())) {
@@ -157,8 +162,12 @@ class Romaneio extends CI_Controller {
 	}
 
 	public function visualizar() {
-		$data['romaneio'] = $this->Romaneio_model->consultar_romaneio($this->uri->segment(3));
+		$this->load->model('model/Ocorrencia_model');
+		
+		$data['ocorrencia'] = $this->Ocorrencia_model->listar($this->uri->segment(3));
 		$data['entrega'] = $this->Entrega_model->listar($this->uri->segment(3));
+		$data['romaneio'] = $this->Romaneio_model->consultar_romaneio($this->uri->segment(3));
+		$data['total_romaneio'] = $this->Romaneio_model->total();
 		$data['middle'] = 'romaneio/visualizar';
 		$this->load->view('pattern/layout', $data);
 	}
@@ -169,11 +178,20 @@ class Romaneio extends CI_Controller {
 			$valor = strip_tags(trim(str_replace(".", "", $this->input->post('valor'))));
 			$valor = str_replace(",", ".", $valor);
 
+			$cod_status_romaneio = 0;
+			if($this->input->post('status_romaneio') == "6") {
+				$cod_status_romaneio = 6;
+			} else if($this->input->post('motorista') != "0") {
+				$cod_status_romaneio = 1;
+			} else {
+				$cod_status_romaneio = 2;
+			}
+
 			$estabelecimento = explode("|", $this->input->post('estabelecimento'));
 			$motorista = $this->input->post('codigo_motorista');
 			$data = array(
 				'codigo' => strip_tags(trim($this->input->post('codigo'))),
-				'cod_status_romaneio' => (($this->input->post('motorista') != "0")? "1" : "2" ),
+				'cod_status_romaneio' => $cod_status_romaneio,
 				'cod_estabelecimento' => strip_tags(trim($estabelecimento[0])),
 				'cod_tipo_veiculo' => strip_tags(trim($this->input->post('tipoveiculo'))),
 				'cod_transportadora' => strip_tags(trim($this->input->post('transportadora'))),
@@ -204,15 +222,17 @@ class Romaneio extends CI_Controller {
 				$this->load->model('model/Motorista_model');
 				$this->load->model('model/Transportadora_model');
 				$this->load->model('model/TipoVeiculo_model');
+				$this->load->model('model/Ocorrencia_model');
 
 				$data['destinatario'] = $this->Destinatario_model->listar();
 				$data['entrega'] = $this->Entrega_model->listar($this->uri->segment(3));
 				$data['estabelecimento'] = $this->Estabelecimento_model->listar();
 				$data['motorista'] = $this->Motorista_model->listar($this->uri->segment(3));
 				$data['motorista_disponivel'] = $this->Motorista_model->motorista_disponivel();
-				$data['transportadora'] = $this->Transportadora_model->listar();
 				$data['tipoveiculo'] = $this->TipoVeiculo_model->listar();
+				$data['transportadora'] = $this->Transportadora_model->listar();
 				$data['romaneio'] = $this->Romaneio_model->consultar_romaneio($this->uri->segment(3));
+				$data['ocorrencia'] = $this->Ocorrencia_model->listar($this->uri->segment(3));
 				$data['middle'] = 'romaneio/editar';
 				$this->load->view('pattern/layout', $data);
 			} else {
@@ -258,7 +278,7 @@ class Romaneio extends CI_Controller {
 		$arquivo = $_FILES['arquivo'];
 		$configuracao = array(
 			'upload_path' => './assets/romaneios/',
-			'allowed_types' => 'txt|csv',
+			'allowed_types' => 'txt',
 			'file_name' => $nome.'.csv',
 			'max_size' => '5000'
 		);
@@ -286,15 +306,23 @@ class Romaneio extends CI_Controller {
 		if($this->validar_romaneio($romaneio) != FALSE && $this->validar_entrega($entrega) != FALSE) {
 			$data['entrega'] = $this->validar_entrega($entrega);
 			$data['romaneio'] = $this->validar_romaneio($romaneio);
-			$data['middle'] = 'romaneio/integracao';
-			$this->load->view('pattern/layout', $data);
+			
+			$peso_total = $data['romaneio'][5]->peso;
+			$peso_entregas = end($data['entrega']);
+			if($this->validar_carga($peso_total, $peso_entregas[3])) {
+				$data['middle'] = 'romaneio/integracao';
+				$this->load->view('pattern/layout', $data);
+			} else {
+				redirect(base_url().'romaneio/integracao');
+			}
 		} else {
-			$this->session->set_flashdata('error', 'Ocorreu um erro, ao integrar o Romaneio.');
 			redirect(base_url().'romaneio/integracao');
 		}
 	}
 
 	private function validar_romaneio($romaneio) {
+		$this->load->model('model/Integracao_model');
+
 		for($i = 0; $i < count($romaneio); $i++) {
 			$romaneio[$i] = strip_tags(trim($romaneio[$i]));
 		}
@@ -303,32 +331,97 @@ class Romaneio extends CI_Controller {
 			if($romaneio[0] == 0000 || strlen($romaneio[0]) != 4 || !is_numeric($romaneio[0])) { // Cód. do Romaneio
 				$this->session->set_flashdata('error', 'Desculpe, Código do Romaneio inválido.');
 				return false;
-			} else if($this->Romaneio_model->verificar_romaneio($romaneio[0])) {
+			} else if($this->Romaneio_model->verificar_romaneio($romaneio[0]) == FALSE) { // Existir Cód. Romaneio
 				$this->session->set_flashdata('error', 'Romaneio já cadastrado, tente outro Código.');
 				return false;
+			} else if(cnpj(trim($romaneio[1])) == FALSE) { // Verificar CNPJ do Estabelecimento
+				$this->session->set_flashdata('error', 'Desculpe, CNPJ do Estabelecimento está inválido.');
+				return false;
+			} else if($this->Integracao_model->verificar_estabelecimento($romaneio[1])) { // Inexistir Estabelecimento
+				$this->session->set_flashdata('error', 'Estabelecimento do Romaneio não cadastrado.');
+				return false;
+			} else if(!is_numeric($romaneio[2])) { // Verificar se Valor é numérico
+				$this->session->set_flashdata('error', 'Desculpe, Valor do Romaneio inválido.');
+				return false;
+			} else if(cnpj(trim($romaneio[3])) == FALSE) { // Verificar CNPJ da Transportadora
+				$this->session->set_flashdata('error', 'Desculpe, CNPJ da Transportadora está inválido.');
+				return false;
+			} else if($this->Integracao_model->verificar_transportadora($romaneio[3])) { // Inexistir Transportadora
+				$this->session->set_flashdata('error', 'Transportadora do Romaneio não cadastrado.');
+				return false;
+			} else if(cpf(trim($romaneio[4])) == FALSE) { // Verificar CPF do Motorista
+				$this->session->set_flashdata('error', 'Desculpe, CPF do Motorista está inválido.');
+				return false;
+			} else if($this->Integracao_model->verificar_motorista($romaneio[4])) { // Inexistir Motorista
+				$this->session->set_flashdata('error', 'Motorista do Romaneio não cadastrado.');
+				return false;
+			} else if($this->Integracao_model->verificar_motorista_disponibilidade($romaneio[4]) == FALSE) {
+				$this->session->set_flashdata('error', 'Motorista do Romaneio não está Disponível.');
+				return false;
+			} else if(strlen($romaneio[5]) < 4) { // Tipo de Veículo, minímo de 4 caracteres 
+				$this->session->set_flashdata('error', 'Preencha o Tipo do Veículo com mais de 4 caracteres.');
+				return false;
+			} else if($this->Integracao_model->verificar_tipoveiculo($romaneio[5])) { // Inexistir Tipo de Veículo
+				$this->session->set_flashdata('error', 'Tipo de Veículo do Romaneio não cadastrado.');
+				return false;
+			} else {
+				$romaneio[1] = $this->Integracao_model->estabelecimento($romaneio[1]);
+				$romaneio[3] = (trim($romaneio[3]) == 0)? NULL : $this->Integracao_model->transportadora($romaneio[3]);
+				$romaneio[4] = (trim($romaneio[4]) == 0)? NULL : $this->Integracao_model->motorista($romaneio[4]);
+				$romaneio[5] = $this->Integracao_model->tipo_veiculo($romaneio[5]);
+				
+				return $romaneio;
 			}
-
-			$this->load->model('model/Integracao_model');
-
-			$romaneio[1] = $this->Integracao_model->estabelecimento($romaneio[1]);
-			$romaneio[3] = $this->Integracao_model->transportadora($romaneio[3]);
-			$romaneio[4] = $this->Integracao_model->motorista($romaneio[4]);
-			$romaneio[5] = $this->Integracao_model->tipo_veiculo($romaneio[5]);
 		} else {
-			$this->session->set_flashdata('error', 'Desculpe, dados do Romaneio incompleto(s).');
+			$this->session->set_flashdata('error', 'Dados da Importação incompleto(s)/incorreto(s).');
 			return false;
 		}
-
-		return $romaneio;
 	}
 
 	private function validar_entrega($entrega) {
+		$this->load->model('model/Entrega_model');
 
-		$this->load->model('model/Integracao_model');
+		$peso_total = 0; // Peso Total da Carga
+		for($i = 0; $i < count($entrega); $i++) {
+			if(count($entrega[$i]) == 2 || count($entrega[$i]) == 3) {
+				if(cnpj(trim($entrega[$i][0])) == FALSE ) { // Verificar CNPJ do Destinatário
+					$this->session->set_flashdata('error', 'Desculpe, CNPJ da Destinatário '.++$i.' está inválido.');
+					return false;
+				} else if($this->Integracao_model->verificar_destinatario($entrega[$i][0])) { // Inexistir Destinatário
+					$this->session->set_flashdata('error', 'Destinatário da Entrega '.++$i.' não cadastrado.');
+					return false;
+				} else if(!is_numeric($entrega[$i][1])) {
+					$this->session->set_flashdata('error', 'Peso da Carga da Entrega '.++$i.' está invalido.');
+					return false;
+				} else if($this->Entrega_model->verificar_notafiscal($entrega[$i][2]) == FALSE) { // Existir NFS
+					$this->session->set_flashdata('error', 'Nota Fiscal da Entrega '.++$i.' já cadastrada.');
+					return false;
+				} else if(strlen(trim($entrega[$i][2])) != 7 && !is_numeric($entrega[$i][2])) { // Tamanho NFS
+					$this->session->set_flashdata('error', 'Nota Fiscal da Entrega '.++$i.' está inválido.');
+					return false;
+				} else {
+					$this->load->model('model/Integracao_model');
 
-		$entrega[0] = $this->Integracao_model->destinatario($entrega[0]);
+					$entrega[$i][0] = $this->Integracao_model->destinatario($entrega[$i][0]);
+					$peso_total += $entrega[$i][1];
+					$entrega[$i][3] = $peso_total;
+				}
+			} else {
+				$this->session->set_flashdata('error', 'Dados da Entrega '.++$i.' incompleto(s)/incorreto(s).');
+				return false;
+			}
+		}
 
 		return $entrega;
+	}
+
+	private function validar_carga($peso_total, $peso_carga) {
+		if($peso_total > $peso_carga) {
+			return true;
+		} else {
+			$this->session->set_flashdata('error', 'Peso da Carga ultrapassou os limites do veículo.');
+			return false;
+		}
 	}
 
 	public function imprimir() {
@@ -342,5 +435,48 @@ class Romaneio extends CI_Controller {
 		$romaneio = $this->input->post('codigo');
 
 		echo json_encode($this->Romaneio_model->verificar_romaneio($romaneio));
+	}
+
+	public function iniciar() { // Iniciar Viagem
+		$this->load->model('model/Entrega_model');
+		$romaneio = $this->uri->segment(3);
+		$entrega = $this->Entrega_model->primeira_entrega($romaneio);
+		if($entrega[0]->cod_status_entrega == 1) { // Liberado
+			$result = $this->Romaneio_model->status('3', $romaneio);
+			if($result == 1) {
+				$this->Entrega_model->entrega_status(3, $entrega[0]->primeira_entrega, $romaneio); // Em Viagem
+				$this->session->set_flashdata('success', 'Transporte do Romaneio '.$romaneio.' iniciado com Sucesso.');
+			} else {
+				$this->session->set_flashdata('error', 'Ocorreu um erro, ao Iniciar o Romaneio '.$romaneio.'.');
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Desculpe, Romaneio '.$romaneio.' contém entrega(s) Pendente(s).');
+		}
+
+		redirect(base_url().'romaneio');
+	}
+
+	public function ofertar() {
+		$romaneio = $this->uri->segment(3);
+		$result = $this->Romaneio_model->status('6', $romaneio);
+		if($result == 1) {
+			$this->session->set_flashdata('success', 'Romaneio '.$romaneio.', Ofertado com Sucesso.');
+		} else {
+			$this->session->set_flashdata('error', 'Ocorreu um erro, ao ofertar o Romaneio '.$romaneio.'.');
+		}
+
+		redirect(base_url().'romaneio');
+	}
+
+	public function cancelar_ofertar() {
+		$romaneio = $this->uri->segment(3);
+		$result = $this->Romaneio_model->status('2', $romaneio);
+		if($result == 1) {
+			$this->session->set_flashdata('success', 'Ofertar Romaneio, cancelado com Sucesso.');
+		} else {
+			$this->session->set_flashdata('error', 'Ocorreu um erro, ao cancelar o ofertar do Romaneio '.$romaneio.'.');
+		}
+
+		redirect(base_url().'romaneio');
 	}
 }

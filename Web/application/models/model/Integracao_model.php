@@ -51,6 +51,19 @@ class Integracao_model extends CI_Model {
 		}
 	}
 
+	public function verificar_estabelecimento($estabelecimento) {
+		$this->db->select('estabelecimento.codigo')->from('estabelecimento');
+		$this->db->where('estabelecimento.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where('estabelecimento.cnpj', $estabelecimento);
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	public function transportadora($cnpj) {
 		$this->db->select('
 			transportadora.codigo AS codigo, 
@@ -97,6 +110,23 @@ class Integracao_model extends CI_Model {
 			return $transportadora;
 		} else {
 			return false;
+		}
+	}
+
+	public function verificar_transportadora($transportadora) {
+		if($transportadora == 0) {
+			return false;
+		} else {
+			$this->db->select('transportadora.codigo')->from('transportadora');
+			$this->db->where('transportadora.cod_empresa', $this->session->userdata('empresa'));
+			$this->db->where('transportadora.cnpj', $transportadora);
+			$query = $this->db->get();
+
+			if($query->num_rows() >= 1) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 	}
 
@@ -156,6 +186,43 @@ class Integracao_model extends CI_Model {
 		}
 	}
 
+	public function verificar_motorista($motorista) {
+		if($motorista == 0) {
+			return false;
+		} else {
+			$this->db->select('motorista.codigo')->from('motorista');
+			$this->db->join('empresa_motorista', 'empresa_motorista.cod_motorista = motorista.codigo');
+			$this->db->where('empresa_motorista.cod_empresa', $this->session->userdata('empresa'));
+			$this->db->where('motorista.cpf', $motorista);
+			$query = $this->db->get();
+
+			if($query->num_rows() >= 1) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+
+	public function verificar_motorista_disponibilidade($motorista) {
+		if($motorista == 0) {
+			return true;
+		} else {
+			$this->db->select('motorista.codigo')->from('motorista');
+			$this->db->join('empresa_motorista', 'empresa_motorista.cod_motorista = motorista.codigo');
+			$this->db->where('empresa_motorista.cod_empresa', $this->session->userdata('empresa'));
+			$this->db->where('motorista.cpf', $motorista);
+			$this->db->where('motorista.disponibilidade', TRUE);
+			$query = $this->db->get();
+
+			if($query->num_rows() >= 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
 	public function tipo_veiculo($descricao) {
 		$this->db->select('
 			tipo_veiculo.codigo AS codigo, 
@@ -182,6 +249,19 @@ class Integracao_model extends CI_Model {
 			return $tipoveiculo;
 		} else {
 			return false;
+		}
+	}
+
+	public function verificar_tipoveiculo($tipo_veiculo) {
+		$this->db->select('tipo_veiculo.codigo')->from('tipo_veiculo');
+		$this->db->where('tipo_veiculo.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->like('tipo_veiculo.descricao', $tipo_veiculo);
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 
@@ -242,6 +322,19 @@ class Integracao_model extends CI_Model {
 			return $destinatario;
 		} else {
 			return false;
+		}
+	}
+
+	public function verificar_destinatario($destinatario) {
+		$this->db->select('destinatario.codigo')->from('destinatario');
+		$this->db->where('destinatario.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where('destinatario.cnpj_cpf', $destinatario);
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 }

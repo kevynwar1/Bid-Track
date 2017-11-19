@@ -1,5 +1,5 @@
-html {
-	background: #F3F3F3;
+html, body {
+	background: #F3F3F3 !important;
 	overflow-x: hidden;
 }
 
@@ -34,6 +34,7 @@ html {
 
 .f10 { font-size: 10px; }
 .f12 { font-size: 12px; }
+.f13 { font-size: 13px; }
 .f14 { font-size: 14px; }
 .f16 { font-size: 16px; }
 .f18 { font-size: 18px; }
@@ -41,6 +42,12 @@ html {
 
 .upper { text-transform: uppercase; }
 .hidden { display: none; }
+
+.fill {
+	color: #999;
+	padding: 15px;
+	text-align: center;
+}
 
 ::-moz-selection { color: #FFF; background: #DD3137; }
 ::selection { color: #FFF; background: #DD3137; }
@@ -50,10 +57,10 @@ html {
 	top: 0px;
 	left: 0px;
 	width: 100%;
-	height: 185%;
-	-webkit-clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%) !important;
-	clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%) !important;
-	background: linear-gradient(to right, #2b1d65 0%,#d0303a 100%);
+	height: 100%; /* 180% */
+	/*-webkit-clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%) !important;
+	clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%) !important;*/
+	background: linear-gradient(to bottom, #2b1d65 0%,#d0303a 100%);
 	z-index: 2;
 	opacity: 0.9;
 	filter: alpha(opacity=90);
@@ -64,22 +71,39 @@ html {
 	top: 0px;
 	left: 0px;
 	width: 100%;
-	height: 185%;
-	-webkit-clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%) !important;
-	clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%) !important;
+	height: 100%; /* 180% */
+	/*-webkit-clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%) !important;
+	clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%) !important;*/
 	background-color: #F3F3F3; /* #281D67 */
 	z-index: 1;
+}
+
+.ct-linear {
+	top: 50%;
+	left: 0px;
+	width: 100%;
+	height: 50%;
+	position: absolute;
+	z-index: 81;
+	background: rgba(173,102,137,0);
+	background: -moz-linear-gradient(top, rgba(173,102,137,0) 0%, rgba(173,102,137,0.19) 14%, rgba(218,192,205,0.95) 69%, rgba(236,230,233,1) 92%, rgba(243,243,243,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(173,102,137,0)), color-stop(14%, rgba(173,102,137,0.19)), color-stop(69%, rgba(218,192,205,0.95)), color-stop(92%, rgba(236,230,233,1)), color-stop(100%, rgba(243,243,243,1)));
+	background: -webkit-linear-gradient(top, rgba(173,102,137,0) 0%, rgba(173,102,137,0.19) 14%, rgba(218,192,205,0.95) 69%, rgba(236,230,233,1) 92%, rgba(243,243,243,1) 100%);
+	background: -o-linear-gradient(top, rgba(173,102,137,0) 0%, rgba(173,102,137,0.19) 14%, rgba(218,192,205,0.95) 69%, rgba(236,230,233,1) 92%, rgba(243,243,243,1) 100%);
+	background: -ms-linear-gradient(top, rgba(173,102,137,0) 0%, rgba(173,102,137,0.19) 14%, rgba(218,192,205,0.95) 69%, rgba(236,230,233,1) 92%, rgba(243,243,243,1) 100%);
+	background: linear-gradient(to bottom, rgba(173,102,137,0) 0%, rgba(173,102,137,0.19) 14%, rgba(218,192,205,0.95) 69%, rgba(236,230,233,1) 92%, rgba(243,243,243,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ad6689', endColorstr='#f3f3f3', GradientType=0 );
 }
 
 .ct-scroll {
 	width: 100%;
 	height: 8%;
-	top: 92%;
+	top: 90%;
 	left: 0px;
 	position: absolute;
 	transition: 0.5s ease-out;
 	animation-delay: 1s;
-	z-index: 3;
+	z-index: 82;
 }
 
 .ct-nav {
@@ -89,7 +113,7 @@ html {
 	background-color: #FFF;
 	box-shadow: 0 0 15px rgba(0,0,0, 0.15);
 	padding: 30px 10px 30px 10px;
-	z-index: 999;
+	z-index: 999 !important;
 	transition: 0.5s;
 }
 
@@ -180,12 +204,13 @@ html {
 	left: 0px;
 	width: 100%;
 	position: absolute;
-	z-index: 3;
+	z-index: 82;
 }
 
 .ct-message p {
 	font-family: 'museo500';
 	color: #FFF;
+	text-shadow: 0 0 35px rgba(0,0,0, 0.3);
 	font-size: 40px;
 }
 

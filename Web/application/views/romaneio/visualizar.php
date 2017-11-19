@@ -5,7 +5,38 @@
 			$peso_ent += $row->peso_carga;
 		}
 	}
+
+	$origins = "Rua Estrela do Mar+553+-+Brasilia+Teimosa";
+	$destinations = "Rua Nogueira de Souza+88+-+Pina";
+	$distancia = simplexml_load_file("http://maps.googleapis.com/maps/api/distancematrix/xml?origins=".$origins."&destinations=".$destinations."&mode=CAR&language=PT&sensor=false");
 ?>
+<style type="text/css">
+	.seq { color: #999; }
+	.seq-icon { color: #FFF; transition: 0.3s; }
+	.panel-group .panel .panel-heading { cursor: grab; }
+	.panel-group .panel .panel-heading h2 { cursor: grab; }
+	.panel-group .panel .panel-heading:hover .seq-icon { color: #999; }
+	#ocorrencias img {
+		width: 147px !important;
+		transition: 0.3s;
+		border: 4px solid #FFF;
+		box-shadow: 0 10px 10px rgba(0,0,0, 0.2);
+		margin: 3px;
+		/*-webkit-transform:rotate(90deg);
+		-moz-transform:rotate(90deg);
+		-o-transform: rotate(90deg);*/
+	}
+
+	#ocorrencias img:hover {
+		-o-transform: scale(1.07, 1.07);
+		-ms-transform: scale(1.07, 1.07);
+		-moz-transform: scale(1.07, 1.07);
+		-webkit-transform: scale(1.07, 1.07);
+		transform: scale(1.07, 1.07);
+		box-shadow: 0 5px 10px rgba(0,0,0, 0.5);
+	}
+</style>
+<link href="<?= base_url(); ?>assets/css/pop-up.css" rel="stylesheet" />
 
 <div class="content" style="width: 55%; float: left">
 	<div class="container-fluid">
@@ -28,18 +59,20 @@
                                             <div class="ripple-container"></div>
                                         </a>
                                     </li>
-                                    <li class="">
-                                        <a data-toggle="tab" href="#messages" aria-expanded="false">
-                                            <i class="material-icons">mail_outline</i> Encaminhar
+                                    <?php if($ocorrencia != FALSE): ?>
+                                    <li>
+                                        <a data-toggle="tab" href="#ocorrencias" aria-expanded="true">
+                                            <i class="material-icons">info_outline</i> Ocorrências
                                             <div class="ripple-container"></div>
                                         </a>
                                     </li>
+                                	<?php endif; ?>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="card-content">
-                        <div class="tab-content">
+						<div class="tab-content">
 							<div class="tab-pane active" id="profile">
 								<div class="row">
 									<div class="col-md-12" style="padding: 10px 10px 5px 10px">
@@ -96,7 +129,10 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-6">
+										<?= $distancia->row->element->distance->text; ?>
+									</div>
+									<div class="col-md-6">
 										<a href="<?= base_url().'romaneio/imprimir/'.$romaneio[0]->codigo ?>">
 											<span type="submit" class="btn btn-danger btn-simple btn-fill pull-left f12 upper">
 												Imprimir
@@ -167,24 +203,58 @@
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane" id="messages">
-								<form action="#" method="post">
-									<input type="hidden" name="romaneio" value="<?= $this->uri->segment(3); ?>">
-									<div class="row">
-										<div class="col-md-12 lm20">
-											<div class="form-group label-floating">
-												<label class="control-label">E-mail</label>
-												<input type="email" name="email" class="form-control" autocomplete="off" ng-model="email">
+							<?php if($ocorrencia != FALSE): ?>
+							<div class="tab-pane" id="ocorrencias">
+								<?php
+									$item = 0;
+									foreach($ocorrencia as $row):
+										++$item;
+										$foto = explode(",", str_replace("[", "", str_replace("]", "", $row->foto)));
+								?>
+									<div aria-multiselectable="true" class="panel-group" id="set_<?= $i; ?>" role="tablist">
+										<div class="panel panel-default">
+											<div class="panel-heading" id="headingOne" role="tab" >
+												<a aria-controls="collapseOne" aria-expanded="true" data-parent="#accordion" data-toggle="collapse" href="#c_<?= $item; ?>" role="button" class="">
+													<h2 class="panel-title">
+														<?= $row->tipo_ocorrencia->descricao; ?>
+														<span class="pull-right">
+															<span class="seq">
+																<?php
+																	$data = explode(" ", $row->data);
+																	$dia = explode("-", $data[0]);
+																	$horario = explode(":", $data[1]);
+																?>
+
+																<?= $dia[2]."/".$dia[1]; ?>
+																<?= (date("Y-m-d")==$data[0])? 'Hoje' : diasemana($data[0], 'curto'); ?> ás 
+																<?= $horario[0].":".$horario[1]."h"; ?>
+															</span>
+														</span>
+													</h2>
+												</a>
+											</div>
+											<div aria-labelledby="headingOne" class="panel-collapse collapse" id="c_<?= $item; ?>" role="tabpanel" aria-expanded="true" style="">
+												<div class="panel-body">
+													<div class="row">
+														<div class="col-md-12">
+															<h4 class="gray upper f12">Descrição</h4>
+															<p>
+																<?= ($row->descricao != '')? $row->descricao : 'Não há descrição.'; ?>
+															</p>
+															<h4 class="gray upper f12"><?= (count($foto) >= 2)? 'Fotos':'Foto'; ?></h4>
+															<?php for($i = 0; $i < count($foto); $i++): ?>
+																<img src="data:image/jpg;base64,<?= $foto[$i] ?>" rel="tooltip">
+															<?php endfor; ?>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<button type="submit" ng-disabled="!email" name="editar" class="btn btn-danger btn-fill pull-right f12 upper">Enviar</button>
-										</div>
-									</div>
-								</form>
+											<!-- img width="150" src="data:image/jpg;base64,<?= $foto[$i] ?>" rel="tooltip" style="border-radius: 10px; padding: 5px;" class="ocorrencia" -->
+								<?php endforeach; ?>
 							</div>
+							<?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -259,7 +329,7 @@
 			if (status === 'OK') {
 				directionsDisplay.setDirections(response);
 			} else {
-				window.alert('Directions request failed due to ' + status);
+				location.reload();
 			}
 		});
 	}
