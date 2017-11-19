@@ -32,6 +32,7 @@ import com.rgames.guilherme.bidtruck.view.oferta.Preferences;
 import com.rgames.guilherme.bidtruck.view.romaneios.RomaneioFragment;
 import com.rgames.guilherme.bidtruck.view.mensagens.MensagensFragment;
 import com.rgames.guilherme.bidtruck.view.ocorrencia.OcorrenciaFragment;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
 import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
 import com.squareup.picasso.Picasso;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity
 
     private Empresa mEmpresa;
     private Preferences preferences;
+    private EntregaFragment entregaFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +71,14 @@ public class MainActivity extends AppCompatActivity
             ControllerLogin controllerLogin = new ControllerLogin(MainActivity.this);
             try {
                 controllerLogin.setIdEmpresa(mEmpresa);
-                getSupportFragmentManager().beginTransaction().add(R.id.content_main
-                        , RomaneioFragment.newInstance(mEmpresa)).commit();
+                //getSupportFragmentManager().beginTransaction().add(R.id.content_main, RomaneioFragment.newInstance(mEmpresa)).commit();
+
+                entregaFragment = new EntregaFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Empresa.PARCEL_EMPRESA, mEmpresa);
+                entregaFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().add(R.id.content_main, entregaFragment).commit();
+
             } catch (EmpresaNullException e) {
                 e.printStackTrace();
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -146,7 +154,10 @@ public class MainActivity extends AppCompatActivity
         onCloseDrawer();
         switch (item.getItemId()) {
             case R.id.nav_entrega:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, RomaneioFragment.newInstance(mEmpresa)).commit();
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, entregaFragment).commit();
                 return true;
             case R.id.nav_sync:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();

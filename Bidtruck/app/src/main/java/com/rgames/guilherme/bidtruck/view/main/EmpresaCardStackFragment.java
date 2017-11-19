@@ -70,6 +70,7 @@ public class EmpresaCardStackFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Toast.makeText(getActivity(), "Estou no card empresa", Toast.LENGTH_LONG).show();
         facade = new Facade(getActivity());
         if (!CRIADO) {
             init();
