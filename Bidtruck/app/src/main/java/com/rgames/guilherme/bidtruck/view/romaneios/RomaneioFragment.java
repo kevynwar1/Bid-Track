@@ -14,14 +14,11 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.R;
-import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
-import com.rgames.guilherme.bidtruck.controller.ControllerOcorrencia;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.basic.MyProgressBar;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
-import com.rgames.guilherme.bidtruck.model.basic.TipoOcorrencia;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
 import com.rgames.guilherme.bidtruck.model.errors.MotoristaNaoConectadoException;
 import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
@@ -65,14 +62,6 @@ public class RomaneioFragment extends Fragment {
         super.onCreate(savedInstanceState);
         romaneioRep = new RomaneioRep(getActivity());
         tem_romaneio = true;
-        try {
-            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
-                        getActivity().getResources().getString(R.string.menu_drw_romaneio));
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
         pegarEmpresa();
     }
 
@@ -88,6 +77,12 @@ public class RomaneioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         try {
+
+            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
+                        getActivity().getResources().getString(R.string.menu_drw_romaneio));
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+
             mFacade = new Facade(getActivity());
             if (empresa == null) {
                 pegarEmpresa();
@@ -95,9 +90,9 @@ public class RomaneioFragment extends Fragment {
             } else {
                 if (!mFacade.isConnected(getActivity())) {
                     this.romaneioList = romaneioRep.buscarRomaneio();
-                    if (romaneioList != null && romaneioList.size() > 0) {
+                    if(romaneioList != null && romaneioList.size() > 0){
                         initRecyclerView(romaneioList);
-                    } else {
+                    }else {
                         emptyView(true);
                         Toast.makeText(getActivity(), getString(R.string.app_err_exc_semConexao), Toast.LENGTH_LONG).show();
                     }
@@ -108,10 +103,7 @@ public class RomaneioFragment extends Fragment {
                 //    initRecyclerView(romaneioList);
                 // }
                 //}
-                else {
-                    buscarTiposOcorrencia();
-                    init();
-                }
+                else init();
 //                    if (finishRomaneio) {
 //                    init();
 //                    finishRomaneio = false;
@@ -125,35 +117,9 @@ public class RomaneioFragment extends Fragment {
         }
     }
 
-    private void buscarTiposOcorrencia() {
-        new AsyncTask<Void, Void, List<TipoOcorrencia>>() {
-            ControllerOcorrencia controllerOcorrencia = new ControllerOcorrencia(getActivity());
-
-            @Override
-            protected List<TipoOcorrencia> doInBackground(Void... voids) {
-                ControllerLogin controllerLogin = new ControllerLogin(getActivity());
-                controllerOcorrencia.deleteTipoOcorrenciaTodos();
-                try {
-                    return controllerOcorrencia.selectTipo(controllerLogin.getIdEmpresa());
-                } catch (EmpresaNullException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(List<TipoOcorrencia> tipoOcorrencias) {
-                for (TipoOcorrencia tipoOcorrencia : tipoOcorrencias)
-                    controllerOcorrencia.insertTipoOcorrencia(tipoOcorrencia);
-            }
-        }.execute();
-    }
-
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
-            container, @Nullable Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return mView = inflater.inflate(R.layout.fragment_romaneio, container, false);
     }
 
@@ -185,15 +151,17 @@ public class RomaneioFragment extends Fragment {
             @Override
             protected void onPostExecute(List<Romaneio> romaneios) {
                 try {
-                    if (romaneios == null) {
+                    if(romaneios == null){
+
+                        emptyView(true);
                         finishProgressBar();
                     } else if (romaneios != null && romaneios.size() == 0)
                         emptyView(true);
                     else {
 
-                        for (int i = 0; i < romaneios.size(); i++) {
+                        for(int i = 0; i < romaneios.size(); i++) {
 
-                            if (romaneios.get(i).getStatus_romaneio().getCodigo() == 3) {
+                            if(romaneios.get(i).getStatus_romaneio().getCodigo() == 3) {
 
 
                                 if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
@@ -203,12 +171,18 @@ public class RomaneioFragment extends Fragment {
                                 romaneioList.add(romaneios.get(i));
 
 
+
                                 initRecyclerView(romaneioList);
                                 finishProgressBar();
 
+                            }else{
+
+                                Toast.makeText(getActivity(), "Opa!", Toast.LENGTH_LONG).show();
+                                emptyView(true);
                             }
 
                         }
+
 
                     }
                     if (msg != null && !msg.equals(""))
@@ -292,9 +266,7 @@ public class RomaneioFragment extends Fragment {
                     romaneioList2 = romaneios;
                 } else if (romaneioList2 != null) {
                         /*for (Romaneio mRomaneio : romaneioList2) {
-
                             if (mRomaneio.getStatus_romaneio().getCodigo() == 4) {
-
                                 Toast.makeText(getActivity(), getString(R.string.app_err_input_vazio), Toast.LENGTH_LONG).show();
                                 emptyView(true);
                                 finishProgressBar();
@@ -314,4 +286,3 @@ public class RomaneioFragment extends Fragment {
         }
     }
 }
-

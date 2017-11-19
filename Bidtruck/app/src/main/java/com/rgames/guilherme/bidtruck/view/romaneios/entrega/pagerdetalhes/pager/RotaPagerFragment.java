@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityCompat;import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -70,9 +70,11 @@ public class RotaPagerFragment extends SupportMapFragment implements OnMapReadyC
             // for ActivityCompat#requestPermissions for more details.
             requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+
             return;
         }
-        mMap.setMyLocationEnabled(true);
+        //mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 //        mMap = googleMap;
 //        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 //        addMarker(new LatLng(-23.564224, -46.653156), "Primeiro", "Marcador 1");

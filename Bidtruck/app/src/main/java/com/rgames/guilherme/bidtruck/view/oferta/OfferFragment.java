@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,14 +49,19 @@ public class OfferFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         try {
             if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.menu_drw_oferta));
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
-        } catch (NullPointerException e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -73,10 +79,16 @@ public class OfferFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("romaneio", offers.get(i));
                 fragment.setArguments(bundle);
+
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.content_main, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                /*
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_main, fragment)
                         .addToBackStack(null)
-                        .commit();
+                        .commit(); */
             }
         });
         mTask = new OfferTask();

@@ -32,6 +32,7 @@
 
     <!--Outers-->
     <string name="app_empty_list">Nenhum item esta disponível para ser visualizado.</string>
+    <string name="app_empty_list1">Não há romaneio em viagem no momento.</string>
     <string name="app_empty_ocorrencia_list">Esta entrega não possuí ocorrências.</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
