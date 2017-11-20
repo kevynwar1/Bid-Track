@@ -108,7 +108,7 @@ public class RomaneioRep {
 
             while(cursorRomaneio.moveToNext()) {
                 int codigo = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.CODIGO));
-                //String codigoEmpresa = cursorRomaneio.getString(cursorRomaneio.getColumnIndex(romaneioTable.COD_EMPRESA));
+                int codigoEmpresa = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_EMPRESA));
                 int codigoEstalecimento = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_ESTABELECIMENTO));
                 int codigoMotorista = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_MOTORISTA));
                 int codigoStatus = cursorRomaneio.getInt(cursorRomaneio.getColumnIndex(romaneioTable.COD_STATUS_ROMANEIO));
@@ -119,6 +119,7 @@ public class RomaneioRep {
                 StatusRomaneio statusBanco = new StatusRomaneio();
                 Romaneio romaneioBanco = new Romaneio();
 
+
                 romaneioBanco.setCodigo(codigo);
                 romaneioBanco.setEstabelecimento(estabelecimentoB);
                 motoristaBanco.setCodigo(codigoMotorista);
@@ -126,6 +127,7 @@ public class RomaneioRep {
                 statusBanco.setCodigo(codigoStatus);
                 romaneioBanco.setStatus_romaneio(statusBanco);
                 estabelecimentoB.setCodigo(codigoEstalecimento);
+                romaneioBanco.setCodigo_empresa(codigoEmpresa);
                 romaneioBanco.setEstabelecimento(estabelecimentoB);
 
                 romaneios.add(romaneioBanco);
@@ -139,5 +141,20 @@ public class RomaneioRep {
         return romaneios;
     }
 
+
+    public int excluirRomaneio(Romaneio romaneio) {
+        SQLiteDatabase db = banco.getWritableDatabase();
+        int resultado = db.delete(romaneioTable.TABELA,
+                romaneioTable.CODIGO + " = ?",
+                new String[]{String.valueOf(romaneio.getCodigo())});
+        db.close();
+
+        if (resultado != 1) {
+            success = true;
+        }
+
+        return resultado;
+
+    }
 
 }

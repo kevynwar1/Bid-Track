@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.view.oferta;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -34,6 +36,7 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
         this.context = c;
         this.offers = list;
     }
+
 
     @NonNull
     @Override
@@ -66,4 +69,6 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
         }
         return view;
     }
+
+
 }

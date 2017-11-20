@@ -402,6 +402,7 @@ public class DetalhesPagerFragment extends Fragment {
                                 if(atualiza_status || entrega_atualizada){
 
                                     Toast.makeText(getActivity(), "Sua próxima entrega foi iniciada, tenha uma boa viagem!", Toast.LENGTH_LONG).show();
+
                                 }
                                 else {
                                     Toast.makeText(getActivity(), "Desculpe, sua entrega não pode iniciada, tente novamente!", Toast.LENGTH_LONG).show();
@@ -504,12 +505,12 @@ public class DetalhesPagerFragment extends Fragment {
                            finishProgressBar();
                            if (romaneio_inativo || romaneio_finalizado) {
                                Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
+
                            } else{
 
                                Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
                            }
                        }
-
                    }
 
             } catch (Exception e) {
@@ -703,6 +704,8 @@ public class DetalhesPagerFragment extends Fragment {
     private void emptyView(boolean isVisible) {
         mView.findViewById(R.id.empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
     }
+
+
 
 
     private void initProgressBar() throws ClassCastException, NullPointerException {

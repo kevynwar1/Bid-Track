@@ -43,21 +43,6 @@ public class EntregaRep {
 
 
 
-    /*@Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(ScriptSql.getCreateTableEntrega());
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(ScriptSql.getCreateTableEntrega());
-        this.onCreate(db);
-
-    }*/
-
-
-
     private ContentValues preencheEntrega( Entrega entrega, Romaneio romaneio) {
         ContentValues cv = new ContentValues();
 
@@ -197,6 +182,23 @@ public class EntregaRep {
         }
         return entregasList;
     }
+
+    public int excluirEntrega(Entrega entrega, Romaneio romaneio){
+        SQLiteDatabase db = banco.getWritableDatabase();
+        String args[] = {String.valueOf(entrega.getSeq_entrega()),
+                         String.valueOf(romaneio.getCodigo())};
+        int resultado = db.delete(entregaTable.TABELA, entregaTable.SEQ_ENTREGA + " = ?" + " and " + entregaTable.COD_ROMANEIO + "= ?" , args);
+
+        if(resultado != -1){
+            success = true;
+        }
+
+        return  resultado;
+
+    }
+
+
+
 
 
 }

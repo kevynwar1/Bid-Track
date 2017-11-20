@@ -42,6 +42,7 @@ public class EntregaFragment extends Fragment {
     private EntregaRep entregaRep;
     private Facade facade;
     private Context context;
+    boolean tem_entrega = true;
 
     public EntregaFragment() {
         // Required empty public constructor
@@ -59,15 +60,6 @@ public class EntregaFragment extends Fragment {
             facade = new Facade(context);
             mEmpresa = mBundle.getParcelable(Empresa.PARCEL_EMPRESA);
 
-            if(facade.isConnected(context)){
-                entregaTask = new EntregaTask();
-                entregaTask.execute();
-            }else{
-                mRomaneioList = romaneioRep.buscarRomaneio();
-                mRomaneio = mRomaneioList.get(0);
-                mEntregaList = entregaRep.buscarEntrega();
-                initRecyclerView();
-            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -79,18 +71,102 @@ public class EntregaFragment extends Fragment {
     public void onResume() {
         super.onResume();
         try {
-            if (((AppCompatActivity) context).getSupportActionBar() != null)
+
+              /*if (((AppCompatActivity) context).getSupportActionBar() != null)
                 ((AppCompatActivity) context).getSupportActionBar().setTitle(getString(R.string.menu_drw_romaneio));
-            ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);
+                ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);*/
+
+
+            List<Entrega> deletaEntrega = entregaRep.buscarEntrega();
+            List<Romaneio> deletaRomaneio = romaneioRep.buscarRomaneio();
+
+            if((deletaEntrega != null && deletaEntrega.size() > 0) && (deletaRomaneio.size() > 0 && deletaRomaneio != null)) {
+                if (deletaRomaneio.get(0).getStatus_romaneio().getCodigo() == 4) {
+
+                        Entrega deleteEntrega = deletaEntrega.get(deletaEntrega.size() - 1);
+                        if (deleteEntrega.getStatusEntrega().getCodigo() == 4) {
+
+                            for (Entrega ent : deletaEntrega) {
+
+                                entregaRep.excluirEntrega(ent, deletaRomaneio.get(0));
+                            }
+                            //Toast.makeText(getActivity(), "Entregas excluidas Sucesso!", Toast.LENGTH_SHORT).show();
+
+                            romaneioRep.excluirRomaneio(deletaRomaneio.get(0));
+                            //Toast.makeText(getActivity(), "Romaneio excluido !", Toast.LENGTH_SHORT).show();
+                            initRecyclerView(null);
+                            emptyViewVazio(true);
+                            return;
+
+                        }
+
+                    }
+
+
+            }
+             if(facade.isConnected(context)){
+                List<Entrega> entregas = entregaRep.buscarEntrega();
+                if(entregas == null || entregas.size() == 0) {
+                    entregaTask = new EntregaTask();
+                    entregaTask.execute();
+                }else if(entregas != null || entregas.size() > 0){
+                    mRomaneioList = romaneioRep.buscarRomaneio();
+
+                    //valida se a empresa selecionada é a mesma inserida no romaneio
+                    if(mEmpresa.getCodigo() == mRomaneioList.get(0).getCodigo_empresa()) {
+                        mRomaneio = mRomaneioList.get(0);
+                        initRecyclerView(entregas);
+                    }
+                    else{
+                        emptyView(true);
+                        return;
+                    }
+
+                }
+            }else if(!facade.isConnected(context)){
+                mEntregaList = null;
+                mRomaneioList = null;
+                mEntregaList = entregaRep.buscarEntrega();
+                mRomaneioList = romaneioRep.buscarRomaneio();
+               // mRomaneio = mRomaneioList.get(0);
+                if(mRomaneioList == null || mRomaneioList.size() == 0){
+                    emptyView(true);
+                    return;
+                }
+                if(mEntregaList != null || mEntregaList.size() > 0) {
+                    //valida se a empresa selecionada é a mesma inserida no romaneio offline
+                    if (mEmpresa.getCodigo() == mRomaneioList.get(0).getCodigo_empresa()) {
+                        mRomaneio = mRomaneioList.get(0);
+                        initRecyclerView(mEntregaList);
+                    } else {
+                        emptyView(true);
+                        return;
+                    }
+
+                }
+            }else{
+                emptyView(true);
+            }
+
+
+
+            if (((AppCompatActivity) context).getSupportActionBar() != null) {
+                ((AppCompatActivity) context).getSupportActionBar().setTitle(getString(R.string.menu_drw_romaneio) + " - Nº " + mRomaneio.getCodigo());
+                ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);
+            }else
+                Toast.makeText(getActivity(),"Erro ao listar suas entregas, tente novamaente",Toast.LENGTH_LONG).show();
+
         }catch (Exception e){
             e.printStackTrace();
         }
+
     }
 
-    private void initRecyclerView() throws Exception{
+    private void initRecyclerView(List<Entrega> entregas) throws Exception{
         RecyclerView r = view.findViewById(R.id.recyclerview);
         r.setLayoutManager(new LinearLayoutManager(context));
-        mRomaneio.setEntregaList(mEntregaList);
+        //mRomaneio.setEntregaList(mEntregaList);
+        mRomaneio.setEntregaList(entregas);
         r.setAdapter(new AdapterRecyclerDelivery(mRomaneioList.get(0), context));
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(context, R.anim.list_layout);
         r.setLayoutAnimation(controller);
@@ -146,9 +222,6 @@ public class EntregaFragment extends Fragment {
             }
         }
 
-        private void emptyView(boolean isVisible) {
-            view.findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
-        }
 
         @Override
         protected void onPreExecute() {
@@ -164,10 +237,18 @@ public class EntregaFragment extends Fragment {
             try{
                 mRomaneioList = facade.selectRomaneio(mEmpresa, facade.isLogged());
                 if(mRomaneioList != null && mRomaneioList.size() > 0){
-                    mRomaneio = mRomaneioList.get(0);
 
-                    if(romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0){
-                        romaneioRep.inserir(mRomaneio, mEmpresa);
+                    for(int i = 0; i < mRomaneioList.size(); i++) {
+
+                        if (mRomaneioList.get(i).getStatus_romaneio().getCodigo() == 3) {
+
+                            if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
+                                romaneioRep.inserir(mRomaneioList.get(i), mEmpresa);
+                            }
+
+                            mRomaneio = mRomaneioList.get(i);
+
+                        }
                     }
 
                     mEntregaList = facade.selectEntrega(mRomaneio.getCodigo());
@@ -175,6 +256,8 @@ public class EntregaFragment extends Fragment {
                         setLocalEntregas(mEntregaList);
                     }
                 }
+
+
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -186,7 +269,7 @@ public class EntregaFragment extends Fragment {
             try {
                 finishProgressBar();
                 if(mRomaneio != null){
-                    initRecyclerView();
+                    initRecyclerView(mEntregaList);
                 }else{
                     emptyView(true);
                 }
@@ -196,4 +279,16 @@ public class EntregaFragment extends Fragment {
             super.onPostExecute(aVoid);
         }
     }
+
+
+    private void emptyView(boolean isVisible) {
+        view.findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
+    }
+
+    private void emptyViewVazio(boolean isVisible) {
+        view.findViewById(R.id.txt_empty1).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
+    }
+
+
 }
+

@@ -120,13 +120,13 @@ public class EmpresasActivity extends AppCompatActivity {
                             startActivity(it.putExtras(b));
                             //finish();
                         } else if (empresas.size() == 0) {
-                            Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa - ERR 1", Toast.LENGTH_LONG).show();
+                            Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa ", Toast.LENGTH_LONG).show();
                             deslogar();
                         } else {
                             initView(empresas);
                         }
                     } else {
-                        Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa - ERR 2", Toast.LENGTH_LONG).show();
+                        Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa!", Toast.LENGTH_LONG).show();
                         deslogar();
                     }
                     finishProgressBar();

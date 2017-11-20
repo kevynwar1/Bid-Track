@@ -17,6 +17,7 @@ public class EmpresaRep {
 
     private DataBase connection;
     private EmpresaTable empresaTable;
+    private boolean success;
 
     public EmpresaRep(Context context){
         connection = new DataBase(context);
@@ -53,6 +54,7 @@ public class EmpresaRep {
                 empresa = new Empresa();
                 empresa.setCodigo(cursor.getInt(cursor.getColumnIndex(empresaTable.CODIGO)));
                 empresa.setNome_fantasia(cursor.getString(cursor.getColumnIndex(empresaTable.NOME_FANTASIA)));
+
             }
             database.close();
             cursor.close();
@@ -60,5 +62,23 @@ public class EmpresaRep {
             e.printStackTrace();
         }
         return empresa;
+    }
+
+
+
+
+    public int excluirRomaneio(Empresa empresa) {
+        SQLiteDatabase db = connection.getWritableDatabase();
+        int resultado = db.delete(empresaTable.TABELA,
+                empresaTable.CODIGO + " = ?",
+                new String[]{String.valueOf(empresa.getCodigo())});
+        db.close();
+
+        if (resultado != 1) {
+            success = true;
+        }
+
+        return resultado;
+
     }
 }

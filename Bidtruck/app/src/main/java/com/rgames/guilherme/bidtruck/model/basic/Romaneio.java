@@ -10,6 +10,7 @@ public class Romaneio implements Parcelable {
 
     public static final String PARCEL = "parcel_romaneiro";
     private int codigo;
+    private int codigo_empresa;
     private Estabelecimento estabelecimento;
     private Motorista motorista;
     private List<Entrega> entregaList;
@@ -45,12 +46,13 @@ public class Romaneio implements Parcelable {
                 //.append(" Ofertar? ").append(isOfertar_viagem()).toString();
     }
 
-    public Romaneio(int id, Estabelecimento estabelecimento, Motorista motorista, List<Entrega> entregaList, Veiculo veiculo, StatusRomaneio statusRomaneio, String date_create, String date_finalization, boolean ofertar_viagem, char finalized, boolean situation) {
+    public Romaneio(int id, Estabelecimento estabelecimento, Motorista motorista, List<Entrega> entregaList, Veiculo veiculo, StatusRomaneio statusRomaneio, String date_create, String date_finalization, boolean ofertar_viagem, char finalized, boolean situation, int codigo_empresa) {
         this.codigo = id;
         this.estabelecimento = estabelecimento;
         this.motorista = motorista;
         this.entregaList = entregaList;
         this.veiculo = veiculo;
+        this.codigo_empresa = codigo_empresa;
         this.status_romaneio = statusRomaneio;
         this.date_create = date_create;
         this.date_finalization = date_finalization;
@@ -65,6 +67,7 @@ public class Romaneio implements Parcelable {
 
     protected Romaneio(Parcel in) {
         codigo = in.readInt();
+        codigo_empresa = in.readInt();
         estabelecimento = in.readParcelable(Estabelecimento.class.getClassLoader());
         motorista = in.readParcelable(Motorista.class.getClassLoader());
         status_romaneio = in.readParcelable(StatusRomaneio.class.getClassLoader());
@@ -98,6 +101,7 @@ public class Romaneio implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(codigo);
+        parcel.writeInt(codigo_empresa);
         parcel.writeParcelable(estabelecimento, i);
         parcel.writeParcelable(motorista, i);
         parcel.writeParcelable(status_romaneio, i);
@@ -200,4 +204,11 @@ public class Romaneio implements Parcelable {
     }
 
 
+    public int getCodigo_empresa() {
+        return codigo_empresa;
+    }
+
+    public void setCodigo_empresa(int codigo_empresa) {
+        this.codigo_empresa = codigo_empresa;
+    }
 }

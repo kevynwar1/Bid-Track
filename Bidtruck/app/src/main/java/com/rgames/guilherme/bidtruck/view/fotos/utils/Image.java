@@ -13,7 +13,7 @@ public class Image implements Parcelable {
 
     public long _id;
     public Uri uri;
-    private String imagePath;
+    public String imagePath;
     public boolean isPortraitImage;
     public Ocorrencia ocorrencia;
 

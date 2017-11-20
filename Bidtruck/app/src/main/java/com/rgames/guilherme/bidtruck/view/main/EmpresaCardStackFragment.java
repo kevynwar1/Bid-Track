@@ -28,6 +28,7 @@ import com.rgames.guilherme.bidtruck.model.repositors.EmpresaRep;
 import com.rgames.guilherme.bidtruck.view.empresa.EmpresaAdapter;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmpresaCardStackFragment extends Fragment {
@@ -70,7 +71,7 @@ public class EmpresaCardStackFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Toast.makeText(getActivity(), "Estou no card empresa", Toast.LENGTH_LONG).show();
+       // Toast.makeText(getActivity(), "Estou no card empresa", Toast.LENGTH_LONG).show();
         facade = new Facade(getActivity());
         if (!CRIADO) {
             init();
@@ -171,7 +172,7 @@ public class EmpresaCardStackFragment extends Fragment {
                             startActivity(it.putExtras(b));
                             getActivity().finish();
                         } else if (empresas.size() == 0) {
-                            Toast.makeText(getActivity(), "Você não está vinculado em nenhuma empresa - ERR 1", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Você não está vinculado em nenhuma empresa ", Toast.LENGTH_LONG).show();
                             deslogar();
                         } else {
                             initView(empresas);
