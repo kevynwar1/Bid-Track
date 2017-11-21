@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rgames.guilherme.bidtruck.R;
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.squareup.picasso.Picasso;
@@ -30,6 +31,7 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
     private Context context;
     private List<Romaneio> offers;
+    private int pesoTotal;
 
     public OfferAdapter(Context c, List<Romaneio> list) {
         super(c, 0, list);
@@ -61,9 +63,13 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
                     .load(urlimagem)
                     .into(imagem);
 
+            for(Entrega entrega : offer.getEntregaList()){
+                String[] separandoPesos = entrega.getPeso().split(" ");
+                pesoTotal =+ Integer.parseInt(separandoPesos[0]);
+            }
 
             code.setText(Integer.toString(offer.getCodigo()));
-            peso.setText("2745 KG");
+            peso.setText(Integer.toString(pesoTotal));
             DecimalFormat df = new DecimalFormat("#,##0.00");
             payment.setText("R$ " + df.format(offer.getValor()));
         }

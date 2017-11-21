@@ -77,9 +77,13 @@ public class AcceptOfferFragment extends Fragment {
         preferences = new Preferences(getActivity());
         romaneio = getArguments().getParcelable("romaneio");
 
+        deliverys = romaneio.getEntregaList();
+        deliveryAdapter = new AcceptOfferAdapter(getActivity(), deliverys);
+        listView.setAdapter(deliveryAdapter);
+
         mTaskAccept = new acceptOfferTask();
-        mTaskLoad = new loadOfferTask();
-        mTaskLoad.execute();
+        //mTaskLoad = new loadOfferTask();
+        //mTaskLoad.execute();
 
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
