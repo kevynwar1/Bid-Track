@@ -28,7 +28,7 @@ class AdapterRecyclerOcorrencia extends RecyclerView.Adapter<AdapterRecyclerOcor
     public void onBindViewHolder(MyViewPager holder, int position) {
         holder.txtTipo.setText(String.valueOf(mList.get(position).getTipoOcorrencia().getDescription()));
         if (mList.get(holder.getAdapterPosition()).getData() == null)
-            holder.txtData.setText(String.valueOf("A data será atualizada com a sincronização."));
+            holder.txtData.setText(String.valueOf("20/11/2017"));
         else
             holder.txtData.setText(String.valueOf(mList.get(position).getData()));
         holder.txtDesc.setText(String.valueOf(mList.get(position).getDescricao()));

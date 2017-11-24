@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class EntregaFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -75,6 +77,7 @@ public class EntregaFragment extends Fragment {
               /*if (((AppCompatActivity) context).getSupportActionBar() != null)
                 ((AppCompatActivity) context).getSupportActionBar().setTitle(getString(R.string.menu_drw_romaneio));
                 ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);*/
+
 
 
             List<Entrega> deletaEntrega = entregaRep.buscarEntrega();
@@ -151,7 +154,7 @@ public class EntregaFragment extends Fragment {
 
 
             if (((AppCompatActivity) context).getSupportActionBar() != null) {
-                ((AppCompatActivity) context).getSupportActionBar().setTitle(getString(R.string.menu_drw_romaneio) + " - Nº " + mRomaneio.getCodigo());
+                ((AppCompatActivity) context).getSupportActionBar().setTitle("N º " + mRomaneio.getCodigo());
                 ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);
             }else
                 Toast.makeText(getActivity(),"Erro ao listar suas entregas, tente novamaente",Toast.LENGTH_LONG).show();
