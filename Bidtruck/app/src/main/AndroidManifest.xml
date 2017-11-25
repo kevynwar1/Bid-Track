@@ -18,7 +18,7 @@
         android:name="android.hardware.camera.flash"
         android:required="false" />
 
-    <!--google maps usa para salvar alguns dados em cache-->
+    <!-- google maps usa para salvar alguns dados em cache -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -42,7 +42,6 @@
             android:name=".view.romaneios.entrega.pagerdetalhes.DetalhesEntregaActivity"
             android:label="@string/title_activity_detalhes_estudo"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".view.main.LoginActivity"
             android:theme="@style/FullScreen" />
@@ -66,14 +65,20 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.fotos.activities.MultiCameraActivity"
-            android:theme="@style/FullScreen"
-            android:screenOrientation="portrait">
-        </activity>
-
-
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreen" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCRXIP-xfakNAk8lodv20x4xD6hFWNwD8Y" />
+        <service
+            android:name=".model.service.ServiceWifi"
+            android:exported="true"
+            android:label="ServiceWifi">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="SERVICE_WIFI_BID" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

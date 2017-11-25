@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity
                 bundle.putParcelable(Empresa.PARCEL_EMPRESA, mEmpresa);
                 entregaFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().add(R.id.content_main, entregaFragment).commit();
-
             } catch (EmpresaNullException e) {
                 e.printStackTrace();
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

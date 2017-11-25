@@ -1,14 +1,14 @@
 package com.rgames.guilherme.bidtruck.model.dao.http;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
-import com.rgames.guilherme.bidtruck.model.basic.Motorista;
 import com.rgames.guilherme.bidtruck.model.dao.config.HttpMethods;
 import com.rgames.guilherme.bidtruck.model.dao.config.URLDictionary;
 import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
+import com.rgames.guilherme.bidtruck.model.service.ServiceWifi;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -50,7 +50,13 @@ public class HttpConnection {
         if (context != null) {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-            return (networkInfo != null && networkInfo.isConnected());
+            boolean retorno =(networkInfo != null && networkInfo.isConnected());
+            if(retorno){
+                context.startService(new Intent(context, ServiceWifi.class));
+            }else{
+                context.stopService(new Intent(context, ServiceWifi.class));
+            }
+            return retorno;
         } else try {
             throw new ContextNullException();
         } catch (ContextNullException e) {
