@@ -30,7 +30,9 @@ import com.rgames.guilherme.bidtruck.R;
 
 import java.util.List;
 
+import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
+import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
 
 public class OfferFragment extends Fragment {
@@ -38,6 +40,7 @@ public class OfferFragment extends Fragment {
     private ArrayAdapter<Romaneio> offerAdapter;
     private ListView offerList;
     private List<Romaneio> offers;
+    private List<Entrega> deliveries;
     private Preferences preferences;
     private OfferTask mTask;
     private TextView emptyView;
@@ -112,8 +115,14 @@ public class OfferFragment extends Fragment {
             try{
                 int driverCode = new Facade(getActivity()).isLogged().getCodigo();
                 HttpOferta oferta = new HttpOferta(getActivity());
+                HttpEntrega entrega = new HttpEntrega(getActivity());
                 offers = oferta.loadOffers(preferences.getCompanyCode(), driverCode);
-                Log.i("Preco", "" + offers.get(0).getValor());
+                if(!offers.isEmpty()){
+                    for(int i = 0; i < offers.size(); i++){
+                        Romaneio romaneio = offers.get(i);
+                        offers.get(i).setEntregaList(entrega.selectByRomaneio(romaneio.getCodigo()));
+                    }
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
