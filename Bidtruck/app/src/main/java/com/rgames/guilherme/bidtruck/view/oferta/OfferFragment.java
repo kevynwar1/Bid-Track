@@ -1,19 +1,11 @@
 package com.rgames.guilherme.bidtruck.view.oferta;
 
-/*
-* QUALQUER SUGESTÃO OU DÚVIDA A RESPEITO DESSA CLASSE
-* OU SUA FUNCIONALIDADE, POR FAVOR, P E R G U N T E
-* NÃO ALTERE SEU CONTEÚDO POR CONTA PRÓPRIA, SUGIRA
-* AO AUTOR AS ALTERAÇÕES A SEREM ADOTADAS E SE FOR
-* O CASO, TAIS ALTERAÇÕES SERAM FEITAS. GRATO.
-* @author Erick da Costa
-* */
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,13 +16,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.R;
 
 import java.util.List;
 
-import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpOferta;
@@ -40,11 +32,11 @@ public class OfferFragment extends Fragment {
     private ArrayAdapter<Romaneio> offerAdapter;
     private ListView offerList;
     private List<Romaneio> offers;
-    private List<Entrega> deliveries;
     private Preferences preferences;
-    private OfferTask mTask;
     private TextView emptyView;
     private View view;
+    private SwipeRefreshLayout mSwipe;
+    private boolean swiped;
 
     public OfferFragment() {
         // Required empty public constructor
@@ -74,6 +66,16 @@ public class OfferFragment extends Fragment {
         offerList.setDivider(null);
         emptyView = view.findViewById(R.id.empty);
         preferences = new Preferences(getActivity());
+        mSwipe = view.findViewById(R.id.swipeRefresh);
+        swiped = false;
+
+        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swiped = true;
+                new OfferTask().execute();
+            }
+        });
 
         offerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,8 +96,7 @@ public class OfferFragment extends Fragment {
                         .commit(); */
             }
         });
-        mTask = new OfferTask();
-        mTask.execute();
+        new OfferTask().execute();
 
         return view;
     }
@@ -106,8 +107,10 @@ public class OfferFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            progressBar = view.findViewById(R.id.progress_offer);
-            progressBar.setVisibility(View.VISIBLE);
+            if(!swiped){
+                progressBar = view.findViewById(R.id.progress_offer);
+                progressBar.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -132,7 +135,11 @@ public class OfferFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressBar.setVisibility(View.INVISIBLE);
+            if(swiped){
+                mSwipe.setRefreshing(false);
+            }else{
+                progressBar.setVisibility(View.INVISIBLE);
+            }
             if(offers.isEmpty()){
                 offerList.setEmptyView(emptyView);
             }else {
