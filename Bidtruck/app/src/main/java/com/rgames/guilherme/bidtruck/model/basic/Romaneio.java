@@ -10,7 +10,7 @@ public class Romaneio implements Parcelable {
 
     public static final String PARCEL = "parcel_romaneiro";
     private int codigo;
-    private int codigo_empresa;
+    private int codigo_empresa;//Não deveria, mas foi necessario
     private Estabelecimento estabelecimento;
     private Motorista motorista;
     private List<Entrega> entregaList;
