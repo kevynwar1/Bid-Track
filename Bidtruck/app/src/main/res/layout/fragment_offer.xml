@@ -4,11 +4,18 @@
     android:layout_height="match_parent"
     tools:context="com.rgames.guilherme.bidtruck.view.oferta.OfferFragment">
 
-    <ListView
-        android:id="@+id/listViewOffers"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/listViewOffers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/empty"
