@@ -137,6 +137,7 @@ public class OfferFragment extends Fragment {
                 offerList.setEmptyView(emptyView);
             }else {
                 offerAdapter = new OfferAdapter(getActivity(), offers);
+                offerList.setDividerHeight(15);
                 offerList.setAdapter(offerAdapter);
             }
         }
