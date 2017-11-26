@@ -58,6 +58,14 @@ class Motorista_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
+	public function nota($motorista, $nota) {
+		$this->db->set($this->table.'.nota', $nota);
+		$this->db->where($this->table.'.codigo', $motorista);
+		$this->db->update($this->table);
+
+		return $this->db->affected_rows();
+	}
+
 	public function excluir($motorista) {
 		$this->db->where($this->table.'.codigo', $motorista->getCodigo());
 		$this->db->delete($this->table);
@@ -80,6 +88,20 @@ class Motorista_model extends CI_Model {
 		$this->db->update($this->table);
 
 		return $this->db->affected_rows();
+	}
+
+	public function verificar_email($email) {
+		$this->db->select($this->table.'.codigo')->from($this->table);
+		$this->db->join('empresa_motorista', 'empresa_motorista.cod_motorista = '.$this->table.'.codigo');
+		$this->db->where('empresa_motorista.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where($this->table.'.email', $email);
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public function consultar($filtro, $procurar) {
@@ -194,6 +216,7 @@ class Motorista_model extends CI_Model {
 				$motorista->setTipoCarteira($row->tipo_carteira);
 				$motorista->setValidadeCarteira($row->validade_carteira);
 				$motorista->setDisponibilidade($row->disponibilidade);
+				$motorista->setNota($row->nota);
 				$motorista->setSituacao($row->situacao);
 
 				$motoristas[] = $motorista;
@@ -266,6 +289,7 @@ class Motorista_model extends CI_Model {
 			motorista.longitude AS longitude, 
 			motorista.tipo_carteira AS tipo_carteira, 
 			motorista.validade_carteira AS validade_carteira, 
+			motorista.nota AS nota, 
 			motorista.situacao AS situacao
 		')->from($this->table);
 		/*$this->db->join('empresa_motorista', 'empresa_motorista.cod_motorista = '.$this->table.'.codigo');*/
@@ -297,6 +321,7 @@ class Motorista_model extends CI_Model {
 				$motorista->setLongitude($row->longitude);
 				$motorista->setTipoCarteira($row->tipo_carteira);
 				$motorista->setValidadeCarteira($row->validade_carteira);
+				$motorista->setNota($row->nota);
 				$motorista->setSituacao($row->situacao);
 
 				$motoristas[] = $motorista;

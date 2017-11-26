@@ -31,7 +31,7 @@ class TipoOcorrencia extends CI_Controller {
 		$this->pagination->initialize($config);
 
 		$data['pagination'] = $this->pagination->create_links();
-		$data['tipoocorrencia'] = $this->TipoOcorrencia_model->listar($config['per_page'], $offset);
+		$data['ocorrencia'] = $this->TipoOcorrencia_model->listar($config['per_page'], $offset);
 		$data['total'] = $this->TipoOcorrencia_model->total();
 		$data['middle'] = 'tipoocorrencia';
 		$this->load->view('pattern/layout', $data);
@@ -92,7 +92,7 @@ class TipoOcorrencia extends CI_Controller {
 			$this->pagination->initialize($config);
 
 			$data['pagination'] = $this->pagination->create_links();
-			$data['tipoocorrencia'] = $this->TipoOcorrencia_model->listar($config['per_page'], $offset);
+			$data['ocorrencia'] = $this->TipoOcorrencia_model->listar($config['per_page'], $offset);
 			$data['total'] = $this->TipoOcorrencia_model->total();
 			$data['tipo_edt'] = $this->TipoOcorrencia_model->consultar('codigo', $this->uri->segment(3));
 

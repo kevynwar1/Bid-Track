@@ -52,6 +52,42 @@ function diasemana($data, $format) {
 	echo "$diasemana";
 }
 
+function mes($mes, $format) {
+	if($format == 'extenso') {
+		switch($mes) {
+			case "1": $mes = "Janeiro";   break;
+			case "2": $mes = "Fevereiro"; break;
+			case "3": $mes = "Março";     break;
+			case "4": $mes = "Abril";  	  break;
+			case "5": $mes = "Maio";   	  break;
+			case "6": $mes = "Junho";	  break;
+			case "7": $mes = "Julho";	  break;
+			case "8": $mes = "Agosto";	  break;
+			case "9": $mes = "Setembro";  break;
+			case "10": $mes = "Outubro";  break;
+			case "11": $mes = "Novembro"; break;
+			case "12": $mes = "Dezembro"; break;
+		}
+	} else if($format == 'curto') {
+		switch($mes) {
+			case "1": $mes = "Jan";  break;
+			case "2": $mes = "Fev";  break;
+			case "3": $mes = "Mar";  break;
+			case "4": $mes = "Abr";  break;
+			case "5": $mes = "Mai";  break;
+			case "6": $mes = "Jun";	 break;
+			case "7": $mes = "Jul";	 break;
+			case "8": $mes = "Ago";	 break;
+			case "9": $mes = "Set";  break;
+			case "10": $mes = "Out"; break;
+			case "11": $mes = "Nov"; break;
+			case "12": $mes = "Dez"; break;
+		}
+	}
+
+	echo "$mes";
+}
+
 function cnpj($cnpj) {
 	if($cnpj == 0) {
 		return true;
@@ -146,4 +182,53 @@ function estrutura($assunto, $mensagem) {
 		";
 	return $html;
 }
-?>
+
+function senha($tamanho = 4, $maiusculas = true, $numeros = true, $simbolos = false) {
+	$lmin = 'abcdefghijklmnopqrstuvwxyz';
+	$lmai = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$num = '1234567890';
+	$simb = '!@#$%*-';
+
+	$retorno = '';
+	$caracteres = '';
+
+	$caracteres .= $lmin;
+	if ($maiusculas) $caracteres .= $lmai;
+	if ($numeros) $caracteres .= $num;
+	if ($simbolos) $caracteres .= $simb;
+
+	$len = strlen($caracteres);
+	for ($n = 1; $n <= $tamanho; $n++) {
+		$rand = mt_rand(1, $len);
+		$retorno .= $caracteres[$rand-1];
+	}
+
+	return $retorno;
+}
+
+function intervalo($hora_inicial, $hora_final) {
+	$i = 1;
+	$tempo_total;
+
+	$tempos = array($hora_final, $hora_inicial);
+
+	foreach($tempos as $tempo) {
+		$segundos = 0;
+		list($h, $m, $s) = explode(':', $tempo);
+		$segundos += $h * 3600;
+		$segundos += $m * 60;
+		$segundos += $s;
+
+		$tempo_total[$i] = $segundos;
+		$i++;
+	}
+	$segundos = $tempo_total[1] - $tempo_total[2];
+
+	$horas = floor($segundos / 3600);
+	$segundos -= $horas * 3600;
+	$minutos = str_pad((floor($segundos / 60)), 2, '0', STR_PAD_LEFT);
+	$segundos -= $minutos * 60;
+	$segundos = str_pad($segundos, 2, '0', STR_PAD_LEFT);
+
+	return "$horas:$minutos:$segundos";
+}

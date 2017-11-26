@@ -98,7 +98,7 @@
 											</div>
 											<div class="row">
 												<div class="col-md-6">
-													<a href="<?= base_url('transportadora'); ?>" class="btn btn-danger btn-simple">
+													<a href="javascript:window.history.go(-1)" class="btn btn-danger btn-simple">
 														Voltar
 													</a>
 												</div>

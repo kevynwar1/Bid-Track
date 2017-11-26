@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Entrega_basic extends CI_Model {
 	public $seq_entrega;
 	public $romaneio;
+	public $empresa;
 	public $destinatario;
 	public $status_entrega;
 	public $peso_carga;
@@ -12,10 +13,12 @@ class Entrega_basic extends CI_Model {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('basic/Romaneio_basic');
+		$this->load->model('basic/Empresa_basic');
 		$this->load->model('basic/Destinatario_basic');
 		$this->load->model('basic/StatusEntrega_basic');
 
 		$this->romaneio = new Romaneio_basic();
+		$this->empresa = new Empresa_basic();
 		$this->destinatario = new Destinatario_basic();
 		$this->status_entrega = new StatusEntrega_basic();
 	}
@@ -25,6 +28,9 @@ class Entrega_basic extends CI_Model {
 
 	public function getRomaneio() { return $this->romaneio; }
 	public function setRomaneio($romaneio) { $this->romaneio = $romaneio; }
+
+	public function getEmpresa() { return $this->empresa; }
+	public function setEmpresa($empresa) { $this->empresa = $empresa; }
 
 	public function getDestinatario() { return $this->destinatario; }
 	public function setDestinatario($destinatario) { $this->destinatario = $destinatario; }

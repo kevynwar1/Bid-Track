@@ -108,7 +108,7 @@
 										</span>
 									</td>
 									<td colspan="2" align="right">
-										<?= ($this->uri->segment(2) == 's') ? "<small class='desc'><a href='".base_url()."romaneio'>voltar</a></small> " : $pagination; ?>
+										<?= ($this->uri->segment(2) == 's') ? "<small class='desc'><a href='".base_url()."tipoveiculo'>voltar</a></small> " : $pagination; ?>
 									</td>
 								</tr>
 							</tfoot>
@@ -145,7 +145,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-6">
-								<a href="<?= base_url(); ?>tipoveiculo" class="btn btn-danger btn-simple">Voltar</a>
+								<a href="javascript:window.history.go(-1)" class="btn btn-danger btn-simple">Voltar</a>
 							</div>
 							<div class="col-md-6">
 								<button type="submit" class="btn btn-danger btn-fill pull-right f12 upper" name="editar">

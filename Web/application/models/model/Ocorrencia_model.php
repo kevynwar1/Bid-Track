@@ -45,6 +45,7 @@ class Ocorrencia_model extends CI_Model {
 	public function total() {
 		$this->db->select('*')->from($this->table);
 		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where('MONTH('.$this->table.'.data) = MONTH(NOW())');
 		$query = $this->db->get();
 
 		return $query->num_rows();

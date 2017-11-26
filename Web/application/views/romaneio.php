@@ -15,6 +15,22 @@
 		color: #000;
 		background: #CCC;
 	}
+	
+	.estrelas {
+		width: 100%;
+	}
+	.estrelas input[type=radio] {
+		display: none;
+	}
+	.estrelas label i.fa:before {
+		content: '\f005';
+		color: #FC0;
+		cursor: pointer;
+	}
+	.estrelas input[type=radio]:checked ~ label i.fa:before {
+		color: #CCC;
+		cursor: pointer;
+	}
 </style>
 <script src="<?= base_url(); ?>assets/js/konami.min.js"></script>
 <script>
@@ -218,7 +234,7 @@ function iniciar_viagem(romaneio) {
 											$data_criacao	 = $romaneio->data_criacao;
 											$cod_status		 = $romaneio->status_romaneio->codigo;
 											$status_romaneio = $romaneio->status_romaneio->descricao;
-											$data_format	 = explode("-", $romaneio->data_criacao);
+											$data_format	 = explode(" ", $romaneio->data_criacao);
 								?>
 								<tr>
 									<td align="center"><?= $romaneio->codigo; ?></td>
@@ -232,9 +248,10 @@ function iniciar_viagem(romaneio) {
 										<?= (is_null($motorista[0])) ? "<span class='gray'>Indefinido</span>" : $motorista; ?>
 									</td>
 									<td>
-										<?= $data_format[2]."/".$data_format[1]; ?>
+										<?php $dia = explode("-", $data_format[0]); ?>
+										<?= $dia[2]."/".$dia[1]; ?>
 										<span class="f11 upper">
-											<?= (date("Y-m-d") == $data_criacao)? 'Hoje' : diasemana($data_criacao, 'curto') ?>
+											<?= (date("Y-m-d") == $data_format[0])? 'Hoje' : diasemana($data_format[0], 'curto') ?>
 										</span>
 									</td>
 									<td>
@@ -242,9 +259,9 @@ function iniciar_viagem(romaneio) {
 											$color = NULL;
 											if($cod_status == 5) { // Aceito
 												$color = "success";
-											} else if($cod_status == 2) { // Pendente
+											} else if($cod_status == 2 || $cod_status == 4) { // Pendente ou Finalizado
 												$color = "danger";
-											} else if($cod_status == 3 || $cod_status == 6) { // Em Processo ou Ofertado
+											} else if($cod_status == 3 || $cod_status == 6) { // Em Viagem ou Ofertado
 												$color = "warning";
 											} else if($cod_status == 1) { // Liberado
 												$color = "primary";
@@ -254,57 +271,88 @@ function iniciar_viagem(romaneio) {
 											<?= $status_romaneio; ?>
 										</span>
 									</td>
-									<td align="left">
-										<a href="<?= base_url().'romaneio/visualizar/'.$codigo ?>">
-											<button type="button" rel="tooltip" data-placement="left" title="Visualizar" class="btn-pattern">
-												<i class="fa fa-eye" aria-hidden="true"></i>
-											</button>
-										</a>
-										<?php if($cod_status == 5): // Aceito ?>
-											<a href="<?= base_url().'romaneio/editar/'.$codigo ?>">
-												<button type="button" rel="tooltip" data-placement="left" title="Editar" class="btn-pattern">
-													<i class="fa fa-edit"></i>
+									<td align="left" valign="middle">
+										<?php if($cod_status == 4): // Finalizado ?>
+											<div class="estrelas" align="center">
+												
+												<form action="<?= base_url('romaneio/nota'); ?>" method="post">
+													<input type="hidden" name="romaneio" value="<?= $codigo; ?>">
+													<input type="hidden" name="motorista" value="<?= $cod_motorista; ?>">
+
+													<input type="radio" id="cm_star-empty" name="nota" value="" checked/>
+													<label for="cm_star-1"><i class="fa"></i></label>
+													<input type="radio" id="cm_star-1" name="nota" value="1"/>
+													<label for="cm_star-2"><i class="fa"></i></label>
+													<input type="radio" id="cm_star-2" name="nota" value="2"/>
+													<label for="cm_star-3"><i class="fa"></i></label>
+													<input type="radio" id="cm_star-3" name="nota" value="3"/>
+													<label for="cm_star-4"><i class="fa"></i></label>
+													<input type="radio" id="cm_star-4" name="nota" value="4"/>
+													<label for="cm_star-5"><i class="fa"></i></label>
+													<input type="radio" id="cm_star-5" name="nota" value="5"/>
+													&nbsp;
+													<button type="submit" rel="tooltip" class="btn-xs btn-option status pull-right">
+														Avaliar
+													</button>
+												</form>
+											</div>
+										<?php else: ?>
+											<a href="<?= base_url().'romaneio/visualizar/'.$codigo ?>">
+												<button type="button" rel="tooltip" data-placement="left" title="Visualizar" class="btn-pattern">
+													<i class="fa fa-eye" aria-hidden="true"></i>
 												</button>
 											</a>
-											<button class="btn-pattern" style="opacity:0" disabled><i class="fa fa-times"></i></button>
-											<a href="#">
-												<button type="button" rel="tooltip" class="btn-xs btn-option status" rel="tooltip" data-placement="left" title="Iniciar Romaneio" onclick="return iniciar_viagem('<?= $codigo ?>')">
-													Iniciar
-												</button>
-											</a>
-										<?php endif; ?>
-										<?php if($cod_status != 3 && $cod_status != 5): // Em Processo e Aceito ?>
-											<?php if($this->session->userdata('perfil') == 'A'): ?>
+											<?php if($cod_status == 5): // Aceito ?>
 												<a href="<?= base_url().'romaneio/editar/'.$codigo ?>">
 													<button type="button" rel="tooltip" data-placement="left" title="Editar" class="btn-pattern">
 														<i class="fa fa-edit"></i>
 													</button>
 												</a>
-												<a href="<?= base_url().'romaneio/excluir/'.$codigo.'/'.$cod_motorista ?>">
-													<button type="button" rel="tooltip" data-placement="left" title="Excluir" class="btn-pattern" onclick="return exclusao('<?= $codigo ?>', '<?= $cod_motorista ?>')">
-														<i class="fa fa-times"></i>
-													</button>
-												</a>
-												<?php if($cod_status == 1): // Liberado ?>
-													<button type="button" rel="tooltip" class="btn-xs btn-option status" rel="tooltip" data-placement="left" title="Iniciar Romaneio" onclick="return iniciar_viagem('<?= $codigo ?>')">
+												<button class="btn-pattern" style="opacity:0" disabled><i class="fa fa-times"></i></button>
+												<a href="#">
+													<button type="button" rel="tooltip" class="btn-xs btn-option status pull-right" rel="tooltip" data-placement="left" title="Iniciar Romaneio" onclick="return iniciar_viagem('<?= $codigo ?>')">
 														Iniciar
 													</button>
-												<?php endif; ?>
-												<?php if($cod_status == 2): // Pendente ?>
-													<a href="<?= base_url().'romaneio/ofertar/'.$codigo ?>">
-														<button type="button" rel="tooltip" data-placement="left" title="Ofertar Romaneio" class="btn-xs btn-option status"onclick="return ofertar('<?= $codigo ?>')">
-															Ofertar
+												</a>
+											<?php endif; ?>
+											<?php if($cod_status != 3 && $cod_status != 4 && $cod_status != 5): // Em Viagem, Aceito e Finalizado ?>
+												<?php if($this->session->userdata('perfil') == 'A'): ?>
+													<a href="<?= base_url().'romaneio/editar/'.$codigo ?>">
+														<button type="button" rel="tooltip" data-placement="left" title="Editar" class="btn-pattern">
+															<i class="fa fa-edit"></i>
 														</button>
 													</a>
-												<?php endif; ?>
-												<?php if($cod_status == 6): // Ofertado ?>
-													<a href="<?= base_url().'romaneio/cancelar_ofertar/'.$codigo ?>">
-														<button type="button" rel="tooltip" data-placement="left" title="Cancelar Ofertar Romaneio" class="btn-xs status" style="border:none; border-radius:3px; cursor:pointer; color:#000; box-shadow:none; background: #F9F9F9;" onclick="return cancelar_ofertar('<?= $codigo ?>')">
-															Cancelar
+													<a href="<?= base_url().'romaneio/excluir/'.$codigo.'/'.$cod_motorista ?>">
+														<button type="button" rel="tooltip" data-placement="left" title="Excluir" class="btn-pattern" onclick="return exclusao('<?= $codigo ?>', '<?= $cod_motorista ?>')">
+															<i class="fa fa-times"></i>
 														</button>
 													</a>
+													<?php if($cod_status == 1): // Liberado ?>
+														<button type="button" rel="tooltip" class="btn-xs btn-option status pull-right" rel="tooltip" data-placement="left" title="Iniciar Romaneio" onclick="return iniciar_viagem('<?= $codigo ?>')">
+															Iniciar
+														</button>
+													<?php endif; ?>
+													<?php if($cod_status == 2): // Pendente ?>
+														<a href="<?= base_url().'romaneio/ofertar/'.$codigo ?>">
+															<button type="button" rel="tooltip" data-placement="left" title="Ofertar Romaneio" class="btn-xs btn-option status pull-right" onclick="return ofertar('<?= $codigo ?>')">
+																Ofertar
+															</button>
+														</a>
+													<?php endif; ?>
+													<?php if($cod_status == 6): // Ofertado ?>
+														<a href="<?= base_url().'romaneio/cancelar_ofertar/'.$codigo ?>">
+															<button type="button" rel="tooltip" data-placement="left" title="Cancelar Ofertar Romaneio" class="btn-xs status pull-right" style="border:none; border-radius:3px; cursor:pointer; color:#000; box-shadow:none; background: #F9F9F9;" onclick="return cancelar_ofertar('<?= $codigo ?>')">
+																Cancelar
+															</button>
+														</a>
+													<?php endif; ?>
 												<?php endif; ?>
 											<?php endif; ?>
+										<?php endif; ?>
+										<?php if($cod_status == 3): // Em Viagem ?>
+											<span class="btn-option status pull-right">
+												<?= $this->Entrega_model->entrega_finalizada($codigo); ?>/<?= count($this->Entrega_model->listar($codigo)); ?> <?= (count($this->Entrega_model->listar($codigo)) > 1) ? 'Entregas' : 'Entrega'; ?>
+											</span>
 										<?php endif; ?>
 									</td>
 								</tr>

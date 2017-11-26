@@ -86,7 +86,7 @@
 <div class="wrapper">
 	<div class="sidebar" data-color="red" data-image="<?= base_url('assets/img/sidebar-bid.jpg'); ?>"> <!-- data-image="<?= base_url(); ?>assets/img/sidebar-1.jpg" -->
 		<div class="logo">
-			<a href="#" class="simple-text"><?= SYSTEM_NAME; ?></a>
+			<a href="<?= base_url(); ?>" class="simple-text"><?= SYSTEM_NAME; ?></a>
 		</div>
 		<div class="sidebar-wrapper">
 			<ul class="nav">
@@ -154,7 +154,7 @@
 				<li class="<?= ($page == 'tipoocorrencia') ? 'active' : ''; ?>">
 					<a href="<?= base_url('tipoocorrencia'); ?>">
 						<i class="material-icons">info_outline</i>
-						<p>Ocorrência</p>
+						<p>Tipo Ocorrência</p>
 					</a>
 				</li>
 			</ul>
@@ -201,9 +201,9 @@
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<a href="<?= base_url('dashboard'); ?>">
+							<a href="<?= base_url('dashboard'); ?>" rel="tooltip" data-placement="bottom" title="Dashboard">
 								<i class="material-icons">dashboard</i>
-								<p class="hidden-lg hidden-md">Configuração</p>
+								<p class="hidden-lg hidden-md">Dashboard</p>
 							</a>
 						</li>
 						<!-- li class="dropdown">

@@ -14,59 +14,59 @@
 					<div class="card-content">
 						<form action="<?= base_url() ?>transportadora/cadastrar" method="post">
 							<div class="row">
-								<div class="col-md-3 lm15">
-									<div class="form-group">
-										<label>CNPJ</label>
+								<div class="col-md-3">
+									<div id="label-cnpj" class="form-group label-floating">
+										<label class="control-label">CNPJ</label>
 										<input type="text" name="cnpj" id="cnpj" ng-model="cnpj" pattern="([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})" class="form-control lm10" autocomplete="off" required>
 									</div>
 								</div>
-								<div class="col-md-6 lm15">
-									<div class="form-group">
-										<label>Razão Social</label>
+								<div class="col-md-6">
+									<div id="label-razao" class="form-group label-floating">
+										<label class="control-label">Razão Social</label>
 										<input type="text" name="razao_social" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç.,/\s]+$" id="empresa-input" class="form-control lm10" autocomplete="off" disabled required>
 									</div>
 								</div>
-								<div class="col-md-2 lm15">
-									<div class="form-group">
-										<label>CEP</label>
+								<div class="col-md-2">
+									<div id="label-cep" class="form-group label-floating">
+										<label class="control-label">CEP</label>
 										<input type="text" name="cep" id="cep" autocomplete="off" class="form-control lm10" autocomplete="off" disabled required>
 									</div>
 								</div>
-								<div class="col-md-1 lm15">
-									<div class="form-group">
-										<label>UF</label>
+								<div class="col-md-1">
+									<div id="label-uf" class="form-group label-floating">
+										<label class="control-label">UF</label>
 										<input type="text" name="uf" pattern="[a-zA-Z\s]+$" maxlength="2" id="uf" class="form-control upper lm10" required disabled>
 									</div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-3 lm15">
-									<div class="form-group">
-										<label>Endereço</label>
+								<div class="col-md-3 lm10">
+									<div id="label-endereco" class="form-group label-floating">
+										<label class="control-label">Endereço</label>
 										<input type="text" name="logradouro" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç\s]+$" id="endereco" class="form-control lm10" autocomplete="off" disabled required>
 									</div>
 								</div>
-								<div class="col-md-2 lm15">
-									<div class="form-group">
-										<label>Compl.</label>
+								<div class="col-md-2 lm10">
+									<div id="label-complemento" class="form-group label-floating">
+										<label class="control-label">Compl.</label>
 										<input type="text" name="complemento" pattern="[a-zA-Z\s]+$" id="complemento" class="form-control lm10" autocomplete="off" disabled>
 									</div>
 								</div>
-								<div class="col-md-1 lm15">
-									<div class="form-group">
-										<label>Número</label>
+								<div class="col-md-1 lm10">
+									<div id="label-numero" class="form-group label-floating">
+										<label class="control-label">Número</label>
 										<input type="text" name="numero" pattern="[0-9]+$" id="numero" autocomplete="off" class="form-control lm10" disabled required>
 									</div>
 								</div>
-								<div class="col-md-3 lm15">
-									<div class="form-group">
-										<label>Bairro</label>
+								<div class="col-md-3 lm10">
+									<div id="label-bairro" class="form-group label-floating">
+										<label class="control-label">Bairro</label>
 										<input type="text" name="bairro" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç\s]+$" id="bairro" autocomplete="off" class="form-control lm10" disabled required>
 									</div>
 								</div>
-								<div class="col-md-3 lm15">
-									<div class="form-group">
-										<label>Cidade</label>
+								<div class="col-md-3 lm10">
+									<div id="label-cidade" class="form-group label-floating">
+										<label class="control-label">Cidade</label>
 										<input type="text" name="cidade" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç\s]+$" id="cidade" class="form-control lm10" autocomplete="off" disabled required>
 									</div>
 								</div>
@@ -168,6 +168,15 @@
 				$('#cep').val(data.cep);
 				$('#uf').val(data.uf);
 				$('#email').val(data.email);
+
+				$('#label-razao').removeClass('is-empty');
+				$('#label-endereco').removeClass('is-empty');
+				$('#label-complemento').removeClass('is-empty');
+				$('#label-numero').removeClass('is-empty');
+				$('#label-cep').removeClass('is-empty');
+				$('#label-bairro').removeClass('is-empty');
+				$('#label-cidade').removeClass('is-empty');
+				$('#label-uf').removeClass('is-empty');
 			},
 			error: function(result) {
 				if($("#cnpj").val() != '') {
@@ -183,6 +192,15 @@
 				$('#cep').val("").prop('disabled', true);
 				$('#uf').val("").prop('disabled', true);
 				$('#email').val("").prop('disabled', true);
+
+				$('#label-razao').addClass('is-empty');
+				$('#label-endereco').addClass('is-empty');
+				$('#label-complemento').addClass('is-empty');
+				$('#label-numero').addClass('is-empty');
+				$('#label-cep').addClass('is-empty');
+				$('#label-bairro').addClass('is-empty');
+				$('#label-cidade').addClass('is-empty');
+				$('#label-uf').addClass('is-empty');
 
 				$('#empresa-title').text("Transportadora");
 				$('#row-transportadora-info').fadeOut('fast');

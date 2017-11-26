@@ -615,7 +615,7 @@
 												<div class="col-md-12 lm15">
 													<div class="form-group label-floating">
 														<label class="control-label">E-mail</label>
-														<input type="email" name="email" class="form-control" value="" autocomplete="off">
+														<input type="email" name="email" class="form-control email_cad" value="" autocomplete="off">
 													</div>
 												</div>
 											</div>
@@ -683,6 +683,25 @@
 			});
 
 			return false;
+		});
+
+		$('.email_cad').blur(function(){
+			var email = $('.email_cad').val();
+			$.ajax({
+				url: '<?= base_url() ?>home/verificar_email',
+				type: 'POST',
+				data: 'email='+email,
+				dataType: 'json',
+				success: function(data) {
+					if(data == false) {
+						demo.showNotification('bottom', 'right', 'E-mail já cadastrado, por favor tente outro.');
+						$('.email_cad').val("");
+						$('.email_cad').focus();
+					}
+				}
+			});
+
+			return true;
 		});
 	});
 </script>
