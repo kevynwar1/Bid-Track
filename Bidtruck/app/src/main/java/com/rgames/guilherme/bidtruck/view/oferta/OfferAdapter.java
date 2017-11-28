@@ -1,7 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.oferta;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -18,11 +17,9 @@ import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,8 +27,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
@@ -73,8 +73,6 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
             TextView distancia2 = view.findViewById(R.id.tvDistancia2);
             TextView peso2 = view.findViewById(R.id.tvPeso2);
 
-            WebService task = new WebService(getContext(), distancia, duracao);
-            task.execute();
 
             Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto.regular.ttf");
             payment.setTypeface(font);
@@ -105,23 +103,34 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
             Entrega mentrega = offer.getEntregaList().get(offer.getEntregaList().size() - 1);
 
-            String CidadeOrigem = offer.getEstabelecimento().getCidade();
-            String EstadoOrigem = offer.getEstabelecimento().getUf();
-            mEstadoOrigem = EstadoOrigem.replace(" ", "+");
-            mCidadeOrigem = CidadeOrigem.replace(" ", "+");
+           for (int i = 0; i < offers.size(); i ++) {
+               String CidadeOrigem = offer.getEstabelecimento().getCidade();
+               String EstadoOrigem = offer.getEstabelecimento().getUf();
+               mEstadoOrigem = EstadoOrigem.replace(" ", "+");
+               mCidadeOrigem = CidadeOrigem.replace(" ", "+");
 
-            String CidadeDestino = mentrega.getDestinatario().getCidade();
-            String EstadoDestino = mentrega.getDestinatario().getUF();
-            mEstadoDestino = EstadoDestino.replace(" ", "+");
-            mCidadeDestino = CidadeDestino.replace(" ", "+");
+               String CidadeDestino = mentrega.getDestinatario().getCidade();
+               String EstadoDestino = mentrega.getDestinatario().getUF();
+               mEstadoDestino = EstadoDestino.replace(" ", "+");
+               mCidadeDestino = CidadeDestino.replace(" ", "+");
 
 
-            mcidadeD = mentrega.getDestinatario().getCidade();
-            mestadoD = mentrega.getDestinatario().getUF();
-            // String urldistancia = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + mCidadeOrigem + "," + mEstadoOrigem + "&destinations=" + mCidadeDestino + "," + mEstadoDestino + "&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
+               mcidadeD = mentrega.getDestinatario().getCidade();
+               mestadoD = mentrega.getDestinatario().getUF();
+               String urldistancia = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + mCidadeOrigem + "," + mEstadoOrigem + "&destinations=" + mCidadeDestino + "," + mEstadoDestino + "&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
+               WebService task = new WebService(getContext(), distancia, urldistancia);
+               task.execute();
+           }
             origem.setText(offer.getEstabelecimento().getCidade() + " - " + offer.getEstabelecimento().getUf());
             destino.setText(mentrega.getDestinatario().getCidade() + " - " + mentrega.getDestinatario().getUF());
 
+
+            try {
+                String recebeData = retornaData(offer.getData_oferta());
+                duracao.setText(recebeData);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             //code.setText(Integer.toString(offer.getCodigo()));
             peso.setText(Integer.toString(pesoTotal) + " kg");
@@ -135,49 +144,51 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
     public class WebService extends AsyncTask<String, Void, JSONObject> {
         Context mContext;
-        TextView view, view2;
+        TextView view;
+        String url;
 
-        public WebService(Context mContext, TextView v, TextView v2) {
+        public WebService(Context mContext, TextView v, String url) {
             this.mContext = mContext;
             this.view = v;
-            this.view2 = v2;
+            this.url = url;
+
         }
 
         @Override
         protected JSONObject doInBackground(String... params) {
             try {
 
-                    URL mUrl = new URL("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + mCidadeOrigem + "," + mEstadoOrigem + "&destinations=" + mCidadeDestino + "," + mEstadoDestino + "&language=pt-BR&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU");
-                    HttpURLConnection httpConnection = (HttpURLConnection) mUrl.openConnection();
-                    httpConnection.setRequestMethod("GET");
-                    httpConnection.setRequestProperty("Content-length", "0");
-                    httpConnection.setUseCaches(false);
-                    httpConnection.setAllowUserInteraction(false);
-                    httpConnection.setConnectTimeout(100000);
-                    httpConnection.setReadTimeout(100000);
+                URL mUrl = new URL(url);
+                HttpURLConnection httpConnection = (HttpURLConnection) mUrl.openConnection();
+                httpConnection.setRequestMethod("GET");
+                httpConnection.setRequestProperty("Content-length", "0");
+                httpConnection.setUseCaches(false);
+                httpConnection.setAllowUserInteraction(false);
+                httpConnection.setConnectTimeout(100000);
+                httpConnection.setReadTimeout(100000);
 
-                    httpConnection.connect();
+                httpConnection.connect();
 
-                    int responseCode = httpConnection.getResponseCode();
+                int responseCode = httpConnection.getResponseCode();
 
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            sb.append(line + "\n");
-                        }
-                        br.close();
-                        String json = sb.toString();
-                        JSONObject jsonObject = new JSONObject(json);
-                        return jsonObject;
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
                     }
-                } catch(IOException e){
-                    e.printStackTrace();
-                } catch(Exception ex){
-                    ex.printStackTrace();
+                    br.close();
+                    String json = sb.toString();
+                    JSONObject jsonObject = new JSONObject(json);
+                    return jsonObject;
                 }
-                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
 
         }
 
@@ -189,8 +200,8 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
                 recebido = s.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("distance").getString("text");
 
-                dur = s.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getString("text");
-                view2.setText(dur);
+                // dur = s.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getString("text");
+
                 view.setText(recebido);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -198,5 +209,30 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
         }
     }
 
+    public String retornaData(String oferta) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date data = new Date();
+
+        Calendar cal = Calendar.getInstance();
+        String datas = new SimpleDateFormat("yyyy-MM-dd").format(data);
+        String hora = new SimpleDateFormat("HH:mm:ss").format(data);
+        cal.setTime(dateFormat.parse(datas + " " + hora));
+
+        Calendar calOferta = Calendar.getInstance();
+        calOferta.setTime(dateFormat.parse(oferta));
+
+        long divisao = cal.getTimeInMillis() - calOferta.getTimeInMillis();
+        long diffMinutos = (divisao) / (60 * 1000);
+        long hours = (60 * 60 * 1000);
+        long diffHoras = divisao / hours;
+      //  long diffHorasMinutos = (divisao % hours) / (60 * 1000);
+        long diffDias = (divisao /1000) / 60 / 60 /24;
+        if (divisao < 86400000)
+            return diffHoras + " Horas";
+        else if (divisao < 3600000)
+            return diffMinutos + " Minutos";
+        else
+            return diffDias + " Dias";
+    }
 }
 

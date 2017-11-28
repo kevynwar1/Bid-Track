@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context="com.rgames.guilherme.bidtruck.view.oferta.OfferFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -13,7 +14,8 @@
             android:id="@+id/listViewOffers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"/>
+
+            />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Não há ofertas disponíveis no nomento"
+        android:text="Não há ofertas disponíveis no momento"
         android:visibility="gone"/>
 
     <ProgressBar
