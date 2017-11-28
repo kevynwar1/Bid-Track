@@ -50,13 +50,13 @@ public class HttpConnection {
         if (context != null) {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-            boolean retorno =(networkInfo != null && networkInfo.isConnected());
-            if(retorno){
+            boolean isConnected =(networkInfo != null && networkInfo.isConnected());
+                if(isConnected){
                 context.startService(new Intent(context, ServiceWifi.class));
             }else{
                 context.stopService(new Intent(context, ServiceWifi.class));
             }
-            return retorno;
+            return isConnected;
         } else try {
             throw new ContextNullException();
         } catch (ContextNullException e) {

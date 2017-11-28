@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -84,6 +85,7 @@ public class OcorrenciaPagerFragment extends Fragment {
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void initList() {
         new AsyncTask<Void, Void, List<Ocorrencia>>() {
             @Override

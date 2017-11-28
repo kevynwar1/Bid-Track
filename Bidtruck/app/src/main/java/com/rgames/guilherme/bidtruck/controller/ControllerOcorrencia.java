@@ -33,7 +33,7 @@ public class ControllerOcorrencia {
         return busOcorrencia.selectTipo(empresa);
     }
 
-    public boolean insert(Ocorrencia ocorrencia, ArrayList<Image> fotos) {
+    public boolean insert(Ocorrencia ocorrencia, List<Image> fotos) {
         return busOcorrencia.insert(ocorrencia, fotos);
     }
 

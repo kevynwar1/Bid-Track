@@ -34,7 +34,7 @@ public class DAOOcorrencia extends DAOGeneric {
         return id;
     }
 
-    public boolean insertListaDeFotos(ArrayList<Image> fotos) {
+    public boolean insertListaDeFotos(List<Image> fotos) {
         try {
             db = base.getWritableDatabase();
             db.beginTransaction();
@@ -94,6 +94,7 @@ public class DAOOcorrencia extends DAOGeneric {
     public boolean delete(Ocorrencia ocorrencia) {
         try {
             db = super.base.getReadableDatabase();
+            db.beginTransaction();
             if (super.delete(table.TB_OCORRENCIA, table.TB_OCORRENCIA_COL_CODIGO + " = ? ", ocorrencia.getCodigo()) > 0) {
                 if (super.delete(table.TB_FOTO, table.TB_FOTO_COL_COD_OCORRENCIA + " = ? ", ocorrencia.getCodigo()) == 0)
                     return false;
@@ -121,6 +122,13 @@ public class DAOOcorrencia extends DAOGeneric {
     public int deleteTipoOcorrenciaTodos() {
         db = base.getWritableDatabase();
         int aff = db.delete(table.TB_TIPOCORRENCIA, null, null);
+        db.close();
+        return aff;
+    }
+
+    public int deleteOcorrenciaTodos() {
+        db = base.getWritableDatabase();
+        int aff = db.delete(table.TB_OCORRENCIA, null, null);
         db.close();
         return aff;
     }

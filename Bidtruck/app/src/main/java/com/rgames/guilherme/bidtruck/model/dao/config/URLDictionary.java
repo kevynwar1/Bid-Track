@@ -27,6 +27,7 @@ public enum URLDictionary {
     URL_OCORRENCIA("/ocorrencia"),
     URL_STATUS_ENTREGA("/entrega_status/"),
     URL_NOVO_STATUS_ENTREGA("/entrega_status/"),
+    URL_SINCRONIZAR("/sincronizar/"),
     URL_STATUS_ROMANEIO("/romaneio_status/");
 
 

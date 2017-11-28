@@ -4,14 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
-import com.rgames.guilherme.bidtruck.model.basic.StatusEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.database.DataBase;
 import com.rgames.guilherme.bidtruck.model.dao.database.EmpresaTable;
-import com.rgames.guilherme.bidtruck.model.dao.database.StatusEntregaTable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EmpresaRep {
 
@@ -34,7 +30,7 @@ public class EmpresaRep {
         boolean retorno = false;
         try{
             SQLiteDatabase database = connection.getWritableDatabase();
-            long resultado = database.insert(empresaTable.TABELA, null, preencheEmpresa(empresa));
+            long resultado = database.insert(EmpresaTable.TABELA, null, preencheEmpresa(empresa));
             if(resultado != -1){
                 retorno = true;
             }
@@ -47,13 +43,13 @@ public class EmpresaRep {
     public Empresa buscarEmpresa(){
         SQLiteDatabase database = connection.getReadableDatabase();
         Empresa empresa = null;
-        String sql = "SELECT * FROM " + empresaTable.TABELA;
+        String sql = "SELECT * FROM " + EmpresaTable.TABELA;
         try {
             Cursor cursor = database.rawQuery(sql, null);
             while(cursor.moveToNext()){
                 empresa = new Empresa();
-                empresa.setCodigo(cursor.getInt(cursor.getColumnIndex(empresaTable.CODIGO)));
-                empresa.setNome_fantasia(cursor.getString(cursor.getColumnIndex(empresaTable.NOME_FANTASIA)));
+                empresa.setCodigo(cursor.getInt(cursor.getColumnIndex(EmpresaTable.CODIGO)));
+                empresa.setNome_fantasia(cursor.getString(cursor.getColumnIndex(EmpresaTable.NOME_FANTASIA)));
 
             }
             database.close();
@@ -69,8 +65,8 @@ public class EmpresaRep {
 
     public int excluirRomaneio(Empresa empresa) {
         SQLiteDatabase db = connection.getWritableDatabase();
-        int resultado = db.delete(empresaTable.TABELA,
-                empresaTable.CODIGO + " = ?",
+        int resultado = db.delete(EmpresaTable.TABELA,
+                EmpresaTable.CODIGO + " = ?",
                 new String[]{String.valueOf(empresa.getCodigo())});
         db.close();
 

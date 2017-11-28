@@ -56,7 +56,7 @@ public class BusOcorrencia {
             return daoOcorrencia.selectTipoOcorrencia(empresa);
     }
 
-    public boolean insert(Ocorrencia ocorrencia, ArrayList<Image> fotos) {
+    public boolean insert(Ocorrencia ocorrencia, List<Image> fotos) {
         if (HttpConnection.isConnected(mContext)) {
             ArrayList<String> fotoString = new ArrayList<>();
             for (Image img : fotos) {

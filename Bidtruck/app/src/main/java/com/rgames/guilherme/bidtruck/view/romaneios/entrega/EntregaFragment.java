@@ -1,6 +1,7 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,31 +104,27 @@ public class EntregaFragment extends Fragment {
                         initRecyclerView(null);
                         emptyViewVazio(true);
                         return;
-
                     }
-
                 }
-
-
             }
+
             if (facade.isConnected(context)) {
-                List<Entrega> entregas = entregaRep.buscarEntrega();
-                if (entregas == null || entregas.size() == 0) {
+//                List<Entrega> entregas = entregaRep.buscarEntrega();
+//                if (entregas.size() == 0) {
                     entregaTask = new EntregaTask();
                     entregaTask.execute();
-                } else if (entregas != null || entregas.size() > 0) {
+//                } else{
                     mRomaneioList = romaneioRep.buscarRomaneio();
-
                     //valida se a empresa selecionada é a mesma inserida no romaneio
                     if (mEmpresa.getCodigo() == mRomaneioList.get(0).getCodigo_empresa()) {
                         mRomaneio = mRomaneioList.get(0);
-                        initRecyclerView(entregas);
+//                        romaneioRep.inserir(mRomaneio, mRomaneio.getEstabelecimento().getEmpresa());
+                        initRecyclerView(mEntregaList);
                     } else {
                         emptyView(true);
                         return;
                     }
-
-                }
+//                }
             } else if (!facade.isConnected(context)) {
                 mEntregaList = null;
                 mRomaneioList = null;
@@ -169,6 +165,7 @@ public class EntregaFragment extends Fragment {
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void buscarTiposOcorrencia() {
         new AsyncTask<Void, Void, List<TipoOcorrencia>>() {
             ControllerOcorrencia controllerOcorrencia = new ControllerOcorrencia(getActivity());
@@ -273,22 +270,19 @@ public class EntregaFragment extends Fragment {
 
                         if (mRomaneioList.get(i).getStatus_romaneio().getCodigo() == 3) {
 
-                            if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() <= 0) {
+//                            if (romaneioRep.buscarRomaneio().size() <= 0) {
                                 romaneioRep.inserir(mRomaneioList.get(i), mEmpresa);
-                            }
+//                            }
 
                             mRomaneio = mRomaneioList.get(i);
 
                         }
                     }
-
                     mEntregaList = facade.selectEntrega(mRomaneio.getCodigo());
                     if (entregaRep.buscarEntrega() == null || entregaRep.buscarEntrega().size() <= 0) {
                         setLocalEntregas(mEntregaList);
                     }
                 }
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
