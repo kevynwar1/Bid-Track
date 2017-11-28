@@ -29,7 +29,7 @@
 					</div>
 					<div class="card-footer">
 						<div class="stats">
-							<i class="material-icons">date_range</i> Mês de Outubro
+							<i class="material-icons">date_range</i> Mês de <?= mes(date('m'), 'extenso'); ?>
 						</div>
 					</div>
 				</div>
@@ -43,6 +43,11 @@
 					<div class="card-content">
 						<p class="category"><?= ($ocorrencia <= 1)? 'Ocorrência' : 'Ocorrências'; ?></p>
 						<h3 class="title"><?= $ocorrencia; ?></h3>
+					</div>
+					<div class="card-footer">
+						<div class="stats">
+							<i class="material-icons">date_range</i> Mês de <?= mes(date('m'), 'extenso'); ?>
+						</div>
 					</div>
 				</div>
 			</div>

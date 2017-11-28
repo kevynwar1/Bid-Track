@@ -74,6 +74,7 @@
 										<i class="fa fa-sort" aria-hidden="true"></i>
 									</span>
 								</th>
+								<th>Nota</th>
 								<th></th>
 								<th></th>
 							</thead>
@@ -92,6 +93,7 @@
 									</td>
 									<td><?= $row->bairro; ?></td>
 									<td><?= $row->cidade; ?></td>
+									<td><?= ($row->nota != NULL)? $row->nota : '<span style="color: #999">0.00</span>' ; ?></td>
 									<td>
 										<?php
 											$color = NULL;
@@ -145,10 +147,10 @@
 											?>
 										</span>
 									</td>
-									<td colspan="3" align="left">
+									<td colspan="3" align="center">
 										<?= ($this->uri->segment(2) == 's') ? "<small class='desc'><a href='".base_url()."motorista'>voltar</a></small> " : $pagination; ?>
 									</td>
-									<td colspan="2">
+									<td colspan="3">
 										<?php if($this->session->userdata('perfil') == 'A'): ?>
 											<a href="<?= base_url().'motorista/add' ?>">
 												<button type="submit" class="btn btn-simple btn-danger btn-fill pull-right f12 upper">Adicionar</button>

@@ -39,6 +39,16 @@ class Romaneio_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
+	public function nota($romaneio, $motorista, $nota) {
+		$this->db->set($this->table.'.nota', $nota);
+		$this->db->where($this->table.'.codigo', $romaneio);
+		$this->db->where($this->table.'.cod_motorista', $motorista);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->update($this->table);
+
+		return $this->db->affected_rows();
+	}
+
 	public function excluir($romaneio) {
 		$this->db->where($this->table.'.codigo', $romaneio->getCodigo());
 		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
@@ -63,7 +73,7 @@ class Romaneio_model extends CI_Model {
 	public function total() {
 		$this->db->select('*')->from($this->table);
 		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
-		$this->db->where($this->table.'.cod_status_romaneio <>', '4');
+		$this->db->where($this->table.'.cod_status_romaneio <>', '7');
 		$query = $this->db->get();
 
 		return $query->num_rows();
@@ -87,6 +97,22 @@ class Romaneio_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
+	public function consultar_nota($motorista) {
+		$this->db->select('romaneio.nota')->from($this->table);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where($this->table.'.cod_motorista', $motorista);
+		$this->db->where($this->table.'.nota <>', NULL);
+		$query = $this->db->get();
+
+		if($query->num_rows() > 0) {
+			$result = $query->result();
+		} else {
+			$result = FALSE;
+		}
+
+		return $result;
+	}
+
 	public function listar($limit = null, $offset = null) {
 		$this->db->select('*, 
 			lpad(romaneio.codigo, 4, 0) AS cod_romaneio,
@@ -107,7 +133,7 @@ class Romaneio_model extends CI_Model {
 		$this->db->join('tipo_veiculo', 'tipo_veiculo.codigo = '.$this->table.'.cod_tipo_veiculo');
 		$this->db->join('status_romaneio', 'status_romaneio.codigo = '.$this->table.'.cod_status_romaneio');
 		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
-		$this->db->where($this->table.'.cod_status_romaneio <>', '4');
+		$this->db->where($this->table.'.cod_status_romaneio <>', '7');
 		if(isset($limit) && isset($offset)) {
 			$this->db->limit($limit, $offset);
 		}
@@ -253,6 +279,7 @@ class Romaneio_model extends CI_Model {
 		$this->db->select('*, 
 			lpad(romaneio.codigo, 4, 0) AS cod_romaneio, 
 			romaneio.valor AS valor, 
+			romaneio.data_oferta AS data_oferta, 
 
 			estabelecimento.razao_social AS est_razao, 
 			estabelecimento.cnpj AS est_cnpj, 
@@ -334,6 +361,7 @@ class Romaneio_model extends CI_Model {
 				$romaneio->getMotorista()->setUf($row->mot_uf);
 				$romaneio->setValor($row->valor);
 				$romaneio->setDataCriacao($row->data_criacao);
+				$romaneio->setDataOferta($row->data_oferta);
 				$romaneio->setDataFinalizacao($row->data_finalizacao);
 
 				$romaneios[] = $romaneio;
@@ -348,6 +376,7 @@ class Romaneio_model extends CI_Model {
 	public function faturamento() {
 		$this->db->select('SUM('.$this->table.'.valor) AS valor')->from($this->table);
 		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where('MONTH('.$this->table.'.data_criacao) = MONTH(NOW())');
 		$query = $this->db->get();
 
 		if($query->num_rows() == 1) {
@@ -389,6 +418,15 @@ class Romaneio_model extends CI_Model {
 
 	public function status($status, $romaneio) {
 		$this->db->set($this->table.'.cod_status_romaneio', $status);
+		$this->db->where($this->table.'.codigo', $romaneio);
+		$this->db->update($this->table);
+
+		return $this->db->affected_rows();
+	}
+
+	public function ofertar($status, $romaneio, $data) {
+		$this->db->set($this->table.'.cod_status_romaneio', $status);
+		$this->db->set($this->table.'.data_oferta', $data);
 		$this->db->where($this->table.'.codigo', $romaneio);
 		$this->db->update($this->table);
 
@@ -460,6 +498,7 @@ class Romaneio_model extends CI_Model {
 				r.cod_motorista AS cod_motorista, 
 				r.valor AS valor, 
 				r.data_criacao AS data_criacao, 
+				r.data_oferta AS data_oferta, 
 				r.data_finalizacao AS data_finalizacao, 
 
 				e.razao_social AS razao_social, 
@@ -508,6 +547,7 @@ class Romaneio_model extends CI_Model {
 				$romaneio->getMotorista()->setCodigo($row->cod_motorista);
 				$romaneio->setValor($row->valor);
 				$romaneio->setDataCriacao($row->data_criacao);
+				$romaneio->setDataOferta($row->data_oferta);
 				$romaneio->setDataFinalizacao($row->data_finalizacao);
 				// $romaneio->setOfertarViagem($row->ofertar_viagem);
 
@@ -529,6 +569,7 @@ class Romaneio_model extends CI_Model {
 			romaneio.cod_transportadora AS cod_transportadora, 
 			romaneio.cod_motorista AS cod_motorista, 
 			romaneio.data_criacao AS data_criacao, 
+			romaneio.data_oferta AS data_oferta, 
 			romaneio.data_finalizacao AS data_finalizacao, 
 			estabelecimento.razao_social AS est_razao, 
 			estabelecimento.logradouro AS est_logradouro, 
@@ -574,6 +615,7 @@ class Romaneio_model extends CI_Model {
 				$romaneio->getTransportadora()->setNomeFantasia($row->nome_fantasia);
 				$romaneio->getMotorista()->setCodigo($row->cod_motorista);
 				$romaneio->setDataCriacao($row->data_criacao);
+				$romaneio->setDataOferta($row->data_oferta);
 				$romaneio->setDataFinalizacao($row->data_finalizacao);
 				// $romaneio->setOfertarViagem($row->ofertar_viagem);
 

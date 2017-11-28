@@ -7,67 +7,67 @@
 		<div class="row">
 			<div id="row-destinatario" class="col-md-12" style="transition: 0.5s;">
 				<div class="card">
-					<div class="card-header" data-background-color="blue-center">
+					<div class="card-header" data-background-color="blue-left">
 						<h4 class="title">Destinatário</h4>
 						<p class="category">Cadastre o <span id="empresa-title">Destinatário</span></p>
 					</div>
 					<div class="card-content">
 						<form action="<?= base_url('destinatario/cadastrar'); ?>" method="post">
 							<div class="row">
-								<div class="col-md-3 lm15">
+								<div class="col-md-3">
 									<div class="form-group label-floating">
-										<label>CPF</label>
+										<label class="control-label">CPF</label>
 										<input type="hidden" name="tipo_pessoa" value="f">
 										<input type="text" name="cnpj_cpf" id="cnpj_cpf" ng-model="cnpj_cpf" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" class="form-control lm10" autocomplete="off" required>
 									</div>
 								</div>
-								<div class="col-md-6 lm15">
+								<div class="col-md-6">
 									<div class="form-group label-floating">
-										<label>Nome</label>
+										<label class="control-label">Nome</label>
 										<input type="text" name="razao_social" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç./\s]+$" class="form-control lm10" autocomplete="off" ng-model="nome" required>
 									</div>
 								</div>
-								<div class="col-md-3 lm15">
+								<div class="col-md-3">
 									<div class="form-group label-floating">
-										<label>CEP</label>
+										<label class="control-label">CEP</label>
 										<input type="text" name="cep" id="cep" autocomplete="off" class="form-control lm10" autocomplete="off" ng-model="cep" required>
 									</div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-3 lm15">
-									<div class="form-group label-floating">
-										<label>Endereço</label>
+								<div class="col-md-3 lm10">
+									<div id="label-endereco" class="form-group label-floating">
+										<label class="control-label">Endereço</label>
 										<input type="text" name="logradouro" id="logradouro" id="endereco" class="form-control lm10" autocomplete="off" required>
 									</div>
 								</div>
-								<div class="col-md-1 lm15">
-									<div class="form-group label-floating">
-										<label>Compl.</label>
+								<div class="col-md-1 lm10">
+									<div id="label-complemento" class="form-group label-floating">
+										<label class="control-label">Compl.</label>
 										<input type="text" name="complemento" id="complemento" class="form-control lm10" autocomplete="off">
 									</div>
 								</div>
-								<div class="col-md-1 lm15">
-									<div class="form-group label-floating">
-										<label>Número</label>
+								<div class="col-md-1 lm10">
+									<div id="label-numero" class="form-group label-floating">
+										<label class="control-label">Número</label>
 										<input type="text" name="numero" pattern="[0-9]+$" id="numero" autocomplete="off" class="form-control lm10" required>
 									</div>
 								</div>
-								<div class="col-md-3 lm15">
-									<div class="form-group label-floating">
-										<label>Bairro</label>
+								<div class="col-md-3 lm10">
+									<div id="label-bairro" class="form-group label-floating">
+										<label class="control-label">Bairro</label>
 										<input type="text" name="bairro" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç\s]+$" id="bairro" autocomplete="off" class="form-control lm10" required>
 									</div>
 								</div>
-								<div class="col-md-3 lm15">
-									<div class="form-group label-floating">
-										<label>Cidade</label>
+								<div class="col-md-3 lm10">
+									<div id="label-cidade" class="form-group label-floating">
+										<label class="control-label">Cidade</label>
 										<input type="text" name="cidade" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç\s]+$" id="cidade" class="form-control lm10" autocomplete="off" required>
 									</div>
 								</div>
-								<div class="col-md-1 lm15">
-								<div class="form-group label-floating">
-									<label>UF</label>
+								<div class="col-md-1 lm10">
+								<div id="label-uf" class="form-group label-floating">
+									<label class="control-label">UF</label>
 									<select class="form-control lm10" name="uf" id="uf">
 										<option value="" class="option_none" disabled selected></option>
 										<option value="AC">AC</option>
@@ -201,6 +201,11 @@
 					$("#uf option:contains("+data.uf+")").attr('selected', true);
 					$('#numero').focus();
 				}
+
+				$('#label-endereco').removeClass('is-empty');
+				$('#label-bairro').removeClass('is-empty');
+				$('#label-cidade').removeClass('is-empty');
+				$('#label-uf').removeClass('is-empty');
 			}
 		});
 

@@ -1,6 +1,7 @@
 package com.rgames.guilherme.bidtruck.view.oferta;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Entrega;
 import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,6 +27,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class OfferAdapter extends ArrayAdapter<Romaneio> {
@@ -34,10 +39,10 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
     private List<Romaneio> offers;
     private int pesoTotal;
     private String mcidadeD, mestadoD;
-    String distanciaa;
     String mCidadeOrigem, mEstadoOrigem;
     String mCidadeDestino, mEstadoDestino;
-    String recebido;
+    String recebido, dur;
+    Romaneio offer;
 
     public OfferAdapter(Context c, List<Romaneio> list) {
         super(c, 0, list);
@@ -51,30 +56,45 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = null;
         if (offers != null) {
-            WebService apii = new WebService();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.lista_oferta, parent, false);
-            TextView code = view.findViewById(R.id.cod_oferta);
-            TextView payment = view.findViewById(R.id.dinheiro_oferta);
-            TextView peso = view.findViewById(R.id.peso_oferta);
-            TextView estadoO = view.findViewById(R.id.tvEstadoO);
-            TextView cidadeO = view.findViewById(R.id.tvCidadeO);
-            TextView estadoD = view.findViewById(R.id.tvEstadoD);
-            TextView cidadeD = view.findViewById(R.id.tvCidadeD);
-              TextView distancia = view.findViewById(R.id.tvDistancia);
+            offer = offers.get(position);
+
             ImageView imagem = view.findViewById(R.id.thumbnail2);
+            // TextView code = view.findViewById(R.id.cod_oferta);
+            TextView payment = view.findViewById(R.id.tvDinheiro);
+            TextView peso = view.findViewById(R.id.tvPeso);
+            TextView origem = view.findViewById(R.id.tvOrigem);
+            TextView destino = view.findViewById(R.id.tvDestino);
+            TextView distancia = view.findViewById(R.id.tvDistancia);
+            TextView duracao = view.findViewById(R.id.tvDuracao);
+            TextView rs = view.findViewById(R.id.tvRS);
+            TextView duracao2 = view.findViewById(R.id.tvDuracao2);
+            TextView distancia2 = view.findViewById(R.id.tvDistancia2);
+            TextView peso2 = view.findViewById(R.id.tvPeso2);
+
+
+            Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto.regular.ttf");
+            payment.setTypeface(font);
+            peso.setTypeface(font);
+            origem.setTypeface(font);
+            destino.setTypeface(font);
+            distancia.setTypeface(font);
+            duracao.setTypeface(font);
+            duracao2.setTypeface(font);
+            distancia2.setTypeface(font);
+            peso2.setTypeface(font);
 
             Context contextx = imagem.getContext();
-            Romaneio offer = offers.get(position);
-
-            String test = offer.getEstabelecimento().getLogradouro();
-            String maria = offer.getEstabelecimento().getBairro();
-            String fof = maria.replace(" ", "+");
-            String bob = test.replace(" ", "+");
-            String urlimagem = "https://maps.googleapis.com/maps/api/staticmap?center=" + bob + fof + "&markers=color:red%7C" + bob + fof + "&size=640x400&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
+            String logradouro = offer.getEstabelecimento().getLogradouro();
+            String bairro = offer.getEstabelecimento().getBairro();
+            String mBairro = bairro.replace(" ", "+");
+            String mLogradouro = logradouro.replace(" ", "+");
+            String urlimagem = "https://maps.googleapis.com/maps/api/staticmap?center=" + mLogradouro + mBairro + "&markers=color:red%7C" + mLogradouro + mBairro + "&size=640x400&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
             Picasso.with(contextx)
                     .load(urlimagem)
                     .into(imagem);
+
 
             for (Entrega entrega : offer.getEntregaList()) {
                 String[] separandoPesos = entrega.getPeso().split(" ");
@@ -82,45 +102,63 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
             }
 
             Entrega mentrega = offer.getEntregaList().get(offer.getEntregaList().size() - 1);
-            String CidadeOrigem = offer.getEstabelecimento().getCidade();
-            String EstadoOrigem = offer.getEstabelecimento().getUf();
-            mEstadoOrigem = EstadoOrigem.replace(" ", "+");
-            mCidadeOrigem = CidadeOrigem.replace(" ", "+");
-            String CidadeDestino = mentrega.getDestinatario().getCidade();
-            String EstadoDestino = mentrega.getDestinatario().getUF();
-            mEstadoDestino = EstadoDestino.replace(" ", "+");
-            mCidadeDestino = CidadeDestino.replace(" ", "+");
+
+           for (int i = 0; i < offers.size(); i ++) {
+               String CidadeOrigem = offer.getEstabelecimento().getCidade();
+               String EstadoOrigem = offer.getEstabelecimento().getUf();
+               mEstadoOrigem = EstadoOrigem.replace(" ", "+");
+               mCidadeOrigem = CidadeOrigem.replace(" ", "+");
+
+               String CidadeDestino = mentrega.getDestinatario().getCidade();
+               String EstadoDestino = mentrega.getDestinatario().getUF();
+               mEstadoDestino = EstadoDestino.replace(" ", "+");
+               mCidadeDestino = CidadeDestino.replace(" ", "+");
 
 
-            mcidadeD = mentrega.getDestinatario().getCidade();
-            mestadoD = mentrega.getDestinatario().getUF();
-            apii.execute();
+               mcidadeD = mentrega.getDestinatario().getCidade();
+               mestadoD = mentrega.getDestinatario().getUF();
+               String urldistancia = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + mCidadeOrigem + "," + mEstadoOrigem + "&destinations=" + mCidadeDestino + "," + mEstadoDestino + "&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
+               WebService task = new WebService(getContext(), distancia, urldistancia);
+               task.execute();
+           }
+            origem.setText(offer.getEstabelecimento().getCidade() + " - " + offer.getEstabelecimento().getUf());
+            destino.setText(mentrega.getDestinatario().getCidade() + " - " + mentrega.getDestinatario().getUF());
 
 
-            estadoO.setText(offer.getEstabelecimento().getUf());
-            cidadeO.setText(offer.getEstabelecimento().getCidade());
-            estadoD.setText(mestadoD);
-            cidadeD.setText(mcidadeD);
-            distancia.setText(recebido);
+            try {
+                String recebeData = retornaData(offer.getData_oferta());
+                duracao.setText(recebeData);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-            code.setText(Integer.toString(offer.getCodigo()));
-            peso.setText(Integer.toString(pesoTotal) + " KG");
+            //code.setText(Integer.toString(offer.getCodigo()));
+            peso.setText(Integer.toString(pesoTotal) + " kg");
             DecimalFormat df = new DecimalFormat("#,##0.00");
-            payment.setText("R$ " + df.format(offer.getValor()));
+            payment.setText(df.format(offer.getValor()));
 
         }
         return view;
     }
 
-// ERICK DA UMA OLHADA NESSE ASYNC NO OnPOSTEXECUTE ELE SO ENTRA NO CATCH
-    public class WebService extends AsyncTask<String, Void, JSONObject> {
 
+    public class WebService extends AsyncTask<String, Void, JSONObject> {
+        Context mContext;
+        TextView view;
+        String url;
+
+        public WebService(Context mContext, TextView v, String url) {
+            this.mContext = mContext;
+            this.view = v;
+            this.url = url;
+
+        }
 
         @Override
         protected JSONObject doInBackground(String... params) {
             try {
 
-                URL mUrl = new URL("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + mCidadeOrigem + "," + mEstadoOrigem + "&destinations=" + mCidadeDestino + "," + mEstadoDestino + "&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU");
+                URL mUrl = new URL(url);
                 HttpURLConnection httpConnection = (HttpURLConnection) mUrl.openConnection();
                 httpConnection.setRequestMethod("GET");
                 httpConnection.setRequestProperty("Content-length", "0");
@@ -151,6 +189,7 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
                 ex.printStackTrace();
             }
             return null;
+
         }
 
         @Override
@@ -158,12 +197,42 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
             super.onPostExecute(s);
             try {
 
-                JSONObject object2 = s.getJSONObject("distance");
-                recebido = object2.getString("text");
+
+                recebido = s.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("distance").getString("text");
+
+                // dur = s.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getString("text");
+
+                view.setText(recebido);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    public String retornaData(String oferta) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date data = new Date();
+
+        Calendar cal = Calendar.getInstance();
+        String datas = new SimpleDateFormat("yyyy-MM-dd").format(data);
+        String hora = new SimpleDateFormat("HH:mm:ss").format(data);
+        cal.setTime(dateFormat.parse(datas + " " + hora));
+
+        Calendar calOferta = Calendar.getInstance();
+        calOferta.setTime(dateFormat.parse(oferta));
+
+        long divisao = cal.getTimeInMillis() - calOferta.getTimeInMillis();
+        long diffMinutos = (divisao) / (60 * 1000);
+        long hours = (60 * 60 * 1000);
+        long diffHoras = divisao / hours;
+      //  long diffHorasMinutos = (divisao % hours) / (60 * 1000);
+        long diffDias = (divisao /1000) / 60 / 60 /24;
+        if (divisao < 86400000)
+            return diffHoras + " Horas";
+        else if (divisao < 3600000)
+            return diffMinutos + " Minutos";
+        else
+            return diffDias + " Dias";
+    }
 }
+

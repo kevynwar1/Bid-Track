@@ -10,7 +10,7 @@ public class Romaneio implements Parcelable {
 
     public static final String PARCEL = "parcel_romaneiro";
     private int codigo;
-    private int codigo_empresa;
+    private int codigo_empresa;//Não deveria, mas foi necessario
     private Estabelecimento estabelecimento;
     private Motorista motorista;
     private List<Entrega> entregaList;
@@ -18,6 +18,7 @@ public class Romaneio implements Parcelable {
     private Veiculo veiculo;
     private String date_create;
     private String date_finalization;
+    private String data_oferta;
     //private boolean ofertar_viagem;
     private char finalized;
     private boolean situation;
@@ -74,6 +75,7 @@ public class Romaneio implements Parcelable {
 //        veiculo = in.readParcelable(Veiculo.class.getClassLoader());
         date_create = in.readString();
         date_finalization = in.readString();
+        data_oferta = in.readString();
         setEntregaList(new ArrayList<Entrega>());
         in.readList(getEntregaList(), Entrega.class.getClassLoader());
        // ofertar_viagem = in.readByte() > 0;
@@ -108,6 +110,7 @@ public class Romaneio implements Parcelable {
 //        parcel.writeParcelable(veiculo, i);
         parcel.writeString(date_create);
         parcel.writeString(date_finalization);
+        parcel.writeString(data_oferta);
         parcel.writeList(entregaList);
       //  parcel.writeByte((byte) (ofertar_viagem ? 1 : 0));
         //parcel.writeCharArray(new char[]{finalized});
@@ -210,5 +213,13 @@ public class Romaneio implements Parcelable {
 
     public void setCodigo_empresa(int codigo_empresa) {
         this.codigo_empresa = codigo_empresa;
+    }
+
+    public String getData_oferta() {
+        return data_oferta;
+    }
+
+    public void setData_oferta(String data_oferta) {
+        this.data_oferta = data_oferta;
     }
 }

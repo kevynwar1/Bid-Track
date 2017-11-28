@@ -161,7 +161,13 @@ class Motorista extends CI_Controller {
 		$this->load->view('pattern/layout', $data);
 	}
 
-	function enviar($para, $assunto, $mensagem) {
+	public function verificar_email() {
+		$email = $this->input->post('email');
+
+		echo json_encode($this->Motorista_model->verificar_email($email));
+	}
+
+	public function enviar($para, $assunto, $mensagem) {
 		$config['protocol'] = 'mail';
 		$config['wordwrap'] = TRUE;
 		$config['validate'] = TRUE;

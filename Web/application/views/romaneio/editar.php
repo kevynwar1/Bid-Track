@@ -5,6 +5,26 @@
 			$peso_ent += $row->peso_carga;
 		}
 	}
+
+	$distancia = 0;
+	$tempo = 0;
+	for ($i = 0; $i < count($entrega); $i++) {
+		if($i == 0) {
+			$origem = str_replace(" ", "+", acentuacao($romaneio[0]->estabelecimento->logradouro.", ".$romaneio[0]->estabelecimento->numero." - ".$romaneio[0]->estabelecimento->bairro));
+			$destino = str_replace(" ", "+", acentuacao($entrega[$i]->destinatario->logradouro.", ".$entrega[$i]->destinatario->numero." - ".$entrega[$i]->destinatario->bairro));
+			$distance = simplexml_load_file("http://maps.googleapis.com/maps/api/distancematrix/xml?origins=".$origem."&destinations=".$destino."&mode=CAR&language=PT&sensor=false");
+			
+			$distancia += (string) str_replace(",", ".", $distance->row->element->distance->text);
+			$tempo += (string) $distance->row->element->duration->value;
+		} else {
+			$origem = str_replace(" ", "+", acentuacao($entrega[$i-1]->destinatario->logradouro.", ".$entrega[$i-1]->destinatario->numero." - ".$entrega[$i-1]->destinatario->bairro));
+			$destino = str_replace(" ", "+", acentuacao($entrega[$i]->destinatario->logradouro.", ".$entrega[$i]->destinatario->numero." - ".$entrega[$i]->destinatario->bairro));
+			$distance = simplexml_load_file("http://maps.googleapis.com/maps/api/distancematrix/xml?origins=".$origem."&destinations=".$destino."&mode=CAR&language=PT&sensor=false");
+			
+			$distancia += (string) str_replace(",", ".", $distance->row->element->distance->text);
+			$tempo += (string) $distance->row->element->duration->value;
+		}
+	}
 ?>
 <style type="text/css">
 	.seq { color: #999; }
@@ -30,6 +50,11 @@
 		-webkit-transform: scale(1.07, 1.07);
 		transform: scale(1.07, 1.07);
 		box-shadow: 0 5px 10px rgba(0,0,0, 0.5);
+	}
+
+	.adp-placemark {
+		background: #FFF !important;
+		border: none !important;
 	}
 </style>
 <link href="<?= base_url(); ?>assets/css/pop-up.css" rel="stylesheet" />
@@ -192,6 +217,11 @@ function ofertar(romaneio) {
 									<div class="col-md-4 lm15">
 										<div class="form-group">
 											<label>Motorista</label>
+											<?php if($romaneio[0]->motorista->codigo != NULL): ?>
+											<a href="<?= base_url('motorista/editar/'.$romaneio[0]->motorista->codigo); ?>" rel="tooltip" title="Visualizar Motorista — <?= $romaneio[0]->motorista->nome; ?>" style="color: #999;" class="pull-right">
+												<i class="fa fa-eye" aria-hidden="true"></i>
+											</a>
+											<?php endif; ?>
 											<select class="form-control motorista" name="motorista" <?= ($romaneio[0]->status_romaneio->codigo == 6)? 'disabled' : ''; ?> <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 												<option class="option-undefined undefined" value="0" <?= ($romaneio[0]->motorista->codigo == NULL) ? 'selected' : '' ?>>Indefinido</option>
 												<?php if(!is_null($romaneio[0]->motorista->codigo)): ?>
@@ -222,6 +252,9 @@ function ofertar(romaneio) {
 									<div class="col-md-4 lm15">
 										<div class="form-group">
 											<label>Tipo do Veículo</label>
+											<a href="<?= base_url('tipoveiculo/editar/'.$romaneio[0]->tipo_veiculo->codigo); ?>" rel="tooltip" title="Visualizar Tipo Veículo — <?= $romaneio[0]->tipo_veiculo->descricao; ?>" style="color: #999;" class="pull-right">
+												<i class="fa fa-eye" aria-hidden="true"></i>
+											</a>
 											<select class="form-control" name="tipoveiculo" <?= ($romaneio[0]->status_romaneio->codigo == 5)? 'disabled':''; ?>>
 												<?php foreach($tipoveiculo as $row): ?>
 													<option class="option" value="<?= $row->codigo ?>" <?= ($row->codigo == $romaneio[0]->tipo_veiculo->codigo) ? 'selected' : '' ?>>
@@ -232,12 +265,90 @@ function ofertar(romaneio) {
 										</div>
 									</div>
 								</div>
+								<div class="collapse" id="collapseExample">
+								<div class="row">
+									<div class="col-md-4 lm15">
+										<div class="form-group">
+											<label>Status</label>
+											<input type="text" class="form-control" value="<?= $romaneio[0]->status_romaneio->descricao ?>" disabled>
+										</div>
+									</div>
+									<div class="col-md-4 lm15">
+										<div class="form-group">
+											<label>Distância</label>
+											<input type="text" class="form-control" value="<?= str_replace(".", ",", $distancia)." km"; ?>" disabled>
+										</div>
+									</div>
+									<div class="col-md-4 lm15">
+										<div class="form-group">
+											<label>Peso Carga</label>
+											<input type="text" class="form-control" value="<?= $peso_ent; ?> kg" disabled>
+										</div>
+									</div>
+								</div>
+								</div>
+								<div class="row p10-top-bottom">
+									<div class="col-md-6 upper f12 gray" style="font-weight: 400">
+										<i class="fa fa-calendar-o" aria-hidden="true"></i>
+										<?php
+											$data = explode(" ", $romaneio[0]->data_criacao);
+											$dia  = explode("-", $data[0]);
+											$hora = explode(":", $data[1]);
+										?>
+										Criado em <?= $dia[2]."/".$dia[1]; ?>, às <?= $hora[0].":".$hora[1]; ?> hrs<br>
+										
+										<?php
+											if($romaneio[0]->status_romaneio->codigo == 6) { // Ofertado
+												$data_oferta = explode(" ", $romaneio[0]->data_oferta);
+												$intervalo = explode(":", intervalo($data_oferta[1], date("H:i:s")));
+												$dia_oferta  = explode("-", $data_oferta[0]);
+												$hora_oferta = explode(":", $data_oferta[1]);
+
+												if($intervalo[0] == "0" && $intervalo[1] == "0") {
+													echo "<i class='fa fa-bookmark' aria-hidden='true'></i> Ofertado há poucos instantes";
+												} else if($intervalo[0] == 0) {
+													if($intervalo[1] < 10) {
+														echo "<i class='fa fa-bookmark' aria-hidden='true'></i> Ofertado há ".str_replace("0", "", $intervalo[1])." Min";
+													} else {
+														echo "<i class='fa fa-bookmark' aria-hidden='true'></i> Ofertado há ".$intervalo[1]." Min";
+													}
+												} else if($intervalo[0] < 10) {
+													echo "<i class='fa fa-bookmark' aria-hidden='true'></i> Ofertado há 0".$intervalo[0].":".$intervalo[1]." Hrs";
+												} else {
+													echo "<i class='fa fa-bookmark' aria-hidden='true'></i> Ofertado em ".$dia_oferta[2]."/".$dia_oferta[1]." às ".$hora_oferta[0].":".$hora_oferta[1]." hrs";
+												}
+											}
+										?>
+									</div>
+									<div class="col-md-6 upper f12 gray">
+										<span class="pull-right" rel="tooltip" title="Estimativa de R$ por KM">
+											<i class="fa fa-money" aria-hidden="true"></i> 
+											± <?= round($romaneio[0]->valor/$distancia); ?>,00 R$ / KM
+										</span><br>
+										<span class="pull-right" rel="tooltip" title="Estimativa de Tempo de Viagem">
+											<i class="fa fa-clock-o" aria-hidden="true"></i> 
+											Duração de 
+											<?php
+												$duracao = explode(":", gmdate("H:i", $tempo));
+												if($duracao[0] == 0) {
+													echo $duracao[1]." Min";
+												} else {
+													echo gmdate("H:i", $tempo)." Hrs";
+												}
+											?>
+										</span>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-md-12">
+										<a href="<?= base_url('romaneio'); ?>" class="btn btn-danger btn-simple pull-left">Voltar</a>
 										<a href="<?= base_url().'romaneio/imprimir/'.$romaneio[0]->codigo ?>">
 											<span type="submit" class="btn <?= ($romaneio[0]->status_romaneio->codigo == 5)? '':'btn-simple' ?> btn-danger btn-fill pull-left f12 upper">
 												Imprimir
 											</span>
+										</a>
+										<a class="btn btn-danger btn-simple" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+											Mais
 										</a>
 										<?php if($romaneio[0]->status_romaneio->codigo != 5) { ?>
 											<button type="submit" name="editar" class="btn btn-danger btn-fill pull-right f12 upper">Salvar</button>
@@ -542,8 +653,8 @@ function ofertar(romaneio) {
 		?>
 
 		directionsService.route({
-			origin: '<?= $romaneio[0]->estabelecimento->logradouro.", ".$romaneio[0]->estabelecimento->numero." - ".$romaneio[0]->estabelecimento->bairro ?>',
-			destination: '<?= $fim->destinatario->logradouro.", ".$fim->destinatario->numero." - ".$fim->destinatario->bairro ?>',
+			origin: '<?= acentuacao($romaneio[0]->estabelecimento->logradouro.", ".$romaneio[0]->estabelecimento->numero." - ".$romaneio[0]->estabelecimento->bairro); ?>',
+			destination: '<?= acentuacao($fim->destinatario->logradouro.", ".$fim->destinatario->numero." - ".$fim->destinatario->bairro); ?>',
 			waypoints: waypts,
 			optimizeWaypoints: true,
 			travelMode: 'DRIVING'

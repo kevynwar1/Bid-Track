@@ -273,9 +273,6 @@ public class DetalhesPagerFragment extends Fragment {
 
                     }
 
-
-
-
                 }
 
             }
@@ -447,7 +444,7 @@ public class DetalhesPagerFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-
+        //finaliza romaneio após a ultima entrega ser finalizada
         @Override
         protected Void doInBackground(Void... voids) {
             romaneio_inativo = false;

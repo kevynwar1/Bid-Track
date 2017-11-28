@@ -48,19 +48,19 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-2">
+							<div class="col-md-2 lm10">
 								<div class="form-group label-floating">
 									<label class="control-label">Placa</label>
 									<input type="text" pattern="[a-zA-Z]{3}-\d{4}" class="form-control upper" name="placa" id="placa" ng-model="placa" autocomplete="off" required>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3 lm10">
 								<div class="form-group label-floating">
 									<label class="control-label">Chassi</label>
 									<input type="text" maxlength="17" minlength="17" class="form-control upper" name="chassi" id="chassi" ng-model="chassi" autocomplete="off" required>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-2 lm10">
 								<div class="form-group label-floating">
 									<label class="control-label">Próprio</label>
 									<select class="form-control" name="proprio" ng-model="proprio">
@@ -70,13 +70,13 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-2 lm10">
 								<div class="form-group label-floating">
 									<label class="control-label">Capacidade</label>
 									<input type="number" class="form-control upper" name="capacidade" id="capacidade" ng-model="capacidade" autocomplete="off" required>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3 lm10">
 								<div class="form-group label-floating">
 									<label class="control-label">ANTT</label>
 									<input type="text" pattern="[a-zA-Z]{3}-\d{8}" class="form-control upper" name="antt" id="antt" ng-model="antt" autocomplete="off" required>

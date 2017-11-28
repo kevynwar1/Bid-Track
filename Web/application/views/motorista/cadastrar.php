@@ -19,7 +19,7 @@
 							<div class="col-md-3">
 								<div class="form-group label-floating">
 									<label class="control-label">E-mail</label>
-									<input type="email" name="email" id="email" ng-model="email" class="form-control" autocomplete="off" required>
+									<input type="email" name="email" id="email" ng-model="email" class="form-control email" autocomplete="off" required>
 								</div>
 							</div>
 							<div class="col-md-2">
@@ -55,37 +55,37 @@
 								</div>
 							</div>
 							<div class="col-md-3 lm10">
-								<div class="form-group label-floating">
+								<div id="label-endereco" class="form-group label-floating">
 									<label class="control-label">Endereço</label>
 									<input type="text" name="logradouro" id="logradouro" class="form-control" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç,.-/\s]+$" autocomplete="off">
 								</div>
 							</div>
 							<div class="col-md-1 lm10">
-								<div class="form-group label-floating">
+								<div id="label-numero" class="form-group label-floating">
 									<label class="control-label">Número</label>
 									<input type="text" name="numero" id="numero" class="form-control" pattern="[0-9]+$" autocomplete="off">
 								</div>
 							</div>
 							<div class="col-md-1 lm10">
-								<div class="form-group label-floating">
+								<div id="label-complemento" class="form-group label-floating">
 									<label class="control-label">Compl.</label>
 									<input type="text" name="complemento" id="complemento" class="form-control" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç0-9./\s]+$" autocomplete="off">
 								</div>
 							</div>
 							<div class="col-md-2 lm10">
-								<div class="form-group label-floating">
+								<div id="label-bairro" class="form-group label-floating">
 									<label class="control-label">Bairro</label>
 									<input type="text" name="bairro" id="bairro" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç/\s]+$" class="form-control" autocomplete="off">
 								</div>
 							</div>
 							<div class="col-md-2 lm10">
-								<div class="form-group label-floating">
+								<div id="label-cidade" class="form-group label-floating">
 									<label class="control-label">Cidade</label>
 									<input type="text" name="cidade" id="cidade" pattern="[a-zA-ZÁÉÍÓÚáéíóúÃÕãõÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÇç/\s]+$" class="form-control" autocomplete="off">
 								</div>
 							</div>
 							<div class="col-md-1 lm10">
-								<div class="form-group label-floating">
+								<div id="label-uf" class="form-group label-floating">
 									<label class="control-label">UF</label>
 									<select class="form-control" name="uf" id="uf">
 										<option value="" class="option_none" disabled selected></option>
@@ -162,9 +162,33 @@
 					$("#uf option:contains("+data.uf+")").attr('selected', true);
 					$('#numero').focus();
 				}
+
+				$('#label-endereco').removeClass('is-empty');
+				$('#label-bairro').removeClass('is-empty');
+				$('#label-cidade').removeClass('is-empty');
+				$('#label-uf').removeClass('is-empty');
 			}
 		});
 
 		return false;
+	});
+
+	$('.email').blur(function(){
+		var email = $('.email').val();
+		$.ajax({
+			url: '<?= base_url() ?>motorista/verificar_email',
+			type: 'POST',
+			data: 'email='+email,
+			dataType: 'json',
+			success: function(data) {
+				if(data == false) {
+					demo.showNotification('bottom', 'right', 'E-mail já cadastrado, por favor tente outro.');
+					$('.email').val("");
+					$('.email').focus();
+				}
+			}
+		});
+
+		return true;
 	});
 </script>

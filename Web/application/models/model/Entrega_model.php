@@ -13,6 +13,7 @@ class Entrega_model extends CI_Model {
 		$data = array(
 			'seq_entrega' 		 => $entrega->getSeqEntrega(),
 			'cod_romaneio' 		 => $entrega->getRomaneio()->getCodigo(),
+			'cod_empresa' 		 => $entrega->getEmpresa()->getCodigo(),
 			'cod_destinatario' 	 => $entrega->getDestinatario()->getCodigo(),
 			'cod_status_entrega' => $entrega->getStatusEntrega()->getCodigo(),
 			'peso_carga' 		 => $entrega->getPesoCarga(),
@@ -90,9 +91,20 @@ class Entrega_model extends CI_Model {
 		}
 	}
 
+	public function entrega_finalizada($romaneio) {
+		$this->db->select("entrega.seq_entrega")->from($this->table);
+		$this->db->where($this->table.".cod_romaneio", $romaneio);
+		$this->db->where($this->table.".cod_status_entrega", "4"); // Finalizado;
+		$this->db->where($this->table.".cod_empresa", $this->session->userdata('empresa'));
+		$query = $this->db->get();
+
+		return $query->num_rows();
+	}
+
 	public function listar($romaneio) {
 		$this->db->select('*, 
 			entrega.seq_entrega AS seq_entrega, 
+			entrega.cod_empresa AS cod_empresa, 
 			lpad(entrega.cod_romaneio, 4, 0) AS cod_romaneio, 
 			entrega.cod_destinatario AS cod_destinatario
 		')->from($this->table);
@@ -110,6 +122,7 @@ class Entrega_model extends CI_Model {
 
 				$entrega->setSeqEntrega($row->seq_entrega);
 				$entrega->getRomaneio()->setCodigo($row->cod_romaneio);
+				$entrega->getEmpresa()->setCodigo($row->cod_empresa);
 				$entrega->getDestinatario()->setCodigo($row->cod_destinatario);
 				$entrega->getDestinatario()->setCnpjCpf($row->cnpj_cpf);
 				$entrega->getDestinatario()->setEmail($row->email);
@@ -140,6 +153,7 @@ class Entrega_model extends CI_Model {
 		$this->db->select('
 			romaneio.cod_motorista, 
 			entrega.seq_entrega, 
+			entrega.cod_empresa, 
 			lpad(entrega.cod_romaneio, 4, 0) AS cod_romaneio,
 			entrega.cod_status_entrega,
 			entrega.peso_carga,
@@ -171,6 +185,7 @@ class Entrega_model extends CI_Model {
 				$entrega = new Entrega_basic();
 
 				$entrega->setSeqEntrega($row->seq_entrega);
+				$entrega->getEmpresa()->setCodigo($row->cod_empresa);
 				$entrega->getRomaneio()->setCodigo($row->cod_romaneio);
 				$entrega->getRomaneio()->getMotorista()->setCodigo($row->cod_motorista);
 				$entrega->getDestinatario()->setCodigo($row->cod_destinatario);
@@ -208,6 +223,7 @@ class Entrega_model extends CI_Model {
 			romaneio.data_criacao AS data_criacao, 
 			romaneio.data_finalizacao AS data_finalizacao, 
 			entrega.seq_entrega AS seq_entrega, 
+			entrega.cod_empresa AS cod_empresa, 
 			entrega.nota_fiscal AS nota_fiscal, 
 			entrega.peso_carga AS peso_carga, 
 			destinatario.codigo AS cod_destinatario, 
@@ -254,6 +270,7 @@ class Entrega_model extends CI_Model {
 				$entrega = new Entrega_basic();
 
 				$entrega->setSeqEntrega($row->seq_entrega);
+				$entrega->getEmpresa()->setCodigo($row->cod_empresa);
 				$entrega->setNotaFiscal($row->nota_fiscal);
 				$entrega->setPesoCarga($row->peso_carga);
 				$entrega->getDestinatario()->setCodigo($row->cod_destinatario);
@@ -301,6 +318,7 @@ class Entrega_model extends CI_Model {
 			romaneio.data_criacao AS data_criacao, 
 			romaneio.data_finalizacao AS data_finalizacao, 
 			entrega.seq_entrega AS seq_entrega, 
+			entrega.cod_empresa AS cod_empresa, 
 			entrega.nota_fiscal AS nota_fiscal, 
 			entrega.peso_carga AS peso_carga, 
 			destinatario.razao_social AS razao_social, 
@@ -337,6 +355,7 @@ class Entrega_model extends CI_Model {
 				$entrega = new Entrega_basic();
 
 				$entrega->setSeqEntrega($row->seq_entrega);
+				$entrega->getEmpresa()->setCodigo($row->cod_empresa);
 				$entrega->setNotaFiscal($row->nota_fiscal);
 				$entrega->setPesoCarga($row->peso_carga);
 				$entrega->getDestinatario()->setRazaoSocial($row->razao_social);

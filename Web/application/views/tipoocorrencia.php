@@ -55,8 +55,8 @@
 							</thead>
 							<tbody>
 								<?php
-									if($tipoocorrencia != FALSE):
-										foreach($tipoocorrencia as $row):
+									if($ocorrencia != FALSE):
+										foreach($ocorrencia as $row):
 								?>
 									<tr>
 										<td><?= $row->descricao; ?></td>
@@ -91,7 +91,7 @@
 										<span class="desc f12">
 											<?php
 												if($this->uri->segment(2) == 's') {
-													echo count($tipoocorrencia).' Tipo(s) de Ocorrência(s) — '.$this->input->get('filtro').': '.$this->input->get('procurar');
+													echo count($ocorrencia).' Tipo(s) de Ocorrência(s) — '.$this->input->get('filtro').': '.$this->input->get('procurar');
 												} else {
 													$count = ($total != FALSE)? $total : '0';
 													echo $count.' Tipo(s) de Ocorrência(s) totais';

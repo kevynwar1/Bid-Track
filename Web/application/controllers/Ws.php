@@ -27,8 +27,6 @@ class Ws extends REST_Controller {
 
         $this->methods['empresa_get']['limit'] = 500;
         $this->methods['empresa_motorista_get']['limit'] = 500;
-        $this->methods['disponibilidade_empresa_get']['limit'] = 500; // Kevyn H. 18/11
-
 
         $this->methods['usuario_get']['limit'] = 500;
 
@@ -105,30 +103,6 @@ class Ws extends REST_Controller {
             ], REST_Controller::HTTP_NOT_FOUND);
         }
     }
-
-     public function disponibilidade_empresa_get() {
-        $this->load->model('model/Empresa_model');
-        $empresas = $this->Empresa_model->disponibilidade_empresa($this->uri->segment(3));
-
-        if($empresas) {
-            $this->response($empresas, REST_Controller::HTTP_OK);
-        } else {
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Deu merda em algum canto por ai.'
-            ], REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        if(!empty($empresas)) {
-            $this->set_response($empresas, REST_Controller::HTTP_OK);
-        } else {
-            $this->set_response([
-                'status' => FALSE,
-                'message' => 'Empresa se lascou no meio do caminho.'
-            ], REST_Controller::HTTP_NOT_FOUND);
-        }
-    }
-
 
 
 

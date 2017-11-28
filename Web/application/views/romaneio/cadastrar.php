@@ -1,5 +1,5 @@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+<!-- link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+<script src="<?= base_url(); ?>assets/js/select2.min.js"></script -->
 
 <style type="text/css">
 	.select2-container--default .select2-selection--single {
@@ -383,9 +383,9 @@
 	
 	$(document).ready(function(){
 		$('#valor').mask('000.000.000.000.000,00', {reverse: true});
-		$('.estabelecimento').select2({ placeholder: "Estabelecimento", maximumInputLength: 7 });
-		$('.transportadora').select2({ placeholder: "Transportadora", maximumInputLength: 7 });
-		$('.motorista').select2({ placeholder: "Motorista", maximumInputLength: 7 });
-		$('.tipoveiculo').select2({ placeholder: "Tipo Veículo", maximumInputLength: 7 });
+		$('.estabelecimento').select2({ placeholder: "Estabelecimento" });
+		$('.transportadora').select2({ placeholder: "Transportadora" });
+		$('.motorista').select2({ placeholder: "Motorista" });
+		$('.tipoveiculo').select2({ placeholder: "Tipo Veículo" });
 	});
 </script>

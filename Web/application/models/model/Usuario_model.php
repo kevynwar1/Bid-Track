@@ -51,6 +51,19 @@ class Usuario_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
+	public function verificar_email($email) {
+		$this->db->select($this->table.'.codigo')->from($this->table);
+		$this->db->where($this->table.'.cod_empresa', $this->session->userdata('empresa'));
+		$this->db->where($this->table.'.email', $email);
+		$query = $this->db->get();
+
+		if($query->num_rows() >= 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	public function login($usuario) {
 		$this->db->select('
 			usuario.codigo AS codigo,

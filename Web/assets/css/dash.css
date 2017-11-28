@@ -50,6 +50,7 @@ select {
 .lm15 { margin-top: -15px; }
 .lm20 { margin-top: -20px; }
 .p10 { padding: 10px; }
+.p10-top-bottom { padding-top: 10px; padding-bottom: 10px; }
 .p15 { padding: 15px; }
 .desc { color: rgb(154, 154, 154); text-transform: uppercase; }
 .th-desc { cursor: pointer; transition: 0.3s; }

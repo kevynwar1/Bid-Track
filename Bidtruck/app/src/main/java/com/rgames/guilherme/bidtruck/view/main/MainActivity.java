@@ -22,12 +22,16 @@ import com.rgames.guilherme.bidtruck.controller.ControllerLogin;
 import com.rgames.guilherme.bidtruck.facade.Facade;
 import com.rgames.guilherme.bidtruck.model.basic.Empresa;
 import com.rgames.guilherme.bidtruck.model.basic.Motorista;
+import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.EmpresaNullException;
+import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
 import com.rgames.guilherme.bidtruck.view.oferta.OfferFragment;
 import com.rgames.guilherme.bidtruck.view.oferta.Preferences;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -165,24 +169,34 @@ public class MainActivity extends AppCompatActivity
                                     dialogInterface.dismiss();
                                 }
                             });
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
-                            , getString(R.string.app_dlg_confirm)
-                            , new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    try {
-                                        Facade facade = new Facade(MainActivity.this);
-                                        facade.setLogged(new Motorista(0, ""));
-                                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                                        finish();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    } finally {
-                                        dialogInterface.dismiss();
+
+                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
+                                , getString(R.string.app_dlg_confirm)
+                                , new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        try {
+                                            RomaneioRep romaneioRep = new RomaneioRep(MainActivity.this);
+                                            List<Romaneio> romaneioList = romaneioRep.buscarRomaneio();
+                                            if(romaneioList.size() > 0){
+
+                                                Toast.makeText(MainActivity.this, "Você ainda possui romaneio em andamento, finalize caso queira entrar com outro usuario!", Toast.LENGTH_LONG).show();
+                                                return;
+                                            }else {
+                                                Facade facade = new Facade(MainActivity.this);
+                                                facade.setLogged(new Motorista(0, ""));
+                                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                                finish();
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        } finally {
+                                            dialogInterface.dismiss();
+                                        }
                                     }
-                                }
-                            });
-                    alertDialog.show();
+                                });
+                        alertDialog.show();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -194,6 +208,7 @@ public class MainActivity extends AppCompatActivity
             default:
                 return true;
         }
+
     }
 
     private void onCloseDrawer() {

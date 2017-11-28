@@ -11,6 +11,7 @@ class Romaneio_basic extends CI_Model {
 	public $motorista;
 	public $valor;
 	public $data_criacao;
+	public $data_oferta;
 	public $data_finalizacao;
 	// public $ofertar_viagem;
 
@@ -57,6 +58,9 @@ class Romaneio_basic extends CI_Model {
 
 	public function getDataCriacao() { return $this->data_criacao; }
 	public function setDataCriacao($data_criacao) { $this->data_criacao = $data_criacao; }
+
+	public function getDataOferta() { return $this->data_oferta; }
+	public function setDataOferta($data_oferta) { $this->data_oferta = $data_oferta; }
 
 	public function getDataFinalizacao() { return $this->data_finalizacao; }
 	public function setDataFinalizacao($data_finalizacao) { $this->data_finalizacao = $data_finalizacao; }

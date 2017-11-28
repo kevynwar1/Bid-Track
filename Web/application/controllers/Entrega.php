@@ -12,6 +12,7 @@ class Entrega extends CI_Controller {
 	public function cadastrar() {
 		$entrega = new Entrega_basic();
 		$entrega->setSeqEntrega($this->input->post('entrega'));
+		$entrega->getEmpresa()->setCodigo($this->session->userdata('empresa'));
 		$entrega->getRomaneio()->setCodigo($this->input->post('romaneio'));
 		$entrega->getDestinatario()->setCodigo(strip_tags(trim($this->input->post('destinatario'))));
 		$entrega->setPesoCarga($this->input->post('peso_carga').' '.trim($this->input->post('medida')));
@@ -48,6 +49,7 @@ class Entrega extends CI_Controller {
 
 				$entrega = new Entrega_basic();
 				$entrega->setSeqEntrega($i);
+				$entrega->getEmpresa()->setCodigo($this->session->userdata('empresa'));
 				$entrega->getRomaneio()->setCodigo(strip_tags(trim($this->input->post("romaneio"))));
 				$entrega->getDestinatario()->setCodigo(strip_tags(trim($this->input->post("destinatario-".$seq))));
 				$entrega->setPesoCarga($this->input->post("peso_carga-".$seq)." ".$this->input->post("medida-".$seq));

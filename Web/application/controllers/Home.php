@@ -6,13 +6,6 @@ class Home extends CI_Controller {
 		$this->load->view('index');
 	}
 
-	public function erick() {
-		$this->load->model('model/Motorista_model');
-		$brasil = $this->Motorista_model->login('cesar@gmail.com', '1234');
-
-		p($brasil);
-	}
-
 	public function joana() {
 		$this->load->view('joana/index');
 	}
@@ -93,5 +86,11 @@ class Home extends CI_Controller {
 
 			echo json_encode($dados);
 		}
+	}
+
+	public function verificar_email() {
+		$email = $this->input->post('email');
+
+		echo json_encode($this->Usuario_model->verificar_email($email));
 	}
 }

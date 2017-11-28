@@ -21,6 +21,7 @@ class Motorista_basic extends CI_Model {
 	public $tipo_carteira;
 	public $validade_carteira;
 	public $disponibilidade;
+	public $nota;
 	public $situacao;
 
 	function __construct() {
@@ -86,6 +87,9 @@ class Motorista_basic extends CI_Model {
 
 	public function getDisponibilidade() { return $this->disponibilidade; }
 	public function setDisponibilidade($disponibilidade) { $this->disponibilidade = $disponibilidade; }
+
+	public function getNota() { return $this->nota; }
+	public function setNota($nota) { $this->nota = $nota; }
 
 	public function getSituacao() { return $this->situacao; }
 	public function setSituacao($situacao) { $this->situacao = $situacao; }

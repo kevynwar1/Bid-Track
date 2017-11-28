@@ -54,7 +54,7 @@ class Romaneio extends CI_Controller {
 		$romaneio->getEstabelecimento()->setCodigo(strip_tags(trim($estabelecimento[0])));
 		$romaneio->getTipoVeiculo()->setCodigo(strip_tags(trim($this->input->post('tipoveiculo'))));
 		$romaneio->setValor($valor);
-		$romaneio->setDataCriacao(date("Y-m-d"));
+		$romaneio->setDataCriacao(date("Y-m-d H:i:s"));
 
 		if($this->input->post('transportadora') != "0" && $this->input->post('motorista') != "0") {
 			$romaneio->getTransportadora()->setCodigo(strip_tags(trim($this->input->post('transportadora'))));
@@ -89,6 +89,7 @@ class Romaneio extends CI_Controller {
 
 					$entrega = new Entrega_basic();
 					$entrega->setSeqEntrega($i);
+					$entrega->getEmpresa()->setCodigo($this->session->userdata('empresa'));
 					$entrega->getRomaneio()->setCodigo(strip_tags(trim($this->input->post('codigo'))));
 					$entrega->getDestinatario()->setCodigo(strip_tags(trim($destinatario[0])));
 					$entrega->setPesoCarga($this->input->post('peso_carga'.$i).' '.trim($this->input->post('medida'.$i)));
@@ -458,7 +459,8 @@ class Romaneio extends CI_Controller {
 
 	public function ofertar() {
 		$romaneio = $this->uri->segment(3);
-		$result = $this->Romaneio_model->status('6', $romaneio);
+		$data = date("Y-m-d H:i:s");
+		$result = $this->Romaneio_model->ofertar('6', $romaneio, $data);
 		if($result == 1) {
 			$this->session->set_flashdata('success', 'Romaneio '.$romaneio.', Ofertado com Sucesso.');
 		} else {
@@ -475,6 +477,27 @@ class Romaneio extends CI_Controller {
 			$this->session->set_flashdata('success', 'Ofertar Romaneio, cancelado com Sucesso.');
 		} else {
 			$this->session->set_flashdata('error', 'Ocorreu um erro, ao cancelar o ofertar do Romaneio '.$romaneio.'.');
+		}
+
+		redirect(base_url().'romaneio');
+	}
+
+	public function nota() {
+		$total = 0;
+		$notas = $this->Romaneio_model->consultar_nota($this->input->post('motorista'));
+		foreach ($notas as $row) {
+			$total += $row->nota;
+		}
+
+		$media = substr(($total + $this->input->post('nota'))/(count($notas)+1), 0, 4);
+		$result = $this->Romaneio_model->nota($this->input->post('romaneio'), $this->input->post('motorista'), $this->input->post('nota'));
+		if($result == 1) {
+			$this->load->model('model/Motorista_model');
+			$motorista = $this->Motorista_model->nota($this->input->post('motorista'), $media);
+			$status = $this->Romaneio_model->status('7', $this->input->post('romaneio'));
+			$this->session->set_flashdata('success', 'Nota, registrada com Sucesso.');
+		} else {
+			$this->session->set_flashdata('error', 'Ocorreu um erro, ao Registrar a nota do Romaneio '.$this->input->post('romaneio').'.');
 		}
 
 		redirect(base_url().'romaneio');
