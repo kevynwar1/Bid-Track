@@ -24,7 +24,9 @@ class SQLCursor {
                 , cursor.getInt(cursor.getColumnIndex(table.TB_OCORRENCIA_COL_COD_TIPO_OCORRENCIA))
                 , cursor.getString(cursor.getColumnIndex(table.TB_OCORRENCIA_COL_DESCRICAO)));
         ocorrencia.setSituation((char) cursor.getInt(cursor.getColumnIndex(table.TB_OCORRENCIA_COL_SITUACAO)));
+        //n lembro pq diz isso aq
         ocorrencia.setcodigo(cursor.getInt(cursor.getColumnIndex(table.TB_TIPOCORRENCIA_COL_CODIGO)));
+        ocorrencia.inseridoApi = cursor.getInt(cursor.getColumnIndex(table.TB_OCORRENCIA_COL_INSERIDO_API)) > 0;
         return ocorrencia;
     }
 

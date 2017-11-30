@@ -68,6 +68,7 @@ public class DataBase extends SQLiteOpenHelper {
                 .append(table.TB_OCORRENCIA_COL_SEQ_ENTREGA).append(" INTEGER NOT NULL, ")
                 .append(table.TB_OCORRENCIA_COL_COD_ROMANEIO).append(" INTEGER NOT NULL, ")
                 .append(table.TB_OCORRENCIA_COL_COD_TIPO_OCORRENCIA).append(" INTEGER NOT NULL, ")
+                .append(table.TB_OCORRENCIA_COL_INSERIDO_API).append(" INTEGER DEFAULT 0, ")
                 .append(table.TB_OCORRENCIA_COL_DESCRICAO).append(" TEXT NOT NULL, ")
                 .append(table.TB_OCORRENCIA_COL_SITUACAO).append(" CHAR); ")
                 .toString());

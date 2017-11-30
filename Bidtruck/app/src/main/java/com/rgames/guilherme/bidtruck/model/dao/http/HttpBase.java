@@ -1,5 +1,7 @@
 package com.rgames.guilherme.bidtruck.model.dao.http;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -8,7 +10,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public abstract class HttpBase<T> {
         JSONObject jsonObject = null;
         for (int i = 0; i < jsonArray.length(); i++) {
             jsonObject = jsonArray.getJSONObject(i);
-            //   Log.i("teste", "jsonobject: " + jsonObject.toString());
+//               Log.i("teste", "jsonobject: " + jsonObject.toString());
             list.add(new Gson().fromJson(String.valueOf(jsonObject), classT));
         }
 

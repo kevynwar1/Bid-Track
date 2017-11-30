@@ -56,7 +56,7 @@ public class DAOOcorrencia extends DAOGeneric {
 
     public int update(Ocorrencia ocorrencia) {
         db = base.getWritableDatabase();
-        int affec = super.update(table.TB_OCORRENCIA, table.TB_FOTO_COL_CODIGO + " = ? "
+        int affec = super.update(table.TB_OCORRENCIA, table.TB_OCORRENCIA_COL_CODIGO + " = ? "
                 , SQLContentValues.ocorrencia(ocorrencia, table), ocorrencia.getCodigo());
         db.close();
         return affec;

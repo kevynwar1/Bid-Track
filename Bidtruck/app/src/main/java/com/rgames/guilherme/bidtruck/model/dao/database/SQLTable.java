@@ -10,6 +10,7 @@ class SQLTable {
     final String TB_OCORRENCIA_COL_NOME_TIPO_OCORRENCIA = "nome_tipo_ocorrencia";
     final String TB_OCORRENCIA_COL_DESCRICAO = "descricao";
     final String TB_OCORRENCIA_COL_SITUACAO = "situacao";
+    final String TB_OCORRENCIA_COL_INSERIDO_API = "inserido";
 
     final String TB_FOTO = "tb_foto";
     final String TB_FOTO_COL_CODIGO = "codigo";

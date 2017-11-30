@@ -21,6 +21,7 @@ public class Ocorrencia implements Parcelable {
     private String data;
     private char situation;
     private List<Image> fotos;
+    public boolean inseridoApi;
 
     public Ocorrencia(){}
 

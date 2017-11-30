@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.pager.ocorrencia;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,6 +124,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void initButton() {
 
         new AsyncTask<Object, Object, Boolean>() {
@@ -180,9 +183,9 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void initList() {
         new AsyncTask<Void, Void, List<TipoOcorrencia>>() {
-            String msg = "";
 
             @Override
             protected void onPreExecute() {
@@ -202,7 +205,8 @@ public class OcorrenciaActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<TipoOcorrencia> tipoOcorrencia) {
                 try {
-                    if (tipoOcorrencia != null && tipoOcorrencia.size() > 0 && msg.equals("")) {
+                    Log.i("teste", tipoOcorrencia.size()+"");
+                    if (tipoOcorrencia != null && tipoOcorrencia.size() > 0) {
                         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
                         recyclerView.setLayoutManager(new LinearLayoutManager(OcorrenciaActivity.this));
                         mListTipoOcorrencia = tipoOcorrencia;

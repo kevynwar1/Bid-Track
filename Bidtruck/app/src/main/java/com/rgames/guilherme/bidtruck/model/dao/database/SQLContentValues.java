@@ -16,6 +16,7 @@ class SQLContentValues {
         contentValues.put(table.TB_OCORRENCIA_COL_COD_TIPO_OCORRENCIA, ocorrencia.getTipoOcorrencia().getCodigo());
         contentValues.put(table.TB_OCORRENCIA_COL_DESCRICAO, ocorrencia.getDescricao());
         contentValues.put(table.TB_OCORRENCIA_COL_SITUACAO, (int) ocorrencia.getSituation());
+        contentValues.put(table.TB_OCORRENCIA_COL_INSERIDO_API, (ocorrencia.inseridoApi) ? 1 : 0);
         return contentValues;
     }
 

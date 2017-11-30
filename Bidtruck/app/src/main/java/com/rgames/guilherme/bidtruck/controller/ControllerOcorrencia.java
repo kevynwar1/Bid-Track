@@ -25,16 +25,16 @@ public class ControllerOcorrencia {
         return busOcorrencia.select(seq_entrega, romaneio);
     }
 
-    /*public boolean insert(Ocorrencia ocorrencia) throws Exception{
-        return busOcorrencia.insert(ocorrencia);
-    }*/
-
     public List<TipoOcorrencia> selectTipo(int empresa) throws EmpresaNullException {
         return busOcorrencia.selectTipo(empresa);
     }
 
     public boolean insert(Ocorrencia ocorrencia, List<Image> fotos) {
         return busOcorrencia.insert(ocorrencia, fotos);
+    }
+
+    public void insertOff(Ocorrencia ocorrencia, List<Image> fotos) {
+        busOcorrencia.insertNoAndroid(ocorrencia, fotos);
     }
 
     public long insertTipoOcorrencia(TipoOcorrencia tipoOcorrencia) {
@@ -59,6 +59,9 @@ public class ControllerOcorrencia {
 
     public int deleteTipoOcorrencia(TipoOcorrencia tipoOcorrencia) {
         return busOcorrencia.deleteTipoOcorrencia(tipoOcorrencia);
+    }
+    public int deleteOcorrenciaTodos() {
+        return busOcorrencia.deleteOcorrenciaTodos();
     }
 
     public int deleteTipoOcorrenciaTodos() {

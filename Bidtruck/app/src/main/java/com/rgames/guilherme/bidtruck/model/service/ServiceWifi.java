@@ -92,24 +92,23 @@ public class ServiceWifi extends Service {
                             , romaneioList.get(0).getCodigo()));
                     httpEntrega.statusEntrega(entrega.getStatusEntrega().getCodigo()
                             , entrega.getSeq_entrega(), romaneioList.get(0).getCodigo());
-
-                    if (entrega.getStatusEntrega().getCodigo() == 4)
-                        httpRomaneio.statusRomaneioEntrega(romaneioList.get(0).getStatus_romaneio().getCodigo()
-                                , romaneioList.get(0).getCodigo(), romaneioList.get(0).getMotorista().getCodigo());
-
-                    entregaRep.excluirEntrega(entrega, romaneioList.get(0));
+//                    entregaRep.excluirEntrega(entrega, romaneioList.get(0));
                 }
+                httpRomaneio.statusRomaneioEntrega(romaneioList.get(0).getStatus_romaneio().getCodigo()
+                        , romaneioList.get(0).getCodigo(), romaneioList.get(0).getMotorista().getCodigo());
 
                 Log.i("teste", "ocorrencias " + ocorrenciaList.size());
                 for (Ocorrencia ocorrencia : ocorrenciaList) {
-                    controllerOcorrencia.insert(ocorrencia, ocorrencia.getFotos());
-
-                    controllerOcorrencia.deleteOcorrencia(ocorrencia);
+                    Log.i("teste", ocorrencia.getCodigo() + " is " + ocorrencia.inseridoApi);
+                    if (!ocorrencia.inseridoApi) {
+                        controllerOcorrencia.insert(ocorrencia, ocorrencia.getFotos());
+                        ocorrencia.inseridoApi = true;
+                        controllerOcorrencia.updateOcorrencia(ocorrencia);
+                    }
                 }
+                //controllerOcorrencia.deleteOcorrenciaTodos();
                 Log.i("teste", "ro" + romaneioList.size());
-                romaneioRep.excluirRomaneio(romaneioList.get(0));
-
-
+//                romaneioRep.excluirRomaneio(romaneioList.get(0));
                 Log.i("teste", "Dizem que funcionou");
             } else Log.i("teste", "ja se foi");
 //            new AsyncTask<Void, Void, Void>() {
