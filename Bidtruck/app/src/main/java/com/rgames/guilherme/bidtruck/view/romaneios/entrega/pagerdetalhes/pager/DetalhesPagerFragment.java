@@ -395,24 +395,22 @@ public class DetalhesPagerFragment extends Fragment {
                                 atualiza_status = true;
 
 
-                                finishProgressBar();
-                                if(atualiza_status || entrega_atualizada){
-
-                                    Toast.makeText(getActivity(), "Sua próxima entrega foi iniciada, tenha uma boa viagem!", Toast.LENGTH_LONG).show();
-
-                                }
-                                else {
-                                    Toast.makeText(getActivity(), "Desculpe, sua entrega não pode iniciada, tente novamente!", Toast.LENGTH_LONG).show();
-                                }
-                                break;
-
-
-
                             }
 
+                            finishProgressBar();
+                            if(atualiza_status || entrega_atualizada){
+
+                                Toast.makeText(getActivity(), "Sua próxima entrega foi iniciada, tenha uma boa viagem!", Toast.LENGTH_LONG).show();
+
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "Desculpe, sua entrega não pode iniciada, tente novamente!", Toast.LENGTH_LONG).show();
+                            }
+                            break;
 
 
-                    }
+
+                       }
 
 
 

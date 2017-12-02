@@ -31,6 +31,7 @@ public class ServiceWifi extends Service {
     private List<StatusEntrega> statusEntregaList;
     private List<Ocorrencia> ocorrenciaList;
 
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -62,6 +63,7 @@ public class ServiceWifi extends Service {
                     if (HttpConnection.isConnected(getApplicationContext())) {
                         Log.i("teste", "conectado");
                         metodoMuitoLokoQueFazSubirTodosOsDadosParaOServidor();
+                        deleteLocal();// deleta quando o codigo do romaneio ser = 4
                     } else {
                         Log.i("teste", "nao conectado");
                     }
@@ -94,8 +96,12 @@ public class ServiceWifi extends Service {
                             , entrega.getSeq_entrega(), romaneioList.get(0).getCodigo());
 //                    entregaRep.excluirEntrega(entrega, romaneioList.get(0));
                 }
-                httpRomaneio.statusRomaneioEntrega(romaneioList.get(0).getStatus_romaneio().getCodigo()
-                        , romaneioList.get(0).getCodigo(), romaneioList.get(0).getMotorista().getCodigo());
+
+                if( romaneioList.size() > 0 && romaneioList.get(0).getStatus_romaneio().getCodigo() == 4) {//atualiza somente quando o codigo do romaneio for 4
+
+                    httpRomaneio.statusRomaneioEntrega(romaneioList.get(0).getStatus_romaneio().getCodigo()
+                            , romaneioList.get(0).getCodigo(), romaneioList.get(0).getMotorista().getCodigo());
+                }
 
                 Log.i("teste", "ocorrencias " + ocorrenciaList.size());
                 for (Ocorrencia ocorrencia : ocorrenciaList) {
@@ -106,6 +112,8 @@ public class ServiceWifi extends Service {
                         controllerOcorrencia.updateOcorrencia(ocorrencia);
                     }
                 }
+
+
                 //controllerOcorrencia.deleteOcorrenciaTodos();
                 Log.i("teste", "ro" + romaneioList.size());
 //                romaneioRep.excluirRomaneio(romaneioList.get(0));
@@ -186,6 +194,35 @@ public class ServiceWifi extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteLocal(){
+        Context context = getApplicationContext();
+        EntregaRep  entregaRep = new EntregaRep(context);
+        RomaneioRep romaneioRep = new RomaneioRep(context);
+
+        List<Entrega> listaEntregas = entregaRep.buscarEntrega();
+        List<Romaneio> listaRomaneios = romaneioRep.buscarRomaneio();
+
+        if ((listaEntregas != null && listaEntregas.size() > 0) && (listaRomaneios.size() > 0 && listaRomaneios != null)) {
+            if (listaRomaneios.get(0).getStatus_romaneio().getCodigo() == 4) {
+
+                Entrega deleteEntrega = listaEntregas.get(listaEntregas.size() - 1);
+                if (deleteEntrega.getStatusEntrega().getCodigo() == 4) {
+
+                    for (Entrega ent : listaEntregas) {
+
+                        entregaRep.excluirEntrega(ent, listaRomaneios.get(0));
+                    }
+
+                    romaneioRep.excluirRomaneio(listaRomaneios.get(0));
+
+                }
+
+            }
+
+        }
+
     }
 
     @Override

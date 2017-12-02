@@ -85,7 +85,7 @@ public class EntregaFragment extends Fragment {
             List<Entrega> listaEntregas = entregaRep.buscarEntrega();
             List<Romaneio> listaRomaneios = romaneioRep.buscarRomaneio();
 
-            if ((listaEntregas != null && listaEntregas.size() > 0) && (listaEntregas.size() > 0 && listaEntregas != null)) {
+           /* if ((listaEntregas != null && listaEntregas.size() > 0) && (listaEntregas.size() > 0 && listaEntregas != null)) {
                 if (listaRomaneios.get(0).getStatus_romaneio().getCodigo() == 4) {
 
                     Entrega deleteEntrega = listaEntregas.get(listaEntregas.size() - 1);
@@ -107,22 +107,31 @@ public class EntregaFragment extends Fragment {
                 }
 
 
-            }
+            }*/
             if (facade.isConnected(context)) {
 
                 buscarTipoOcorrencia();
 
-                if (listaEntregas == null || listaEntregas.size() == 0) {
+                if (listaEntregas == null || listaEntregas.size() == 0 && tem_entrega) {
                     inicializaEntregas();
-                } else {// se houver internet, a lista de entregas sera exibida novamente, caso o usuario saia do fragment e entre novamente
+                    tem_entrega = false;
+                } else  {
+                    mRomaneioList =null;// se houver internet, a lista de entregas sera exibida novamente, caso o usuario saia do fragment e entre novamente
                     mRomaneioList = romaneioRep.buscarRomaneio();
                     //valida se a empresa selecionada é a mesma inserida no romaneio
-                    if (mEmpresa.getCodigo() == mRomaneioList.get(0).getCodigo_empresa()) {
-                        mRomaneio = mRomaneioList.get(0);
-                        initRecyclerView(listaEntregas);
-                    } else {
-                        emptyView(true);
+                    if(mRomaneioList.size() == 0){
+                        initRecyclerView(null);
+                        emptyViewVazio(true);
                         return;
+                    }else {
+
+                        if (mEmpresa.getCodigo() == mRomaneioList.get(0).getCodigo_empresa()) {
+                            mRomaneio = mRomaneioList.get(0);
+                            initRecyclerView(listaEntregas);
+                        } else {
+                            emptyView(true);
+                            return;
+                        }
                     }
 
                 }
@@ -147,7 +156,7 @@ public class EntregaFragment extends Fragment {
             }
 
             if (((AppCompatActivity) context).getSupportActionBar() != null) {
-                ((AppCompatActivity) context).getSupportActionBar().setTitle(R.string.menu_drw_romaneio);// + "N º " + mRomaneio.getCodigo());
+                ((AppCompatActivity) context).getSupportActionBar().setTitle( "N º " + mRomaneio.getCodigo());
                 ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);
             } else
                 Toast.makeText(getActivity(), "Erro ao listar suas entregas, tente novamaente", Toast.LENGTH_LONG).show();
@@ -306,6 +315,14 @@ public class EntregaFragment extends Fragment {
                 finishProgressBar();
                 if (mRomaneio != null) {
                     initRecyclerView(mEntregaList);
+
+                    if (((AppCompatActivity) context).getSupportActionBar() != null) {
+                        ((AppCompatActivity) context).getSupportActionBar().setTitle("Romaneio - N º " + mRomaneio.getCodigo());
+                        ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);
+                    } else
+                        Toast.makeText(getActivity(), "Erro ao exibir numero do Romaneio", Toast.LENGTH_LONG).show();
+
+
                 } else {
                     emptyView(true);
                 }
