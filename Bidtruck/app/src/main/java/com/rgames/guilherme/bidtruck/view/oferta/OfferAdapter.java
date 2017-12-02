@@ -104,20 +104,20 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
             Entrega mentrega = offer.getEntregaList().get(offer.getEntregaList().size() - 1);
 
            for (int i = 0; i < offers.size(); i ++) {
-               String CidadeOrigem = offer.getEstabelecimento().getCidade();
-               String EstadoOrigem = offer.getEstabelecimento().getUf();
-               mEstadoOrigem = EstadoOrigem.replace(" ", "+");
-               mCidadeOrigem = CidadeOrigem.replace(" ", "+");
+               Double CidadeOrigem = offer.getEstabelecimento().getLatitude();
+               Double EstadoOrigem = offer.getEstabelecimento().getLongitude();
+             //  mEstadoOrigem = EstadoOrigem.replace(" ", "+");
+              // mCidadeOrigem = CidadeOrigem.replace(" ", "+");
 
-               String CidadeDestino = mentrega.getDestinatario().getCidade();
-               String EstadoDestino = mentrega.getDestinatario().getUF();
-               mEstadoDestino = EstadoDestino.replace(" ", "+");
-               mCidadeDestino = CidadeDestino.replace(" ", "+");
+               Double CidadeDestino = mentrega.getDestinatario().getLatitude();
+               Double EstadoDestino = mentrega.getDestinatario().getLongitude();
+              // mEstadoDestino = EstadoDestino.replace(" ", "+");
+              // mCidadeDestino = CidadeDestino.replace(" ", "+");
 
 
                mcidadeD = mentrega.getDestinatario().getCidade();
                mestadoD = mentrega.getDestinatario().getUF();
-               String urldistancia = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + mCidadeOrigem + "," + mEstadoOrigem + "&destinations=" + mCidadeDestino + "," + mEstadoDestino + "&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
+               String urldistancia = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + CidadeOrigem + "," + EstadoOrigem + "&destinations=" + CidadeDestino + "," + EstadoDestino + "&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
                WebService task = new WebService(getContext(), distancia, urldistancia);
                task.execute();
            }
@@ -127,7 +127,8 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
             try {
                 String recebeData = retornaData(offer.getData_oferta());
-                duracao.setText(recebeData);
+                String recebid = recebeData.replace("-", " ");
+                duracao.setText(recebid);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -222,15 +223,17 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
         calOferta.setTime(dateFormat.parse(oferta));
 
         long divisao = cal.getTimeInMillis() - calOferta.getTimeInMillis();
-        long diffMinutos = (divisao) / (60 * 1000);
+        long minutos = (60 * 1000);
+        long diffMinutos = divisao /minutos ;
         long hours = (60 * 60 * 1000);
         long diffHoras = divisao / hours;
-      //  long diffHorasMinutos = (divisao % hours) / (60 * 1000);
+        long diffHorasMinutos = (divisao % hours) / (60 * 1000);
         long diffDias = (divisao /1000) / 60 / 60 /24;
-        if (divisao < 86400000)
-            return diffHoras + " Horas";
-        else if (divisao < 3600000)
+         if (divisao < 3600000)
             return diffMinutos + " Minutos";
+        else if ( divisao >= 3600000 && divisao < 86400000)
+            return diffHoras + " Horas";
+
         else
             return diffDias + " Dias";
     }

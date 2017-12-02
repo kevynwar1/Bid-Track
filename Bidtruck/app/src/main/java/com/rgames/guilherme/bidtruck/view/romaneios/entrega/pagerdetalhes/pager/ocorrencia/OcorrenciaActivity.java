@@ -96,6 +96,11 @@ public class OcorrenciaActivity extends AppCompatActivity {
         initFab();
         //  clickfloat();
         initList();
+        try {
+          getSupportActionBar().setTitle("Ocorrências");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         // initButton();
 
     }

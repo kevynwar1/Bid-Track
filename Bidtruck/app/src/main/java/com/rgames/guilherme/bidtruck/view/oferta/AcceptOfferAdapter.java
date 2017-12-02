@@ -51,7 +51,7 @@ public class AcceptOfferAdapter extends ArrayAdapter<Entrega> {
             logradouro.setText(delivery.getDestinatario().getLogradouro() + ", ");
             numero.setText(delivery.getDestinatario().getNumero() + " - ");
 
-            status.setText(delivery.getDestinatario().getCidade().toUpperCase() + " - " +delivery.getDestinatario().getUF() );
+            status.setText(delivery.getDestinatario().getBairro().toUpperCase()+", "+delivery.getDestinatario().getCidade().toUpperCase() + " - " +delivery.getDestinatario().getUF() );
             /*  String input = delivery.getStatusEntrega().getDescricao();
             input = input.toUpperCase();
 

@@ -17,13 +17,16 @@ public class Motorista extends Base {
     private String senha;
     private String tipo_carteira;
     private String validade_carteira;
+    private String nota;
 
-    public Motorista(int codigo, String nome) {
+    public Motorista(int codigo, String nome, String nota) {
         setCodigo(codigo);
         setNome(nome);
+        setNota(nota);
     }
-
     public Motorista(){}
+
+
 
     protected Motorista(Parcel in) {
         super(in);
@@ -35,6 +38,7 @@ public class Motorista extends Base {
         senha = in.readString();
         tipo_carteira = in.readString();
         validade_carteira = in.readString();
+        nota = in.readString();
     }
 
     public static final Creator<Motorista> CREATOR = new Creator<Motorista>() {
@@ -65,6 +69,7 @@ public class Motorista extends Base {
         parcel.writeString(senha);
         parcel.writeString(tipo_carteira);
         parcel.writeString(validade_carteira);
+        parcel.writeString(nota);
     }
 
     public Empresa getEmpresa() {
@@ -129,5 +134,13 @@ public class Motorista extends Base {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getNota() {
+        return nota;
+    }
+
+    public void setNota(String nota) {
+        this.nota = nota;
     }
 }
