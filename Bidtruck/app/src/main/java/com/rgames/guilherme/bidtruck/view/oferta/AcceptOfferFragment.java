@@ -140,6 +140,7 @@ public class AcceptOfferFragment extends Fragment {
             progress.setVisibility(View.INVISIBLE);
             if (success) {
                 Toast.makeText(getActivity(), "Confirmado com Sucesso!", Toast.LENGTH_LONG).show();
+                getActivity().onBackPressed();
             } else {
                 Toast.makeText(getActivity(), "Desculpe, essa oferta não está mais disponível", Toast.LENGTH_LONG).show();
             }

@@ -46,14 +46,14 @@ public class DetalhesPagerFragment extends Fragment {
     private RetornaTask mFinalTask;
     private boolean tem_entrega_nova;
     private boolean atualiza_status;
-
+    static DetalhesPagerFragment fragment;
 
 
     public DetalhesPagerFragment() {
     }
 
     public static DetalhesPagerFragment newInstance(Romaneio romaneio, Entrega entrega) {
-        DetalhesPagerFragment fragment = new DetalhesPagerFragment();
+        fragment = new DetalhesPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Romaneio.PARCEL, romaneio);
         bundle.putParcelable(Entrega.PARCEL, entrega);
@@ -76,7 +76,6 @@ public class DetalhesPagerFragment extends Fragment {
             mRomaneio = getArguments().getParcelable(Romaneio.PARCEL);
             mEntrega = getArguments().getParcelable(Entrega.PARCEL);
         } else mEntrega = new Entrega();
-
 
 
         return mView;
@@ -253,7 +252,7 @@ public class DetalhesPagerFragment extends Fragment {
                     //as atualizacoes devem ser feitas em ambas plataformas, web e mobile.
                     tem_entrega_nova = false;
                     EntregaRep entregaRep = new EntregaRep(getActivity());
-                    if(entregaRep.buscarEntrega() != null || entregaRep.buscarEntrega().size() > 0){
+                    if (entregaRep.buscarEntrega() != null || entregaRep.buscarEntrega().size() > 0) {
 
                         int novo_statuss = 4;
                         Entrega newEntrega = new Entrega();
@@ -291,8 +290,8 @@ public class DetalhesPagerFragment extends Fragment {
                 if (mEntrega != null) {
                     if (tem_entrega || tem_entrega_nova) {
                         Toast.makeText(getActivity(), "Entrega finalizada com Sucesso!", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+
+                    } else {
                         Toast.makeText(getActivity(), "Desculpe, erro ao finalizar a entrega, tente novamente!", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -370,14 +369,14 @@ public class DetalhesPagerFragment extends Fragment {
                 EntregaRep entregaRep = new EntregaRep(getActivity());
                 List<Entrega> novaEnterega = entregaRep.buscarEntrega();
 
-                if(novaEnterega != null || novaEnterega.size() > 0){
+                if (novaEnterega != null || novaEnterega.size() > 0) {
                     atualiza_status = false;
 
-                    for(int i = 0; i < novaEnterega.size(); i++){
+                    for (int i = 0; i < novaEnterega.size(); i++) {
 
                         Entrega novoStatusEntrega = novaEnterega.get(i);
-                        if(novoStatusEntrega.getStatusEntrega().getCodigo() == 1 && novoStatusEntrega.getSeq_entrega() > 0){
-                            if(novoStatusEntrega != null){
+                        if (novoStatusEntrega.getStatusEntrega().getCodigo() == 1 && novoStatusEntrega.getSeq_entrega() > 0) {
+                            if (novoStatusEntrega != null) {
 
                                 int novo_status_entrega = 3;
 
@@ -398,20 +397,17 @@ public class DetalhesPagerFragment extends Fragment {
                             }
 
                             finishProgressBar();
-                            if(atualiza_status || entrega_atualizada){
+                            if (atualiza_status || entrega_atualizada) {
 
                                 Toast.makeText(getActivity(), "Sua próxima entrega foi iniciada, tenha uma boa viagem!", Toast.LENGTH_LONG).show();
-
-                            }
-                            else {
+                                getActivity().onBackPressed();
+                            } else {
                                 Toast.makeText(getActivity(), "Desculpe, sua entrega não pode iniciada, tente novamente!", Toast.LENGTH_LONG).show();
                             }
                             break;
 
 
-
-                       }
-
+                        }
 
 
                     }
@@ -442,6 +438,7 @@ public class DetalhesPagerFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+
         //finaliza romaneio após a ultima entrega ser finalizada
         @Override
         protected Void doInBackground(Void... voids) {
@@ -473,40 +470,42 @@ public class DetalhesPagerFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {
-                    //finaliza o romaneio atual
-                   EntregaRep entregaRep = new EntregaRep(getActivity());
-                   RomaneioRep romaneioRep = new RomaneioRep(getActivity());
-                   List<Entrega> entregasRomaneio = entregaRep.buscarEntrega();
+                //finaliza o romaneio atual
+                EntregaRep entregaRep = new EntregaRep(getActivity());
+                RomaneioRep romaneioRep = new RomaneioRep(getActivity());
+                List<Entrega> entregasRomaneio = entregaRep.buscarEntrega();
 
-                   if(entregasRomaneio !=  null){
+                if (entregasRomaneio != null) {
 
-                       Entrega entregaFinal = entregasRomaneio.get(entregasRomaneio.size() -1);
-                       if(entregaFinal.getStatusEntrega().getCodigo() == 4 && mRomaneio.getCodigo() > 0) {
-
-
-                           Romaneio romaneioFinal = new Romaneio();
-                           StatusRomaneio statusRomaneio = new StatusRomaneio();
-
-                           int novo_status_romaneio = 4;
-
-                           statusRomaneio.setCodigo(novo_status_romaneio);
-                           statusRomaneio.setDescricao("Finalizado");
-                           romaneioFinal.setCodigo(mRomaneio.getCodigo());
-                           romaneioFinal.setStatus_romaneio(statusRomaneio);
-                           romaneioRep.atualizaEntrega(romaneioFinal);
-                           romaneio_finalizado = true;
+                    Entrega entregaFinal = entregasRomaneio.get(entregasRomaneio.size() - 1);
+                    if (entregaFinal.getStatusEntrega().getCodigo() == 4 && mRomaneio.getCodigo() > 0) {
 
 
-                           finishProgressBar();
-                           if (romaneio_inativo || romaneio_finalizado) {
-                               Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
+                        Romaneio romaneioFinal = new Romaneio();
+                        StatusRomaneio statusRomaneio = new StatusRomaneio();
 
-                           } else{
+                        int novo_status_romaneio = 4;
 
-                               Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
-                           }
-                       }
-                   }
+                        statusRomaneio.setCodigo(novo_status_romaneio);
+                        statusRomaneio.setDescricao("Finalizado");
+                        romaneioFinal.setCodigo(mRomaneio.getCodigo());
+                        romaneioFinal.setStatus_romaneio(statusRomaneio);
+                        romaneioRep.atualizaEntrega(romaneioFinal);
+                        romaneio_finalizado = true;
+
+
+                        finishProgressBar();
+                        if (romaneio_inativo || romaneio_finalizado) {
+                            Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
+                            getActivity().onBackPressed();
+                            mFinalTask.execute();
+
+                        } else {
+
+                            Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -533,12 +532,12 @@ public class DetalhesPagerFragment extends Fragment {
                             }
                         });
 
-                if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo()  == 1) {
+                if (mEntrega != null && mEntrega.getStatusEntrega().getCodigo() == 1) {
 
                     Toast.makeText(getActivity(), "Esta entrega não pode ser finalizada, pois não esta em andamento", Toast.LENGTH_LONG).show();
                     return;
 
-                } else if(mEntrega.getStatusEntrega().getCodigo() == 4) {
+                } else if (mEntrega.getStatusEntrega().getCodigo() == 4) {
                     Toast.makeText(getActivity(), "Você não pode finalizar a mesma entrega duas vezes!", Toast.LENGTH_LONG).show();
                     return;
 
@@ -554,7 +553,7 @@ public class DetalhesPagerFragment extends Fragment {
                                         iniciarAtualizacao();
                                         alteraStatus();
                                         listaFinal();
-                                       atualizaRomaneio();
+                                        atualizaRomaneio();
                                     }
 
                                     dialogInterface.dismiss();
@@ -699,8 +698,6 @@ public class DetalhesPagerFragment extends Fragment {
     private void emptyView(boolean isVisible) {
         mView.findViewById(R.id.empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
     }
-
-
 
 
     private void initProgressBar() throws ClassCastException, NullPointerException {

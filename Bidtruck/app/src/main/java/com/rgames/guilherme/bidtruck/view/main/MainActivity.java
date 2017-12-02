@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
             Facade facade = new Facade(this);
-            facade.setLogged(new Motorista(0, ""));
+            facade.setLogged(new Motorista(0, "",""));
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity
                                                 return;
                                             }else {
                                                 Facade facade = new Facade(MainActivity.this);
-                                                facade.setLogged(new Motorista(0, ""));
+                                                facade.setLogged(new Motorista(0, "", ""));
                                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                                 finish();
                                             }
@@ -230,12 +231,16 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         Facade facade = new Facade(this);
         ImageView ivEmpresa = (ImageView) header.findViewById(R.id.ivEmpresa2);
+        RatingBar rb = (RatingBar) header.findViewById(R.id.rbMotorista);
         String urlimage = "http://coopera.pe.hu/assets/img/foto/" + mEmpresa.getFoto();
         Context contextx = ivEmpresa.getContext();
         Picasso.with(contextx).load(urlimage).into(ivEmpresa);
 
 
         ((TextView) header.findViewById(R.id.tvMotorista2)).setText(facade.isLogged().getNome());
+       Float estrela = Float.parseFloat(facade.isLogged().getNota());
+        rb.setRating(estrela);
+        rb.setNumStars(6);
         if (mEmpresa != null)
             ((TextView) header.findViewById(R.id.tvEmpresa2)).setText(mEmpresa.getNome_fantasia());
     }

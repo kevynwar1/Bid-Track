@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Bidtruck.iml" filepath="$PROJECT_DIR$/Bidtruck.iml" />
+      <module fileurl="file://C:\Users\Kevyn\Desktop\trackfinal2\Bid-Track\Bidtruck\Bidtruck.iml" filepath="C:\Users\Kevyn\Desktop\trackfinal2\Bid-Track\Bidtruck\Bidtruck.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Kevyn\Desktop\trackfinal2\Bid-Track\Bidtruck\app\app.iml" filepath="C:\Users\Kevyn\Desktop\trackfinal2\Bid-Track\Bidtruck\app\app.iml" />
       <module fileurl="file://C:\Users\C. Eduardo\Desktop\BidTrackFinishid\Bid-Track\Bidtruck\app\app.iml" filepath="C:\Users\C. Eduardo\Desktop\BidTrackFinishid\Bid-Track\Bidtruck\app\app.iml" />
     </modules>
   </component>

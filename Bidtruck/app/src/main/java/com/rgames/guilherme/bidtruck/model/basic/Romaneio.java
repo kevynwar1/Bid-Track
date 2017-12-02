@@ -78,6 +78,7 @@ public class Romaneio implements Parcelable {
         data_oferta = in.readString();
         setEntregaList(new ArrayList<Entrega>());
         in.readList(getEntregaList(), Entrega.class.getClassLoader());
+        estabelecimento = in.readParcelable(Estabelecimento.class.getClassLoader());
        // ofertar_viagem = in.readByte() > 0;
         //finalized
         situation = in.readByte() > 0;
@@ -112,6 +113,7 @@ public class Romaneio implements Parcelable {
         parcel.writeString(date_finalization);
         parcel.writeString(data_oferta);
         parcel.writeList(entregaList);
+        parcel.writeParcelable(estabelecimento, i);
       //  parcel.writeByte((byte) (ofertar_viagem ? 1 : 0));
         //parcel.writeCharArray(new char[]{finalized});
         parcel.writeByte((byte) (situation ? 1 : 0));

@@ -139,7 +139,7 @@ public class EmpresasActivity extends AppCompatActivity {
     }
 
     private void deslogar() {
-        facade.setLogged(new Motorista(0, ""));
+        facade.setLogged(new Motorista(0, "",""));
         startActivity(new Intent(EmpresasActivity.this, LoginActivity.class));
         finish();
     }
