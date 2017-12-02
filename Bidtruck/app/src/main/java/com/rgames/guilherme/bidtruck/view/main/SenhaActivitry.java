@@ -178,9 +178,9 @@ public class SenhaActivitry extends AppCompatActivity {
 
     private static String htmlMessage(String nome, String senha, String email) {
         String maria = "Olá " + "<b>" + nome + "</b>" + "<br>" +
-                "Bem-vindo à <em>Bid & Track.</em><br>" +
-                "Agradecemos o seu cadastro em nossa plataforma.<br><br>" +
-                "<b>Os dados de acesso da sua conta ao sistema estão logo abaixo:</b><br><br>" +
+               // "Bem-vindo à <em>Bid & Track.</em><br>" +
+                "Agradecemos por utilizar nossa plataforma.<br><br>" +
+                "<b>Os dados da sua conta estão logo abaixo:</b><br><br>" +
                 "E-mail: " + email + "<br>" +
                 "Senha: " + senha;
 

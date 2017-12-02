@@ -127,7 +127,8 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
             try {
                 String recebeData = retornaData(offer.getData_oferta());
-                duracao.setText(recebeData);
+                String recebid = recebeData.replace("-", " ");
+                duracao.setText(recebid);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -222,15 +223,17 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
         calOferta.setTime(dateFormat.parse(oferta));
 
         long divisao = cal.getTimeInMillis() - calOferta.getTimeInMillis();
-        long diffMinutos = (divisao) / (60 * 1000);
+        long minutos = (60 * 1000);
+        long diffMinutos = divisao /minutos ;
         long hours = (60 * 60 * 1000);
         long diffHoras = divisao / hours;
-      //  long diffHorasMinutos = (divisao % hours) / (60 * 1000);
+        long diffHorasMinutos = (divisao % hours) / (60 * 1000);
         long diffDias = (divisao /1000) / 60 / 60 /24;
-        if ( divisao >= 3600000 || divisao < 86400000)
-            return diffHoras + " Horas";
-        else if (divisao < 3600000)
+         if (divisao < 3600000)
             return diffMinutos + " Minutos";
+        else if ( divisao >= 3600000 && divisao < 86400000)
+            return diffHoras + " Horas";
+
         else
             return diffDias + " Dias";
     }

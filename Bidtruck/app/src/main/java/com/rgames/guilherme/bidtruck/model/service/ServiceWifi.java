@@ -18,6 +18,7 @@ import com.rgames.guilherme.bidtruck.model.dao.http.HttpEntrega;
 import com.rgames.guilherme.bidtruck.model.dao.http.HttpRomaneio;
 import com.rgames.guilherme.bidtruck.model.repositors.EntregaRep;
 import com.rgames.guilherme.bidtruck.model.repositors.RomaneioRep;
+import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaFragment;
 
 import java.util.ArrayList;
 import java.util.List;

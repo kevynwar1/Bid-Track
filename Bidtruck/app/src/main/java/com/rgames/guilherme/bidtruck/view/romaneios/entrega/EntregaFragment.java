@@ -64,7 +64,6 @@ public class EntregaFragment extends Fragment {
             entregaRep = new EntregaRep(context);
             facade = new Facade(context);
             mEmpresa = mBundle.getParcelable(Empresa.PARCEL_EMPRESA);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,11 +104,8 @@ public class EntregaFragment extends Fragment {
                     }
 
                 }
-
-
             }*/
             if (facade.isConnected(context)) {
-                inicializaEntregas();
                 buscarTipoOcorrencia();
 
                 if (listaEntregas == null || listaEntregas.size() == 0 && tem_entrega) {

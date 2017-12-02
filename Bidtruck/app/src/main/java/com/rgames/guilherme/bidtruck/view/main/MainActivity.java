@@ -32,6 +32,8 @@ import com.rgames.guilherme.bidtruck.view.romaneios.entrega.EntregaFragment;
 import com.rgames.guilherme.bidtruck.view.sincronizacao.SincronizacaoFragment;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
             Facade facade = new Facade(this);
-            facade.setLogged(new Motorista(0, "",""));
+            facade.setLogged(new Motorista(0, "", ""));
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
@@ -151,9 +153,9 @@ public class MainActivity extends AppCompatActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, entregaFragment).commit();
                 return true;
-            case R.id.nav_sync:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();
-                return true;
+            // case R.id.nav_sync:
+            //    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();
+            //   return true;
          /*   case R.id.nav_ocorr:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, OcorrenciaFragment.newInstance()).commit();
                 return true;*/
@@ -171,32 +173,32 @@ public class MainActivity extends AppCompatActivity
                                 }
                             });
 
-                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
-                                , getString(R.string.app_dlg_confirm)
-                                , new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        try {
-                                            RomaneioRep romaneioRep = new RomaneioRep(MainActivity.this);
-                                            List<Romaneio> romaneioList = romaneioRep.buscarRomaneio();
-                                            if(romaneioList.size() > 0){
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE
+                            , getString(R.string.app_dlg_confirm)
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    try {
+                                        RomaneioRep romaneioRep = new RomaneioRep(MainActivity.this);
+                                        List<Romaneio> romaneioList = romaneioRep.buscarRomaneio();
+                                        if (romaneioList.size() > 0) {
 
-                                                Toast.makeText(MainActivity.this, "Você ainda possui romaneio em andamento, finalize caso queira entrar com outro usuario!", Toast.LENGTH_LONG).show();
-                                                return;
-                                            }else {
-                                                Facade facade = new Facade(MainActivity.this);
-                                                facade.setLogged(new Motorista(0, "", ""));
-                                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                                                finish();
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        } finally {
-                                            dialogInterface.dismiss();
+                                            Toast.makeText(MainActivity.this, "Você ainda possui romaneio em andamento, finalize caso queira entrar com outro usuario!", Toast.LENGTH_LONG).show();
+                                            return;
+                                        } else {
+                                            Facade facade = new Facade(MainActivity.this);
+                                            facade.setLogged(new Motorista(0, "", ""));
+                                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                            finish();
                                         }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        dialogInterface.dismiss();
                                     }
-                                });
-                        alertDialog.show();
+                                }
+                            });
+                    alertDialog.show();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -231,16 +233,15 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         Facade facade = new Facade(this);
         ImageView ivEmpresa = (ImageView) header.findViewById(R.id.ivEmpresa2);
-        RatingBar rb = (RatingBar) header.findViewById(R.id.rbMotorista);
+        TextView rb = (TextView) header.findViewById(R.id.rbMotorista);
         String urlimage = "http://coopera.pe.hu/assets/img/foto/" + mEmpresa.getFoto();
         Context contextx = ivEmpresa.getContext();
         Picasso.with(contextx).load(urlimage).into(ivEmpresa);
 
 
         ((TextView) header.findViewById(R.id.tvMotorista2)).setText(facade.isLogged().getNome());
-       Float estrela = Float.parseFloat(facade.isLogged().getNota());
-        rb.setRating(estrela);
-        rb.setNumStars(6);
+        rb.setText(facade.isLogged().getNota());
+
         if (mEmpresa != null)
             ((TextView) header.findViewById(R.id.tvEmpresa2)).setText(mEmpresa.getNome_fantasia());
     }

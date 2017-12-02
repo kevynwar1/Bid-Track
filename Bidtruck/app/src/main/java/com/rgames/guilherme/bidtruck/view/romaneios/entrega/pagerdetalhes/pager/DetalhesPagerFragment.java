@@ -46,14 +46,12 @@ public class DetalhesPagerFragment extends Fragment {
     private RetornaTask mFinalTask;
     private boolean tem_entrega_nova;
     private boolean atualiza_status;
-    static DetalhesPagerFragment fragment;
-
 
     public DetalhesPagerFragment() {
     }
 
     public static DetalhesPagerFragment newInstance(Romaneio romaneio, Entrega entrega) {
-        fragment = new DetalhesPagerFragment();
+        DetalhesPagerFragment fragment = new DetalhesPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Romaneio.PARCEL, romaneio);
         bundle.putParcelable(Entrega.PARCEL, entrega);
@@ -498,10 +496,7 @@ public class DetalhesPagerFragment extends Fragment {
                         if (romaneio_inativo || romaneio_finalizado) {
                             Toast.makeText(getActivity(), "Romaneio finalizado com Sucesso!", Toast.LENGTH_LONG).show();
                             getActivity().onBackPressed();
-                            mFinalTask.execute();
-
                         } else {
-
                             Toast.makeText(getActivity(), "Desculpe, erro ao finalizar o romaneio atual, tente novamente!", Toast.LENGTH_LONG).show();
                         }
                     }
