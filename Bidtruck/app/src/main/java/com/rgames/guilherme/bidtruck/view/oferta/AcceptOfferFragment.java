@@ -1,6 +1,7 @@
 package com.rgames.guilherme.bidtruck.view.oferta;
 
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -114,16 +115,18 @@ public class AcceptOfferFragment extends Fragment {
     }
 
     class acceptOfferTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog dialog;
 
-     /*   @Override
+        @Override
         protected void onPreExecute() {
-            if (progress == null) {
+          /*  if (progress == null) {
                 progress = view.findViewById(R.id.progress_acceptOffer);
                 progress.setVisibility(View.VISIBLE);
             } else {
                 progress.setVisibility(View.VISIBLE);
-            }
-        }*/
+            }*/
+            dialog = ProgressDialog.show(getActivity(), "Aguarde", "Confirmando Oferta", true);
+        }
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -137,7 +140,8 @@ public class AcceptOfferFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progress.setVisibility(View.INVISIBLE);
+            // progress.setVisibility(View.INVISIBLE);
+            dialog.dismiss();
             if (success) {
                 Toast.makeText(getActivity(), "Confirmado com Sucesso!", Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
@@ -149,7 +153,7 @@ public class AcceptOfferFragment extends Fragment {
 
     class loadOfferTask extends AsyncTask<Void, Void, Void> {
 
-        @Override
+     /*   @Override
         protected void onPreExecute() {
             if (progress == null) {
                 progress = view.findViewById(R.id.progress_acceptOffer);
@@ -157,7 +161,7 @@ public class AcceptOfferFragment extends Fragment {
             } else {
                 progress.setVisibility(View.VISIBLE);
             }
-        }
+        }*/
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -169,7 +173,7 @@ public class AcceptOfferFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progress.setVisibility(View.INVISIBLE);
+            //  progress.setVisibility(View.INVISIBLE);
             deliveryAdapter = new AcceptOfferAdapter(getActivity(), deliverys);
             listView.setAdapter(deliveryAdapter);
         }
