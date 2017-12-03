@@ -115,7 +115,7 @@ public class AcceptOfferFragment extends Fragment {
 
     class acceptOfferTask extends AsyncTask<Void, Void, Void> {
 
-        @Override
+     /*   @Override
         protected void onPreExecute() {
             if (progress == null) {
                 progress = view.findViewById(R.id.progress_acceptOffer);
@@ -123,7 +123,7 @@ public class AcceptOfferFragment extends Fragment {
             } else {
                 progress.setVisibility(View.VISIBLE);
             }
-        }
+        }*/
 
         @Override
         protected Void doInBackground(Void... voids) {

@@ -19,6 +19,7 @@ import com.rgames.guilherme.bidtruck.model.basic.Romaneio;
 import com.rgames.guilherme.bidtruck.model.errors.ContextNullException;
 import com.rgames.guilherme.bidtruck.view.romaneios.entrega.pagerdetalhes.DetalhesEntregaActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class AdapterRecyclerDelivery extends RecyclerView.Adapter<AdapterRecycle
                         //Intent intent = new Intent(mContext, FinalizaEntrega.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable(Entrega.PARCEL, mListEntrega.get(holder.getAdapterPosition()));
-                        bundle.putParcelable(Romaneio.PARCEL, mRomaneio);
+                        bundle.putParcelable(Romaneio.PARCEL,  mRomaneio);
                         double[] inicio = new double[2];
                         double[] fim = new double[2];
                         if (mListEntrega.get(holder.getAdapterPosition()).getSeq_entrega() == 1) {

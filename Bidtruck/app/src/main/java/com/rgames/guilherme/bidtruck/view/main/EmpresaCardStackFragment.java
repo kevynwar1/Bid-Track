@@ -198,7 +198,7 @@ public class EmpresaCardStackFragment extends Fragment {
     }
 
     private void deslogar() {
-        facade.setLogged(new Motorista(0, ""));
+        facade.setLogged(new Motorista(0, "",0.0));
     }
 
     private void initView(List<Empresa> empresas) throws Exception {

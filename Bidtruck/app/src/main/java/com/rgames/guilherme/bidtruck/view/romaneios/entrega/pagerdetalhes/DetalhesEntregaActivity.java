@@ -36,8 +36,8 @@ public class DetalhesEntregaActivity extends AppCompatActivity {
                 mEntrega = (Entrega) getIntent().getExtras().getSerializable(Entrega.PARCEL);
                 mInicio = getIntent().getExtras().getDoubleArray("arg1");
                 mFim = getIntent().getExtras().getDoubleArray("arg2");
-                Log.i("teste", "inicio " + mInicio[0]+", "+mInicio[1]);
-                Log.i("teste", "fim " + mFim[0]+", "+mFim[1]);
+             //   Log.i("teste", "inicio " + mInicio[0]+", "+mInicio[1]);
+              //  Log.i("teste", "fim " + mFim[0]+", "+mFim[1]);
                 init();
                 initViewPager();
             } else {

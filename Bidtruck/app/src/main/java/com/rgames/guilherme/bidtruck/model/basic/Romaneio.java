@@ -3,6 +3,7 @@ package com.rgames.guilherme.bidtruck.model.basic;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,16 +70,20 @@ public class Romaneio implements Parcelable {
     protected Romaneio(Parcel in) {
         codigo = in.readInt();
         codigo_empresa = in.readInt();
-        estabelecimento = in.readParcelable(Estabelecimento.class.getClassLoader());
-        motorista = in.readParcelable(Motorista.class.getClassLoader());
-        status_romaneio = in.readParcelable(StatusRomaneio.class.getClassLoader());
+        //estabelecimento = in.readParcelable(Estabelecimento.class.getClassLoader());
+        estabelecimento = Estabelecimento.CREATOR.createFromParcel(in);
+        //motorista = in.readParcelable(Motorista.class.getClassLoader());
+        motorista = Motorista.CREATOR.createFromParcel(in);
+        //status_romaneio = in.readParcelable(StatusRomaneio.class.getClassLoader());
+        status_romaneio = StatusRomaneio.CREATOR.createFromParcel(in);
 //        veiculo = in.readParcelable(Veiculo.class.getClassLoader());
         date_create = in.readString();
         date_finalization = in.readString();
         data_oferta = in.readString();
         setEntregaList(new ArrayList<Entrega>());
         in.readList(getEntregaList(), Entrega.class.getClassLoader());
-        estabelecimento = in.readParcelable(Estabelecimento.class.getClassLoader());
+       // estabelecimento = in.readParcelable(Estabelecimento.class.getClassLoader());
+
        // ofertar_viagem = in.readByte() > 0;
         //finalized
         situation = in.readByte() > 0;
@@ -113,7 +118,7 @@ public class Romaneio implements Parcelable {
         parcel.writeString(date_finalization);
         parcel.writeString(data_oferta);
         parcel.writeList(entregaList);
-        parcel.writeParcelable(estabelecimento, i);
+      //  parcel.writeParcelable(estabelecimento, i);
       //  parcel.writeByte((byte) (ofertar_viagem ? 1 : 0));
         //parcel.writeCharArray(new char[]{finalized});
         parcel.writeByte((byte) (situation ? 1 : 0));

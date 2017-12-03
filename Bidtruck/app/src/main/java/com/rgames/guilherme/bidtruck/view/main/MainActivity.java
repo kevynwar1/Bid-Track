@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
             Facade facade = new Facade(this);
-            facade.setLogged(new Motorista(0, ""));
+            facade.setLogged(new Motorista(0, "",0.0));
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity
                                             return;
                                         } else {
                                             Facade facade = new Facade(MainActivity.this);
-                                            facade.setLogged(new Motorista(0, ""));
+                                            facade.setLogged(new Motorista(0, "",0.0));
                                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                             finish();
                                         }
@@ -242,7 +242,8 @@ public class MainActivity extends AppCompatActivity
 
 
         ((TextView) header.findViewById(R.id.tvMotorista2)).setText(facade.isLogged().getNome());
-        rb.setText("3.00");
+        String estrela = String.valueOf(facade.isLogged().getNota());
+        rb.setText(estrela);
 
         if (mEmpresa != null)
             ((TextView) header.findViewById(R.id.tvEmpresa2)).setText(mEmpresa.getNome_fantasia());
