@@ -121,28 +121,28 @@ public class EmpresasActivity extends AppCompatActivity {
                             //finish();
                         } else if (empresas.size() == 0) {
                             Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa ", Toast.LENGTH_LONG).show();
-                            deslogar();
+                    //        deslogar();
                         } else {
                             initView(empresas);
                         }
                     } else {
                         Toast.makeText(EmpresasActivity.this, "Você não está vinculado em nenhuma empresa!", Toast.LENGTH_LONG).show();
-                        deslogar();
+                  //      deslogar();
                     }
                     finishProgressBar();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    deslogar();
+       //             deslogar();
                 }
             }
         }.execute();
     }
 
-    private void deslogar() {
-        facade.setLogged(new Motorista(0, "",""));
+  /*  private void deslogar() {
+        facade.setLogged(new Motorista(0, "",0.0));
         startActivity(new Intent(EmpresasActivity.this, LoginActivity.class));
         finish();
-    }
+    }*/
 
     private void initView(List<Empresa> empresas) throws Exception {
         empresaList = (ListView) findViewById(R.id.lv_empresas);
