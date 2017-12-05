@@ -37,7 +37,6 @@ public class AcceptOfferFragment extends Fragment {
 
     private Button acceptBtn;
     private acceptOfferTask mTaskAccept;
-    private loadOfferTask mTaskLoad;
     private List<Entrega> deliverys;
     private boolean success;
     private ProgressBar progress;
@@ -83,8 +82,6 @@ public class AcceptOfferFragment extends Fragment {
         listView.setAdapter(deliveryAdapter);
 
         mTaskAccept = new acceptOfferTask();
-        //mTaskLoad = new loadOfferTask();
-        //mTaskLoad.execute();
 
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,34 +145,6 @@ public class AcceptOfferFragment extends Fragment {
             } else {
                 Toast.makeText(getActivity(), "Desculpe, essa oferta não está mais disponível", Toast.LENGTH_LONG).show();
             }
-        }
-    }
-
-    class loadOfferTask extends AsyncTask<Void, Void, Void> {
-
-     /*   @Override
-        protected void onPreExecute() {
-            if (progress == null) {
-                progress = view.findViewById(R.id.progress_acceptOffer);
-                progress.setVisibility(View.VISIBLE);
-            } else {
-                progress.setVisibility(View.VISIBLE);
-            }
-        }*/
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            HttpEntrega mHttpEntrega = new HttpEntrega(getActivity());
-            deliverys = mHttpEntrega.selectByRomaneio(romaneio.getCodigo());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            //  progress.setVisibility(View.INVISIBLE);
-            deliveryAdapter = new AcceptOfferAdapter(getActivity(), deliverys);
-            listView.setAdapter(deliveryAdapter);
         }
     }
 }

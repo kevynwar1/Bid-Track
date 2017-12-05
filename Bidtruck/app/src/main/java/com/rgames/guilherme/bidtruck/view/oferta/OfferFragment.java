@@ -91,11 +91,6 @@ public class OfferFragment extends Fragment {
                 fragmentTransaction.replace(R.id.content_main, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                /*
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, fragment)
-                        .addToBackStack(null)
-                        .commit(); */
             }
         });
         new OfferTask().execute();

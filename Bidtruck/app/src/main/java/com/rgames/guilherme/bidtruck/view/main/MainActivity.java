@@ -155,12 +155,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, entregaFragment).commit();
                 return true;
-            // case R.id.nav_sync:
-            //    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, SincronizacaoFragment.newInstance()).commit();
-            //   return true;
-         /*   case R.id.nav_ocorr:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, OcorrenciaFragment.newInstance()).commit();
-                return true;*/
             case R.id.nav_msg:
                 try {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -213,7 +207,6 @@ public class MainActivity extends AppCompatActivity
             default:
                 return true;
         }
-
     }
 
     private void onCloseDrawer() {

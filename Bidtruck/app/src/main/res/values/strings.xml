@@ -37,7 +37,7 @@
     <string name="app_empty_ocorrencia_list">Esta entrega não possuí ocorrências.</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="toolbar_offer_details">Detalhes da Oferta</string>
+    <string name="toolbar_offer_details">Entregas da Oferta</string>
 
     <!--Mensagens de erro-->
     <string name="app_err_exc_semConexao">Conexão com a internet não foi encontrada."</string>

@@ -71,46 +71,19 @@ public class EntregaFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         try {
-
-              /*if (((AppCompatActivity) context).getSupportActionBar() != null)
-                ((AppCompatActivity) context).getSupportActionBar().setTitle(getString(R.string.menu_drw_romaneio));
-                ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);*/
-
             List<Entrega> listaEntregas = entregaRep.buscarEntrega();
-            List<Romaneio> listaRomaneios = romaneioRep.buscarRomaneio();
+            //List<Romaneio> listaRomaneios = romaneioRep.buscarRomaneio();
 
-           /* if ((listaEntregas != null && listaEntregas.size() > 0) && (listaEntregas.size() > 0 && listaEntregas != null)) {
-                if (listaRomaneios.get(0).getStatus_romaneio().getCodigo() == 4) {
-
-                    Entrega deleteEntrega = listaEntregas.get(listaEntregas.size() - 1);
-                    if (deleteEntrega.getStatusEntrega().getCodigo() == 4) {
-
-                        for (Entrega ent : listaEntregas) {
-
-                            entregaRep.excluirEntrega(ent, listaRomaneios.get(0));
-                        }
-
-                        romaneioRep.excluirRomaneio(listaRomaneios.get(0));
-
-                        initRecyclerView(null);
-                        emptyViewVazio(true);
-                        return;
-
-                    }
-
-                }
-            }*/
             if (facade.isConnected(context)) {
                 buscarTipoOcorrencia();
 
-                if (listaEntregas == null || listaEntregas.size() == 0 && tem_entrega) {
+                if (listaEntregas == null || listaEntregas.size() == 0) {
                     inicializaEntregas();
-                    tem_entrega = false;
+                    //tem_entrega = false;
                 } else {
                     mRomaneioList = null;// se houver internet, a lista de entregas sera exibida novamente, caso o usuario saia do fragment e entre novamente
                     mRomaneioList = romaneioRep.buscarRomaneio();
@@ -120,7 +93,6 @@ public class EntregaFragment extends Fragment {
                         emptyViewVazio(true);
                         return;
                     } else {
-
                         if (mEmpresa.getCodigo() == mRomaneioList.get(0).getCodigo_empresa()) {
                             mRomaneio = mRomaneioList.get(0);
                             initRecyclerView(listaEntregas);
@@ -129,7 +101,6 @@ public class EntregaFragment extends Fragment {
                             return;
                         }
                     }
-
                 }
             } else {
                 mEntregaList = null;
@@ -143,23 +114,13 @@ public class EntregaFragment extends Fragment {
                         initRecyclerView(mEntregaList);
                     }
                 } else {
-
                     emptyView(true);
                     return;
                 }
-
-
             }
-            if (((AppCompatActivity) context).getSupportActionBar() != null) {
-                ((AppCompatActivity) context).getSupportActionBar().setTitle("Romaneio - N º " + mRomaneio.getCodigo());
-                ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);
-            } else
-                Toast.makeText(getActivity(), "Erro ao listar suas entregas, tente novamaente", Toast.LENGTH_LONG).show();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -198,7 +159,6 @@ public class EntregaFragment extends Fragment {
 
     }
 
-
     private void initRecyclerView(List<Entrega> entregas) throws Exception {
         RecyclerView r = view.findViewById(R.id.recyclerview);
         r.setLayoutManager(new LinearLayoutManager(context));
@@ -208,7 +168,6 @@ public class EntregaFragment extends Fragment {
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(context, R.anim.list_layout);
         r.setLayoutAnimation(controller);
     }
-
 
     private class EntregaTask extends AsyncTask<Void, Void, Void> {
 
@@ -260,7 +219,6 @@ public class EntregaFragment extends Fragment {
             }
         }
 
-
         @Override
         protected void onPreExecute() {
             try {
@@ -277,7 +235,6 @@ public class EntregaFragment extends Fragment {
                 if (mRomaneioList != null && mRomaneioList.size() > 0) {
 
                     for (int i = 0; i < mRomaneioList.size(); i++) {
-
                         if (mRomaneioList.get(i).getStatus_romaneio().getCodigo() == 3) {
 
                             if (romaneioRep.buscarRomaneio() == null || romaneioRep.buscarRomaneio().size() == 0) {
@@ -293,11 +250,7 @@ public class EntregaFragment extends Fragment {
                         }
 
                     }
-
-
                 }
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -316,7 +269,6 @@ public class EntregaFragment extends Fragment {
                         ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);
                     } else
                         Toast.makeText(getActivity(), "Erro ao exibir numero do Romaneio", Toast.LENGTH_LONG).show();
-
                 } else {
                     emptyView(true);
                 }
@@ -326,7 +278,6 @@ public class EntregaFragment extends Fragment {
             super.onPostExecute(aVoid);
         }
     }
-
 
     private void emptyView(boolean isVisible) {
         view.findViewById(R.id.txt_empty).setVisibility((isVisible) ? View.VISIBLE : View.GONE);
@@ -343,7 +294,4 @@ public class EntregaFragment extends Fragment {
             ((AppCompatActivity) context).getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
     }
-
-
 }
-
