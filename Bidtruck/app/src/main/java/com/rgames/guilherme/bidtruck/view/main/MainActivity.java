@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     private Empresa mEmpresa;
     private Preferences preferences;
     private EntregaFragment entregaFragment;
-    private  Motorista mMotorista;
+ //   private  Motorista mMotorista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         preferences = new Preferences(this);
         if (getIntent().getExtras() != null && getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA) != null) {
             mEmpresa = getIntent().getExtras().getParcelable(Empresa.PARCEL_EMPRESA);
-            mMotorista = getIntent().getExtras().getParcelable("carro");
+        //    mMotorista = getIntent().getExtras().getParcelable("carro");
             preferences.setCompanyCode(mEmpresa.getCodigo());
         } else {
             Toast.makeText(this, getString(R.string.app_err_null_motorista), Toast.LENGTH_SHORT).show();
