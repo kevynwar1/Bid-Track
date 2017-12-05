@@ -1,5 +1,6 @@
 package com.rgames.guilherme.bidtruck.view.oferta;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -73,6 +74,7 @@ public class OfferFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swiped = true;
+                mSwipe.setColorSchemeColors(Color.parseColor("#120c37"),Color.parseColor("#271D66"),Color.parseColor("#BF2C38"));
                 new OfferTask().execute();
             }
         });

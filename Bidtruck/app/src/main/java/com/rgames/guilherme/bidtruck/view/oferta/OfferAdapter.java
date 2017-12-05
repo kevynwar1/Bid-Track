@@ -29,6 +29,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -95,32 +96,32 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
                     .load(urlimagem)
                     .into(imagem);
 
-
             for (Entrega entrega : offer.getEntregaList()) {
                 String[] separandoPesos = entrega.getPeso().split(" ");
-                pesoTotal = +Integer.parseInt(separandoPesos[0]);
+                pesoTotal = pesoTotal + Integer.parseInt(separandoPesos[0]);
             }
+
 
             Entrega mentrega = offer.getEntregaList().get(offer.getEntregaList().size() - 1);
 
-           for (int i = 0; i < offers.size(); i ++) {
-               Double CidadeOrigem = offer.getEstabelecimento().getLatitude();
-               Double EstadoOrigem = offer.getEstabelecimento().getLongitude();
-             //  mEstadoOrigem = EstadoOrigem.replace(" ", "+");
-              // mCidadeOrigem = CidadeOrigem.replace(" ", "+");
+            for (int i = 0; i < offers.size(); i++) {
+                Double CidadeOrigem = offer.getEstabelecimento().getLatitude();
+                Double EstadoOrigem = offer.getEstabelecimento().getLongitude();
+                //  mEstadoOrigem = EstadoOrigem.replace(" ", "+");
+                // mCidadeOrigem = CidadeOrigem.replace(" ", "+");
 
-               Double CidadeDestino = mentrega.getDestinatario().getLatitude();
-               Double EstadoDestino = mentrega.getDestinatario().getLongitude();
-              // mEstadoDestino = EstadoDestino.replace(" ", "+");
-              // mCidadeDestino = CidadeDestino.replace(" ", "+");
+                Double CidadeDestino = mentrega.getDestinatario().getLatitude();
+                Double EstadoDestino = mentrega.getDestinatario().getLongitude();
+                // mEstadoDestino = EstadoDestino.replace(" ", "+");
+                // mCidadeDestino = CidadeDestino.replace(" ", "+");
 
 
-               mcidadeD = mentrega.getDestinatario().getCidade();
-               mestadoD = mentrega.getDestinatario().getUF();
-               String urldistancia = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + CidadeOrigem + "," + EstadoOrigem + "&destinations=" + CidadeDestino + "," + EstadoDestino + "&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
-               WebService task = new WebService(getContext(), distancia, urldistancia);
-               task.execute();
-           }
+                mcidadeD = mentrega.getDestinatario().getCidade();
+                mestadoD = mentrega.getDestinatario().getUF();
+                String urldistancia = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + CidadeOrigem + "," + EstadoOrigem + "&destinations=" + CidadeDestino + "," + EstadoDestino + "&key=AIzaSyCCqyCKlw5Hj3hvPbMQ1C9OPyvcQQBhARU";
+                WebService task = new WebService(getContext(), distancia, urldistancia);
+                task.execute();
+            }
             origem.setText(offer.getEstabelecimento().getCidade() + " - " + offer.getEstabelecimento().getUf());
             destino.setText(mentrega.getDestinatario().getCidade() + " - " + mentrega.getDestinatario().getUF());
 
@@ -224,14 +225,14 @@ public class OfferAdapter extends ArrayAdapter<Romaneio> {
 
         long divisao = cal.getTimeInMillis() - calOferta.getTimeInMillis();
         long minutos = (60 * 1000);
-        long diffMinutos = divisao /minutos ;
+        long diffMinutos = divisao / minutos;
         long hours = (60 * 60 * 1000);
         long diffHoras = divisao / hours;
         long diffHorasMinutos = (divisao % hours) / (60 * 1000);
-        long diffDias = (divisao /1000) / 60 / 60 /24;
-         if (divisao < 3600000)
+        long diffDias = (divisao / 1000) / 60 / 60 / 24;
+        if (divisao < 3600000)
             return diffMinutos + " Minutos";
-        else if ( divisao >= 3600000 && divisao < 86400000)
+        else if (divisao >= 3600000 && divisao < 86400000)
             return diffHoras + " Horas";
 
         else

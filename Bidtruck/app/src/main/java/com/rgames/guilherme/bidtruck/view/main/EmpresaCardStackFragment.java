@@ -198,7 +198,7 @@ public class EmpresaCardStackFragment extends Fragment {
     }
 
     private void deslogar() {
-        facade.setLogged(new Motorista(0, "",""));
+        facade.setLogged(new Motorista(0, "",0.0));
     }
 
     private void initView(List<Empresa> empresas) throws Exception {
@@ -229,6 +229,7 @@ public class EmpresaCardStackFragment extends Fragment {
                 Intent it = new Intent(getActivity(), MainActivity.class);
                 Bundle b = new Bundle();
                 b.putParcelable(Empresa.PARCEL_EMPRESA, empresa);
+              //  b.putParcelable("carro",motorista);
                 startActivity(it.putExtras(b));
             }
         });
